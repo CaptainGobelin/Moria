@@ -11,7 +11,8 @@ func _ready():
 
 func _input(event):
 	if (event.is_action_released("ui_accept")):
-		Ref.ui.diary.bbcode_text = Ref.ui.diary.bbcode_text.trim_suffix("_")
+		currentSuffix = currentChoice
+		rewriteLastLine()
 		returnNumber()
 	elif (event.is_action_released("ui_cancel")):
 		currentSuffix = ""

@@ -13,7 +13,7 @@ func _input(event):
 		return
 	for i in range(1, 10):
 		if (event.is_action_released("shortcut" + String(i))):
-			if choiceList.size() < (i+1):
+			if choiceList.size() < i:
 				return
 			endCoroutine(i)
 			return
