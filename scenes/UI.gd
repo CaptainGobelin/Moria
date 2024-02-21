@@ -4,6 +4,9 @@ class_name Ui
 
 signal coroutine_signal
 
+onready var numberHandler = get_node("Utils/NumberHandler")
+onready var choiceHandler = get_node("Utils/ChoiceHandler")
+
 onready var diary = get_node("TextBox/TextContainer/DiaryPanel")
 onready var hpMax = get_node("SideMenu/HPContainer/Label/Max")
 onready var hp = get_node("SideMenu/HPContainer/Label/Current")
@@ -18,58 +21,22 @@ var currentMax = 0
 
 func _ready():
 	Ref.ui = self
-	set_process_input(false)
-
-func _input(event):
-	if (event.is_action_released("ui_accept")):
-		diary.text = diary.text.trim_suffix("_")
-		returnNumber()
-	elif (event.is_action_released("ui_cancel")):
-		diary.text = diary.text.rstrip(currentSuffix)
-		currentChoice = ""
-		returnNumber()
-	elif (event.is_action_released("ui_backspace")):
-		if currentChoice.length() == 0:
-			return
-		diary.text = diary.text.rstrip(currentSuffix)
-		currentChoice.erase(currentChoice.length() - 1, 1)
-		if currentChoice.length() < String(currentMax).length():
-			currentSuffix = currentChoice + "_"
-		diary.text += (currentSuffix)
-	for i in range(0, 10):
-		if (event.is_action_released("shortcut" + String(i))):
-			diary.text = diary.text.rstrip(currentSuffix)
-			currentChoice += String(i)
-			if int(currentChoice) > currentMax:
-				currentChoice = String(currentMax)
-			if currentChoice.length() < String(currentMax).length():
-				currentSuffix = currentChoice + "_"
-			else:
-				currentSuffix = currentChoice
-			diary.text += (currentSuffix)
 
 func askForNumber(maxNb: int):
-	currentMax = maxNb
-	get_parent().set_process_input(false)
-	currentChoice = ""
-	currentSuffix = "_"
-	write("How much? (1-" + String(maxNb) + ") _")
-	set_process_input(true)
-
-func returnNumber():
-	var result = 0
-	if currentChoice.length() == 0:
-		write("Ok then.")
-		result = null
-	else:
-		result = int(currentChoice)
-	if result == 0:
-		write("Ok then.")
-		result = null
-	set_process_input(false)
+	Ref.game.set_process_input(false)
+	numberHandler.startCoroutine(maxNb)
+	var result = yield(numberHandler, "end_coroutine")
 	Ref.game.set_process_input(true)
-	Ref.game.getReturnedNumber(result)
-	emit_signal("coroutine_signal")
+	emit_signal("coroutine_signal", result)
+
+func askForChoice(list: Array):
+	Ref.game.set_process_input(false)
+	choiceHandler.startCoroutine(list)
+	var result = yield(choiceHandler, "end_coroutine")
+	if result == -1:
+		writeOk()
+	Ref.game.set_process_input(true)
+	emit_signal("coroutine_signal", result)
 
 func write(text):
 	if text == null:
@@ -83,6 +50,9 @@ func color(text: String, color: String):
 		"green": return "[color=#24b537]" + text + "[/color]"
 		"yellow": return "[color=#d7b537]" + text + "[/color]"
 	return text
+
+func writeOk():
+	write("Ok then.")
 
 func writeNoLoot():
 	write("Nothing to pick here.")

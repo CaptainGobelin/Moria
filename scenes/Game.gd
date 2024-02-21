@@ -7,8 +7,8 @@ onready var characterMenu = get_node("CharacterMenu")
 onready var dungeonGenerator = get_node("Utils/DungeonGenerator_v2")
 onready var pathfinder = get_node("Utils/Pathfinder")
 onready var itemGenerator = get_node("Utils/ItemGenerator") as ItemGenerator
+onready var pickupLootHandler = get_node("Utils/PickupLootHandler")
 
-var coroutineReturn
 var mode = ""
 var choiceList = []
 
@@ -46,53 +46,11 @@ func _input(event):
 		characterMenu.open()
 		return
 	elif (event.is_action_released("pickLoot")):
-		cancelMode()
-		var loots = Ref.currentLevel.checkForLoot(Ref.character.pos)
-		if loots.size() == 0:
-			Ref.ui.writeNoLoot()
-		elif loots.size() == 1:
-			if loots[0].size() == 1:
-				Ref.character.pickItem(loots[0][0])
-			else:
-				Ref.ui.askForNumber(loots[0].size())
-				yield(Ref.ui, "coroutine_signal")
-				if coroutineReturn != null and coroutineReturn is int:
-					for c in range(coroutineReturn):
-						Ref.character.pickItem(loots[0][c])
-				else:
-					Ref.ui.write("Ok then.")
-				coroutineReturn = null
-		else:
-			Ref.ui.write(Ref.currentLevel.getLootChoice(loots))
-			mode = "pickItem"
-			choiceList = loots
-	else:
-		for i in range(0, 9):
-			if (event.is_action_released("shortcut" + String(i))):
-				if choiceList.size() < i:
-					return
-				match mode:
-					"pickItem":
-						if choiceList[i-1].size() == 1:
-							Ref.character.pickItem(choiceList[i-1][0])
-						else:
-							Ref.ui.askForNumber(choiceList[i-1].size())
-							yield(Ref.ui, "coroutine_signal")
-							if coroutineReturn != null and coroutineReturn is int:
-								for c in range(coroutineReturn):
-									Ref.character.pickItem(choiceList[i-1][c])
-							else:
-								Ref.ui.write("Ok then.")
-							coroutineReturn = null
-						mode = ""
-						cancelMode()
-				return
+		pickupLootHandler.pickupLoot()
+		return
 
 func cancelMode():
 	if mode != "":
-		Ref.ui.write("Ok then.")
+		Ref.ui.writeOk()
 	mode = ""
 	choiceList = []
-
-func getReturnedNumber(result):
-	coroutineReturn = result

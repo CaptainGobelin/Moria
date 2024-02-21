@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://scenes/utils/DungeonGenerator_v2.tscn" type="PackedScene" id=1]
 [ext_resource path="res://tilesets/basic.tres" type="TileSet" id=2]
@@ -16,6 +16,9 @@
 [ext_resource path="res://scenes/UI/CharacterMenu.gd" type="Script" id=14]
 [ext_resource path="res://scenes/Game.gd" type="Script" id=15]
 [ext_resource path="res://scenes/CurrentLevel.gd" type="Script" id=16]
+[ext_resource path="res://scenes/UI/NumberHandler.gd" type="Script" id=17]
+[ext_resource path="res://scenes/utils/PickupLootHandler.gd" type="Script" id=18]
+[ext_resource path="res://scenes/UI/ChoiceHandler.gd" type="Script" id=19]
 
 [node name="Game" type="Node2D"]
 scale = Vector2( 4, 4 )
@@ -28,6 +31,9 @@ script = ExtResource( 15 )
 [node name="Pathfinder" parent="Utils" instance=ExtResource( 6 )]
 
 [node name="ItemGenerator" parent="Utils" instance=ExtResource( 11 )]
+
+[node name="PickupLootHandler" type="Node" parent="Utils"]
+script = ExtResource( 18 )
 
 [node name="CurrentLevel" type="Node2D" parent="."]
 position = Vector2( 5, 7 )
@@ -59,6 +65,14 @@ tile_data = PoolIntArray( -1966060, 1, 0, -65537, 2, 0, -131072, 2, 65537, -1310
 
 [node name="UI" type="Node2D" parent="."]
 script = ExtResource( 9 )
+
+[node name="Utils" type="Node" parent="UI"]
+
+[node name="NumberHandler" type="Node" parent="UI/Utils"]
+script = ExtResource( 17 )
+
+[node name="ChoiceHandler" type="Node" parent="UI/Utils"]
+script = ExtResource( 19 )
 
 [node name="TextBox" type="TileMap" parent="UI"]
 position = Vector2( 9, 189 )
