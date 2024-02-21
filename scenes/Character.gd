@@ -25,17 +25,17 @@ func move(movement):
 		animator.play("walk")
 		Ref.currentLevel.refresh_view()
 		refreshMapPosition()
-		Engine.newTurn(Ref.game)
+		Engine.newTurn()
 		Ref.ui.write(Ref.currentLevel.getLootMessage(pos))
 		return
 	match cellState[1]:
 		"door": 
 			Ref.currentLevel.openDoor(pos + movement)
 			Ref.currentLevel.refresh_view()
-			Engine.newTurn(Ref.game)
+			Engine.newTurn()
 		"monster":
 			hit(cellState[2])
-			Engine.newTurn(Ref.game)
+			Engine.newTurn()
 
 func hit(entity):
 	if entity == null:

@@ -2,7 +2,7 @@ extends Node
 
 var turn = 0
 
-func newTurn(game):
+func newTurn():
 	turn += 1
 	for m in Ref.currentLevel.monsters.get_children():
 		m.takeTurn()

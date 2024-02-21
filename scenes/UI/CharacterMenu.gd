@@ -1,6 +1,5 @@
 extends Node2D
 
-onready var game = get_parent()
 onready var tabs = get_node("Tabs").get_children()
 onready var skillsScreen = get_node("SkillsScreen")
 onready var skills = get_node("SkillsScreen/SkillsList").get_children()
@@ -15,14 +14,14 @@ func _ready():
 func open():
 	setTab(currentTab)
 	visible = true
-	game.currentLevel.visible = false
-	game.set_process_input(false)
+	Ref.currentLevel.visible = false
+	Ref.game.set_process_input(false)
 	set_process_input(true)
 
 func close():
 	visible = false
-	game.currentLevel.visible = true
-	game.set_process_input(true)
+	Ref.currentLevel.visible = true
+	Ref.game.set_process_input(true)
 	set_process_input(false)
 
 func _input(event):
@@ -50,17 +49,17 @@ func _input(event):
 				buySkill(currentRow)
 
 func buySkill(row):
-	var charSkp = game.character.stats.skp
+	var charSkp = Ref.character.stats.skp
 	if charSkp == 0:
-		game.ui.writeNoSkp()
+		Ref.ui.writeNoSkp()
 		return
-	var skill = game.character.stats.skills[row]
-	var mastery = game.character.stats.masteries[row]
+	var skill = Ref.character.stats.skills[row]
+	var mastery = Ref.character.stats.masteries[row]
 	if skill == (mastery*2 + 1):
-		game.ui.writeNoMastery()
+		Ref.ui.writeNoMastery()
 		return
-	game.character.stats.skills[row] += 1
-	game.character.stats.skp -= 1
+	Ref.character.stats.skills[row] += 1
+	Ref.character.stats.skp -= 1
 	setTab(currentTab, currentRow)
 
 func setTab(tab, row = 0):
@@ -72,9 +71,9 @@ func setTab(tab, row = 0):
 			skillsScreen.visible = true
 			var count = 0
 			for s in skills:
-				s.setValue(game.character.stats.skills[count], game.character.stats.masteries[count])
+				s.setValue(Ref.character.stats.skills[count], Ref.character.stats.masteries[count])
 				count += 1
-			skp.text = String(game.character.stats.skp)
+			skp.text = String(Ref.character.stats.skp)
 			selectSkill(max(min(row, skills.size()-1), 0))
 		GLOBAL.CHAR_FEATS:
 			skillsScreen.visible = false
