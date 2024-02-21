@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://sprites/scenery.png" type="Texture" id=1]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Sprite
+
+var itemId
+
+func init(id, pos):
+	itemId = id
+	GLOBAL.itemsOnFloor[itemId] = [pos,  get_instance_id()]
+	position = 9 * pos
+
+func _exit_tree():
+	if GLOBAL.itemsOnFloor.has(itemId):
+		GLOBAL.itemsOnFloor.erase(itemId)
+"
+
+[node name="Loot" type="Sprite"]
+texture = ExtResource( 1 )
+centered = false
+hframes = 4
+vframes = 4
+frame = 2
+script = SubResource( 1 )

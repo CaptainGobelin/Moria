@@ -1,0 +1,42 @@
+[gd_resource type="TileSet" load_steps=2 format=2]
+
+[ext_resource path="res://sprites/shadows.png" type="Texture" id=1]
+
+[resource]
+0/name = "shadows.png 0"
+0/texture = ExtResource( 1 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 0, 54, 27 )
+0/tile_mode = 1
+0/autotile/bitmask_mode = 1
+0/autotile/bitmask_flags = [ Vector2( 0, 0 ), 16842928, Vector2( 0, 1 ), 17039538, Vector2( 0, 2 ), 4456498, Vector2( 1, 0 ), 20971704, Vector2( 1, 1 ), 21299386, Vector2( 1, 2 ), 327738, Vector2( 2, 0 ), 4456600, Vector2( 2, 1 ), 4259994, Vector2( 2, 2 ), 16842778, Vector2( 3, 1 ), 21299248, Vector2( 3, 2 ), 21299346, Vector2( 4, 0 ), 21299344, Vector2( 4, 2 ), 21299218, Vector2( 5, 1 ), 21299224, Vector2( 5, 2 ), 21299256 ]
+0/autotile/icon_coordinate = Vector2( 0, 0 )
+0/autotile/tile_size = Vector2( 9, 9 )
+0/autotile/spacing = 0
+0/autotile/occluder_map = [  ]
+0/autotile/navpoly_map = [  ]
+0/autotile/priority_map = [  ]
+0/autotile/z_index_map = [  ]
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape_one_way = false
+0/shape_one_way_margin = 0.0
+0/shapes = [  ]
+0/z_index = 0
+1/name = "shadows.png 1"
+1/texture = ExtResource( 1 )
+1/tex_offset = Vector2( 0, 0 )
+1/modulate = Color( 1, 1, 1, 1 )
+1/region = Rect2( 36, 9, 9, 9 )
+1/tile_mode = 0
+1/occluder_offset = Vector2( 0, 0 )
+1/navigation_offset = Vector2( 0, 0 )
+1/shape_offset = Vector2( 0, 0 )
+1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+1/shape_one_way = false
+1/shape_one_way_margin = 0.0
+1/shapes = [  ]
+1/z_index = 0

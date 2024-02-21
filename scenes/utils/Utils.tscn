@@ -1,0 +1,35 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+
+func addArticle(name: String, nb = 1):
+	if nb > 1:
+		return String(nb) + \" \" + name
+	var firstLetter = name[0].to_lower()
+	var article = \"a\"
+	match firstLetter:
+		\"a\": article = \"an\"
+		\"e\": article = \"an\"
+		\"i\": article = \"an\"
+		\"o\": article = \"an\"
+		\"u\": article = \"an\"
+	return article + \" \" + name
+
+func makeList(array: Array):
+	var result = \"\"
+	var count = 0
+	var limit = array.size() - 1
+	for s in array:
+		if count == 0:
+			result = s
+		elif count < limit:
+			result += \", \" + s
+		else:
+			result += \" and \" + s
+		count += 1
+	return result
+"
+
+[node name="Utils" type="Node"]
+script = SubResource( 1 )

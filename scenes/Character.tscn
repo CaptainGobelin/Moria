@@ -1,0 +1,193 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scenes/Character.gd" type="Script" id=1]
+[ext_resource path="res://sprites/chars.png" type="Texture" id=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+
+onready var ui
+
+onready var currentClass = 0
+onready var entityName = \"Mendiant\"
+onready var hpMax = 10 setget updateHpMax
+onready var hp = 10 setget updateHp
+onready var ca = 3 setget updateCA
+onready var prot = 0 setget updateProt
+onready var dmgDices = Vector2(1, 1) setget updateDmg
+onready var hitDices = Vector2(1, 1) setget updateHit
+onready var skills = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+onready var masteries = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+onready var skp = 2
+
+func init():
+	ui = get_parent().game.ui
+	entityName = Data.classes[currentClass][Data.CL_NAME]
+	updateHpMax(Data.classes[currentClass][Data.CL_HP])
+	#updateHp(Data.classes[currentClass][Data.CL_HP])
+	updateHp(1)
+	updateCA(4)
+	updateProt(0)
+	updateDmg(Vector2(1, 4))
+	updateHit(Vector2(1, 12))
+	skills = Data.classes[currentClass][Data.CL_SK]
+	masteries = Data.classes[currentClass][Data.CL_SKMAS]
+
+func updateHpMax(newValue):
+	hpMax = newValue
+	ui.updateStat(Data.ST_HPMAX, newValue)
+
+func updateHp(newValue):
+	newValue = min(newValue, hpMax)
+	hp = newValue
+	ui.updateStat(Data.ST_HP, newValue)
+
+func updateCA(newValue):
+	ca = newValue
+	ui.updateStat(Data.ST_CA, newValue)
+
+func updateProt(newValue):
+	prot = newValue
+	ui.updateStat(Data.ST_PROT, newValue)
+
+func updateDmg(newValue):
+	dmgDices = newValue
+	ui.updateStat(Data.ST_DMG, newValue)
+
+func updateHit(newValue):
+	hitDices = newValue
+	ui.updateStat(Data.ST_HIT, newValue)
+"
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends Node
+
+var currentWeapon = -1
+var currentArmor = -1
+
+var weapons = []
+var armors = []
+var potions = []
+
+func getWeaponRows():
+	var result = []
+	for w in weapons:
+		var current = GLOBAL.items[w]
+		var equiped = w == currentWeapon
+		result.append([w, current[GLOBAL.IT_NAME], equiped, current[GLOBAL.IT_ICON]])
+	return result
+
+func getArmorRows():
+	var result = []
+	for a in armors:
+		var current = GLOBAL.items[a]
+		var equiped = a == currentArmor
+		result.append([a, current[GLOBAL.IT_NAME], equiped, current[GLOBAL.IT_ICON]])
+	return result
+
+func getPotionRows():
+	var dict:Dictionary = {}
+	for p in potions:
+		var current = GLOBAL.items[p]
+		if !dict.has(current[GLOBAL.IT_STACK]):
+			dict[current[GLOBAL.IT_STACK]] = [current[GLOBAL.IT_NAME], current[GLOBAL.IT_ICON], [p]]
+		else:
+			dict[current[GLOBAL.IT_STACK]][2].append(p)
+	var result = []
+	for d in dict.keys():
+		result.append(dict[d])
+	return result
+	
+
+func switchWeapon(idx):
+	if currentWeapon == idx:
+		unequipWeapon(idx)
+	else:
+		equipWeapon(idx)
+
+func unequipWeapon(idx):
+	if currentWeapon != idx:
+		return
+	var stats = get_parent().stats
+	stats.dmgDices = Vector2(1, 1)
+	stats.hitDices = Vector2(1, 1)
+	currentWeapon = -1
+
+func equipWeapon(idx):
+	unequipWeapon(idx)
+	currentWeapon = idx
+	var stats = get_parent().stats
+	stats.dmgDices = GLOBAL.items[idx][GLOBAL.IT_DMG]
+	stats.hitDices = GLOBAL.items[idx][GLOBAL.IT_HIT]
+
+func switchArmor(idx):
+	if currentArmor == idx:
+		unequipArmor(idx)
+	else:
+		equipArmor(idx)
+
+func unequipArmor(idx):
+	if currentArmor != idx:
+		return
+	var stats = get_parent().stats
+	stats.ca = 4
+	stats.prot = 0
+	currentArmor = -1
+
+func equipArmor(idx):
+	unequipArmor(idx)
+	currentArmor = idx
+	var stats = get_parent().stats
+	stats.ca = GLOBAL.items[idx][GLOBAL.IT_CA]
+	stats.prot = GLOBAL.items[idx][GLOBAL.IT_PROT]
+"
+
+[sub_resource type="Animation" id=3]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("BodySprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "walk"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("BodySprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -2 ), Vector2( 0, 0 ) ]
+}
+
+[node name="Character" type="Node2D" groups=["Character"]]
+script = ExtResource( 1 )
+
+[node name="BodySprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+centered = false
+hframes = 4
+vframes = 4
+
+[node name="Stats" type="Node" parent="."]
+script = SubResource( 1 )
+
+[node name="Inventory" type="Node" parent="."]
+script = SubResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 3 )
+anims/walk = SubResource( 4 )

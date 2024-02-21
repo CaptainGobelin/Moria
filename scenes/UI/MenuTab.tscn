@@ -1,0 +1,42 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://fonts/textFont.tres" type="DynamicFont" id=1]
+[ext_resource path="res://tilesets/int_tileset.tres" type="TileSet" id=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends TileMap
+
+onready var label:Label = get_node(\"TextContainer/Label\")
+
+func _ready():
+	label.text = name
+
+func setActive():
+	label.add_color_override(\"font_color\", Colors.white)
+	show_behind_parent = false
+
+func setInactive():
+	label.add_color_override(\"font_color\", Colors.shade3)
+	show_behind_parent = true
+"
+
+[node name="MenuTab" type="TileMap"]
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 9, 9 )
+format = 1
+tile_data = PoolIntArray( 0, 2, 0, 1, 2, 1, 2, 2, 1, 3, 2, 1, 4, 2, 2, 65536, 2, 131075, 65537, 2, 65537, 65538, 2, 65537, 65539, 2, 65537, 65540, 2, 131076 )
+script = SubResource( 1 )
+
+[node name="TextContainer" type="Node2D" parent="."]
+scale = Vector2( 0.25, 0.25 )
+
+[node name="Label" type="Label" parent="TextContainer"]
+margin_left = 20.0
+margin_top = 18.0
+margin_right = 160.0
+margin_bottom = 54.0
+custom_colors/font_color = Color( 0.807843, 0.858824, 0.882353, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "MenuTab"
+align = 1
+valign = 1

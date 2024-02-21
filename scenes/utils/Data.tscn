@@ -1,0 +1,121 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+
+const SK_COMBAT = 0
+const SK_ARMOR = 1
+const SK_EVOC = 2
+const SK_ENCH = 3
+const SK_DIV = 4
+const SK_ABJ = 5
+const SK_CONJ = 6
+const SK_PHY = 7
+const SK_WIL = 8
+const SK_PER = 9
+const SK_THI = 10
+
+const CL_FIGHTER = 0
+
+const CL_NAME = 0
+const CL_HP = 1
+const CL_HPLVL = 2
+const CL_SK = 3
+const CL_SKMAS = 4
+const classes = {
+	0: [\"Fighter\", 10, 5, [1, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0], [2, 2, 0, 0, 0, 0, 0, 2, 1, 1, 1]],
+}
+
+const MO_NAME = 0
+const MO_HP = 1
+const MO_HIT = 2
+const MO_DMG = 3
+const MO_CA = 4
+const MO_PROT = 5
+const MO_SPRITE = 6
+const monsters = {
+	0: [\"Skeleton\", 6, Vector2(1, 6), Vector2(1, 4), 5, 1, 0],
+}
+
+const ST_CA = 0
+const ST_PROT = 1
+const ST_DMG = 2
+const ST_HIT = 3
+const ST_HPMAX = 4
+const ST_HP = 5
+
+const W_NAME = 0
+const W_HIT = 1
+const W_DMG = 2
+const W_TYPE = 3
+const W_RAR = 4
+const W_ENCH = 5
+const W_2H = 6
+const W_ICON = 7
+const weapons = {
+	0: [\"Club\",			Vector2(1, 12),		Vector2(1, 6),		\"B\",	0,	0,	false, 	15],
+	1: [\"Dagger\",		Vector2(1, 12),		Vector2(1, 6),		\"S\",	1,	10,	false, 	3],
+	2: [\"Hatchet\",		Vector2(1, 8),		Vector2(1, 10),		\"S\",	1,	5,	false, 	6],
+	3: [\"Staff\",		Vector2(1, 12),		Vector2(1, 10),		\"B\",	0,	25,	true, 	0],
+	4: [\"Greatclub\",	Vector2(1, 12),		Vector2(2, 6),		\"B\",	1,	0,	true, 	14],
+}
+
+var weaponsByRarity = {}
+
+func weaponsReader():
+	for idx in weapons.keys():
+		var rarity = weapons[idx][W_RAR]
+		if !weaponsByRarity.has(rarity):
+			weaponsByRarity[rarity] = []
+		weaponsByRarity[rarity].append(idx)
+
+const A_NAME = 0
+const A_CA = 1
+const A_PROT = 2
+const A_RAR = 3
+const A_ICON = 4
+const armors = {
+	0: [\"Robe\",				5,	0,	0,	18],
+	1: [\"Leather armour\",	6,	0,	1,	19],
+	2: [\"Brigandine\",		7,	1,	2,	20],
+	3: [\"Scalemail\",		8,	1,	3,	21],
+	4: [\"Full plate\",		9,	2,	4,	22],
+}
+
+var armorsByRarity = {}
+
+func armorsReader():
+	for idx in armors.keys():
+		var rarity = armors[idx][A_RAR]
+		if !armorsByRarity.has(rarity):
+			armorsByRarity[rarity] = []
+		armorsByRarity[rarity].append(idx)
+
+const PO_HEALING = 0
+
+const PO_NAME = 0
+const PO_EF = 1
+const PO_RAR = 2
+const PO_ICON = 3
+const PO_STACK = 4
+const potions = {
+	0: [\"Potion of healing\", 0, 0, 24, 0],
+}
+ 
+var potionsByRarity = {}
+
+func potionsReader():
+	for idx in potions.keys():
+		var rarity = potions[idx][PO_RAR]
+		if !potionsByRarity.has(rarity):
+			potionsByRarity[rarity] = []
+		potionsByRarity[rarity].append(idx)
+
+func _ready():
+	weaponsReader()
+	armorsReader()
+	potionsReader()
+"
+
+[node name="Data" type="Node"]
+script = SubResource( 1 )

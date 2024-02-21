@@ -1,0 +1,94 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://fonts/textFont.tres" type="DynamicFont" id=1]
+[ext_resource path="res://sprites/items.png" type="Texture" id=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node2D
+
+onready var equiped = get_node(\"TextContainer/Equiped\")
+onready var selected = get_node(\"Selected\")
+onready var icon = get_node(\"Icon\")
+onready var shortcut = get_node(\"TextContainer/Shortcut\")
+onready var itemName = get_node(\"TextContainer/Name\")
+
+var item
+
+func setContent(itemRow, type):
+	match type:
+		GLOBAL.WP_TYPE:
+			setWeaponContent(itemRow)
+		GLOBAL.AR_TYPE:
+			setArmorContent(itemRow)
+		GLOBAL.PO_TYPE:
+			setPotionContent(itemRow)
+
+func setWeaponContent(itemRow):
+	item = itemRow[0]
+	itemName.text = itemRow[1]
+	equiped.visible = itemRow[2]
+	icon.frame = itemRow[3]
+
+func setArmorContent(itemRow):
+	item = itemRow[0]
+	itemName.text = itemRow[1]
+	equiped.visible = itemRow[2]
+	icon.frame = itemRow[3]
+
+func setPotionContent(itemRow):
+	item = itemRow[2][0]
+	var n = itemRow[0]
+	if itemRow[2].size() > 1:
+		n = n.replace(\"Potion\", \"Potions\")
+	itemName.text = String(itemRow[2].size()) + \" \" + n
+	equiped.visible = false
+	icon.frame = itemRow[1]
+"
+
+[node name="ItemRow" type="Node2D"]
+script = SubResource( 1 )
+
+[node name="Selected" type="ColorRect" parent="."]
+visible = false
+margin_right = 198.0
+margin_bottom = 17.0
+color = Color( 0.247059, 0.313726, 0.247059, 1 )
+
+[node name="Icon" type="Sprite" parent="."]
+position = Vector2( 1, 1 )
+texture = ExtResource( 2 )
+centered = false
+hframes = 6
+vframes = 6
+
+[node name="TextContainer" type="Node2D" parent="."]
+position = Vector2( 22, 0 )
+scale = Vector2( 0.25, 0.25 )
+
+[node name="Name" type="Label" parent="TextContainer"]
+margin_right = 524.0
+margin_bottom = 68.0
+custom_colors/font_color = Color( 0.807843, 0.858824, 0.882353, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "Staff +1"
+valign = 1
+
+[node name="Shortcut" type="Label" parent="TextContainer"]
+margin_left = 668.0
+margin_right = 704.0
+margin_bottom = 68.0
+custom_colors/font_color = Color( 0.807843, 0.858824, 0.882353, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "5"
+align = 1
+valign = 1
+
+[node name="Equiped" type="Label" parent="TextContainer"]
+margin_left = 524.0
+margin_right = 668.0
+margin_bottom = 68.0
+custom_colors/font_color = Color( 0.807843, 0.858824, 0.882353, 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "(equiped)"
+align = 1
+valign = 1

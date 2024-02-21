@@ -13,3 +13,11 @@ export_presets.cfg
 .mono/
 data_*/
 mono_crash.*.json
+
+# MORIA
+Moria.txt
+sprites/
+fonts/
+doc/
+icon.png
+icon.png.import

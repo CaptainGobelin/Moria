@@ -1,0 +1,114 @@
+extends Node2D
+class_name Character
+
+onready var currentLevel = get_parent()
+onready var game
+onready var animator = get_node("AnimationPlayer")
+onready var stats = get_node("Stats")
+onready var inventory = get_node("Inventory")
+
+var pos = Vector2(0, 0)
+
+func init():
+	game = currentLevel.game
+	stats.init()
+
+func setPosition(newPos):
+	pos = newPos
+	currentLevel.refresh_view()
+	refreshMapPosition()
+
+func move(movement):
+	var cellState = currentLevel.isCellFree(pos + movement)
+	if cellState[0]:
+		pos += movement
+		animator.play("walk")
+		currentLevel.refresh_view()
+		refreshMapPosition()
+		Engine.newTurn(game)
+		game.ui.write(currentLevel.getLootMessage(pos))
+		return
+	match cellState[1]:
+		"door": 
+			currentLevel.openDoor(pos + movement)
+			currentLevel.refresh_view()
+			Engine.newTurn(game)
+		"monster":
+			hit(cellState[2])
+			Engine.newTurn(game)
+
+func hit(entity):
+	if entity == null:
+		return
+	if entity.is_in_group("Monster"):
+		var result = Engine.rollDices(stats.hitDices)
+		if result >= entity.stats.ca:
+			var rolledDmg = Engine.rollDices(stats.dmgDices)
+			var dmg = entity.checkDmg(rolledDmg)
+			game.ui.writeCharacterStrike(entity.stats.entityName, dmg, result, entity.stats.ca)
+			entity.takeHit(dmg)
+		else:
+			game.ui.writeCharacterMiss(entity.stats.entityName, result, entity.stats.ca)
+
+func takeHit(dmg):
+	var totalDmg = dmg - stats.prot
+	stats.hp -= totalDmg
+	return totalDmg
+
+func pickItem(idx):
+	var item = GLOBAL.items[idx]
+	instance_from_id(GLOBAL.itemsOnFloor[idx][1]).queue_free()
+	match item[GLOBAL.IT_TYPE]:
+		GLOBAL.WP_TYPE: inventory.weapons.append(idx)
+		GLOBAL.AR_TYPE: inventory.armors.append(idx)
+		GLOBAL.PO_TYPE: inventory.potions.append(idx)
+	game.ui.write("You picked " + Utils.addArticle(item[GLOBAL.IT_NAME]) + ".")
+
+func dropItem(idx):
+	var item = GLOBAL.items[idx]
+	unequipItem(idx)
+	match item[GLOBAL.IT_TYPE]:
+		GLOBAL.WP_TYPE:
+			inventory.weapons.erase(idx)
+		GLOBAL.AR_TYPE:
+			inventory.armors.erase(idx)
+		GLOBAL.PO_TYPE:
+			inventory.potions.erase(idx)
+	var loot = currentLevel.lootScene.instance()
+	currentLevel.loots.add_child(loot)
+	loot.init(idx, pos)
+	game.ui.write("You dropped " + Utils.addArticle(item[GLOBAL.IT_NAME]) + ".")
+
+func unequipItem(idx):
+	var item = GLOBAL.items[idx]
+	match item[GLOBAL.IT_TYPE]:
+		GLOBAL.WP_TYPE:
+			inventory.unequipWeapon(idx)
+		GLOBAL.AR_TYPE:
+			inventory.unequipArmor(idx)
+
+func switchItem(idx):
+	var item = GLOBAL.items[idx]
+	match item[GLOBAL.IT_TYPE]:
+		GLOBAL.WP_TYPE:
+			inventory.switchWeapon(idx)
+		GLOBAL.AR_TYPE:
+			inventory.switchArmor(idx)
+
+func equipItem(idx):
+	var item = GLOBAL.items[idx]
+	match item[GLOBAL.IT_TYPE]:
+		GLOBAL.WP_TYPE:
+			inventory.equipWeapon(idx)
+		GLOBAL.AR_TYPE:
+			inventory.equipArmor(idx)
+
+func quaffPotion(idx):
+	var potion = GLOBAL.items[idx]
+	inventory.potions.erase(idx)
+	PotionEngine.applyEffect(self, potion[GLOBAL.IT_SPEC])
+	game.ui.writeQuaffedPotion(potion[GLOBAL.IT_NAME])
+	GLOBAL.items.erase(idx)
+
+func refreshMapPosition():
+	position = 9 * pos

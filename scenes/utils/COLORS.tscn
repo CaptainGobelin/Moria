@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+
+const blue = Color(\"2431b0\")
+const red = Color(\"c13137\")
+const green = Color(\"24b537\")
+const yellow = Color(\"d7b537\")
+const purple = Color(\"b031b0\")
+const cyan = Color(\"24ccc4\")
+const white = Color(\"cedbe1\")
+
+const shade1 = Color(\"acb56b\")
+const shade2 = Color(\"768448\")
+const shade3 = Color(\"546341\")
+const shade4 = Color(\"3f503f\")
+const shade5 = Color(\"2c3a38\")
+const shade6 = Color(\"243137\")
+"
+
+[node name="COLORS" type="Node"]
+script = SubResource( 1 )

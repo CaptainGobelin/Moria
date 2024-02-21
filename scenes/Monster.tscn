@@ -1,0 +1,39 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://sprites/chars.png" type="Texture" id=1]
+[ext_resource path="res://scenes/Monster.gd" type="Script" id=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+
+onready var entityName = \"Snail\"
+onready var ca = 6
+onready var prot = 0
+onready var maxHp = 10
+onready var currentHp = 1
+onready var atkRange = 1
+onready var hitDices = Vector2(1, 1)
+onready var dmgDices = Vector2(1, 1)
+
+func init(type: int):
+	entityName = Data.monsters[type][Data.MO_NAME]
+	ca = Data.monsters[type][Data.MO_CA]
+	prot = Data.monsters[type][Data.MO_PROT]
+	maxHp = Data.monsters[type][Data.MO_HP]
+	currentHp = maxHp
+	hitDices = Data.monsters[type][Data.MO_HIT]
+	dmgDices = Data.monsters[type][Data.MO_DMG]
+"
+
+[node name="Monster" type="Node2D" groups=["Monster"]]
+script = ExtResource( 2 )
+
+[node name="BodySprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+centered = false
+hframes = 4
+vframes = 4
+frame = 2
+
+[node name="Stats" type="Node" parent="."]
+script = SubResource( 1 )
