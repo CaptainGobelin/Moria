@@ -3,10 +3,14 @@
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node
 
-onready var game = get_parent().get_parent()
-onready var dungeon = game.dungeon as TileMap
-onready var shadows = game.shadows as TileMap
-onready var fog = game.fog as TileMap
+onready var dungeon: TileMap
+onready var shadows: TileMap
+onready var fog: TileMap
+
+func init():
+	dungeon = Ref.currentLevel.dungeon
+	shadows = Ref.currentLevel.shadows
+	fog = Ref.currentLevel.fog
 
 func checkRange(start: Vector2, end: Vector2):
 	return abs(start.x - end.x) + abs(start.y - end.y)
@@ -36,13 +40,13 @@ func check_line_of_sight(start, end, clear_sight):
 
 func check_cell_vision(position, clear_sight):
 	if (clear_sight):
-		game.fog.set_cell(position.x, position.y, 0)
-		game.fog.update_bitmask_area(position)
-		game.shadows.set_cell(position.x, position.y, 1)
-		game.shadows.update_bitmask_area(position)
-		for m in game.currentLevel.monsters.get_children():
+		fog.set_cell(position.x, position.y, 0)
+		fog.update_bitmask_area(position)
+		shadows.set_cell(position.x, position.y, 1)
+		shadows.update_bitmask_area(position)
+		for m in Ref.currentLevel.monsters.get_children():
 				m.awake()
-	var cellState = game.currentLevel.isCellFree(position)
+	var cellState = Ref.currentLevel.isCellFree(position)
 	if (!cellState[0]):
 		return false
 	return true
@@ -55,7 +59,7 @@ func get_neighbors(cell, end, length):
 	var pos = cell[0]
 	var cost = cell[1] + 1
 	for i in [Vector2(-1, 0), Vector2(0, -1), Vector2(0, 1), Vector2(1, 0)]:
-		if !game.currentLevel.isCellFree(pos+i)[0]:
+		if !Ref.currentLevel.isCellFree(pos+i)[0]:
 			continue
 		if (cost + dist(pos + Vector2(i.x, i.y), end) <= length):
 			result.append([pos + Vector2(i.x, i.y), cost, cell])

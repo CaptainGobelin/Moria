@@ -2,8 +2,6 @@ extends Node2D
 class_name Monster
 
 onready var type = -1
-onready var currentLevel
-onready var game
 onready var stats = get_node("Stats")
 onready var status = "sleep"
 
@@ -11,8 +9,6 @@ var pos = Vector2(0, 0)
 
 func spawn(monsterType: int):
 	type = monsterType
-	currentLevel = get_parent().get_parent()
-	game = currentLevel.game
 	stats.init(type)
 
 func takeTurn():
@@ -20,10 +16,10 @@ func takeTurn():
 		"sleep":
 			return
 		"awake":
-			if game.pathfinder.checkRange(pos, game.character.pos) <= stats.atkRange:
-				hit(game.character)
+			if Ref.game.pathfinder.checkRange(pos, Ref.character.pos) <= stats.atkRange:
+				hit(Ref.character)
 			else:
-				moveTo(game.character)
+				moveTo(Ref.character)
 			return
 
 func hit(entity):
@@ -34,12 +30,12 @@ func hit(entity):
 		if result >= entity.stats.ca:
 			var rolledDmg = Engine.rollDices(stats.dmgDices)
 			var dmg = entity.takeHit(rolledDmg)
-			game.ui.writeMonsterStrike(stats.entityName, dmg, result, entity.stats.ca)
+			Ref.ui.writeMonsterStrike(stats.entityName, dmg, result, entity.stats.ca)
 		else:
-			game.ui.writeMonsterMiss(stats.entityName, result, entity.stats.ca)
+			Ref.ui.writeMonsterMiss(stats.entityName, result, entity.stats.ca)
 
 func moveTo(entity):
-	var path = game.pathfinder.a_star(pos, entity.pos, 1000)
+	var path = Ref.game.pathfinder.a_star(pos, entity.pos, 1000)
 	if path == null:
 		return
 	setPosition(path[1])
@@ -61,7 +57,7 @@ func takeHit(dmg):
 
 func die():
 	status = "dead"
-	game.ui.write("The Skeleton dies.")
+	Ref.ui.write("The Skeleton dies.")
 	queue_free()
 
 func awake():

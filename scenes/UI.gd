@@ -1,5 +1,7 @@
 extends Node2D
 
+class_name Ui
+
 signal coroutine_signal
 
 onready var diary = get_node("TextBox/TextContainer/DiaryPanel")
@@ -15,6 +17,7 @@ var currentSuffix = ""
 var currentMax = 0
 
 func _ready():
+	Ref.ui = self
 	set_process_input(false)
 
 func _input(event):
@@ -64,8 +67,8 @@ func returnNumber():
 		write("Ok then.")
 		result = null
 	set_process_input(false)
-	get_parent().set_process_input(true)
-	get_parent().getReturnedNumber(result)
+	Ref.game.set_process_input(true)
+	Ref.game.getReturnedNumber(result)
 	emit_signal("coroutine_signal")
 
 func write(text):

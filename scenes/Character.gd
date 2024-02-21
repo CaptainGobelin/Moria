@@ -1,41 +1,41 @@
 extends Node2D
 class_name Character
 
-onready var currentLevel = get_parent()
-onready var game
 onready var animator = get_node("AnimationPlayer")
 onready var stats = get_node("Stats")
 onready var inventory = get_node("Inventory")
 
 var pos = Vector2(0, 0)
 
+func _ready():
+	Ref.character = self
+
 func init():
-	game = currentLevel.game
 	stats.init()
 
 func setPosition(newPos):
 	pos = newPos
-	currentLevel.refresh_view()
+	Ref.currentLevel.refresh_view()
 	refreshMapPosition()
 
 func move(movement):
-	var cellState = currentLevel.isCellFree(pos + movement)
+	var cellState = Ref.currentLevel.isCellFree(pos + movement)
 	if cellState[0]:
 		pos += movement
 		animator.play("walk")
-		currentLevel.refresh_view()
+		Ref.currentLevel.refresh_view()
 		refreshMapPosition()
-		Engine.newTurn(game)
-		game.ui.write(currentLevel.getLootMessage(pos))
+		Engine.newTurn(Ref.game)
+		Ref.ui.write(Ref.currentLevel.getLootMessage(pos))
 		return
 	match cellState[1]:
 		"door": 
-			currentLevel.openDoor(pos + movement)
-			currentLevel.refresh_view()
-			Engine.newTurn(game)
+			Ref.currentLevel.openDoor(pos + movement)
+			Ref.currentLevel.refresh_view()
+			Engine.newTurn(Ref.game)
 		"monster":
 			hit(cellState[2])
-			Engine.newTurn(game)
+			Engine.newTurn(Ref.game)
 
 func hit(entity):
 	if entity == null:
@@ -45,10 +45,10 @@ func hit(entity):
 		if result >= entity.stats.ca:
 			var rolledDmg = Engine.rollDices(stats.dmgDices)
 			var dmg = entity.checkDmg(rolledDmg)
-			game.ui.writeCharacterStrike(entity.stats.entityName, dmg, result, entity.stats.ca)
+			Ref.ui.writeCharacterStrike(entity.stats.entityName, dmg, result, entity.stats.ca)
 			entity.takeHit(dmg)
 		else:
-			game.ui.writeCharacterMiss(entity.stats.entityName, result, entity.stats.ca)
+			Ref.ui.writeCharacterMiss(entity.stats.entityName, result, entity.stats.ca)
 
 func takeHit(dmg):
 	var totalDmg = dmg - stats.prot
@@ -62,7 +62,7 @@ func pickItem(idx):
 		GLOBAL.WP_TYPE: inventory.weapons.append(idx)
 		GLOBAL.AR_TYPE: inventory.armors.append(idx)
 		GLOBAL.PO_TYPE: inventory.potions.append(idx)
-	game.ui.write("You picked " + Utils.addArticle(item[GLOBAL.IT_NAME]) + ".")
+	Ref.ui.write("You picked " + Utils.addArticle(item[GLOBAL.IT_NAME]) + ".")
 
 func dropItem(idx):
 	var item = GLOBAL.items[idx]
@@ -74,10 +74,10 @@ func dropItem(idx):
 			inventory.armors.erase(idx)
 		GLOBAL.PO_TYPE:
 			inventory.potions.erase(idx)
-	var loot = currentLevel.lootScene.instance()
-	currentLevel.loots.add_child(loot)
+	var loot = Ref.currentLevel.lootScene.instance()
+	Ref.currentLevel.loots.add_child(loot)
 	loot.init(idx, pos)
-	game.ui.write("You dropped " + Utils.addArticle(item[GLOBAL.IT_NAME]) + ".")
+	Ref.ui.write("You dropped " + Utils.addArticle(item[GLOBAL.IT_NAME]) + ".")
 
 func unequipItem(idx):
 	var item = GLOBAL.items[idx]
@@ -107,7 +107,7 @@ func quaffPotion(idx):
 	var potion = GLOBAL.items[idx]
 	inventory.potions.erase(idx)
 	PotionEngine.applyEffect(self, potion[GLOBAL.IT_SPEC])
-	game.ui.writeQuaffedPotion(potion[GLOBAL.IT_NAME])
+	Ref.ui.writeQuaffedPotion(potion[GLOBAL.IT_NAME])
 	GLOBAL.items.erase(idx)
 
 func refreshMapPosition():

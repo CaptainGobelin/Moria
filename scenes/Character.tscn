@@ -6,8 +6,6 @@
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node
 
-onready var ui
-
 onready var currentClass = 0
 onready var entityName = \"Mendiant\"
 onready var hpMax = 10 setget updateHpMax
@@ -21,7 +19,6 @@ onready var masteries = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 onready var skp = 2
 
 func init():
-	ui = get_parent().game.ui
 	entityName = Data.classes[currentClass][Data.CL_NAME]
 	updateHpMax(Data.classes[currentClass][Data.CL_HP])
 	#updateHp(Data.classes[currentClass][Data.CL_HP])
@@ -35,28 +32,28 @@ func init():
 
 func updateHpMax(newValue):
 	hpMax = newValue
-	ui.updateStat(Data.ST_HPMAX, newValue)
+	Ref.ui.updateStat(Data.ST_HPMAX, newValue)
 
 func updateHp(newValue):
 	newValue = min(newValue, hpMax)
 	hp = newValue
-	ui.updateStat(Data.ST_HP, newValue)
+	Ref.ui.updateStat(Data.ST_HP, newValue)
 
 func updateCA(newValue):
 	ca = newValue
-	ui.updateStat(Data.ST_CA, newValue)
+	Ref.ui.updateStat(Data.ST_CA, newValue)
 
 func updateProt(newValue):
 	prot = newValue
-	ui.updateStat(Data.ST_PROT, newValue)
+	Ref.ui.updateStat(Data.ST_PROT, newValue)
 
 func updateDmg(newValue):
 	dmgDices = newValue
-	ui.updateStat(Data.ST_DMG, newValue)
+	Ref.ui.updateStat(Data.ST_DMG, newValue)
 
 func updateHit(newValue):
 	hitDices = newValue
-	ui.updateStat(Data.ST_HIT, newValue)
+	Ref.ui.updateStat(Data.ST_HIT, newValue)
 "
 
 [sub_resource type="GDScript" id=2]

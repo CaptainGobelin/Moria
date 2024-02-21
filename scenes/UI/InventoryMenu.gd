@@ -1,6 +1,5 @@
 extends Node2D
 
-onready var game = get_parent()
 onready var inventory = get_node("Tabs")
 onready var description = get_node("Description")
 onready var currentItem = get_node("CurrentItem")
@@ -20,14 +19,14 @@ func _ready():
 func open():
 	setTab(currentTab)
 	visible = true
-	game.currentLevel.visible = false
-	game.set_process_input(false)
+	Ref.currentLevel.visible = false
+	Ref.game.set_process_input(false)
 	set_process_input(true)
 
 func close():
 	visible = false
-	game.currentLevel.visible = true
-	game.set_process_input(true)
+	Ref.currentLevel.visible = true
+	Ref.game.set_process_input(true)
 	set_process_input(false)
 
 func _input(event):
@@ -49,13 +48,13 @@ func _input(event):
 		var selected = itemList.getSelected()
 		if selected == null:
 			return
-		game.character.switchItem(selected)
+		Ref.character.switchItem(selected)
 		setTab(currentTab, itemList.currentIndex)
 	elif (event.is_action_released("dropItem")):
 		var selected = itemList.getSelected()
 		if selected == null:
 			return
-		game.character.dropItem(selected)
+		Ref.character.dropItem(selected)
 		setTab(currentTab, itemList.currentIndex)
 	elif (event.is_action_released("quaffPotion")):
 		if currentTab != GLOBAL.INV_POTIONS:
@@ -63,7 +62,7 @@ func _input(event):
 		var selected = itemList.getSelected()
 		if selected == null:
 			return
-		game.character.quaffPotion(selected)
+		Ref.character.quaffPotion(selected)
 		setTab(currentTab, itemList.currentIndex)
 
 func setTab(tab, row = 0):
@@ -72,10 +71,10 @@ func setTab(tab, row = 0):
 	tabs[tab].setActive()
 	match tab:
 		GLOBAL.INV_WEAPONS:
-			itemList.init(game.character.inventory.getWeaponRows(), row, GLOBAL.WP_TYPE)
+			itemList.init(Ref.character.inventory.getWeaponRows(), row, GLOBAL.WP_TYPE)
 		GLOBAL.INV_ARMORS:
-			itemList.init(game.character.inventory.getArmorRows(), row, GLOBAL.AR_TYPE)
+			itemList.init(Ref.character.inventory.getArmorRows(), row, GLOBAL.AR_TYPE)
 		GLOBAL.INV_POTIONS:
-			itemList.init(game.character.inventory.getPotionRows(), row, GLOBAL.PO_TYPE)
+			itemList.init(Ref.character.inventory.getPotionRows(), row, GLOBAL.PO_TYPE)
 		_:
 			itemList.init([], row, 0)

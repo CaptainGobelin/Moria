@@ -4,7 +4,7 @@ var turn = 0
 
 func newTurn(game):
 	turn += 1
-	for m in game.currentLevel.monsters.get_children():
+	for m in Ref.currentLevel.monsters.get_children():
 		m.takeTurn()
 
 func rollDices(dices: Vector2):

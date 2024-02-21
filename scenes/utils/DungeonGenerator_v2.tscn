@@ -7,7 +7,7 @@ script/source = "extends Node
 
 onready var game = get_parent().get_parent()
 onready var roomsReader = get_node(\"RoomsReader_v2\")
-onready var dungeon = game.dungeon as TileMap
+onready var dungeon: TileMap
 
 # Door: [position:Vector2, direction:String]
 var waitingDoors:Array = []
@@ -16,7 +16,7 @@ var array:Array = []
 var arrayFullness = 0
 
 func newFloor():
-	dungeon = game.dungeon as TileMap
+	dungeon = Ref.currentLevel.dungeon as TileMap
 	var retries = 0
 	generate()
 	while !isFloorFull():
