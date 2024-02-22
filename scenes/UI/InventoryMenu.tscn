@@ -39,20 +39,25 @@ script = SubResource( 1 )
 
 [node name="Armors" parent="Tabs" instance=ExtResource( 1 )]
 show_behind_parent = true
-position = Vector2( 45, 0 )
+position = Vector2( 36, 0 )
 script = SubResource( 1 )
 
 [node name="Scrolls" parent="Tabs" instance=ExtResource( 1 )]
 show_behind_parent = true
-position = Vector2( 90, 0 )
+position = Vector2( 72, 0 )
 script = SubResource( 1 )
 
 [node name="Potions" parent="Tabs" instance=ExtResource( 1 )]
 show_behind_parent = true
-position = Vector2( 135, 0 )
+position = Vector2( 108, 0 )
 script = SubResource( 1 )
 
 [node name="Throwings" parent="Tabs" instance=ExtResource( 1 )]
+show_behind_parent = true
+position = Vector2( 144, 0 )
+script = SubResource( 1 )
+
+[node name="Talisman" parent="Tabs" instance=ExtResource( 1 )]
 show_behind_parent = true
 position = Vector2( 180, 0 )
 script = SubResource( 1 )

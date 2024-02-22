@@ -8,12 +8,12 @@ onready var numberHandler = get_node("Utils/NumberHandler")
 onready var choiceHandler = get_node("Utils/ChoiceHandler")
 
 onready var diary = get_node("TextBox/TextContainer/DiaryPanel")
-onready var hpMax = get_node("SideMenu/HPContainer/Label/Max")
-onready var hp = get_node("SideMenu/HPContainer/Label/Current")
-onready var ca = get_node("SideMenu/CAContainer/Label/Current")
-onready var prot = get_node("SideMenu/ProtContainer/Label/Current")
-onready var dmg = get_node("SideMenu/DmgContainer/Label/Current")
-onready var hit = get_node("SideMenu/HitContainer/Label/Current")
+onready var hpMaxLabel = get_node("SideMenu/HPContainer/Label/Max")
+onready var hpLabel = get_node("SideMenu/HPContainer/Label/Current")
+onready var caLabel = get_node("SideMenu/CAContainer/Label/Current")
+onready var protLabel = get_node("SideMenu/ProtContainer/Label/Current")
+onready var dmgLabel = get_node("SideMenu/DmgContainer/Label/Current")
+onready var hitLabel = get_node("SideMenu/HitContainer/Label/Current")
 
 var currentChoice = ""
 var currentSuffix = ""
@@ -92,14 +92,14 @@ func diceToString(dice: Vector2):
 func updateStat(stat: int, value):
 	match stat:
 		Data.ST_HPMAX:
-			hpMax.text = String(value)
+			hpMaxLabel.text = String(value)
 		Data.ST_HP:
-			hp.text = String(value)
+			hpLabel.text = String(value)
 		Data.ST_CA:
-			ca.text = String(value)
+			caLabel.text = String(value)
 		Data.ST_PROT:
-			prot.text = String(value)
+			protLabel.text = String(value)
 		Data.ST_DMG:
-			dmg.text = diceToString(value)
+			dmgLabel.text = diceToString(value)
 		Data.ST_HIT:
-			hit.text = diceToString(value)
+			hitLabel.text = diceToString(value)
