@@ -36,6 +36,12 @@ func move(movement):
 		"monster":
 			hit(cellState[2])
 			Engine.newTurn()
+		"pass": 
+			Ref.ui.askToChangeFloor()
+			Ref.ui.askForYesNo()
+			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
+			if (coroutineReturn):
+				Ref.game.newFloor()
 
 func hit(entity):
 	if entity == null:

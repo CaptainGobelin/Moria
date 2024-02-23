@@ -55,6 +55,8 @@ func isCellFree(cell):
 			return [false, "monster", m, true]
 	if dungeon.get_cellv(cell) == GLOBAL.GRID_ID:
 		return [false, "grid", null, true]
+	if dungeon.get_cellv(cell) == GLOBAL.PASS_ID:
+		return [false, "pass", null, false]
 	if dungeon.get_cellv(cell) == GLOBAL.DOOR_ID:
 		if dungeon.get_cell_autotile_coord(cell.x, cell.y) == Vector2(0, 0):
 			return [true, "floor", null, true]

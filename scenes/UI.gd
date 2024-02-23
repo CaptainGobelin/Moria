@@ -6,6 +6,7 @@ signal coroutine_signal
 
 onready var numberHandler = get_node("Utils/NumberHandler")
 onready var choiceHandler = get_node("Utils/ChoiceHandler")
+onready var yesNoHandler = get_node("Utils/YesNoHandler")
 
 onready var diary = get_node("TextBox/TextContainer/DiaryPanel")
 onready var hpMaxLabel = get_node("SideMenu/HPContainer/Label/Max")
@@ -38,6 +39,15 @@ func askForChoice(list: Array):
 	Ref.game.set_process_input(true)
 	emit_signal("coroutine_signal", result)
 
+func askForYesNo():
+	Ref.game.set_process_input(false)
+	yesNoHandler.startCoroutine()
+	var result = yield(yesNoHandler, "end_coroutine")
+	if !result:
+		writeOk()
+	Ref.game.set_process_input(true)
+	emit_signal("coroutine_signal", result)
+
 func write(text):
 	if text == null:
 		return
@@ -53,6 +63,9 @@ func color(text: String, color: String):
 
 func writeOk():
 	write("Ok then.")
+
+func askToChangeFloor():
+	write("Do you want to go to the next floor?")
 
 func writeNoLoot():
 	write("Nothing to pick here.")
