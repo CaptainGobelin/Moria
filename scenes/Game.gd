@@ -12,14 +12,17 @@ onready var pickupLootHandler = get_node("Utils/PickupLootHandler")
 func _ready():
 	Ref.game = self
 	pathfinder.init()
+	newFloor()
+	set_process_input(true)
+
+func newFloor():
 	dungeonGenerator.newFloor()
 	Ref.currentLevel.initShadows()
 	Ref.currentLevel.placeCharacter()
-	for _i in range(5):
-		Ref.currentLevel.spawnMonster()
-	for _i in range(15):
-		Ref.currentLevel.dropItem()
-	set_process_input(true)
+#	for _i in range(5):
+#		Ref.currentLevel.spawnMonster()
+#	for _i in range(15):
+#		Ref.currentLevel.dropItem()
 
 func _input(event):
 	if (event.is_action_pressed("ui_up")):
@@ -36,3 +39,5 @@ func _input(event):
 		characterMenu.open()
 	elif (event.is_action_released("pickLoot")):
 		pickupLootHandler.pickupLoot()
+	elif (event.is_action_released("debug_new_floor")):
+		newFloor()

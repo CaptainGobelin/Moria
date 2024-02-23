@@ -1,12 +1,14 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scenes/utils/RoomsReader_v2.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/utils/DungeonDecorator.gd" type="Script" id=2]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node
 
 onready var game = get_parent().get_parent()
 onready var roomsReader = get_node(\"RoomsReader_v2\")
+onready var decorator = get_node(\"DungeonDecorator\")
 onready var dungeon: TileMap
 
 # Door: [position:Vector2, direction:String]
@@ -22,6 +24,10 @@ func newFloor():
 	while !isFloorFull():
 		generate()
 		retries += 1
+	deleteCorridorDoors()
+	fuseDoors()
+	decorator.analyseDungeon(array)
+	drawFloor()
 	print(\"Generated after \", retries, \" retires.\")
 
 func generate():
@@ -34,14 +40,14 @@ func generate():
 	for i in range(GLOBAL.FLOOR_SIZE_X):
 		array.append([])
 		for _j in range(GLOBAL.FLOOR_SIZE_Y):
-			array[i].append(-1)
+			array[i].append(GLOBAL.WALL_ID)
 	# Place first room
-	var x = randi() % (GLOBAL.FLOOR_SIZE_X-16) + 8
-	var y = randi() % (GLOBAL.FLOOR_SIZE_Y-16) + 8
+	var x = randi() % (GLOBAL.FLOOR_SIZE_X)
+	var y = randi() % (GLOBAL.FLOOR_SIZE_Y)
 	var roomId = randi() % roomsReader.roomsList.size()
 	while !isRoomFits(roomId, Vector2(x, y)):
-		x = randi() % (GLOBAL.FLOOR_SIZE_X-16) + 8
-		y = randi() % (GLOBAL.FLOOR_SIZE_Y-16) + 8
+		x = randi() % (GLOBAL.FLOOR_SIZE_X)
+		y = randi() % (GLOBAL.FLOOR_SIZE_Y)
 		roomId = randi() % roomsReader.roomsList.size()
 	placeFirstRoom(roomId, Vector2(x, y))
 	# Until floor is full:
@@ -77,7 +83,6 @@ func generate():
 			validatedDoors.append(door[0])
 		# Remove the door from list
 		waitingDoors.remove(doorIndex)
-	drawFloor()
 
 func drawFloor():
 	dungeon.clear()
@@ -112,7 +117,7 @@ func isRoomFits(roomId, position):
 			return false
 		if (p.x >= GLOBAL.FLOOR_SIZE_X or p.y >= GLOBAL.FLOOR_SIZE_Y):
 			return false
-		if array[p.x][p.y] != -1:
+		if array[p.x][p.y] != GLOBAL.WALL_ID:
 			return false
 	return true
 
@@ -149,6 +154,31 @@ func isDoorsOpposites(a, b):
 		\"S\": return b == \"N\"
 		\"W\": return b == \"E\"
 	return false
+
+func deleteCorridorDoors():
+	var doorsToRemove = []
+	for d in validatedDoors:
+		if randi() % GLOBAL.DOOR_REDUCTION_RATIO == 0:
+			continue
+		var count = 0
+		for di in range(-1, 2):
+			for dj in range(-1, 2):
+				if array[d.x+di][d.y+dj] != GLOBAL.FLOOR_ID:
+					count += 1
+		if count <= 3:
+			for di in range(-1, 2):
+				for dj in range(-1, 2):
+					array[d.x+di][d.y+dj] = GLOBAL.FLOOR_ID
+			doorsToRemove.append(d)
+		if count >= 7:
+			array[d.x][d.y] = GLOBAL.FLOOR_ID
+			doorsToRemove.append(d)
+	for d in doorsToRemove:
+		validatedDoors.erase(d)
+ 
+func fuseDoors():
+	for d in validatedDoors:
+		array[d.x][d.y] = GLOBAL.DOOR_ID
 "
 
 [node name="DungeonGenerator_v2" type="Node"]
@@ -156,3 +186,6 @@ script = SubResource( 1 )
 
 [node name="RoomsReader_v2" parent="." instance=ExtResource( 1 )]
 visible = false
+
+[node name="DungeonDecorator" type="Node" parent="."]
+script = ExtResource( 2 )

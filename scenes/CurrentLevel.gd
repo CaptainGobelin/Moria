@@ -113,12 +113,6 @@ func checkForLoot(cell):
 	for d in dict.keys():
 		result.append(dict[d])
 	return result
-#
-#	var result = []
-#	for idx in GLOBAL.itemsOnFloor.keys():
-#		if GLOBAL.itemsOnFloor[idx][0] == cell:
-#			result.append(idx)
-#	return result
 
 func getLootMessage(cell):
 	var lootList = checkForLoot(cell)
