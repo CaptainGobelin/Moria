@@ -63,7 +63,7 @@ func generate():
 			continue
 		var roomDoor = roomsReader.doorsList[roomId][roomDoorIndex]
 		var position = door[0] - roomDoor[0]
-		var retries = roomsReader.roomsList.size()
+		var retries = 15
 		var placeRoom = false
 		while (!placeRoom and retries > 0):
 			roomId = (roomId + 1) % roomsReader.roomsList.size()
