@@ -3,34 +3,34 @@ extends Node
 var borders: Dictionary
 var floorsArray: Array
 
-func analyseDungeon(array: Array):
+func analyseDungeon(array: TileMap):
 	for i in range(6):
 		borders[i] = []
 	for i in range(GLOBAL.FLOOR_SIZE_X):
 		for j in range(GLOBAL.FLOOR_SIZE_Y):
-			if array[i][j] == GLOBAL.WALL_ID:
+			if array.get_cell(i, j) == GLOBAL.WALL_ID:
 				var count = 0
 				for c in getNeighbours(i, j):
 					if isOutOfBounds(c.x, c.y):
 						continue
-					if array[c.x][c.y] != GLOBAL.WALL_ID:
+					if array.get_cellv(c) != GLOBAL.WALL_ID:
 						count += 1
 				if count > 1 or count == 0:
 					continue
 				for c in getDiagonals(i, j):
 					if isOutOfBounds(c.x, c.y):
 						continue
-					if array[c.x][c.y] != GLOBAL.WALL_ID:
+					if array.get_cellv(c) != GLOBAL.WALL_ID:
 						count += 1
 				if count > 2:
 					continue
 				borders[getQuadrant(i, j)].append(Vector2(i, j))
 	var exitQuadrant = randi() % 6
 	var p = borders[exitQuadrant][randi() % borders[exitQuadrant].size()]
-	array[p.x][p.y] = GLOBAL.PASS_ID
+	array.set_cellv(p, GLOBAL.PASS_ID)
 	var entryQuadrant = (exitQuadrant+3)%6
 	p = borders[entryQuadrant][randi() % borders[entryQuadrant].size()]
-	array[p.x][p.y] = GLOBAL.PASS_ID
+	array.set_cellv(p, GLOBAL.PASS_ID)
 
 func isOutOfBounds(x, y):
 	if x <= 0: return true

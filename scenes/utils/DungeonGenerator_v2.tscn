@@ -26,8 +26,8 @@ func newFloor():
 		retries += 1
 	deleteCorridorDoors()
 	fuseDoors()
-	decorator.analyseDungeon(array)
 	drawFloor()
+	decorator.analyseDungeon(dungeon)
 	print(\"Generated after \", retries, \" retires.\")
 
 func generate():
