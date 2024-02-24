@@ -53,14 +53,12 @@ tile_data = PoolIntArray( 0, 1, 2, 1, 1, 2, 2, 1, 2, 3, 1, 1, 4, 1, 2, 5, 1, 655
 [node name="Monsters" type="Node2D" parent="CurrentLevel"]
 
 [node name="Fog" type="TileMap" parent="CurrentLevel"]
-visible = false
 modulate = Color( 1, 1, 1, 0.666667 )
 tile_set = ExtResource( 4 )
 cell_size = Vector2( 9, 9 )
 format = 1
 
 [node name="Shadows" type="TileMap" parent="CurrentLevel"]
-visible = false
 tile_set = ExtResource( 3 )
 cell_size = Vector2( 9, 9 )
 format = 1
