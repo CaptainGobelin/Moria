@@ -56,7 +56,10 @@ func isCellFree(cell):
 	if dungeon.get_cellv(cell) == GLOBAL.GRID_ID:
 		return [false, "grid", null, true]
 	if dungeon.get_cellv(cell) == GLOBAL.PASS_ID:
-		return [false, "pass", null, false]
+		if dungeon.get_cell_autotile_coord(cell.x, cell.y) == Vector2(0, 0):
+			return [false, "pass", null, false]
+		elif dungeon.get_cell_autotile_coord(cell.x, cell.y) == Vector2(2, 0):
+			return [false, "entry", null, false]
 	if dungeon.get_cellv(cell) == GLOBAL.DOOR_ID:
 		if dungeon.get_cell_autotile_coord(cell.x, cell.y) == Vector2(0, 0):
 			return [true, "floor", null, true]
@@ -74,10 +77,11 @@ func getRandomFreeCell():
 		if isCellFree(cell)[0]:
 			return cell
 
-func placeCharacter():
-	var cell = getRandomFreeCell()
+func placeCharacter(pos: Vector2 = Vector2(-1,-1)):
+	if pos == Vector2(-1, -1):
+		pos = getRandomFreeCell()
 	Ref.character.init()
-	Ref.character.setPosition(cell)
+	Ref.character.setPosition(pos)
 
 func spawnMonster():
 	var cell = getRandomFreeCell()

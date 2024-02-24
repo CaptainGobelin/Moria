@@ -30,7 +30,11 @@ func analyseDungeon(array: TileMap):
 	array.set_cellv(p, GLOBAL.PASS_ID)
 	var entryQuadrant = (exitQuadrant+3)%6
 	p = borders[entryQuadrant][randi() % borders[entryQuadrant].size()]
-	array.set_cellv(p, GLOBAL.PASS_ID)
+	array.set_cellv(p, GLOBAL.PASS_ID,false, false, false, Vector2(2, 0))
+	for n in getNeighbours(p.x, p.y):
+		if array.get_cellv(n) != GLOBAL.WALL_ID and array.get_cellv(n) >= 0:
+			array.set_cellv(n, GLOBAL.FLOOR_ID)
+			return n
 
 func isOutOfBounds(x, y):
 	if x <= 0: return true

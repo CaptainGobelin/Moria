@@ -16,9 +16,9 @@ func _ready():
 	set_process_input(true)
 
 func newFloor():
-	dungeonGenerator.newFloor()
+	var spawnPos = dungeonGenerator.newFloor()
 	Ref.currentLevel.initShadows()
-	Ref.currentLevel.placeCharacter()
+	Ref.currentLevel.placeCharacter(spawnPos)
 #	for _i in range(5):
 #		Ref.currentLevel.spawnMonster()
 #	for _i in range(15):

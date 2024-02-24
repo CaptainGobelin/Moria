@@ -42,6 +42,10 @@ func move(movement):
 			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
 			if (coroutineReturn):
 				Ref.game.newFloor()
+				Engine.newTurn()
+		"entry":
+			Ref.ui.writeNoGoingBack()
+			Engine.newTurn()
 
 func hit(entity):
 	if entity == null:

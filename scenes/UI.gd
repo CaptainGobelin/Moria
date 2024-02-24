@@ -64,6 +64,9 @@ func color(text: String, color: String):
 func writeOk():
 	write("Ok then.")
 
+func writeNoGoingBack():
+	write("A shadow force blocks the way. There is no going back...")
+
 func askToChangeFloor():
 	write("Do you want to go to the next floor?")
 

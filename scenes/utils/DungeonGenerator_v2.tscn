@@ -27,8 +27,8 @@ func newFloor():
 	deleteCorridorDoors()
 	fuseDoors()
 	drawFloor()
-	decorator.analyseDungeon(dungeon)
 	print(\"Generated after \", retries, \" retires.\")
+	return decorator.analyseDungeon(dungeon)
 
 func generate():
 	if !roomsReader.isInitialized:
