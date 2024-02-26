@@ -37,6 +37,8 @@ const IT_PROT = 7
 # Special is enchants, talisman effect, scroll spell or potion effect
 const IT_SPEC = 8
 const IT_STACK = 9
-var items = {}
+var items: Dictionary = {}
 
-var itemsOnFloor = {}
+var itemsOnFloor: Dictionary = {}
+
+var targets: Array = []

@@ -18,7 +18,7 @@ func setPosition(newPos):
 	Ref.currentLevel.refresh_view()
 	refreshMapPosition()
 
-func move(movement):
+func moveAsync(movement):
 	var cellState = Ref.currentLevel.isCellFree(pos + movement)
 	if cellState[0]:
 		pos += movement

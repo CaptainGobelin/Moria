@@ -10,12 +10,14 @@ onready var fog = get_node("Fog")
 onready var shadows = get_node("Shadows")
 onready var monsters = get_node("Monsters")
 onready var loots = get_node("Loots")
+onready var effects = get_node("Effects")
 
 func _ready():
 	Ref.currentLevel = self
 
 func refresh_view():
 	clearFog()
+	GLOBAL.targets.clear()
 	for i in range(-GLOBAL.VIEW_RANGE+1, GLOBAL.VIEW_RANGE):
 		for j in range(-GLOBAL.VIEW_RANGE+1, GLOBAL.VIEW_RANGE):
 			if (pow(i,2)+pow(j,2) <= pow(GLOBAL.VIEW_RANGE,2)):
@@ -29,6 +31,7 @@ func refresh_view():
 					for m in monsters.get_children():
 						if m.pos == p:
 							m.awake()
+							GLOBAL.targets.append(m.get_instance_id())
 					var vision = isCellFree(p)
 					if !vision[3]:
 						break
