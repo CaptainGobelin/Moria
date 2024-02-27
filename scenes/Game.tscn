@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://scenes/utils/DungeonGenerator_v2.tscn" type="PackedScene" id=1]
 [ext_resource path="res://tilesets/basic.tres" type="TileSet" id=2]
@@ -21,6 +21,8 @@
 [ext_resource path="res://scenes/UI/ChoiceHandler.gd" type="Script" id=19]
 [ext_resource path="res://scenes/UI/YesNoHandler.gd" type="Script" id=20]
 [ext_resource path="res://scenes/utils/SpellHandler.gd" type="Script" id=21]
+[ext_resource path="res://sprites/ui.png" type="Texture" id=22]
+[ext_resource path="res://scenes/UI/TargetHandler.gd" type="Script" id=23]
 
 [node name="Game" type="Node2D"]
 scale = Vector2( 4, 4 )
@@ -58,6 +60,14 @@ tile_data = PoolIntArray( 0, 1, 2, 1, 1, 2, 2, 1, 2, 3, 1, 1, 4, 1, 2, 5, 1, 655
 
 [node name="Effects" type="Node2D" parent="CurrentLevel"]
 
+[node name="TargetArrow" type="Sprite" parent="CurrentLevel"]
+visible = false
+texture = ExtResource( 22 )
+centered = false
+offset = Vector2( 0, 3 )
+hframes = 4
+vframes = 4
+
 [node name="Fog" type="TileMap" parent="CurrentLevel"]
 visible = false
 modulate = Color( 1, 1, 1, 0.666667 )
@@ -85,6 +95,9 @@ script = ExtResource( 19 )
 
 [node name="YesNoHandler" type="Node" parent="UI/Utils"]
 script = ExtResource( 20 )
+
+[node name="TargetHandler" type="Node" parent="UI/Utils"]
+script = ExtResource( 23 )
 
 [node name="TextBox" type="TileMap" parent="UI"]
 position = Vector2( 9, 189 )

@@ -11,6 +11,7 @@ onready var shadows = get_node("Shadows")
 onready var monsters = get_node("Monsters")
 onready var loots = get_node("Loots")
 onready var effects = get_node("Effects")
+onready var targetArrow = get_node("TargetArrow")
 
 func _ready():
 	Ref.currentLevel = self
@@ -147,3 +148,10 @@ func openDoor(pos):
 	if dungeon.get_cellv(pos) != GLOBAL.DOOR_ID:
 		return
 	dungeon.set_cellv(pos, GLOBAL.DOOR_ID, false, false, false, Vector2(0, 0))
+
+func target(pos):
+	targetArrow.visible = true
+	targetArrow.position = pos * 9
+
+func untarget():
+	targetArrow.visible = false

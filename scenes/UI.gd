@@ -7,6 +7,7 @@ signal coroutine_signal
 onready var numberHandler = get_node("Utils/NumberHandler")
 onready var choiceHandler = get_node("Utils/ChoiceHandler")
 onready var yesNoHandler = get_node("Utils/YesNoHandler")
+onready var targetHandler = get_node("Utils/TargetHandler")
 
 onready var diary = get_node("TextBox/TextContainer/DiaryPanel")
 onready var hpMaxLabel = get_node("SideMenu/HPContainer/Label/Max")
@@ -44,6 +45,15 @@ func askForYesNo():
 	yesNoHandler.startCoroutine()
 	var result = yield(yesNoHandler, "end_coroutine")
 	if !result:
+		writeOk()
+	Ref.game.set_process_input(true)
+	emit_signal("coroutine_signal", result)
+
+func askForTarget(targets: Array):
+	Ref.game.set_process_input(false)
+	targetHandler.startCoroutine(targets)
+	var result = yield(targetHandler, "end_coroutine")
+	if result == -1:
 		writeOk()
 	Ref.game.set_process_input(true)
 	emit_signal("coroutine_signal", result)
