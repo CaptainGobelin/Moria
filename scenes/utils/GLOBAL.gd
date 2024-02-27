@@ -41,4 +41,4 @@ var items: Dictionary = {}
 
 var itemsOnFloor: Dictionary = {}
 
-var targets: Array = []
+var targets: Dictionary = {}

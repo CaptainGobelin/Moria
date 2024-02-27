@@ -24,7 +24,9 @@ func refresh_view():
 			if (pow(i,2)+pow(j,2) <= pow(GLOBAL.VIEW_RANGE,2)):
 				var pos = Ref.character.pos
 				var points = Ref.game.pathfinder.get_line(pos, pos+Vector2(i,j))
+				var currentPath = []
 				for p in points:
+					currentPath.append(p)
 					fog.set_cellv(p, 0)
 					fog.update_bitmask_area(p)
 					shadows.set_cellv(p, 1)
@@ -32,7 +34,8 @@ func refresh_view():
 					for m in monsters.get_children():
 						if m.pos == p:
 							m.awake()
-							GLOBAL.targets.append(m.get_instance_id())
+							if !GLOBAL.targets.has(m.get_instance_id()):
+								GLOBAL.targets[m.get_instance_id()] = currentPath.duplicate()
 					var vision = isCellFree(p)
 					if !vision[3]:
 						break
