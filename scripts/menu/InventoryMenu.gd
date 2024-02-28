@@ -48,7 +48,10 @@ func _input(event):
 		var selected = itemList.getSelected()
 		if selected == null:
 			return
-		Ref.character.switchItem(selected)
+		if GLOBAL.items[selected][GLOBAL.IT_TYPE] == GLOBAL.PO_TYPE:
+			Ref.character.quaffPotion(selected)
+		else:
+			Ref.character.switchItem(selected)
 		setTab(currentTab, itemList.currentIndex)
 	elif (event.is_action_released("dropItem")):
 		var selected = itemList.getSelected()
