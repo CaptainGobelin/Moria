@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://scenes/UI/MenuTab.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scenes/UI/InventoryMenu.gd" type="Script" id=2]
+[ext_resource path="res://scenes/menu/MenuTab.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scripts/menu/InventoryMenu.gd" type="Script" id=2]
 [ext_resource path="res://tilesets/int_tileset.tres" type="TileSet" id=3]
-[ext_resource path="res://scenes/UI/ItemList.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/menu/ItemList.tscn" type="PackedScene" id=4]
 [ext_resource path="res://fonts/textFont.tres" type="DynamicFont" id=5]
 
 [sub_resource type="GDScript" id=1]

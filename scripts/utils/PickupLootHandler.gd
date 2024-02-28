@@ -7,7 +7,6 @@ func pickupLootAsync():
 func chooseLoot(loots: Array):
 	if loots.size() == 0:
 		Ref.ui.writeNoLoot()
-		call_deferred("emit_signal", "completed")
 	elif loots.size() == 1:
 		if loots[0].size() == 1:
 			Ref.character.pickItem(loots[0][0])

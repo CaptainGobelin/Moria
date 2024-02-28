@@ -3,7 +3,7 @@ extends Node
 func checkRange(start: Vector2, end: Vector2):
 	return abs(start.x - end.x) + abs(start.y - end.y)
 
-func check_line_of_sight(start, end, clear_sight): 
+func check_line_of_sight(start, end): 
 	var result = []
 	var e1 = 10000.0
 	var current = start

@@ -71,7 +71,7 @@ func getDoorsSymetrics(door):
 		\"W\": return \"WEWE\"
 "
 
-[node name="RoomsReader_v2" type="Node2D"]
+[node name="RoomsReader" type="Node2D"]
 script = SubResource( 1 )
 
 [node name="Walls" type="TileMap" parent="."]

@@ -12,32 +12,32 @@ _global_script_classes=[ {
 "base": "Node2D",
 "class": "Character",
 "language": "GDScript",
-"path": "res://scenes/Character.gd"
+"path": "res://scripts/Character.gd"
 }, {
 "base": "Node2D",
 "class": "CurrentLevel",
 "language": "GDScript",
-"path": "res://scenes/CurrentLevel.gd"
+"path": "res://scripts/CurrentLevel.gd"
 }, {
 "base": "Node2D",
 "class": "Game",
 "language": "GDScript",
-"path": "res://scenes/Game.gd"
+"path": "res://scripts/Game.gd"
 }, {
 "base": "Node",
 "class": "ItemGenerator",
 "language": "GDScript",
-"path": "res://scenes/utils/ItemGenerator.gd"
+"path": "res://scripts/engine/ItemGenerator.gd"
 }, {
 "base": "Node2D",
 "class": "Monster",
 "language": "GDScript",
-"path": "res://scenes/Monster.gd"
+"path": "res://scripts/Monster.gd"
 }, {
 "base": "Node2D",
 "class": "Ui",
 "language": "GDScript",
-"path": "res://scenes/UI.gd"
+"path": "res://scripts/ui/UI.gd"
 } ]
 _global_script_class_icons={
 "Character": "",
@@ -58,13 +58,13 @@ config/icon="res://icon.png"
 [autoload]
 
 Utils="*res://scenes/utils/Utils.tscn"
-Colors="*res://scenes/utils/COLORS.tscn"
-Engine="*res://scenes/utils/Engine.tscn"
-GLOBAL="*res://scenes/utils/GLOBAL.tscn"
-Data="*res://scenes/utils/Data.tscn"
-Ref="*res://scenes/utils/REF.tscn"
-PotionEngine="*res://scenes/utils/PotionEngine.tscn"
-SpellEngine="*res://scenes/utils/SpellEngine.tscn"
+Colors="*res://scenes/const/COLORS.tscn"
+Engine="*res://scenes/engine/Engine.tscn"
+GLOBAL="*res://scenes/const/GLOBAL.tscn"
+Data="*res://scenes/const/Data.tscn"
+Ref="*res://scenes/const/REF.tscn"
+PotionEngine="*res://scenes/engine/PotionEngine.tscn"
+SpellEngine="*res://scenes/engine/SpellEngine.tscn"
 
 [debug]
 
