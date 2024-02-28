@@ -62,7 +62,7 @@ hframes = 6
 vframes = 6
 
 [node name="TextContainer" type="Node2D" parent="."]
-position = Vector2( 22, 0 )
+position = Vector2( 21, 0 )
 scale = Vector2( 0.25, 0.25 )
 
 [node name="Name" type="Label" parent="TextContainer"]

@@ -4,6 +4,7 @@ class_name Character
 onready var animator = get_node("AnimationPlayer")
 onready var stats = get_node("Stats")
 onready var inventory = get_node("Inventory")
+onready var spells = get_node("Spells")
 
 var pos = Vector2(0, 0)
 

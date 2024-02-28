@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://scenes/utils/DungeonGenerator_v2.tscn" type="PackedScene" id=1]
 [ext_resource path="res://tilesets/basic.tres" type="TileSet" id=2]
@@ -23,6 +23,7 @@
 [ext_resource path="res://scenes/utils/SpellHandler.gd" type="Script" id=21]
 [ext_resource path="res://sprites/ui.png" type="Texture" id=22]
 [ext_resource path="res://scenes/UI/TargetHandler.gd" type="Script" id=23]
+[ext_resource path="res://scenes/UI/SpellMenu.tscn" type="PackedScene" id=24]
 
 [node name="Game" type="Node2D"]
 scale = Vector2( 4, 4 )
@@ -326,3 +327,6 @@ margin_bottom = 35.0
 custom_colors/font_color = Color( 0.807843, 0.858824, 0.882353, 1 )
 custom_fonts/font = ExtResource( 8 )
 text = "3"
+
+[node name="SpellMenu" parent="." instance=ExtResource( 24 )]
+visible = false

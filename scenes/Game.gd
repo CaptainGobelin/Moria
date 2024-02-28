@@ -4,6 +4,7 @@ class_name Game
 
 onready var inventoryMenu = get_node("InventoryMenu")
 onready var characterMenu = get_node("CharacterMenu")
+onready var spellMenu = get_node("SpellMenu")
 onready var dungeonGenerator = get_node("Utils/DungeonGenerator_v2")
 onready var pathfinder = get_node("Utils/Pathfinder")
 onready var itemGenerator = get_node("Utils/ItemGenerator") as ItemGenerator
@@ -44,9 +45,11 @@ func _input(event):
 		inventoryMenu.open()
 	elif (event.is_action_released("characterMenu")):
 		characterMenu.open()
+	elif (event.is_action_released("spellMenu")):
+		spellMenu.open()
 	elif (event.is_action_released("pickLoot")):
 		pickupLootHandler.pickupLootAsync()
 	elif (event.is_action_released("castSpell")):
-		spellHandler.castSpellAsync(Data.SP_MAGIC_MISSILE)
+		spellHandler.castSpellAsync(Data.SP_HEAL)
 	elif (event.is_action_released("debug_new_floor")):
 		newFloor()

@@ -74,6 +74,9 @@ func color(text: String, color: String):
 func writeOk():
 	write("Ok then.")
 
+func writeNoSpell(spell: String):
+	write("You cannot cast " + spell + " until you rest.")
+
 func writeNoGoingBack():
 	write("A shadow force blocks the way. There is no going back...")
 

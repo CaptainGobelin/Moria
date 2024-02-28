@@ -112,6 +112,7 @@ func potionsReader():
 		potionsByRarity[rarity].append(idx)
 
 const SP_MAGIC_MISSILE = 0
+const SP_HEAL = 1
 
 const SC_ENCHANTEMENT = 0
 const SC_EVOCATION = 1
@@ -127,14 +128,21 @@ const PROJ_COLOR = 0
 const PROJ_TYPE = 1
 const PROJ_PURPLE_S = [Colors.purple, 0]
 
+const SP_TARGET_SELF = 0
+const SP_TARGET_TARGET = 1
+
 const SP_NAME = 0
 const SP_LVL = 1
 const SP_SCHOOL = 2
 const SP_LISTS = 3
 const SP_PROJ = 4
+const SP_ICON = 5
+const SP_USES = 6
+const SP_TARGET = 7
 
 const spells = {
-	0: [\"Magic Missile\", 1, SC_EVOCATION, [true, false, false], PROJ_PURPLE_S]
+	0: [\"Magic Missile\", 1, SC_EVOCATION, [true, false, false], PROJ_PURPLE_S, 0, 15, SP_TARGET_TARGET],
+	1: [\"Heal\", 1, SC_EVOCATION, [false, true, true],null, 1, 5, SP_TARGET_SELF],
 }
 
 func _ready():
