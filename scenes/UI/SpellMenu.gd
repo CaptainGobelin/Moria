@@ -16,6 +16,15 @@ func _input(event):
 		close()
 	elif (event.is_action_released("ui_cancel")):
 		close()
+	elif (event.is_action_released("castSpell") or event.is_action_released("ui_accept")):
+		var spell = spellList.getSelected()
+		if spell == null:
+			return
+		if Ref.character.spells.spellsUses[spell] == 0:
+			Ref.ui.writeNoSpell(spell[Data.SP_NAME])
+			return
+		close()
+		Ref.game.spellHandler.castSpellAsync(spell)
 
 func open():
 	spellList.init(Ref.character.spells.getSpellsRows())
