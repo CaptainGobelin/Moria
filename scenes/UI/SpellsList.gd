@@ -23,10 +23,11 @@ func getSelected():
 	return null
 
 func select(index):
-	if index >= 0 and index < maxIndex:
-		get_child(currentIndex).selected.visible = false
-		currentIndex = index
-		get_child(index).selected.visible = true
+	if maxIndex == 0:
+		return
+	get_child(currentIndex).selected.visible = false
+	currentIndex = posmod(index, maxIndex)
+	get_child(currentIndex).selected.visible = true
 
 func selectNext():
 	select(currentIndex + 1)
