@@ -11,11 +11,8 @@ onready var pickupLootHandler = get_node("Utils/PickupLootHandler")
 onready var spellHandler = get_node("Utils/SpellHandler")
 
 func _ready():
-	set_process_input(false)
 	Ref.game = self
-	pathfinder.init()
-	var t = newFloor()
-	print(t)
+	newFloor()
 	set_process_input(true)
 
 func newFloor():

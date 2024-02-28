@@ -1,14 +1,5 @@
 extends Node
 
-onready var dungeon: TileMap
-onready var shadows: TileMap
-onready var fog: TileMap
-
-func init():
-	dungeon = Ref.currentLevel.dungeon
-	shadows = Ref.currentLevel.shadows
-	fog = Ref.currentLevel.fog
-
 func checkRange(start: Vector2, end: Vector2):
 	return abs(start.x - end.x) + abs(start.y - end.y)
 
@@ -20,29 +11,22 @@ func check_line_of_sight(start, end, clear_sight):
 		e1 = float(end.y - start.y) / float(end.x - start.x)
 	var e = e1
 	result.append(current)
-	check_cell_vision(current, clear_sight)
+	check_cell_vision(current)
 	while (current != end):
 		if (abs(e) < 0.999):
-			check_cell_vision(current + Vector2(0,sign(end.y-start.y)), clear_sight)
+			check_cell_vision(current + Vector2(0,sign(end.y-start.y)))
 			current = current + Vector2(sign(end.x-start.x),0)
 			e += e1
 		else:
-			check_cell_vision(current + Vector2(sign(end.x-start.x),0), clear_sight)
+			check_cell_vision(current + Vector2(sign(end.x-start.x),0))
 			current = current + Vector2(0,sign(end.y-start.y))
 			e -= sign(e)
 		result.append(current)
-		if(!check_cell_vision(current, clear_sight)):
+		if(!check_cell_vision(current)):
 			return [false, result]
 	return [true, result]
 
-func check_cell_vision(position, clear_sight):
-	if (clear_sight):
-		fog.set_cell(position.x, position.y, 0)
-		fog.update_bitmask_area(position)
-		shadows.set_cell(position.x, position.y, 1)
-		shadows.update_bitmask_area(position)
-		for m in Ref.currentLevel.monsters.get_children():
-				m.awake()
+func check_cell_vision(position):
 	var cellState = Ref.currentLevel.isCellFree(position)
 	if (!cellState[0]):
 		return false
