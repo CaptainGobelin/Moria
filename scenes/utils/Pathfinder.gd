@@ -1,7 +1,4 @@
-[gd_scene load_steps=2 format=2]
-
-[sub_resource type="GDScript" id=1]
-script/source = "extends Node
+extends Node
 
 onready var dungeon: TileMap
 onready var shadows: TileMap
@@ -165,7 +162,3 @@ func get_line(start:Vector2, end:Vector2):
 	if swapped:
 		points.invert()
 	return points
-"
-
-[node name="Pathfinder" type="Node"]
-script = SubResource( 1 )

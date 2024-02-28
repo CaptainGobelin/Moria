@@ -5,12 +5,12 @@
 [ext_resource path="res://tilesets/shadows.tres" type="TileSet" id=3]
 [ext_resource path="res://tilesets/fog.tres" type="TileSet" id=4]
 [ext_resource path="res://scenes/Character.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scenes/utils/Pathfinder.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/utils/ItemGenerator.gd" type="Script" id=6]
 [ext_resource path="res://tilesets/int_tileset.tres" type="TileSet" id=7]
 [ext_resource path="res://fonts/textFont.tres" type="DynamicFont" id=8]
 [ext_resource path="res://scenes/UI.gd" type="Script" id=9]
 [ext_resource path="res://scenes/UI/InventoryMenu.tscn" type="PackedScene" id=10]
-[ext_resource path="res://scenes/utils/ItemGenerator.tscn" type="PackedScene" id=11]
+[ext_resource path="res://scenes/utils/Pathfinder.gd" type="Script" id=11]
 [ext_resource path="res://scenes/UI/MenuTab.tscn" type="PackedScene" id=12]
 [ext_resource path="res://scenes/UI/SkillRow.tscn" type="PackedScene" id=13]
 [ext_resource path="res://scenes/UI/CharacterMenu.gd" type="Script" id=14]
@@ -32,9 +32,11 @@ script = ExtResource( 15 )
 
 [node name="DungeonGenerator_v2" parent="Utils" instance=ExtResource( 1 )]
 
-[node name="Pathfinder" parent="Utils" instance=ExtResource( 6 )]
+[node name="ItemGenerator" type="Node" parent="Utils"]
+script = ExtResource( 6 )
 
-[node name="ItemGenerator" parent="Utils" instance=ExtResource( 11 )]
+[node name="Pathfinder" type="Node" parent="Utils"]
+script = ExtResource( 11 )
 
 [node name="PickupLootHandler" type="Node" parent="Utils"]
 script = ExtResource( 18 )
