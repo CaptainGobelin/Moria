@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://scenes/engine/DungeonGenerator.tscn" type="PackedScene" id=1]
 [ext_resource path="res://tilesets/basic.tres" type="TileSet" id=2]
@@ -24,6 +24,7 @@
 [ext_resource path="res://sprites/ui.png" type="Texture" id=22]
 [ext_resource path="res://scripts/ui/TargetHandler.gd" type="Script" id=23]
 [ext_resource path="res://scenes/menu/SpellMenu.tscn" type="PackedScene" id=24]
+[ext_resource path="res://scenes/UI/StatusBar.gd" type="Script" id=25]
 
 [node name="Game" type="Node2D"]
 scale = Vector2( 4, 4 )
@@ -245,6 +246,13 @@ custom_fonts/font = ExtResource( 8 )
 text = "10"
 align = 2
 valign = 1
+
+[node name="StatusBar" type="Node2D" parent="UI"]
+position = Vector2( 351, 99 )
+script = ExtResource( 25 )
+
+[node name="StatusIcons" type="Node2D" parent="UI/StatusBar"]
+position = Vector2( 0, 12 )
 
 [node name="InventoryMenu" parent="." instance=ExtResource( 10 )]
 visible = false

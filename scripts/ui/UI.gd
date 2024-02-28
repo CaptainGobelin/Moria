@@ -16,6 +16,7 @@ onready var caLabel = get_node("SideMenu/CAContainer/Label/Current")
 onready var protLabel = get_node("SideMenu/ProtContainer/Label/Current")
 onready var dmgLabel = get_node("SideMenu/DmgContainer/Label/Current")
 onready var hitLabel = get_node("SideMenu/HitContainer/Label/Current")
+onready var statusBar = get_node("StatusBar")
 
 var currentChoice = ""
 var currentSuffix = ""

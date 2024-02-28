@@ -6,6 +6,9 @@ func newTurn():
 	turn += 1
 	for m in Ref.currentLevel.monsters.get_children():
 		m.takeTurn()
+	for s in Ref.ui.statusBar.icons.get_children():
+		s.turns -= 1
+	Ref.ui.statusBar.refreshStatuses()
 
 func rollDices(dices: Vector2):
 	var result = 0

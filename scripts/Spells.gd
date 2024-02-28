@@ -1,8 +1,8 @@
 extends Node
 
-var spells = [0, 1]
+var spells = [0, 1, 2]
 var spellsUses = {
-	0: 12, 1: 2
+	0: 12, 1: 2, 2: 55
 }
 
 func getSpellsRows():
