@@ -14,7 +14,8 @@ func init(type: int, totalTurns):
 func setTurn(value):
 	turns = value
 	if turns == 0:
-		free()
+		visible = false
+		queue_free()
 	elif turns > 20:
 		timer.frame = 0
 	elif turns > 10:

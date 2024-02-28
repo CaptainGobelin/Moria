@@ -6,6 +6,8 @@ onready var icons = get_node("StatusIcons")
 func refreshStatuses():
 	var count = 0
 	for s in icons.get_children():
+		if !s.visible:
+			continue
 		s.position.x = count * 12
 		count += 1
 		if count == 10:
