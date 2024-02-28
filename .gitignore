@@ -16,6 +16,7 @@ mono_crash.*.json
 
 # MORIA
 Moria.txt
+assets/
 sprites/
 fonts/
 doc/
