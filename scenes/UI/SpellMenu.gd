@@ -21,7 +21,7 @@ func _input(event):
 		if spell == null:
 			return
 		if Ref.character.spells.spellsUses[spell] == 0:
-			Ref.ui.writeNoSpell(spell[Data.SP_NAME])
+			Ref.ui.writeNoSpell(Data.spells[spell][Data.SP_NAME])
 			return
 		close()
 		Ref.game.spellHandler.castSpellAsync(spell)
