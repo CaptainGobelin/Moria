@@ -52,6 +52,7 @@ func checkDmg(dmg):
 	return dmg - stats.prot
 
 func takeHit(dmg):
+	Ref.ui.write("The Skeleton takes " + String(dmg) + " damages.")
 	stats.currentHp -= dmg
 	if stats.currentHp <= 0:
 		die()
@@ -59,6 +60,7 @@ func takeHit(dmg):
 func die():
 	status = "dead"
 	Ref.ui.write("The Skeleton dies.")
+	GLOBAL.targets.erase(get_instance_id())
 	queue_free()
 
 func awake():

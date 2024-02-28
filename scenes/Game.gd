@@ -47,6 +47,6 @@ func _input(event):
 	elif (event.is_action_released("pickLoot")):
 		pickupLootHandler.pickupLootAsync()
 	elif (event.is_action_released("castSpell")):
-		spellHandler.castSpellAsync()
+		spellHandler.castSpellAsync(Data.SP_MAGIC_MISSILE)
 	elif (event.is_action_released("debug_new_floor")):
 		newFloor()

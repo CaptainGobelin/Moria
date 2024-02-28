@@ -11,7 +11,7 @@ func init(path: Array, type: int, color: Color):
 	pos = path[0] - (path[1] - path[0])
 	setOrientation(path[0], path[1])
 	for p in path:
-		var speed = 0.06
+		var speed = 0.04
 		if p.x != pos.x and p.y != pos.y:
 			speed *= 1.4
 		pos = p

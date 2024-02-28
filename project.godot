@@ -57,13 +57,14 @@ config/icon="res://icon.png"
 
 [autoload]
 
-GLOBAL="*res://scenes/utils/GLOBAL.tscn"
-Engine="*res://scenes/utils/Engine.tscn"
-Data="*res://scenes/utils/Data.tscn"
-Colors="*res://scenes/utils/COLORS.tscn"
 Utils="*res://scenes/utils/Utils.tscn"
-PotionEngine="*res://scenes/utils/PotionEngine.tscn"
+Colors="*res://scenes/utils/COLORS.tscn"
+Engine="*res://scenes/utils/Engine.tscn"
+GLOBAL="*res://scenes/utils/GLOBAL.tscn"
+Data="*res://scenes/utils/Data.tscn"
 Ref="*res://scenes/utils/REF.tscn"
+PotionEngine="*res://scenes/utils/PotionEngine.tscn"
+SpellEngine="*res://scenes/utils/SpellEngine.tscn"
 
 [debug]
 
