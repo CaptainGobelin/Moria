@@ -29,7 +29,7 @@ func newFloor():
 	GLOBAL.itemsOnFloor.clear()
 	for _i in range(10):
 		Ref.currentLevel.spawnMonster()
-	for _i in range(5):
+	for _i in range(50):
 		Ref.currentLevel.dropItem()
 
 func _input(event):

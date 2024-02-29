@@ -1,7 +1,7 @@
 extends Node
 class_name ItemGenerator
 
-const TYPE_PROB = [0.2, 0.2, 0.0, 0.0, 0.0, 0.5]
+const TYPE_PROB = [1.2, 0.2, 0.0, 0.0, 0.0, 0.5]
 const WP_IDX = 0
 const AR_IDX = 1
 const TA_IDX = 2

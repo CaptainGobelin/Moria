@@ -5,22 +5,30 @@
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node2D
 
+var currentItems: Array = []
+var currentType: int = 0
 var maxIndex: int = 6
 var currentIndex: int = 0
+var currentStartRow: int = 0
 
-func init(items: Array, row: int, type: int):
+func init(items: Array, row: int, type: int, startRow = 0):
+	currentItems = items
+	currentType = type
+	currentStartRow = max(0, startRow)
 	maxIndex = items.size()
-	var count = 0
-	for i in get_children():
-		if count < maxIndex:
-			i.setContent(items[count], type)
-			i.visible = true
+	for i in range(currentStartRow, currentStartRow + 6):
+		var itemRow = get_child(i-currentStartRow)
+		if i < maxIndex:
+			itemRow.setContent(items[i], type)
+			itemRow.visible = true
+			itemRow.selected.visible = false
 		else:
-			i.visible = false
-		count += 1
+			itemRow.visible = false
 	if maxIndex > 0:
-		row = max(0, min(row, maxIndex-1))
-		select(row)
+		row = min(row, maxIndex-1)
+		select(row, false)
+	else:
+		get_parent().arrows.setArrows(0, 0)
 
 func getSelected():
 	for i in get_children():
@@ -28,18 +36,33 @@ func getSelected():
 			return i.item
 	return null
 
-func select(index):
+func select(index, erasePrevious = true):
 	if maxIndex == 0:
 		return
-	get_child(currentIndex).selected.visible = false
-	currentIndex = posmod(index, maxIndex)
-	get_child(currentIndex).selected.visible = true
+	if index == -1:
+		init(currentItems, maxIndex - 1, currentType, maxIndex - 6)
+	else:
+		if erasePrevious:
+			get_child(currentIndex).selected.visible = false
+		currentIndex = posmod(index, maxIndex)
+		get_child(currentIndex).selected.visible = true
+		get_parent().arrows.setArrows(currentStartRow, maxIndex)
 
 func selectNext():
-	select(currentIndex + 1)
+	if currentIndex == 5 and maxIndex > currentStartRow + 6:
+		init(currentItems, currentIndex, currentType, currentStartRow + 1)
+	elif currentStartRow + currentIndex == maxIndex -1:
+		init(currentItems, 0, currentType, 0)
+	else:
+		select(currentIndex + 1)
 
 func selectPrevious():
-	select(currentIndex - 1)
+	if currentIndex == 0 and currentStartRow > 0:
+		init(currentItems, currentIndex, currentType, currentStartRow - 1)
+	elif currentIndex == 0:
+		init(currentItems, 5, currentType, maxIndex - 6)
+	else:
+		select(currentIndex - 1)
 "
 
 [node name="ItemList" type="Node2D"]
