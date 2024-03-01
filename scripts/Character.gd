@@ -44,6 +44,12 @@ func moveAsync(movement):
 			if (coroutineReturn):
 				Ref.game.newFloor()
 				GeneralEngine.newTurn()
+		"chest": 
+			Ref.ui.askToOpenChest()
+			Ref.ui.askForYesNo()
+			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
+			if (coroutineReturn):
+				Ref.game.chestMenu.open(cellState[2])
 		"entry":
 			Ref.ui.writeNoGoingBack()
 			GeneralEngine.newTurn()

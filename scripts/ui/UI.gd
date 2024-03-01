@@ -84,6 +84,9 @@ func writeNoGoingBack():
 func askToChangeFloor():
 	write("Do you want to go to the next floor?")
 
+func askToOpenChest():
+	write("Do you want to open the chest?")
+
 func writeNoLoot():
 	write("Nothing to pick here.")
 

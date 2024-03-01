@@ -8,6 +8,7 @@ script/source = "extends Node2D
 
 onready var equiped = get_node(\"TextContainer/Equiped\")
 onready var selected = get_node(\"Selected\")
+onready var extended = selected.get_node(\"Extended\")
 onready var icon = get_node(\"Icon\")
 onready var shortcut = get_node(\"TextContainer/Shortcut\")
 onready var itemName = get_node(\"TextContainer/Name\")
@@ -24,25 +25,25 @@ func setContent(itemRow, type):
 			setPotionContent(itemRow)
 
 func setWeaponContent(itemRow):
-	item = itemRow[0]
-	itemName.text = itemRow[1]
-	equiped.visible = itemRow[2]
-	icon.frame = itemRow[3]
+	item = itemRow[1]
+	itemName.text = itemRow[2]
+	equiped.visible = itemRow[3]
+	icon.frame = itemRow[4]
 
 func setArmorContent(itemRow):
-	item = itemRow[0]
-	itemName.text = itemRow[1]
-	equiped.visible = itemRow[2]
-	icon.frame = itemRow[3]
+	item = itemRow[1]
+	itemName.text = itemRow[2]
+	equiped.visible = itemRow[3]
+	icon.frame = itemRow[4]
 
 func setPotionContent(itemRow):
-	item = itemRow[2][0]
-	var n = itemRow[0]
-	if itemRow[2].size() > 1:
+	item = itemRow[3][0]
+	var n = itemRow[1]
+	if itemRow[3].size() > 1:
 		n = n.replace(\"Potion\", \"Potions\")
 	itemName.text = String(itemRow[2].size()) + \" \" + n
 	equiped.visible = false
-	icon.frame = itemRow[1]
+	icon.frame = itemRow[2]
 "
 
 [node name="ItemRow" type="Node2D"]
@@ -50,6 +51,12 @@ script = SubResource( 1 )
 
 [node name="Selected" type="ColorRect" parent="."]
 visible = false
+margin_right = 153.0
+margin_bottom = 17.0
+color = Color( 0.247059, 0.313726, 0.247059, 1 )
+
+[node name="Extended" type="ColorRect" parent="Selected"]
+margin_left = 153.0
 margin_right = 198.0
 margin_bottom = 17.0
 color = Color( 0.247059, 0.313726, 0.247059, 1 )
@@ -70,10 +77,11 @@ margin_right = 524.0
 margin_bottom = 68.0
 custom_colors/font_color = Color( 0.807843, 0.858824, 0.882353, 1 )
 custom_fonts/font = ExtResource( 1 )
-text = "Staff +1"
+text = "Staff +1-----------------------------"
 valign = 1
 
 [node name="Shortcut" type="Label" parent="TextContainer"]
+visible = false
 margin_left = 668.0
 margin_right = 704.0
 margin_bottom = 68.0
@@ -84,6 +92,7 @@ align = 1
 valign = 1
 
 [node name="Equiped" type="Label" parent="TextContainer"]
+visible = false
 margin_left = 524.0
 margin_right = 668.0
 margin_bottom = 68.0

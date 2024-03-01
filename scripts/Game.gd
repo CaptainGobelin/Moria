@@ -5,6 +5,7 @@ class_name Game
 onready var inventoryMenu = get_node("InventoryMenu")
 onready var characterMenu = get_node("CharacterMenu")
 onready var spellMenu = get_node("SpellMenu")
+onready var chestMenu = get_node("ChestMenu")
 onready var dungeonGenerator = get_node("Utils/DungeonGenerator_v2")
 onready var pathfinder = get_node("Utils/Pathfinder")
 onready var itemGenerator = get_node("Utils/ItemGenerator") as ItemGenerator
@@ -29,8 +30,8 @@ func newFloor():
 	GLOBAL.itemsOnFloor.clear()
 	for _i in range(10):
 		Ref.currentLevel.spawnMonster()
-	for _i in range(50):
-		Ref.currentLevel.dropItem()
+	for _i in range(15):
+		Ref.currentLevel.createChest()
 
 func _input(event):
 	if (event.is_action_pressed("ui_up")):

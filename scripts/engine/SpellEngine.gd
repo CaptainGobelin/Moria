@@ -33,4 +33,4 @@ func fireball(entity):
 			effect.play(pos, 0, 5)
 			if GLOBAL.monstersByPosition.has(pos):
 				var target = instance_from_id(GLOBAL.monstersByPosition[pos])
-				target.takeHit(GeneralEngine.rollDices(Vector2(3, 1)))
+				target.takeHit(GeneralEngine.rollDices(Vector2(3, 6	)))

@@ -4,12 +4,14 @@ class_name CurrentLevel
 
 onready var monsterScene = preload("res://scenes/Monster.tscn")
 onready var lootScene = preload("res://scenes/Loot.tscn")
+onready var chestScene = preload("res://scenes/Chest.tscn")
 
 onready var dungeon = get_node("Map")
 onready var fog = get_node("Fog")
 onready var shadows = get_node("Shadows")
 onready var monsters = get_node("Monsters")
 onready var loots = get_node("Loots")
+onready var chests = get_node("Chests")
 onready var effects = get_node("Effects")
 onready var targetArrow = get_node("TargetArrow")
 
@@ -60,6 +62,10 @@ func isCellFree(cell):
 	for m in monsters.get_children():
 		if cell == m.pos:
 			return [false, "monster", m, true]
+	for cIdx in GLOBAL.chests.keys():
+		var chest = GLOBAL.chests[cIdx]
+		if cell == chest[GLOBAL.CH_POS]:
+			return [false, "chest", cIdx, true]
 	if dungeon.get_cellv(cell) == GLOBAL.GRID_ID:
 		return [false, "grid", null, true]
 	if dungeon.get_cellv(cell) == GLOBAL.PASS_ID:
@@ -106,6 +112,18 @@ func dropItem():
 	var loot = lootScene.instance()
 	loots.add_child(loot)
 	loot.init(item, cell)
+
+func createChest():
+	var cell = getRandomFreeCell()
+	var chest = chestScene.instance()
+	chests.add_child(chest)
+	chest.position = cell * 9
+	GLOBAL.chests[chest.get_instance_id()] = [cell, []]
+	var quantity = randi() % 3
+	for i in range(quantity):
+		var rarity = randi() % 2
+		var item = Ref.game.itemGenerator.generateItem(rarity)
+		GLOBAL.chests[chest.get_instance_id()][GLOBAL.CH_CONTENT].append(item)
 
 func checkForLoot(cell):
 	var dict:Dictionary = {}
