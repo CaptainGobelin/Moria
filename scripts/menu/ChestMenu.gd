@@ -23,6 +23,9 @@ func open(id: int):
 	set_process_input(true)
 
 func close():
+	if GLOBAL.chests[chestId][GLOBAL.CH_CONTENT].size() == 0:
+		instance_from_id(chestId).queue_free()
+		GLOBAL.chests.erase(chestId)
 	visible = false
 	Ref.currentLevel.visible = true
 	Ref.game.set_process_input(true)
