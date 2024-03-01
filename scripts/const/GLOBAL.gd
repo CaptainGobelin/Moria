@@ -42,3 +42,5 @@ var items: Dictionary = {}
 var itemsOnFloor: Dictionary = {}
 
 var targets: Dictionary = {}
+
+var monstersByPosition: Dictionary = {}

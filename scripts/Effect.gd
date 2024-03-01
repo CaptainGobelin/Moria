@@ -17,12 +17,12 @@ func setCoord(value):
 	# Update the correct frame_coords values
 	frame_coords = Vector2(coords.x, type)
 
-func play(pos: Vector2, type: int, length: int):
+func play(pos: Vector2, effectType: int, length: int):
 	position = pos * 9
-	self.type = type
+	type = effectType
 	get_node("AnimationPlayer").play("play" + String(length))
 
-func _on_AnimationPlayer_animation_finished(anim_name):
+func _on_AnimationPlayer_animation_finished(_anim_name):
 	emit_signal("completed")
 	if not Engine.is_editor_hint():
 		queue_free()

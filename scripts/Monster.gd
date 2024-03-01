@@ -19,7 +19,6 @@ func takeTurn():
 			if Ref.game.pathfinder.checkRange(pos, Ref.character.pos) <= stats.atkRange:
 				hit(Ref.character)
 			else:
-				return
 				moveTo(Ref.character)
 			return
 
@@ -42,7 +41,10 @@ func moveTo(entity):
 	setPosition(path[1])
 
 func setPosition(newPos: Vector2):
+	if GLOBAL.monstersByPosition.has(pos):
+		GLOBAL.monstersByPosition.erase(pos)
 	pos = newPos
+	GLOBAL.monstersByPosition[pos] = get_instance_id()
 	refreshMapPosition()
 
 func refreshMapPosition():
@@ -60,6 +62,8 @@ func takeHit(dmg):
 func die():
 	status = "dead"
 	Ref.ui.write("The Skeleton dies.")
+	if GLOBAL.monstersByPosition.has(pos):
+		GLOBAL.monstersByPosition.erase(pos)
 	GLOBAL.targets.erase(get_instance_id())
 	queue_free()
 

@@ -24,6 +24,7 @@ func castSpellAsync(spellId: int):
 		Data.SP_TARGET_SELF:
 			SpellEngine.applyEffect(Ref.character, spellId)
 			Ref.character.spells.spellsUses[spellId] -= 1
+	GeneralEngine.newTurn()
 
 func castProjectile(path: Array, projInfo):
 	var p = projScene.instance()

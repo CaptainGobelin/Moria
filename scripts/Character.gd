@@ -24,16 +24,16 @@ func moveAsync(movement):
 	if cellState[0]:
 		pos += movement
 		animator.play("walk")
+		GeneralEngine.newTurn()
 		Ref.currentLevel.refresh_view()
 		refreshMapPosition()
-		GeneralEngine.newTurn()
 		Ref.ui.write(Ref.currentLevel.getLootMessage(pos))
 		return
 	match cellState[1]:
 		"door": 
 			Ref.currentLevel.openDoor(pos + movement)
-			Ref.currentLevel.refresh_view()
 			GeneralEngine.newTurn()
+			Ref.currentLevel.refresh_view()
 		"monster":
 			hit(cellState[2])
 			GeneralEngine.newTurn()
