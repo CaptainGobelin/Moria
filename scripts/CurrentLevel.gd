@@ -53,34 +53,34 @@ func clearFog():
 		for j in range(GLOBAL.FLOOR_SIZE_Y):
 			fog.set_cell(i, j, 1)
 
-# [isFree, code, entity, isVisible]
+# [isFree, code, entity, isVisible, blockEffect]
 func isCellFree(cell):
 	if cell.x < 0 or cell.x >= GLOBAL.FLOOR_SIZE_X:
-		return [false, "OOB", null, false]
+		return [false, "OOB", null, false, true]
 	if cell.y < 0 or cell.y >= GLOBAL.FLOOR_SIZE_Y:
-		return [false, "OOB", null, false]
+		return [false, "OOB", null, false, true]
 	for m in monsters.get_children():
 		if cell == m.pos:
-			return [false, "monster", m, true]
+			return [false, "monster", m, true, false]
 	for cIdx in GLOBAL.chests.keys():
 		var chest = GLOBAL.chests[cIdx]
 		if cell == chest[GLOBAL.CH_POS]:
-			return [false, "chest", cIdx, true]
+			return [false, "chest", cIdx, true, false]
 	if dungeon.get_cellv(cell) == GLOBAL.GRID_ID:
-		return [false, "grid", null, true]
+		return [false, "grid", null, true, true]
 	if dungeon.get_cellv(cell) == GLOBAL.PASS_ID:
 		if dungeon.get_cell_autotile_coord(cell.x, cell.y) == Vector2(0, 0):
-			return [false, "pass", null, false]
+			return [false, "pass", null, false, true]
 		elif dungeon.get_cell_autotile_coord(cell.x, cell.y) == Vector2(2, 0):
-			return [false, "entry", null, false]
+			return [false, "entry", null, false, true]
 	if dungeon.get_cellv(cell) == GLOBAL.DOOR_ID:
 		if dungeon.get_cell_autotile_coord(cell.x, cell.y) == Vector2(0, 0):
-			return [true, "floor", null, true]
+			return [true, "floor", null, true, false]
 		else:
-			return [false, "door", null, false]
+			return [false, "door", null, false, true]
 	if dungeon.get_cellv(cell) == GLOBAL.FLOOR_ID:
-		return [true, "floor", null, true]
-	return [false, "unknown", null, false]
+		return [true, "floor", null, true, false]
+	return [false, "unknown", null, false, true]
 
 func getRandomFreeCell():
 	while(true):
@@ -120,7 +120,7 @@ func createChest():
 	chest.position = cell * 9
 	GLOBAL.chests[chest.get_instance_id()] = [cell, [], false]
 	var quantity = randi() % 3
-	for i in range(quantity):
+	for _i in range(quantity):
 		var rarity = randi() % 2
 		var item = Ref.game.itemGenerator.generateItem(rarity)
 		GLOBAL.chests[chest.get_instance_id()][GLOBAL.CH_CONTENT].append(item)

@@ -3,7 +3,7 @@ extends Sprite
 
 signal completed
 
-export(int, "Fire", "Light") var type = 0 setget setType
+export(int, "Fire", "Light", "Desintegrate") var type = 0 setget setType
 
 func setType(value):
 	type = value
@@ -17,10 +17,10 @@ func setCoord(value):
 	# Update the correct frame_coords values
 	frame_coords = Vector2(coords.x, type)
 
-func play(pos: Vector2, effectType: int, length: int):
+func play(pos: Vector2, effectType: int, length: int, speed = 1.0):
 	position = pos * 9
 	type = effectType
-	get_node("AnimationPlayer").play("play" + String(length))
+	get_node("AnimationPlayer").play("play" + String(length), -1, speed)
 
 func _on_AnimationPlayer_animation_finished(_anim_name):
 	emit_signal("completed")

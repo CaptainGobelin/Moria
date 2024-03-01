@@ -23,6 +23,9 @@ func newFloor():
 	Ref.currentLevel.placeCharacter(spawnPos)
 	for m in Ref.currentLevel.monsters.get_children():
 		m.queue_free()
+	for c in Ref.currentLevel.chests.get_children():
+		c.queue_free()
+	GLOBAL.chests.clear()
 	for l in Ref.currentLevel.loots.get_children():
 		l.queue_free()
 	for i in GLOBAL.itemsOnFloor.keys():
@@ -30,8 +33,10 @@ func newFloor():
 	GLOBAL.itemsOnFloor.clear()
 	for _i in range(10):
 		Ref.currentLevel.spawnMonster()
-	for _i in range(15):
+	for _i in range(5):
 		Ref.currentLevel.createChest()
+	for _i in range(5):
+		Ref.currentLevel.dropItem()
 
 func _input(event):
 	if (event.is_action_pressed("ui_up")):

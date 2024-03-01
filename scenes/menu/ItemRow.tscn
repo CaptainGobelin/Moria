@@ -3,7 +3,7 @@
 [ext_resource path="res://fonts/textFont.tres" type="DynamicFont" id=1]
 [ext_resource path="res://sprites/items.png" type="Texture" id=2]
 
-[sub_resource type="GDScript" id=1]
+[sub_resource type="GDScript" id=4]
 script/source = "extends Node2D
 
 onready var equiped = get_node(\"TextContainer/Equiped\")
@@ -47,7 +47,7 @@ func setPotionContent(itemRow):
 "
 
 [node name="ItemRow" type="Node2D"]
-script = SubResource( 1 )
+script = SubResource( 4 )
 
 [node name="Selected" type="ColorRect" parent="."]
 visible = false

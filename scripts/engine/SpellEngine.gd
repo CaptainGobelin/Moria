@@ -25,12 +25,39 @@ func bless(entity):
 		Ref.ui.statusBar.addStatus(Data.STATUS_BLESSED, Data.statuses[Data.STATUS_BLESSED][Data.ST_TURNS])
 
 func fireball(entity):
-	for i in range(-1, 2):
-		for j in range(-1, 2):
-			var pos = entity.pos + Vector2(i, j)
-			var effect = effectScene.instance()
-			Ref.currentLevel.effects.add_child(effect)
-			effect.play(pos, 0, 5)
-			if GLOBAL.monstersByPosition.has(pos):
-				var target = instance_from_id(GLOBAL.monstersByPosition[pos])
-				target.takeHit(GeneralEngine.rollDices(Vector2(3, 6	)))
+	var targetedCells = getArea(entity.pos, 4)
+	targetedCells.append(Vector2(0, 0))
+	for cell in targetedCells:
+		var pos = entity.pos + cell
+		var effect = effectScene.instance()
+		Ref.currentLevel.effects.add_child(effect)
+		effect.play(pos, 0, 5, 0.1)
+		if GLOBAL.monstersByPosition.has(pos):
+			var target = instance_from_id(GLOBAL.monstersByPosition[pos])
+			target.takeHit(GeneralEngine.rollDices(Vector2(3, 6	)))
+
+func getArea(pos: Vector2, size: int):
+	var result = []
+	var toCheck = [Vector2(-1, 0), Vector2(1, 0), Vector2(0, -1), Vector2(0, 1)]
+	var cells = {
+		Vector2(-1, 0): [[2, Vector2(-1, -1)], [2, Vector2(-1, 1)], [3, Vector2(-2, 0)]],
+		Vector2(1, 0): [[2, Vector2(1, -1)], [2, Vector2(1, 1)], [3, Vector2(2, 0)]],
+		Vector2(0, -1): [[2, Vector2(-1, -1)], [2, Vector2(1, -1)], [3, Vector2(0, -2)]],
+		Vector2(0, 1): [[2, Vector2(-1, 1)], [2, Vector2(1, 1)], [3, Vector2(0, 2)]],
+		Vector2(-1, -1): [[4, Vector2(-2, -1)], [4, Vector2(-1, -2)]],
+		Vector2(-1, 1): [[4, Vector2(-2, 1)], [4, Vector2(-1, 2)]],
+		Vector2(1, -1): [[4, Vector2(2, -1)], [4, Vector2(1, -2)]],
+		Vector2(1, 1): [[4, Vector2(2, 1)], [4, Vector2(1, 2)]]
+	}
+	for c in toCheck:
+		if Ref.currentLevel.isCellFree(c + pos)[4]:
+			continue
+		if !result.has(c):
+			result.append(c)
+		if !cells.has(c):
+			continue
+		for cell in cells[c]:
+			if cell[0] > size:
+				continue
+			toCheck.append(cell[1])
+	return result
