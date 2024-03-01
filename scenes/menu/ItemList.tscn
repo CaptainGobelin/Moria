@@ -12,10 +12,10 @@ var currentIndex: int = 0
 var currentStartRow: int = 0
 
 func init(items: Array, row: int, type: int, startRow = 0):
+	maxIndex = items.size()
 	currentItems = items
 	currentType = type
-	currentStartRow = max(0, startRow)
-	maxIndex = items.size()
+	currentStartRow = max(0, min(startRow, maxIndex-6))
 	for i in range(currentStartRow, currentStartRow + 6):
 		var itemRow = get_child(i-currentStartRow)
 		if i < maxIndex:

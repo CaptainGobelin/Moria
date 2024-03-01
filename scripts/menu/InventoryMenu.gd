@@ -53,13 +53,13 @@ func _input(event):
 			Ref.character.quaffPotion(selected)
 		else:
 			Ref.character.switchItem(selected)
-		setTab(currentTab, itemList.currentIndex)
+		setTab(currentTab, itemList.currentIndex, itemList.currentStartRow)
 	elif (event.is_action_released("dropItem")):
 		var selected = itemList.getSelected()
 		if selected == null:
 			return
 		Ref.character.dropItem(selected)
-		setTab(currentTab, itemList.currentIndex)
+		setTab(currentTab, itemList.currentIndex, itemList.currentStartRow)
 	elif (event.is_action_released("quaffPotion")):
 		if currentTab != GLOBAL.INV_POTIONS:
 			return
@@ -67,18 +67,18 @@ func _input(event):
 		if selected == null:
 			return
 		Ref.character.quaffPotion(selected)
-		setTab(currentTab, itemList.currentIndex)
+		setTab(currentTab, itemList.currentIndex, itemList.currentStartRow)
 
-func setTab(tab, row = 0):
+func setTab(tab, row = 0, startRow = 0):
 	for t in tabs:
 		t.setInactive()
 	tabs[tab].setActive()
 	match tab:
 		GLOBAL.INV_WEAPONS:
-			itemList.init(Ref.character.inventory.getWeaponRows(), row, GLOBAL.WP_TYPE)
+			itemList.init(Ref.character.inventory.getWeaponRows(), row, GLOBAL.WP_TYPE, startRow)
 		GLOBAL.INV_ARMORS:
-			itemList.init(Ref.character.inventory.getArmorRows(), row, GLOBAL.AR_TYPE)
+			itemList.init(Ref.character.inventory.getArmorRows(), row, GLOBAL.AR_TYPE, startRow)
 		GLOBAL.INV_POTIONS:
-			itemList.init(Ref.character.inventory.getPotionRows(), row, GLOBAL.PO_TYPE)
+			itemList.init(Ref.character.inventory.getPotionRows(), row, GLOBAL.PO_TYPE, startRow)
 		_:
 			itemList.init([], row, 0)
