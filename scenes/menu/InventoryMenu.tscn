@@ -5,8 +5,8 @@
 [ext_resource path="res://tilesets/int_tileset.tres" type="TileSet" id=3]
 [ext_resource path="res://scenes/menu/ItemList.tscn" type="PackedScene" id=4]
 [ext_resource path="res://fonts/textFont.tres" type="DynamicFont" id=5]
-[ext_resource path="res://sprites/ui.png" type="Texture" id=6]
-[ext_resource path="res://scripts/menu/ScrollArrows.gd" type="Script" id=7]
+[ext_resource path="res://scenes/menu/MenuScroller.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scripts/menu/ItemList.gd" type="Script" id=7]
 
 [sub_resource type="GDScript" id=1]
 script/source = "tool
@@ -79,6 +79,7 @@ tile_data = PoolIntArray( 720921, 1, 0, 720922, 1, 1, 720923, 1, 1, 720924, 1, 1
 
 [node name="ItemList" parent="." instance=ExtResource( 4 )]
 position = Vector2( 9, 45 )
+script = ExtResource( 7 )
 
 [node name="TextContainer" type="Node2D" parent="."]
 position = Vector2( 196, 35 )
@@ -92,35 +93,4 @@ custom_colors/font_color = Color( 0.807843, 0.858824, 0.882353, 1 )
 custom_fonts/font = ExtResource( 5 )
 text = "Item                                            Key"
 
-[node name="Arrows" type="Node2D" parent="."]
-script = ExtResource( 7 )
-
-[node name="Pan" type="ColorRect" parent="Arrows"]
-margin_left = 212.0
-margin_top = 53.0
-margin_right = 217.0
-margin_bottom = 145.0
-color = Color( 0.172549, 0.227451, 0.219608, 1 )
-
-[node name="Elevator" type="ColorRect" parent="Arrows"]
-margin_left = 212.0
-margin_top = 53.0
-margin_right = 217.0
-margin_bottom = 145.0
-color = Color( 0.172549, 0.227451, 0.219608, 1 )
-
-[node name="Up" type="Sprite" parent="Arrows"]
-position = Vector2( 210, 46 )
-texture = ExtResource( 6 )
-centered = false
-hframes = 4
-vframes = 4
-frame = 5
-
-[node name="Down" type="Sprite" parent="Arrows"]
-position = Vector2( 210, 143 )
-texture = ExtResource( 6 )
-centered = false
-hframes = 4
-vframes = 4
-frame = 7
+[node name="MenuScroller" parent="." instance=ExtResource( 6 )]

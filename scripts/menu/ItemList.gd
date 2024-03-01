@@ -1,9 +1,4 @@
-[gd_scene load_steps=3 format=2]
-
-[ext_resource path="res://scenes/menu/ItemRow.tscn" type="PackedScene" id=1]
-
-[sub_resource type="GDScript" id=1]
-script/source = "extends Node2D
+extends Node2D
 
 var currentItems: Array = []
 var currentType: int = 0
@@ -69,25 +64,3 @@ func selectPrevious():
 	# Just move cursor
 	else:
 		select(currentIndex - 1)
-"
-
-[node name="ItemList" type="Node2D"]
-position = Vector2( 9, 54 )
-script = SubResource( 1 )
-
-[node name="ItemRow" parent="." instance=ExtResource( 1 )]
-
-[node name="ItemRow2" parent="." instance=ExtResource( 1 )]
-position = Vector2( 0, 18 )
-
-[node name="ItemRow3" parent="." instance=ExtResource( 1 )]
-position = Vector2( 0, 36 )
-
-[node name="ItemRow4" parent="." instance=ExtResource( 1 )]
-position = Vector2( 0, 54 )
-
-[node name="ItemRow5" parent="." instance=ExtResource( 1 )]
-position = Vector2( 0, 72 )
-
-[node name="ItemRow6" parent="." instance=ExtResource( 1 )]
-position = Vector2( 0, 90 )

@@ -1,8 +1,17 @@
+tool
 extends Node2D
+
+export var length = 92 setget setLength
 
 onready var up = get_node("Up")
 onready var down = get_node("Down")
 onready var elevator = get_node("Elevator")
+
+func setLength(value):
+	print(String(value))
+	length = value
+	get_node("Down").position.y = length - 1
+	get_node("Pan").margin_bottom = length
 
 func setArrows(startIndex: int, maxIndex: int):
 	if startIndex + 6 < maxIndex:
@@ -17,5 +26,5 @@ func setArrows(startIndex: int, maxIndex: int):
 		elevator.color = Colors.shade5
 	else:
 		elevator.color = Colors.shade3
-		elevator.margin_top = 53 + 92*(float(startIndex)/float(maxIndex))
-		elevator.margin_bottom = 53 + 92*(float(startIndex+6)/float(maxIndex))
+		elevator.margin_top = length * (float(startIndex)/float(maxIndex))
+		elevator.margin_bottom = length * (float(startIndex+6)/float(maxIndex))
