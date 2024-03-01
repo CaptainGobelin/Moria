@@ -26,35 +26,35 @@ func moveAsync(movement):
 		animator.play("walk")
 		Ref.currentLevel.refresh_view()
 		refreshMapPosition()
-		Engine.newTurn()
+		GeneralEngine.newTurn()
 		Ref.ui.write(Ref.currentLevel.getLootMessage(pos))
 		return
 	match cellState[1]:
 		"door": 
 			Ref.currentLevel.openDoor(pos + movement)
 			Ref.currentLevel.refresh_view()
-			Engine.newTurn()
+			GeneralEngine.newTurn()
 		"monster":
 			hit(cellState[2])
-			Engine.newTurn()
+			GeneralEngine.newTurn()
 		"pass": 
 			Ref.ui.askToChangeFloor()
 			Ref.ui.askForYesNo()
 			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
 			if (coroutineReturn):
 				Ref.game.newFloor()
-				Engine.newTurn()
+				GeneralEngine.newTurn()
 		"entry":
 			Ref.ui.writeNoGoingBack()
-			Engine.newTurn()
+			GeneralEngine.newTurn()
 
 func hit(entity):
 	if entity == null:
 		return
 	if entity.is_in_group("Monster"):
-		var result = Engine.rollDices(stats.hitDices)
+		var result = GeneralEngine.rollDices(stats.hitDices)
 		if result >= entity.stats.ca:
-			var rolledDmg = Engine.rollDices(stats.dmgDices)
+			var rolledDmg = GeneralEngine.rollDices(stats.dmgDices)
 			var dmg = entity.checkDmg(rolledDmg)
 			Ref.ui.writeCharacterStrike(entity.stats.entityName, dmg, result, entity.stats.ca)
 			entity.takeHit(dmg)

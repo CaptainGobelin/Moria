@@ -62,7 +62,7 @@ func askForTarget(targets: Array):
 func write(text):
 	if text == null:
 		return
-	text = '\n' + '<' + String(Engine.turn) + '> ' + text
+	text = '\n' + '<' + String(GeneralEngine.turn) + '> ' + text
 	diary.append_bbcode(text)
 
 func color(text: String, color: String):

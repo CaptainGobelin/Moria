@@ -59,7 +59,7 @@ config/icon="res://icon.png"
 
 Utils="*res://scenes/utils/Utils.tscn"
 Colors="*res://scenes/const/COLORS.tscn"
-Engine="*res://scenes/engine/Engine.tscn"
+GeneralEngine="*res://scenes/engine/Engine.tscn"
 GLOBAL="*res://scenes/const/GLOBAL.tscn"
 Data="*res://scenes/const/Data.tscn"
 Ref="*res://scenes/const/REF.tscn"
