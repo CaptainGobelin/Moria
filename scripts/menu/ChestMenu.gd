@@ -3,13 +3,18 @@ extends Node2D
 onready var items = get_node("ChestItems")
 onready var animator = get_node("AnimationPlayer")
 
-var currentTab = 0
+var chestId: int
 
 func _ready():
 	set_process_input(false)
 
 func open(id: int):
-	animator.play("Open")
+	chestId = id
+	if !GLOBAL.chests[id][GLOBAL.CH_OPENED]:
+		animator.play("Open")
+		GLOBAL.chests[id][GLOBAL.CH_OPENED] = true
+	else:
+		animator.play("Skip")
 	var itemList = GLOBAL.chests[id][GLOBAL.CH_CONTENT]
 	items.init(getSimpleItemRows(itemList), 0)
 	visible = true
@@ -30,6 +35,14 @@ func _input(event):
 		items.selectNext()
 	elif (event.is_action_released("ui_cancel")):
 		close()
+	elif (event.is_action_released("ui_accept") or event.is_action_released("pickLoot")):
+		var selected = items.getSelected()
+		if selected == null:
+			return
+		Ref.character.pickItem(selected)
+		GLOBAL.chests[chestId][GLOBAL.CH_CONTENT].erase(selected)
+		var itemList = GLOBAL.chests[chestId][GLOBAL.CH_CONTENT]
+		items.init(getSimpleItemRows(itemList), items.currentIndex)
 
 func getSimpleItemRows(itemList: Array):
 	var result = []

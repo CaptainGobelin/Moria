@@ -19,8 +19,6 @@ func init(items: Array, row: int):
 	if maxIndex > 0:
 		row = min(row, maxIndex-1)
 		select(row)
-	else:
-		get_parent().scroller.setArrows(0, 0)
 
 func getSelected():
 	for i in get_children():

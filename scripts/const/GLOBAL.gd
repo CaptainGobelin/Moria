@@ -43,6 +43,7 @@ var itemsOnFloor: Dictionary = {}
 
 const CH_POS = 0
 const CH_CONTENT = 1
+const CH_OPENED = 2
 var chests: Dictionary = {}
 
 var targets: Dictionary = {}

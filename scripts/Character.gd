@@ -74,7 +74,9 @@ func takeHit(dmg):
 
 func pickItem(idx):
 	var item = GLOBAL.items[idx]
-	instance_from_id(GLOBAL.itemsOnFloor[idx][1]).queue_free()
+	if GLOBAL.itemsOnFloor.has(idx):
+		instance_from_id(GLOBAL.itemsOnFloor[idx][1]).queue_free()
+		GLOBAL.itemsOnFloor.erase(idx)
 	match item[GLOBAL.IT_TYPE]:
 		GLOBAL.WP_TYPE: inventory.weapons.append(idx)
 		GLOBAL.AR_TYPE: inventory.armors.append(idx)
