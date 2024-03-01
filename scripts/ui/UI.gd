@@ -82,10 +82,10 @@ func writeNoGoingBack():
 	write("A shadow force blocks the way. There is no going back...")
 
 func askToChangeFloor():
-	write("Do you want to go to the next floor?")
+	write("Do you want to go to the next floor? (Y/n)")
 
 func askToOpenChest():
-	write("Do you want to open the chest?")
+	write("Do you want to open the chest? (Y/n)")
 
 func writeNoLoot():
 	write("Nothing to pick here.")

@@ -12,6 +12,9 @@ func _input(event):
 	elif (event.is_action_released("no")):
 		endCoroutine(false)
 		return
+	elif (event.is_action_released("ui_accept")):
+		endCoroutine(true)
+		return
 	elif (event.is_action_released("yes")):
 		endCoroutine(true)
 		return
