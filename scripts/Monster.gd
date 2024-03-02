@@ -19,6 +19,7 @@ func takeTurn():
 			if Ref.game.pathfinder.checkRange(pos, Ref.character.pos) <= stats.atkRange:
 				hit(Ref.character)
 			else:
+				return
 				moveTo(Ref.character)
 			return
 

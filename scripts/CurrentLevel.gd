@@ -105,7 +105,7 @@ func spawnMonster():
 
 func dropItem():
 	var cell = getRandomFreeCell()
-	var rarity = randi() % 2
+	var rarity = randi() % 7
 	var item = Ref.game.itemGenerator.generateItem(rarity)
 	if item == null:
 		return

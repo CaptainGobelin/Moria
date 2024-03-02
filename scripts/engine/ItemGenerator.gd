@@ -1,13 +1,22 @@
 extends Node
 class_name ItemGenerator
 
-const TYPE_PROB = [1.2, 0.2, 0.0, 0.0, 0.0, 0.5]
+const RARITY_ENCH = [0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1]
+
+const QU_NORM = 0
+const QU_FINE = 1
+const QU_HIGH = 2
+const QU_PERF = 3
+const QU_PROB = [1.0, 0.2, 0.08, 0.02]
+const QU_ENCH = [0.0, 0.12, 0.28, 0.5]
+
 const WP_IDX = 0
 const AR_IDX = 1
 const TA_IDX = 2
 const TH_IDX = 3
 const SC_IDX = 4
 const PO_IDX = 5
+const TYPE_PROB = [1.2, 0.2, 0.0, 0.0, 0.0, 0.5]
 
 var id = -1
 
@@ -27,13 +36,36 @@ func generateItem(rarity: int):
 		_: return null
 
 func generateWeapon(rarity: int):
-	while !Data.weaponsByRarity.has(rarity):
-		rarity -= 1
-		if rarity < 0:
+	var localRarity = 0
+	for i in range(2):
+		localRarity = max(localRarity, randi() % (rarity+1))
+	while !Data.weaponsByRarity.has(localRarity):
+		localRarity -= 1
+		if localRarity < 0:
 			return null
-	var rnd = randi() % Data.weaponsByRarity[rarity].size()
-	var base = Data.weapons[Data.weaponsByRarity[rarity][rnd]]
+	var rnd = randi() % Data.weaponsByRarity[localRarity].size()
+	var base = Data.weapons[Data.weaponsByRarity[localRarity][rnd]].duplicate()
 	id += 1
+	var quality = generateItemQuality(rarity)
+	var enchants = generateWeaponEnchant(rarity, quality)
+	var hasPrefix = false
+	if enchants.size() == 1 or (enchants.size() == 2 and (enchants.has(0) or enchants.has(1))):
+		hasPrefix = true
+	for e in enchants:
+		if Data.wpEnchants[e][Data.WP_EN_SUF] == null:
+			base[Data.W_NAME] = Data.wpEnchants[e][Data.WP_EN_PRE] + " " + base[Data.W_NAME]
+			hasPrefix = true
+		elif Data.wpEnchants[e][Data.WP_EN_PRE] != null and !hasPrefix:
+			base[Data.W_NAME] = Data.wpEnchants[e][Data.WP_EN_PRE] + " " + base[Data.W_NAME]
+			hasPrefix = true
+		else:
+			base[Data.W_NAME] = base[Data.W_NAME] + " " + Data.wpEnchants[e][Data.WP_EN_SUF]
+	match quality:
+		1: base[Data.W_NAME] = "sturdy " + base[Data.W_NAME]
+		2: base[Data.W_NAME] = "superior " + base[Data.W_NAME]
+		3: base[Data.W_NAME] = "flawless " + base[Data.W_NAME]
+	base[Data.W_NAME][0] = base[Data.W_NAME][0].capitalize()
+	print(base[Data.W_NAME])
 	GLOBAL.items[id] = mapWeaponToItem(base)
 	return id
 
@@ -89,3 +121,44 @@ func mapPotionToItem(potion):
 	item[GLOBAL.IT_TYPE] = GLOBAL.PO_TYPE
 	item[GLOBAL.IT_STACK] = potion[Data.PO_STACK]
 	return item
+
+func generateItemQuality(rarity: int):
+	var rnd = randf()
+	for i in range(0, 3):
+		if rnd < pow(QU_PROB[3-i], (6.0/float(rarity+1))):
+			return 3-i
+	return 0 
+
+func generateWeaponEnchant(rarity: int, quality: int):
+	var enchantValue = randf() * RARITY_ENCH[rarity] + QU_ENCH[quality]
+	if enchantValue > 0.96:
+		var first = rndWeaponEnchant()
+		var second = lowValueWeaponEnchant(first)
+		return [first, second, 1]
+	if enchantValue > 0.91:
+		var first = rndWeaponEnchant()
+		var second = lowValueWeaponEnchant(first)
+		return [first, second, 0]
+	if enchantValue > 0.85:
+		return [rndWeaponEnchant(), 1]
+	if enchantValue > 0.815:
+		return [1]
+	if enchantValue > 0.78:
+		return [lowValueWeaponEnchant(), 0]
+	if enchantValue > 0.70:
+		return [lowValueWeaponEnchant()]
+	if enchantValue > 0.61:
+		return [0]
+	return []
+
+func lowValueWeaponEnchant(forbidden = -1):
+	var result = forbidden
+	while result == forbidden:
+		result = randi() % 8 + 2
+	return result
+
+func rndWeaponEnchant(forbidden = -1):
+	var result = forbidden
+	while result == forbidden:
+		result = randi() % 12 + 2
+	return result
