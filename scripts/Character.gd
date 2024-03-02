@@ -13,6 +13,7 @@ func _ready():
 
 func init():
 	stats.init()
+	inventory.init()
 
 func setPosition(newPos):
 	pos = newPos
@@ -45,11 +46,20 @@ func moveAsync(movement):
 				Ref.game.newFloor()
 				GeneralEngine.newTurn()
 		"chest": 
-			Ref.ui.askToOpenChest()
-			Ref.ui.askForYesNo()
-			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
-			if (coroutineReturn):
-				Ref.game.chestMenu.open(cellState[2])
+			var lock = GLOBAL.chests[cellState[2]][GLOBAL.CH_LOCKED]
+			if lock == 0:
+				Ref.ui.askToOpenChest()
+				Ref.ui.askForYesNo()
+				var coroutineReturn = yield(Ref.ui, "coroutine_signal")
+				if (coroutineReturn):
+					Ref.game.chestMenu.open(cellState[2])
+			else:
+				Ref.ui.askToPickChest(lock)
+				Ref.ui.askForYesNo()
+				var coroutineReturn = yield(Ref.ui, "coroutine_signal")
+				if (coroutineReturn):
+					if attemptLockpick(lock):
+						Ref.game.chestMenu.open(cellState[2])
 		"entry":
 			Ref.ui.writeNoGoingBack()
 			GeneralEngine.newTurn()
@@ -128,6 +138,15 @@ func quaffPotion(idx):
 	PotionEngine.applyEffect(self, potion[GLOBAL.IT_SPEC])
 	Ref.ui.writeQuaffedPotion(potion[GLOBAL.IT_NAME])
 	GLOBAL.items.erase(idx)
+
+func attemptLockpick(dd: int):
+	var roll = GeneralEngine.rollDices(Vector2(1, 6))
+	if roll >= dd:
+		Ref.ui.writeLockpickSuccess(roll)
+		return true
+	Ref.ui.writeLockpickFailure(roll)
+	inventory.lockpicks -= 1
+	return false
 
 func refreshMapPosition():
 	position = 9 * pos

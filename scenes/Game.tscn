@@ -231,7 +231,7 @@ align = 2
 valign = 1
 
 [node name="ProtContainer" type="Node2D" parent="UI/SideMenu"]
-position = Vector2( 360, 63.25 )
+position = Vector2( 360, 63 )
 scale = Vector2( 0.25, 0.25 )
 
 [node name="Label" type="Label" parent="UI/SideMenu/ProtContainer"]
@@ -243,6 +243,27 @@ align = 1
 valign = 1
 
 [node name="Current" type="Label" parent="UI/SideMenu/ProtContainer/Label"]
+margin_left = 72.0
+margin_right = 180.0
+margin_bottom = 35.0
+custom_fonts/font = ExtResource( 8 )
+text = "10"
+align = 2
+valign = 1
+
+[node name="LockContainer" type="Node2D" parent="UI/SideMenu"]
+position = Vector2( 360, 72 )
+scale = Vector2( 0.25, 0.25 )
+
+[node name="Label" type="Label" parent="UI/SideMenu/LockContainer"]
+margin_right = 72.0
+margin_bottom = 35.0
+custom_fonts/font = ExtResource( 8 )
+text = "Lockpicks"
+align = 1
+valign = 1
+
+[node name="Current" type="Label" parent="UI/SideMenu/LockContainer/Label"]
 margin_left = 72.0
 margin_right = 180.0
 margin_bottom = 35.0

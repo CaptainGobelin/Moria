@@ -16,6 +16,7 @@ onready var caLabel = get_node("SideMenu/CAContainer/Label/Current")
 onready var protLabel = get_node("SideMenu/ProtContainer/Label/Current")
 onready var dmgLabel = get_node("SideMenu/DmgContainer/Label/Current")
 onready var hitLabel = get_node("SideMenu/HitContainer/Label/Current")
+onready var lockLabel = get_node("SideMenu/LockContainer/Label/Current")
 onready var statusBar = get_node("StatusBar")
 
 var currentChoice = ""
@@ -83,9 +84,25 @@ func writeNoGoingBack():
 
 func askToChangeFloor():
 	write("Do you want to go to the next floor? (Y/n)")
+	write("Do you want to go to the next floor? (Y/n)")
 
 func askToOpenChest():
 	write("Do you want to open the chest? (Y/n)")
+
+func askToPickChest(dd: int):
+	var msg = "The chest is locked. Do you want to pick the lock? DD"
+	msg += String(dd) + " (Y/n)"
+	write(color(msg, "yellow"))
+
+func writeLockpickSuccess(rolled: int):
+	var msg = "You successfully picked the lock ! (rolled "
+	msg +=  String(rolled) + ")"
+	write(color(msg, "green"))
+
+func writeLockpickFailure(rolled: int):
+	var msg = "You failed your atempt and the lockpick broke ! (rolled "
+	msg +=  String(rolled) + ")"
+	write(color(msg, "red"))
 
 func writeNoLoot():
 	write("Nothing to pick here.")
@@ -136,3 +153,5 @@ func updateStat(stat: int, value):
 			dmgLabel.text = diceToString(value)
 		Data.ST_HIT:
 			hitLabel.text = diceToString(value)
+		Data.ST_LOCK:
+			lockLabel.text = String(value)

@@ -118,10 +118,12 @@ func createChest():
 	var chest = chestScene.instance()
 	chests.add_child(chest)
 	chest.position = cell * 9
-	GLOBAL.chests[chest.get_instance_id()] = [cell, [], false]
+	GLOBAL.chests[chest.get_instance_id()] = [cell, [], false, 0]
+	if randf() < 0.5:
+		GLOBAL.chests[chest.get_instance_id()][3] = 3
 	var quantity = randi() % 3
 	for _i in range(quantity):
-		var rarity = randi() % 2
+		var rarity = randi() % 7
 		var item = Ref.game.itemGenerator.generateItem(rarity)
 		GLOBAL.chests[chest.get_instance_id()][GLOBAL.CH_CONTENT].append(item)
 

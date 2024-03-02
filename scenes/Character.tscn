@@ -66,6 +66,14 @@ var currentArmor = -1
 var weapons = []
 var armors = []
 var potions = []
+var lockpicks = 0 setget updateLockpicks
+
+func init():
+	updateLockpicks(5)
+
+func updateLockpicks(newValue):
+	lockpicks = newValue
+	Ref.ui.updateStat(Data.ST_LOCK, newValue)
 
 func getWeaponRows():
 	var result = []

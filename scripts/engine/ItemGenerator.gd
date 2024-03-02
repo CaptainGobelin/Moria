@@ -37,7 +37,7 @@ func generateItem(rarity: int):
 
 func generateWeapon(rarity: int):
 	var localRarity = 0
-	for i in range(2):
+	for _i in range(2):
 		localRarity = max(localRarity, randi() % (rarity+1))
 	while !Data.weaponsByRarity.has(localRarity):
 		localRarity -= 1
@@ -65,7 +65,6 @@ func generateWeapon(rarity: int):
 		2: base[Data.W_NAME] = "superior " + base[Data.W_NAME]
 		3: base[Data.W_NAME] = "flawless " + base[Data.W_NAME]
 	base[Data.W_NAME][0] = base[Data.W_NAME][0].capitalize()
-	print(base[Data.W_NAME])
 	GLOBAL.items[id] = mapWeaponToItem(base)
 	return id
 

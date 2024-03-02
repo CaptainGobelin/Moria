@@ -43,6 +43,7 @@ const ST_DMG = 2
 const ST_HIT = 3
 const ST_HPMAX = 4
 const ST_HP = 5
+const ST_LOCK = 6
 
 const W_NAME = 0
 const W_HIT = 1
