@@ -81,25 +81,24 @@ const ENCH_VORP_WP = 4
 
 const WP_EN_PRE = 0
 const WP_EN_SUF = 1
-const WP_EN_RAR = 2
 
 const wpEnchants = {
 	0: [null, \"+1\"],
 	1: [null, \"+2\"],
 	
-	2: [\"burning\", \"of fire\"],
-	3: [\"acidic\", \"of acid\"],
-	4: [\"shocking\", \"of shock\"],
-	5: [\"antimagic\", \"of dispel\"],
-	6: [\"Poisoneous\", \"of poison\"],
-	7: [\"Sharp\", \"of pain\"],
-	8: [\"Freezing\", \"of frost\"],
-	9: [\"Blessed\", \"of holy wrath\"],
+	100: [\"flaming\", \"of fire\"],
+	101: [\"shocking\", \"of shock\"],
+	102: [\"blessed\", \"of holy wrath\"],
+	103: [\"antimagic\", \"of dispel\"],
+	104: [\"venomous\", \"of poison\"],
+	105: [\"sharp\", \"of slaying\"],
+	106: [\"freezing\", \"of frost\"],
 	
-	10: [\"Vampiric\", \"of draining\"],
-	11: [\"Balanced\", \"of precision\"],
-	12: [null, \"of speed\"],
-	13: [\"vorpal\", null],
+	200: [\"acidic\", \"of acid\"],
+	201: [\"vampiric\", \"of draining\"],
+	202: [\"balanced\", \"of precision\"],
+	203: [null, \"of speed\"],
+	204: [\"vorpal\", null],
 }
 
 var weaponsByRarity = {}

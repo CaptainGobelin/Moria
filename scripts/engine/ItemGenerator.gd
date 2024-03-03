@@ -153,11 +153,15 @@ func generateWeaponEnchant(rarity: int, quality: int):
 func lowValueWeaponEnchant(forbidden = -1):
 	var result = forbidden
 	while result == forbidden:
-		result = randi() % 8 + 2
+		result = randi() % 7 + 100
 	return result
 
 func rndWeaponEnchant(forbidden = -1):
 	var result = forbidden
-	while result == forbidden:
-		result = randi() % 12 + 2
+	if randf() < 0.5:
+		while result == forbidden:
+			result = randi() % 5 + 200
+	else:
+		while result == forbidden:
+			result = randi() % 7 + 100
 	return result

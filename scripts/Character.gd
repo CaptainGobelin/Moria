@@ -54,11 +54,15 @@ func moveAsync(movement):
 				if (coroutineReturn):
 					Ref.game.chestMenu.open(cellState[2])
 			else:
+				if inventory.lockpicks == 0:
+					Ref.ui.noLockpicksChest()
+					return
 				Ref.ui.askToPickChest(lock)
 				Ref.ui.askForYesNo()
 				var coroutineReturn = yield(Ref.ui, "coroutine_signal")
 				if (coroutineReturn):
 					if attemptLockpick(lock):
+						GLOBAL.chests[cellState[2]][GLOBAL.CH_LOCKED] = 0
 						Ref.game.chestMenu.open(cellState[2])
 		"entry":
 			Ref.ui.writeNoGoingBack()

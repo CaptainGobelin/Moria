@@ -10,7 +10,7 @@
 0/region = Rect2( 0, 0, 54, 27 )
 0/tile_mode = 1
 0/autotile/bitmask_mode = 1
-0/autotile/bitmask_flags = [ Vector2( 0, 0 ), 16842928, Vector2( 0, 1 ), 17039538, Vector2( 0, 2 ), 4456498, Vector2( 1, 0 ), 20971704, Vector2( 1, 1 ), 21299386, Vector2( 1, 2 ), 327738, Vector2( 2, 0 ), 4456600, Vector2( 2, 1 ), 4259994, Vector2( 2, 2 ), 16842778, Vector2( 3, 1 ), 21299248, Vector2( 3, 2 ), 21299346, Vector2( 4, 0 ), 21299344, Vector2( 4, 2 ), 21299218, Vector2( 5, 1 ), 21299224, Vector2( 5, 2 ), 21299256 ]
+0/autotile/bitmask_flags = [ Vector2( 0, 0 ), 16842928, Vector2( 0, 1 ), 17039538, Vector2( 0, 2 ), 4456498, Vector2( 1, 0 ), 20971704, Vector2( 1, 1 ), 21299386, Vector2( 1, 2 ), 327738, Vector2( 2, 0 ), 4456600, Vector2( 2, 1 ), 4259994, Vector2( 2, 2 ), 16842778, Vector2( 3, 0 ), 21299216, Vector2( 3, 1 ), 21299248, Vector2( 3, 2 ), 21299346, Vector2( 4, 0 ), 21299344, Vector2( 4, 2 ), 21299218, Vector2( 5, 1 ), 21299224, Vector2( 5, 2 ), 21299256 ]
 0/autotile/icon_coordinate = Vector2( 0, 0 )
 0/autotile/tile_size = Vector2( 9, 9 )
 0/autotile/spacing = 0
@@ -40,3 +40,17 @@
 1/shape_one_way_margin = 0.0
 1/shapes = [  ]
 1/z_index = 0
+2/name = "shadows.png 2"
+2/texture = ExtResource( 1 )
+2/tex_offset = Vector2( 0, 0 )
+2/modulate = Color( 1, 1, 1, 1 )
+2/region = Rect2( 45, 0, 9, 9 )
+2/tile_mode = 0
+2/occluder_offset = Vector2( 0, 0 )
+2/navigation_offset = Vector2( 0, 0 )
+2/shape_offset = Vector2( 0, 0 )
+2/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+2/shape_one_way = false
+2/shape_one_way_margin = 0.0
+2/shapes = [  ]
+2/z_index = 0

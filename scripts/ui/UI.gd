@@ -104,6 +104,9 @@ func writeLockpickFailure(rolled: int):
 	msg +=  String(rolled) + ")"
 	write(color(msg, "red"))
 
+func noLockpicksChest():
+	write("The chest is locked and you don't have any lockpicks to pick it.")
+
 func writeNoLoot():
 	write("Nothing to pick here.")
 

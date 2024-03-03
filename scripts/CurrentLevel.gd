@@ -9,6 +9,7 @@ onready var chestScene = preload("res://scenes/Chest.tscn")
 onready var dungeon = get_node("Map")
 onready var fog = get_node("Fog")
 onready var shadows = get_node("Shadows")
+onready var underShadows = shadows.get_node("Under")
 onready var monsters = get_node("Monsters")
 onready var loots = get_node("Loots")
 onready var chests = get_node("Chests")
@@ -33,6 +34,7 @@ func refresh_view():
 					fog.update_bitmask_area(p)
 					shadows.set_cellv(p, 1)
 					shadows.update_bitmask_area(p)
+					underShadows.set_cellv(p, 1)
 					for m in monsters.get_children():
 						if m.pos == p:
 							m.awake()
@@ -47,6 +49,7 @@ func initShadows():
 		for j in range(-1, GLOBAL.FLOOR_SIZE_Y+1):
 			shadows.set_cell(i, j, 0)
 			shadows.update_bitmask_area(Vector2(i, j))
+			underShadows.set_cell(i, j, 2)
 
 func clearFog():
 	for i in range(GLOBAL.FLOOR_SIZE_X):
@@ -121,7 +124,7 @@ func createChest():
 	GLOBAL.chests[chest.get_instance_id()] = [cell, [], false, 0]
 	if randf() < 0.5:
 		GLOBAL.chests[chest.get_instance_id()][3] = 3
-	var quantity = randi() % 3
+	var quantity = randi() % 3 + 1
 	for _i in range(quantity):
 		var rarity = randi() % 7
 		var item = Ref.game.itemGenerator.generateItem(rarity)
