@@ -76,14 +76,12 @@ hframes = 4
 vframes = 4
 
 [node name="Fog" type="TileMap" parent="CurrentLevel"]
-visible = false
 modulate = Color( 1, 1, 1, 0.666667 )
 tile_set = ExtResource( 4 )
 cell_size = Vector2( 9, 9 )
 format = 1
 
 [node name="Shadows" type="TileMap" parent="CurrentLevel"]
-visible = false
 tile_set = ExtResource( 3 )
 cell_size = Vector2( 9, 9 )
 format = 1

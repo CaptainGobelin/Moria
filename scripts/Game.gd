@@ -13,6 +13,7 @@ onready var pickupLootHandler = get_node("Utils/PickupLootHandler")
 onready var spellHandler = get_node("Utils/SpellHandler")
 
 func _ready():
+	randomize()
 	Ref.game = self
 	newFloor()
 	set_process_input(true)

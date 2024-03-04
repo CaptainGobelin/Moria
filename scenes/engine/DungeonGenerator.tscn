@@ -24,11 +24,13 @@ func newFloor():
 	while !isFloorFull():
 		generate()
 		retries += 1
+	fuseDoorsAndWalls()
+	var spawn = decorator.placeExits(array)
 	deleteCorridorDoors()
-	fuseDoors()
+	var rooms = decorator.getTreasuresCandidates(array)
 	drawFloor()
 	print(\"Generated after \", retries, \" retires.\")
-	return decorator.analyseDungeon(dungeon)
+	return spawn
 
 func generate():
 	if !roomsReader.isInitialized:
@@ -63,7 +65,7 @@ func generate():
 			continue
 		var roomDoor = roomsReader.doorsList[roomId][roomDoorIndex]
 		var position = door[0] - roomDoor[0]
-		var retries = 15
+		var retries = roomsReader.roomsList.size()
 		var placeRoom = false
 		while (!placeRoom and retries > 0):
 			roomId = (roomId + 1) % roomsReader.roomsList.size()
@@ -158,7 +160,7 @@ func isDoorsOpposites(a, b):
 func deleteCorridorDoors():
 	var doorsToRemove = []
 	for d in validatedDoors:
-		if randi() % GLOBAL.DOOR_REDUCTION_RATIO == 0:
+		if randf() < GLOBAL.DOOR_REDUCTION_RATIO:
 			continue
 		var count = 0
 		for di in range(-1, 2):
@@ -176,9 +178,13 @@ func deleteCorridorDoors():
 	for d in doorsToRemove:
 		validatedDoors.erase(d)
  
-func fuseDoors():
+func fuseDoorsAndWalls():
 	for d in validatedDoors:
 		array[d.x][d.y] = GLOBAL.DOOR_ID
+	for i in range(GLOBAL.FLOOR_SIZE_X):
+		for j in range(GLOBAL.FLOOR_SIZE_Y):
+			if array[i][j] == -1:
+				array[i][j] = GLOBAL.WALL_ID
 "
 
 [node name="DungeonGenerator" type="Node"]

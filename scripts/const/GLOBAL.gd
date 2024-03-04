@@ -2,8 +2,8 @@ extends Node
 
 const FLOOR_SIZE_X = 37
 const FLOOR_SIZE_Y = 19
-const FULLNESS_THRESHOLD = 0.46
-const DOOR_REDUCTION_RATIO = 2
+const FULLNESS_THRESHOLD = 0.44
+const DOOR_REDUCTION_RATIO = 0.25
 
 const WALL_ID = 1
 const DOOR_ID = 2
