@@ -69,6 +69,7 @@ func isCellFree(cell):
 		var chest = GLOBAL.chests[cIdx]
 		if cell == chest[GLOBAL.CH_POS]:
 			return [false, "chest", cIdx, true, false]
+	print(dungeon.get_cellv(cell))
 	if dungeon.get_cellv(cell) == GLOBAL.GRID_ID:
 		return [false, "grid", null, true, true]
 	if dungeon.get_cellv(cell) == GLOBAL.PASS_ID:

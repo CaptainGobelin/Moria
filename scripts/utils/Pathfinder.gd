@@ -40,7 +40,8 @@ func get_neighbors(cell, end, length):
 	var pos = cell[0]
 	var cost = cell[1] + 1
 	for i in [Vector2(-1, 0), Vector2(0, -1), Vector2(0, 1), Vector2(1, 0)]:
-		if !Ref.currentLevel.isCellFree(pos+i)[0]:
+		var cellState = Ref.currentLevel.isCellFree(pos+i)
+		if !cellState[0] and cellState[1] != "door" and cellState[1] != "pass":
 			continue
 		if (cost + dist(pos + Vector2(i.x, i.y), end) <= length):
 			result.append([pos + Vector2(i.x, i.y), cost, cell])

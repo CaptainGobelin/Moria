@@ -25,12 +25,16 @@ func newFloor():
 		generate()
 		retries += 1
 	fuseDoorsAndWalls()
-	var spawn = decorator.placeExits(array)
+	decorator.init(array)
+	var exits = decorator.placeExits()
+	drawFloor()
+	var criticalPath = Ref.game.pathfinder.a_star(exits[0], exits[2], 9999)
 	deleteCorridorDoors()
-	var rooms = decorator.getTreasuresCandidates(array)
+	decorator.flagCriticalPath(criticalPath)
+	var rooms = decorator.getTreasuresCandidates()
 	drawFloor()
 	print(\"Generated after \", retries, \" retires.\")
-	return spawn
+	return exits[0]
 
 func generate():
 	if !roomsReader.isInitialized:
