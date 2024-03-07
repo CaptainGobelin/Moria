@@ -23,7 +23,7 @@ func addGrowingCells(pos: Vector2):
 	for i in range(4):
 		if get_cellv(cells[i] + pos) != -1:
 			continue
-		if !growingCells.has(cells[i] + pos):
+		if !growingCells.has(cells[i] + pos) or randi() % 2 == 0:
 			growingCells[cells[i] + pos] = [newCellTile[i], pos, oldCellOffset[i]]
 
 func grow():
