@@ -16,6 +16,8 @@ onready var chests = get_node("Chests")
 onready var effects = get_node("Effects")
 onready var targetArrow = get_node("TargetArrow")
 
+var searched: Array
+
 func _ready():
 	Ref.currentLevel = self
 
@@ -24,7 +26,7 @@ func refresh_view():
 	GLOBAL.targets.clear()
 	for i in range(-GLOBAL.VIEW_RANGE+1, GLOBAL.VIEW_RANGE):
 		for j in range(-GLOBAL.VIEW_RANGE+1, GLOBAL.VIEW_RANGE):
-			if (pow(i,2)+pow(j,2) <= pow(GLOBAL.VIEW_RANGE,2)):
+			if pow(i, 2) + pow(j, 2) <= pow(GLOBAL.VIEW_RANGE, 2):
 				var pos = Ref.character.pos
 				var points = Ref.game.pathfinder.get_line(pos, pos+Vector2(i,j))
 				var currentPath = []
@@ -35,6 +37,10 @@ func refresh_view():
 					shadows.set_cellv(p, 1)
 					shadows.update_bitmask_area(p)
 					underShadows.set_cellv(p, 1)
+					if pow(i, 2) + pow(j, 2) <= 16:
+						if !searched[p.x][p.y]:
+							Ref.character.rollPerception(p)
+							searched[p.x][p.y] = true
 					for m in monsters.get_children():
 						if m.pos == p:
 							m.awake()
@@ -69,7 +75,6 @@ func isCellFree(cell):
 		var chest = GLOBAL.chests[cIdx]
 		if cell == chest[GLOBAL.CH_POS]:
 			return [false, "chest", cIdx, true, false]
-	print(dungeon.get_cellv(cell))
 	if dungeon.get_cellv(cell) == GLOBAL.GRID_ID:
 		return [false, "grid", null, true, true]
 	if dungeon.get_cellv(cell) == GLOBAL.PASS_ID:

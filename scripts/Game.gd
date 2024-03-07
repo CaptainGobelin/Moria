@@ -19,6 +19,12 @@ func _ready():
 	set_process_input(true)
 
 func newFloor():
+	GLOBAL.traps.clear()
+	GLOBAL.hiddenDoors.clear()
+	for i in range(GLOBAL.FLOOR_SIZE_X):
+		Ref.currentLevel.searched.append([])
+		for _j in range(GLOBAL.FLOOR_SIZE_Y):
+			Ref.currentLevel.searched[i].append(false)
 	var spawnPos = dungeonGenerator.newFloor()
 	Ref.currentLevel.initShadows()
 	Ref.currentLevel.placeCharacter(spawnPos)
@@ -58,5 +64,7 @@ func _input(event):
 		pickupLootHandler.pickupLootAsync()
 	elif (event.is_action_released("castSpell")):
 		spellHandler.castSpellAsync(Data.SP_BLESS)
+	elif (event.is_action_released("search")):
+		Ref.character.search()
 	elif (event.is_action_released("debug_new_floor")):
 		newFloor()

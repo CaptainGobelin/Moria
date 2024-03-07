@@ -29,9 +29,14 @@ func newFloor():
 	var exits = decorator.placeExits()
 	drawFloor()
 	var criticalPath = Ref.game.pathfinder.a_star(exits[0], exits[2], 9999)
-	deleteCorridorDoors()
 	decorator.flagCriticalPath(criticalPath)
 	var rooms = decorator.getTreasuresCandidates()
+	for r in rooms.values():
+		for d in r[1]:
+			if randf() < GLOBAL.HIDDEN_DOORS_RATIO:
+				GLOBAL.hiddenDoors.append(d)
+				array[d.x][d.y] = GLOBAL.WALL_ID
+	deleteCorridorDoors()
 	drawFloor()
 	print(\"Generated after \", retries, \" retires.\")
 	return exits[0]
@@ -69,7 +74,7 @@ func generate():
 			continue
 		var roomDoor = roomsReader.doorsList[roomId][roomDoorIndex]
 		var position = door[0] - roomDoor[0]
-		var retries = roomsReader.roomsList.size()
+		var retries = roomsReader.roomsList.size() / 2
 		var placeRoom = false
 		while (!placeRoom and retries > 0):
 			roomId = (roomId + 1) % roomsReader.roomsList.size()
@@ -98,11 +103,9 @@ func drawFloor():
 				dungeon.set_cell(i, j, 1)
 			else:
 				dungeon.set_cell(i, j, array[i][j])
-	for door in validatedDoors:
-		dungeon.set_cell(door.x, door.y, 2)
 	dungeon.update_bitmask_region()
-	for cell in dungeon.get_used_cells_by_id(2):
-		dungeon.set_cellv(cell, 2, false, false, false, Vector2(0,1))
+	for cell in dungeon.get_used_cells_by_id(GLOBAL.DOOR_ID):
+		dungeon.set_cellv(cell, GLOBAL.DOOR_ID, false, false, false, Vector2(0,1))
 
 func getRoomOppositeDoor(roomId, doorDirection):
 	var resultList = []
@@ -164,6 +167,8 @@ func isDoorsOpposites(a, b):
 func deleteCorridorDoors():
 	var doorsToRemove = []
 	for d in validatedDoors:
+		if GLOBAL.hiddenDoors.has(d):
+			continue
 		if randf() < GLOBAL.DOOR_REDUCTION_RATIO:
 			continue
 		var count = 0

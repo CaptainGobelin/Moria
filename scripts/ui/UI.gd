@@ -107,6 +107,12 @@ func writeLockpickFailure(rolled: int):
 func noLockpicksChest():
 	write("The chest is locked and you don't have any lockpicks to pick it.")
 
+func writeSearch():
+	write("You search for hidden secrets around you...")
+
+func writeHiddenDoorDetected():
+	write(color("You detected a hidden door !", "yellow"))
+
 func writeNoLoot():
 	write("Nothing to pick here.")
 

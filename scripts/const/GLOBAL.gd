@@ -4,6 +4,7 @@ const FLOOR_SIZE_X = 37
 const FLOOR_SIZE_Y = 19
 const FULLNESS_THRESHOLD = 0.44
 const DOOR_REDUCTION_RATIO = 0.25
+const HIDDEN_DOORS_RATIO = 0.2
 
 const WALL_ID = 1
 const DOOR_ID = 2
@@ -46,6 +47,12 @@ const CH_CONTENT = 1
 const CH_OPENED = 2
 const CH_LOCKED = 3
 var chests: Dictionary = {}
+
+const TR_HIDDEN = 0
+const TR_TYPE = 1
+var traps: Dictionary = {}
+
+var hiddenDoors: Array = []
 
 var targets: Dictionary = {}
 

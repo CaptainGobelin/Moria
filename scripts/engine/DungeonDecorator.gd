@@ -2,10 +2,10 @@ extends Node
 
 var array: Array
 var borders: Dictionary
-var floorsArray: Array
 var analyzed: Array
 
 func init(dungeon: Array):
+	analyzed = []
 	for i in range(GLOBAL.FLOOR_SIZE_X):
 		analyzed.append([])
 		for _j in range(GLOBAL.FLOOR_SIZE_Y):

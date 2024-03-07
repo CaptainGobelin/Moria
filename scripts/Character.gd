@@ -152,5 +152,25 @@ func attemptLockpick(dd: int):
 	inventory.lockpicks -= 1
 	return false
 
+func search():
+	Ref.ui.writeSearch()
+	for i in range(-4, 5):
+		for j in range(-4, 5):
+			if pow(i, 2) + pow(j, 2) <= 16:
+				rollPerception(pos + Vector2(i, j))
+
+func rollPerception(cell: Vector2):
+	var perceptionRoll = GeneralEngine.rollDices(Vector2(1, 6))
+	if perceptionRoll > 3:
+		# Detect traps
+		if GLOBAL.traps.has(cell):
+			GLOBAL.traps[cell][GLOBAL.TR_HIDDEN] = false
+	if perceptionRoll > 5:
+		# Detect doors
+		if GLOBAL.hiddenDoors.has(cell):
+			GLOBAL.hiddenDoors.erase(cell)
+			Ref.currentLevel.dungeon.set_cellv(cell, GLOBAL.DOOR_ID, false, false, false, Vector2(0,1))
+			Ref.ui.writeHiddenDoorDetected()
+
 func refreshMapPosition():
 	position = 9 * pos

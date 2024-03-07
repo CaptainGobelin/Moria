@@ -8,7 +8,6 @@ onready var down = get_node("Down")
 onready var elevator = get_node("Elevator")
 
 func setLength(value):
-	print(String(value))
 	length = value
 	get_node("Down").position.y = length - 1
 	get_node("Pan").margin_bottom = length
