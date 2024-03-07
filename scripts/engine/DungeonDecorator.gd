@@ -73,9 +73,13 @@ func placeExits():
 					continue
 				borders[getQuadrant(i, j)].append(Vector2(i, j))
 	var exitQuadrant = randi() % 6
+	while borders[exitQuadrant].size() == 0:
+		 exitQuadrant = (exitQuadrant+1) % 6
 	var exit = borders[exitQuadrant][randi() % borders[exitQuadrant].size()]
 	array[exit.x][exit.y] = GLOBAL.PASS_ID
 	var entryQuadrant = (exitQuadrant+3)%6
+	while borders[entryQuadrant].size() == 0:
+		 entryQuadrant = (entryQuadrant+1) % 6
 	var entry = borders[entryQuadrant][randi() % borders[entryQuadrant].size()]
 	array[entry.x][entry.y] = GLOBAL.PASS_ID
 	for n in getNeighbours(entry.x, entry.y):
