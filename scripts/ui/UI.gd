@@ -107,13 +107,13 @@ func noLockpicksChest():
 	write("The chest is locked and you don't have any lockpicks to pick it.")
 
 func writeSearch():
-	write("You search for hidden secrets around you...")
+	write("You look for hidden secrets around you...")
 
 func writeHiddenDoorDetected():
 	write(color("You detected a hidden door !", "yellow"))
 
 func writeHiddenTrapDetected(name: String):
-	write(color("You detected " + Utils.addArticle(name) + "!", "yellow"))
+	write(color("You detected " + Utils.addArticle(name) + " !", "yellow"))
 
 func writeNoLoot():
 	write("Nothing to pick here.")
@@ -125,7 +125,7 @@ func writeNoMastery():
 	write("You don't have enough mastery to improve that skill.")
 
 func writeTriggerTrap(name: String):
-	write("You trigger " + Utils.addArticle(name) + ".")
+	write(color("You trigger " + Utils.addArticle(name) + " !", "yellow"))
 
 func writeCharacterStrike(name: String, hit: int, ca: int):
 	var msg = "You strike the " + name

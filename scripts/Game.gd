@@ -33,6 +33,9 @@ func newFloor():
 	for c in Ref.currentLevel.chests.get_children():
 		c.queue_free()
 	GLOBAL.chests.clear()
+	for t in Ref.currentLevel.traps.get_children():
+		t.queue_free()
+	GLOBAL.traps.clear()
 	for l in Ref.currentLevel.loots.get_children():
 		l.queue_free()
 	for i in GLOBAL.itemsOnFloor.keys():
