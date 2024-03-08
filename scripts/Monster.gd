@@ -57,6 +57,7 @@ func checkDmg(dmg):
 func takeHit(dmg):
 	Ref.ui.write("The Skeleton takes " + String(dmg) + " damages.")
 	stats.currentHp -= dmg
+	Ref.ui.writeMonsterTakeHit(dmg)
 	if stats.currentHp <= 0:
 		die()
 

@@ -16,6 +16,7 @@ var waitingDoors:Array = []
 var validatedDoors:Array = []
 var array:Array = []
 var arrayFullness = 0
+var trapList: Dictionary = {}
 
 func newFloor():
 	dungeon = Ref.currentLevel.dungeon as TileMap
@@ -36,6 +37,12 @@ func newFloor():
 			if randf() < GLOBAL.HIDDEN_DOORS_RATIO:
 				GLOBAL.hiddenDoors.append(d)
 				array[d.x][d.y] = GLOBAL.WALL_ID
+	for t in trapList.values():
+		if randf() < GLOBAL.TRAPPED_ROOMS_RATIO:
+			for _i in range(1 + (randi() % GLOBAL.TRAPS_PER_ROOM)):
+				var trapPos = t[randi() % t.size()]
+				if array[trapPos.x][trapPos.y] == GLOBAL.FLOOR_ID:
+					Ref.currentLevel.placeTrap(trapPos)
 	deleteCorridorDoors()
 	drawFloor()
 	print(\"Generated after \", retries, \" retires.\")
@@ -48,6 +55,7 @@ func generate():
 	validatedDoors = []
 	arrayFullness = 0
 	array = []
+	trapList.clear()
 	for i in range(GLOBAL.FLOOR_SIZE_X):
 		array.append([])
 		for _j in range(GLOBAL.FLOOR_SIZE_Y):
@@ -134,27 +142,47 @@ func isFloorFull():
 	return arrayFullness > GLOBAL.FULLNESS_THRESHOLD * (GLOBAL.FLOOR_SIZE_X * GLOBAL.FLOOR_SIZE_Y)
 
 func placeFirstRoom(roomId, position):
+	# Place room tiles
 	for c in roomsReader.roomsList[roomId]:
 		if (c[1] == 1):
 			continue
 		var p = c[0] + position
 		array[p.x][p.y] = c[1]
 		arrayFullness += 1
+	# Place doors
 	for d in roomsReader.doorsList[roomId]:
 		waitingDoors.append([d[0] + position, d[1]])
+	# Place traps
+	var trapPos = []
+	for t in roomsReader.trapsList[roomId]:
+		if t[1]:
+			var p = t[0] + position
+			trapPos.append(p)
+	if trapPos.size() != 0:
+		trapList[trapList.keys().size()] = trapPos
 
 func placeRoom(roomId, position, roomDoorIndex):
+	# Place room tiles
 	for c in roomsReader.roomsList[roomId]:
 		if (c[1] == 1):
 			continue
 		var p = c[0] + position
 		array[p.x][p.y] = c[1]
 		arrayFullness += 1
+	# Place doors
 	var count = 0
 	for d in roomsReader.doorsList[roomId]:
 		if count != roomDoorIndex:
 			waitingDoors.append([d[0] + position, d[1]])
 		count += 1
+	# Place traps
+	var trapPos = []
+	for t in roomsReader.trapsList[roomId]:
+		if t[1]:
+			var p = t[0] + position
+			trapPos.append(p)
+	if trapPos.size() != 0:
+		trapList[trapList.keys().size()] = trapPos
 
 func isDoorsOpposites(a, b):
 	match a:

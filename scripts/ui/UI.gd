@@ -112,6 +112,9 @@ func writeSearch():
 func writeHiddenDoorDetected():
 	write(color("You detected a hidden door !", "yellow"))
 
+func writeHiddenTrapDetected(name: String):
+	write(color("You detected " + Utils.addArticle(name) + "!", "yellow"))
+
 func writeNoLoot():
 	write("Nothing to pick here.")
 
@@ -121,8 +124,11 @@ func writeNoSkp():
 func writeNoMastery():
 	write("You don't have enough mastery to improve that skill.")
 
-func writeCharacterStrike(name: String, dmg: int, hit: int, ca: int):
-	var msg = "You strike the " + name + " for " + String(dmg)
+func writeTriggerTrap(name: String):
+	write("You trigger " + Utils.addArticle(name) + ".")
+
+func writeCharacterStrike(name: String, hit: int, ca: int):
+	var msg = "You strike the " + name
 	msg += " (rolled " + String(hit) + " vs " + String(ca) + ")."
 	write(color(msg, "yellow"))
 
@@ -131,15 +137,22 @@ func writeCharacterMiss(name: String, hit: int, ca: int):
 	msg += " (rolled " + String(hit) + " vs " + String(ca) + ")."
 	write(msg)
 
-func writeMonsterStrike(name: String, dmg: int, hit: int, ca: int):
-	var msg = "The " + name + " strikes you for " + String(dmg)
-	msg += " (rolled " + String(hit) + " vs " + String(ca) + ")."
+func writeCharacterTakeHit(dmg: int):
+	write(color("You suffer " + String(dmg) + " damages.", "red"))
+
+func writeMonsterStrike(name: String, hit: int, ca: int):
+	var msg = "The " + name + " strikes you "
+	msg += "(rolled " + String(hit) + " vs " + String(ca) + ")."
 	write(color(msg, "red"))
 
 func writeMonsterMiss(name: String, hit: int, ca: int):
 	var msg = "The " + name + " misses you"
 	msg += " (rolled " + String(hit) + " vs " + String(ca) + ")."
 	write(msg)
+
+func writeMonsterTakeHit(dmg: int):
+	var msg = "The " + name + " suffers " + String(dmg) + " damages."
+	write(color(msg, "yellow"))
 
 func writeQuaffedPotion(potion: String):
 	write("You quaffed the " + potion + ".")

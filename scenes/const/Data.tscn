@@ -216,6 +216,15 @@ const statuses = {
 	6: [\"Blessed\", 6, 10],
 }
 
+const TR_DART = 0
+
+const TR_NAME = 0
+const TR_TYPE = 1
+const TR_ICON = 2
+const traps = {
+	0: [\"Dart trap\", TR_DART, 6],
+}
+
 func _ready():
 	weaponsReader()
 	armorsReader()

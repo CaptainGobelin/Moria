@@ -5,11 +5,13 @@ class_name CurrentLevel
 onready var monsterScene = preload("res://scenes/Monster.tscn")
 onready var lootScene = preload("res://scenes/Loot.tscn")
 onready var chestScene = preload("res://scenes/Chest.tscn")
+onready var trapScene = preload("res://scenes/Trap.tscn")
 
 onready var dungeon = get_node("Map")
 onready var fog = get_node("Fog")
 onready var shadows = get_node("Shadows")
 onready var underShadows = shadows.get_node("Under")
+onready var traps = get_node("Traps")
 onready var monsters = get_node("Monsters")
 onready var loots = get_node("Loots")
 onready var chests = get_node("Chests")
@@ -135,6 +137,13 @@ func createChest():
 		var rarity = randi() % 7
 		var item = Ref.game.itemGenerator.generateItem(rarity)
 		GLOBAL.chests[chest.get_instance_id()][GLOBAL.CH_CONTENT].append(item)
+
+func placeTrap(pos: Vector2):
+	if GLOBAL.traps.has(pos):
+		return
+	var trap = trapScene.instance()
+	traps.add_child(trap)
+	trap.init(0, pos)
 
 func checkForLoot(cell):
 	var dict:Dictionary = {}

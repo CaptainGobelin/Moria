@@ -29,6 +29,10 @@ func moveAsync(movement):
 		Ref.currentLevel.refresh_view()
 		refreshMapPosition()
 		Ref.ui.write(Ref.currentLevel.getLootMessage(pos))
+		if GLOBAL.traps.has(pos):
+			var trap = GLOBAL.traps[pos]
+			if trap[GLOBAL.TR_HIDDEN]:
+				TrapEngine.triggerTrap(trap[GLOBAL.TR_INSTANCE], self)
 		return
 	match cellState[1]:
 		"door": 
@@ -76,7 +80,7 @@ func hit(entity):
 		if result >= entity.stats.ca:
 			var rolledDmg = GeneralEngine.rollDices(stats.dmgDices)
 			var dmg = entity.checkDmg(rolledDmg)
-			Ref.ui.writeCharacterStrike(entity.stats.entityName, dmg, result, entity.stats.ca)
+			Ref.ui.writeCharacterStrike(entity.stats.entityName, result, entity.stats.ca)
 			entity.takeHit(dmg)
 		else:
 			Ref.ui.writeCharacterMiss(entity.stats.entityName, result, entity.stats.ca)
@@ -84,6 +88,7 @@ func hit(entity):
 func takeHit(dmg):
 	var totalDmg = dmg - stats.prot
 	stats.hp -= totalDmg
+	Ref.ui.writeCharacterTakeHit(totalDmg)
 	return totalDmg
 
 func pickItem(idx):
@@ -156,15 +161,23 @@ func search():
 	Ref.ui.writeSearch()
 	for i in range(-4, 5):
 		for j in range(-4, 5):
+			var cell = pos + Vector2(i, j)
+			if Ref.currentLevel.fog.get_cellv(cell) != 0:
+				continue
 			if pow(i, 2) + pow(j, 2) <= 16:
-				rollPerception(pos + Vector2(i, j))
+				rollPerception(cell)
 
 func rollPerception(cell: Vector2):
 	var perceptionRoll = GeneralEngine.rollDices(Vector2(1, 6))
 	if perceptionRoll > 3:
 		# Detect traps
 		if GLOBAL.traps.has(cell):
-			GLOBAL.traps[cell][GLOBAL.TR_HIDDEN] = false
+			var trap = GLOBAL.traps[cell]
+			if trap[GLOBAL.TR_HIDDEN]:
+				trap[GLOBAL.TR_HIDDEN] = false
+				instance_from_id(trap[GLOBAL.TR_INSTANCE]).visible = true
+				var trapData = Data.traps[trap[GLOBAL.TR_TYPE]]
+				Ref.ui.writeHiddenTrapDetected(trapData[Data.TR_NAME])
 	if perceptionRoll > 5:
 		# Detect doors
 		if GLOBAL.hiddenDoors.has(cell):
