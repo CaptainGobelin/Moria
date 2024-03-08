@@ -1,204 +1,218 @@
 extends Node
 
-onready var reader = get_node("RoomsReader")
-onready var dungeon = get_parent().get_node("Map") as TileMap
+onready var game = get_parent().get_parent()
+onready var roomsReader = get_node("RoomsReader")
+onready var decorator = get_node("DungeonDecorator")
+onready var dungeon: TileMap
 
-onready var neighbours = [Vector2(0,-1), Vector2(1,0), Vector2(0,1), Vector2(-1,0)]
-onready var near1x1 = [Vector2(0,-1), Vector2(1,0), Vector2(0,1), Vector2(-1,0)]
-onready var near2x2 = [Vector2(0,-1), Vector2(1,-1), Vector2(2,0), Vector2(2,1),
-						Vector2(1,2), Vector2(0,2), Vector2(-1,1), Vector2(-1,0)]
-onready var cells1x1 = [Vector2(0,0)]
-onready var cells2x2 = [Vector2(0,0), Vector2(1,0), Vector2(0,1), Vector2(1,1)]
-onready var doorsMapper1x1 = [[Vector2(0,0), Vector2(1,1), Vector2(2,2), Vector2(3,3)]]
-onready var doorsMapper2x2 = [
-	[Vector2(0,0), Vector2(7,3)],
-	[Vector2(1,0), Vector2(2,1)],
-	[Vector2(3,1), Vector2(4,2)],
-	[Vector2(5,2), Vector2(6,3)]]
+# Door: [position:Vector2, direction:String]
+var waitingDoors:Array = []
+var validatedDoors:Array = []
+var array:Array = []
+var arrayFullness = 0
+var trapList: Dictionary = {}
 
-func _ready():
-	reader.read()
-	newGenerate()
-	set_process_input(true)
-
-func _input(event):
-	if (event.is_action_released("ui_accept")):
-		newGenerate()
-
-func initialize():
-	dungeon.clear()
-	for i in range(GLOBAL.SIZE_X):
-		for j in range(GLOBAL.SIZE_Y):
-			for x in range(7):
-				for y in range(7):
-					dungeon.set_cell(i*6+x,j*6+y, 1)
+func newFloor():
+	dungeon = Ref.currentLevel.dungeon as TileMap
+	var retries = 0
+	generate()
+	while !isFloorFull():
+		generate()
+		retries += 1
+	fuseDoorsAndWalls()
+	decorator.init(array)
+	var exits = decorator.placeExits()
+	drawFloor()
+	var criticalPath = Ref.game.pathfinder.a_star(exits[0], exits[2], 9999)
+	decorator.flagCriticalPath(criticalPath)
+	var rooms = decorator.getTreasuresCandidates()
+	for r in rooms.values():
+		for d in r[1]:
+			if randf() < GLOBAL.HIDDEN_DOORS_RATIO:
+				GLOBAL.hiddenDoors.append(d)
+				array[d.x][d.y] = GLOBAL.WALL_ID
+	for t in trapList.values():
+		if randf() < GLOBAL.TRAPPED_ROOMS_RATIO:
+			for _i in range(1 + (randi() % GLOBAL.TRAPS_PER_ROOM)):
+				var trapPos = t[randi() % t.size()]
+				if array[trapPos.x][trapPos.y] == GLOBAL.FLOOR_ID:
+					Ref.currentLevel.placeTrap(trapPos)
+	deleteCorridorDoors()
+	drawFloor()
+	print("Generated after ", retries, " retires.")
+	return exits[0]
 
 func generate():
-	if (not GLOBAL.roomsInitialized):
-		reader.read()
-	initialize()
-	for i in range(GLOBAL.SIZE_X):
-		for j in range(GLOBAL.SIZE_Y):
-			var choice = randi() % GLOBAL.rooms.keys().size()
-			for x in range(1,6):
-				for y in range(1,6):
-					dungeon.set_cell(i*6+x,j*6+y, GLOBAL.rooms[choice][x][y])
-
-func newGenerate():
-	if (not GLOBAL.roomsInitialized):
-		reader.read()
-	initialize()
-	var array = getDungeonArray()
-	var failures = 0
-	while (array == null):
-		failures += 1
-		if (failures >= 100):
-			print("Error !")
-			return
-		array = getDungeonArray()
-	fillDungeon(array)
-	print("Success after: ", failures, " tries.")
-	
-func getDungeonArray():
-	var array:Array = []
-	for i in range(GLOBAL.SIZE_X):
+	if !roomsReader.isInitialized:
+		roomsReader.read()
+	waitingDoors = []
+	validatedDoors = []
+	arrayFullness = 0
+	array = []
+	trapList.clear()
+	for i in range(GLOBAL.FLOOR_SIZE_X):
 		array.append([])
-		for j in range(GLOBAL.SIZE_Y):
-			array[i].append([-1, "0000", false, ""])
-	var randomCell = Vector2(1+randi()%(GLOBAL.SIZE_X-2), 1+randi()%(GLOBAL.SIZE_Y-2))
-	array[randomCell.x][randomCell.y] = [-2, "0100", false, ""]
-	while (true):
-		var list = checkCandidates(array)
-		array[randomCell.x][randomCell.y] = [-1, "0000", false, ""]
-		if (list.empty()):
-			if (checkIsFull(array)):
-				return array
+		for _j in range(GLOBAL.FLOOR_SIZE_Y):
+			array[i].append(GLOBAL.WALL_ID)
+	# Place first room
+	var x = randi() % (GLOBAL.FLOOR_SIZE_X)
+	var y = randi() % (GLOBAL.FLOOR_SIZE_Y)
+	var roomId = randi() % roomsReader.roomsList.size()
+	while !isRoomFits(roomId, Vector2(x, y)):
+		x = randi() % (GLOBAL.FLOOR_SIZE_X)
+		y = randi() % (GLOBAL.FLOOR_SIZE_Y)
+		roomId = randi() % roomsReader.roomsList.size()
+	placeFirstRoom(roomId, Vector2(x, y))
+	# Until floor is full:
+	while (!waitingDoors.empty()):
+		# Take a door from list
+		var doorIndex = randi() % waitingDoors.size()
+		var door = waitingDoors[doorIndex]
+		# Take a random room, try to place it
+		roomId = randi() % roomsReader.roomsList.size()
+		# If it fits place it otherwise test another one
+		var roomDoorIndex = getRoomOppositeDoor(roomId, door[1])
+		if (roomDoorIndex == -1):
+			continue
+		var roomDoor = roomsReader.doorsList[roomId][roomDoorIndex]
+		var position = door[0] - roomDoor[0]
+		var retries = roomsReader.roomsList.size() / 2
+		var placeRoom = false
+		while (!placeRoom and retries > 0):
+			roomId = (roomId + 1) % roomsReader.roomsList.size()
+			# If it fits place it otherwise test another one
+			roomDoorIndex = getRoomOppositeDoor(roomId, door[1])
+			if (roomDoorIndex == -1):
+				retries -= 1
+				continue
+			roomDoor = roomsReader.doorsList[roomId][roomDoorIndex]
+			position = door[0] - roomDoor[0]
+			if isRoomFits(roomId, position):
+				placeRoom = true
+			retries -= 1
+		if placeRoom:
+			placeRoom(roomId, position, roomDoorIndex)
+			# Validate door
+			validatedDoors.append(door[0])
+		# Remove the door from list
+		waitingDoors.remove(doorIndex)
+
+func drawFloor():
+	dungeon.clear()
+	for i in range(GLOBAL.FLOOR_SIZE_X):
+		for j in range(GLOBAL.FLOOR_SIZE_Y):
+			if array[i][j] == -1:
+				dungeon.set_cell(i, j, 1)
 			else:
-				return null
-		var index = randi()%list.size()
-		var roomIndex = randi()%GLOBAL.roomsByDoors[list[index][1]].size()
-		match list[index][2]:
-			"1x1":
-				var cellPos = 0
-				for c in cells1x1:
-					var doorCode = mapDoorsCode(list[index][1], doorsMapper1x1[cellPos])
-					var cell = list[index][0] + c
-					array[cell.x][cell.y][0] = GLOBAL.roomsByDoors[list[index][1]][roomIndex]
-					array[cell.x][cell.y][1] = doorCode
-					array[cell.x][cell.y][2] = (cellPos == 0)
-					array[cell.x][cell.y][3] = list[index][2]
-					cellPos += 1
-			"2x2":
-				var cellPos = 0
-				for c in cells2x2:
-					var doorCode = mapDoorsCode(list[index][1], doorsMapper2x2[cellPos])
-					var cell = list[index][0] + c
-					array
-					[cell.x][cell.y][0] = GLOBAL.roomsByDoors[list[index][1]][roomIndex]
-					array[cell.x][cell.y][1] = doorCode
-					array[cell.x][cell.y][2] = (cellPos == 0)
-					array[cell.x][cell.y][3] = list[index][2]
-					cellPos += 1
+				dungeon.set_cell(i, j, array[i][j])
+	dungeon.update_bitmask_region()
+	for cell in dungeon.get_used_cells_by_id(GLOBAL.DOOR_ID):
+		dungeon.set_cellv(cell, GLOBAL.DOOR_ID, false, false, false, Vector2(0,1))
 
-func fillDungeon(array):
-	for i in range(GLOBAL.SIZE_X):
-		for j in range(GLOBAL.SIZE_Y):
-			if (array[i][j][0] == -1):
-				continue
-			if (!array[i][j][2]):
-				continue
-			var room = GLOBAL.rooms[array[i][j][0]]
-			var n = Vector2(1, 1)
-			match array[i][j][3]:
-				"1x1": n = Vector2(7, 7)
-				"2x2": n = Vector2(13, 13)
-			for x in range(1,n.x):
-				for y in range(1,n.y):
-					dungeon.set_cell(i*6+x, j*6+y, room[x][y])
-
-func checkIsFull(array):
+func getRoomOppositeDoor(roomId, doorDirection):
+	var resultList = []
 	var count = 0
-	for i in range(GLOBAL.SIZE_X):
-		for j in range(GLOBAL.SIZE_Y):
-			if (array[i][j][0] == -1):
-				count += 1
-	return count < 40
-
-func checkCandidates(array):
-	var candidates = []
-	for i in range(GLOBAL.SIZE_X):
-		for j in range(GLOBAL.SIZE_Y):
-			for r in GLOBAL.roomsByDoors.keys():
-				var nearCells = []; var requiredCells = []; var mapper = []; var size = ""
-				match r.length():
-					4:
-						nearCells = near1x1
-						requiredCells = cells1x1
-						mapper = doorsMapper1x1
-						size = "1x1"
-					8:
-						nearCells = near2x2
-						requiredCells = cells2x2
-						mapper = doorsMapper2x2
-						size = "2x2"
-					_:
-						continue
-				var cellPos = -1
-				var totalChecks = 0
-				var toBreak = false
-				for c in requiredCells:
-					cellPos += 1
-					if (!checkCell(Vector2(i,j) + c, array)):
-						break
-					for dir in range(4):
-						var doorCode = mapDoorsCode(r, mapper[cellPos])
-						var check = checkDoors(Vector2(i,j) + c, dir, array, doorCode)
-						if (check == -1):
-							toBreak = true
-							break
-						totalChecks += check
-					if (toBreak):
-						totalChecks = -1
-						break
-				if (totalChecks > 0):
-					candidates.append([Vector2(i,j), r, size])
-	return candidates
-
-func mapDoorsCode(code, mapper):
-	var result = "****"
-	for i in range(mapper.size()):
-		result[mapper[i].y] = code[mapper[i].x]
-	return result
-
-func checkCell(cell, array):
-	if (cell.x < 0 or cell.x >= GLOBAL.SIZE_X):
-		return false
-	if (cell.y < 0 or cell.y >= GLOBAL.SIZE_Y):
-		return false
-	return (array[cell.x][cell.y][0] <= -1)
-
-func checkDoors(cell, direction, array, doorCode):
-	var near = cell + neighbours[direction]
-	if (near.x < 0 or near.x >= GLOBAL.SIZE_X):
+	for d in roomsReader.doorsList[roomId]:
+		if isDoorsOpposites(d[1], doorDirection):
+			resultList.append(count) 
+		count += 1
+	if resultList.empty():
 		return -1
-	if (near.y < 0 or near.y >= GLOBAL.SIZE_Y):
-		return -1
-	if (array[near.x][near.y][0] == -1):
-		return 0
-	match doorCode[direction]:
-		"0":
-			if (array[near.x][near.y][1][(direction+2)%4] == "0"):
-				return 0
-			if (array[near.x][near.y][1][(direction+2)%4] == "*"):
-				return 0
-			else:
-				return -1
-		"1":
-			if (array[near.x][near.y][1][(direction+2)%4] == "1"):
-				return 1
-			if (array[near.x][near.y][1][(direction+2)%4] == "*"):
-				return 0
-			else:
-				return -1
-		_:
-			return -1
+	var resultIndex = randi() % resultList.size()
+	return resultList[resultIndex]
+
+func isRoomFits(roomId, position):
+	for c in roomsReader.roomsList[roomId]:
+		var p = c[0] + position
+		if (p.x < 0 or p.y < 0):
+			return false
+		if (p.x >= GLOBAL.FLOOR_SIZE_X or p.y >= GLOBAL.FLOOR_SIZE_Y):
+			return false
+		if array[p.x][p.y] != GLOBAL.WALL_ID:
+			return false
+	return true
+
+func isFloorFull():
+	return arrayFullness > GLOBAL.FULLNESS_THRESHOLD * (GLOBAL.FLOOR_SIZE_X * GLOBAL.FLOOR_SIZE_Y)
+
+func placeFirstRoom(roomId, position):
+	# Place room tiles
+	for c in roomsReader.roomsList[roomId]:
+		if (c[1] == 1):
+			continue
+		var p = c[0] + position
+		array[p.x][p.y] = c[1]
+		arrayFullness += 1
+	# Place doors
+	for d in roomsReader.doorsList[roomId]:
+		waitingDoors.append([d[0] + position, d[1]])
+	# Place traps
+	var trapPos = []
+	for t in roomsReader.trapsList[roomId]:
+		if t[1]:
+			var p = t[0] + position
+			trapPos.append(p)
+	if trapPos.size() != 0:
+		trapList[trapList.keys().size()] = trapPos
+
+func placeRoom(roomId, position, roomDoorIndex):
+	# Place room tiles
+	for c in roomsReader.roomsList[roomId]:
+		if (c[1] == 1):
+			continue
+		var p = c[0] + position
+		array[p.x][p.y] = c[1]
+		arrayFullness += 1
+	# Place doors
+	var count = 0
+	for d in roomsReader.doorsList[roomId]:
+		if count != roomDoorIndex:
+			waitingDoors.append([d[0] + position, d[1]])
+		count += 1
+	# Place traps
+	var trapPos = []
+	for t in roomsReader.trapsList[roomId]:
+		if t[1]:
+			var p = t[0] + position
+			trapPos.append(p)
+	if trapPos.size() != 0:
+		trapList[trapList.keys().size()] = trapPos
+
+func isDoorsOpposites(a, b):
+	match a:
+		"N": return b == "S"
+		"E": return b == "W"
+		"S": return b == "N"
+		"W": return b == "E"
+	return false
+
+func deleteCorridorDoors():
+	var doorsToRemove = []
+	for d in validatedDoors:
+		if GLOBAL.hiddenDoors.has(d):
+			continue
+		if randf() < GLOBAL.DOOR_REDUCTION_RATIO:
+			continue
+		var count = 0
+		for di in range(-1, 2):
+			for dj in range(-1, 2):
+				if array[d.x+di][d.y+dj] != GLOBAL.FLOOR_ID:
+					count += 1
+		if count <= 3:
+			for di in range(-1, 2):
+				for dj in range(-1, 2):
+					array[d.x+di][d.y+dj] = GLOBAL.FLOOR_ID
+			doorsToRemove.append(d)
+		if count >= 7:
+			array[d.x][d.y] = GLOBAL.FLOOR_ID
+			doorsToRemove.append(d)
+	for d in doorsToRemove:
+		validatedDoors.erase(d)
+ 
+func fuseDoorsAndWalls():
+	for d in validatedDoors:
+		array[d.x][d.y] = GLOBAL.DOOR_ID
+	for i in range(GLOBAL.FLOOR_SIZE_X):
+		for j in range(GLOBAL.FLOOR_SIZE_Y):
+			if array[i][j] == -1:
+				array[i][j] = GLOBAL.WALL_ID
