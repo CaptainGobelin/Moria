@@ -200,8 +200,8 @@ const SP_AREA = 8
 const spells = {
 	0: [\"Magic Missile\", 1, SC_EVOCATION, [true, false, false], PROJ_PURPLE_S, 0, 15, SP_TARGET_TARGET, 0],
 	1: [\"Heal\", 1, SC_EVOCATION, [false, true, true], null, 2, 5, SP_TARGET_SELF, 0],
-	2: [\"Bless\", 1, SC_ENCHANTEMENT, [false, true, true], null, 1, 10, SP_TARGET_SELF, 0],
-	3: [\"Fireball\", 3, SC_EVOCATION, [true, false, false], PROJ_RED_L, 5, 10, SP_TARGET_TARGET, 3],
+	2: [\"Bless\", 1, SC_ENCHANTEMENT, [false, true, true], null, 17, 10, SP_TARGET_SELF, 0],
+	3: [\"Fireball\", 3, SC_EVOCATION, [true, false, false], PROJ_RED_L, 10, 10, SP_TARGET_TARGET, 3],
 }
 
 const STATUS_BLESSED = 6

@@ -13,12 +13,19 @@ margin_right = 153.0
 margin_bottom = 17.0
 color = Color( 0.247059, 0.313726, 0.247059, 1 )
 
+[node name="Selected2" type="ColorRect" parent="Selected"]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 152.0
+margin_bottom = 16.0
+color = Color( 0.172549, 0.227451, 0.219608, 1 )
+
 [node name="Icon" type="Sprite" parent="."]
 position = Vector2( 1, 1 )
 texture = ExtResource( 3 )
 centered = false
-hframes = 6
-vframes = 6
+hframes = 5
+vframes = 15
 
 [node name="TextContainer" type="Node2D" parent="."]
 position = Vector2( 18, 0 )
