@@ -30,8 +30,8 @@ func hit(entity):
 		var result = GeneralEngine.rollDices(stats.hitDices)
 		if result >= entity.stats.ca:
 			var rolledDmg = GeneralEngine.rollDices(stats.dmgDices)
+			Ref.ui.writeMonsterStrike(stats.entityName, result, entity.stats.ca)
 			var dmg = entity.takeHit(rolledDmg)
-			Ref.ui.writeMonsterStrike(stats.entityName, dmg, result, entity.stats.ca)
 		else:
 			Ref.ui.writeMonsterMiss(stats.entityName, result, entity.stats.ca)
 
@@ -55,15 +55,14 @@ func checkDmg(dmg):
 	return dmg - stats.prot
 
 func takeHit(dmg):
-	Ref.ui.write("The Skeleton takes " + String(dmg) + " damages.")
 	stats.currentHp -= dmg
-	Ref.ui.writeMonsterTakeHit(dmg)
+	Ref.ui.writeMonsterTakeHit(stats.entityName, dmg)
 	if stats.currentHp <= 0:
 		die()
 
 func die():
 	status = "dead"
-	Ref.ui.write("The Skeleton dies.")
+	Ref.ui.writeMonsterDie(stats.entityName)
 	if GLOBAL.monstersByPosition.has(pos):
 		GLOBAL.monstersByPosition.erase(pos)
 	GLOBAL.targets.erase(get_instance_id())

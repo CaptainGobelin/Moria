@@ -150,9 +150,12 @@ func writeMonsterMiss(name: String, hit: int, ca: int):
 	msg += " (rolled " + String(hit) + " vs " + String(ca) + ")."
 	write(msg)
 
-func writeMonsterTakeHit(dmg: int):
+func writeMonsterTakeHit(name: String, dmg: int):
 	var msg = "The " + name + " suffers " + String(dmg) + " damages."
 	write(color(msg, "yellow"))
+
+func writeMonsterDie(name: String):
+	write(color("The " + name + " dies.", "yellow"))
 
 func writeQuaffedPotion(potion: String):
 	write("You quaffed the " + potion + ".")
