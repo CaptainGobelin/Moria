@@ -2,10 +2,12 @@ extends Node
 
 var currentWeapon = -1
 var currentArmor = -1
+var currentTalismans = Vector2(-1, -1)
 
 var weapons = []
 var armors = []
 var potions = []
+var talismans = []
 var lockpicks = 0 setget updateLockpicks
 
 func init():
@@ -43,7 +45,14 @@ func getPotionRows():
 	for d in dict.keys():
 		result.append(dict[d])
 	return result
-	
+
+func getTalismanRows():
+	var result = []
+	for t in talismans:
+		var current = GLOBAL.items[t]
+		var equiped = currentTalismans.x == t or currentTalismans.y == t
+		result.append([GLOBAL.TA_TYPE, t, current[GLOBAL.IT_NAME], equiped, current[GLOBAL.IT_ICON]])
+	return result
 
 func switchWeapon(idx):
 	if currentWeapon == idx:

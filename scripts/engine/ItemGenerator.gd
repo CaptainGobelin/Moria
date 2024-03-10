@@ -16,7 +16,7 @@ const TA_IDX = 2
 const TH_IDX = 3
 const SC_IDX = 4
 const PO_IDX = 5
-const TYPE_PROB = [1.2, 0.2, 0.0, 0.0, 0.0, 0.5]
+const TYPE_PROB = [0.02, 0.02, 1.0, 0.0, 0.0, 0.5]
 
 var id = -1
 
@@ -33,6 +33,7 @@ func generateItem(rarity: int):
 		WP_IDX: return generateWeapon(rarity)
 		AR_IDX: return generateArmor(rarity)
 		PO_IDX: return generatePotion(rarity)
+		TA_IDX: return generateTalisman(rarity)
 		_: return null
 
 func generateWeapon(rarity: int):
@@ -66,6 +67,10 @@ func generateWeapon(rarity: int):
 		3: base[Data.W_NAME] = "flawless " + base[Data.W_NAME]
 	base[Data.W_NAME][0] = base[Data.W_NAME][0].capitalize()
 	GLOBAL.items[id] = mapWeaponToItem(base)
+	GLOBAL.items[id][GLOBAL.IT_SPEC] = enchants.duplicate()
+	var count = 0
+	for e in enchants:
+		GLOBAL.items[id][GLOBAL.IT_SPEC][count] = Data.wpEnchants[e][Data.WP_EN_ID]
 	return id
 
 func mapWeaponToItem(weapon):
@@ -121,6 +126,28 @@ func mapPotionToItem(potion):
 	item[GLOBAL.IT_STACK] = potion[Data.PO_STACK]
 	return item
 
+func generateTalisman(rarity: int):
+	var baseIdx = Utils.chooseRandom(Data.talismans.keys())
+	var base  = Data.talismans[baseIdx]
+	id += 1
+	GLOBAL.items[id] = mapTalismanToItem(base)
+	var enchant  = generateTalismanEnchant(rarity)
+	if enchant[0] == GLOBAL.AR_TYPE:
+		GLOBAL.items[id][GLOBAL.IT_NAME] += (" " + Data.arEnchants[enchant[1]][Data.AR_EN_SUF])
+	else:
+		GLOBAL.items[id][GLOBAL.IT_NAME] += (" " + Data.taEnchants[enchant[1]][Data.TA_EN_SUF])
+	GLOBAL.items[id][GLOBAL.IT_NAME][0] = GLOBAL.items[id][GLOBAL.IT_NAME][0].capitalize()
+	GLOBAL.items[id][GLOBAL.IT_SPEC] = enchant
+	return id
+
+func mapTalismanToItem(talisman):
+	var item  = []
+	item.resize(GLOBAL.IT_STACK + 1)
+	item[GLOBAL.IT_ICON] = Utils.chooseRandom(talisman[Data.TA_ICONS])
+	item[GLOBAL.IT_NAME] = Utils.chooseRandom(talisman[Data.TA_NAMES])
+	item[GLOBAL.IT_TYPE] = GLOBAL.TA_TYPE
+	return item
+
 func generateItemQuality(rarity: int):
 	var rnd = randf()
 	for i in range(0, 3):
@@ -150,6 +177,12 @@ func generateWeaponEnchant(rarity: int, quality: int):
 		return [0]
 	return []
 
+func generateTalismanEnchant(rarity: int):
+	if randf() < 0.5:
+		return rndArmorEnchant()
+	else:
+		return rndTalismanEnchant()
+
 func lowValueWeaponEnchant(forbidden = -1):
 	var result = forbidden
 	while result == forbidden:
@@ -165,3 +198,9 @@ func rndWeaponEnchant(forbidden = -1):
 		while result == forbidden:
 			result = randi() % 7 + 100
 	return result
+
+func rndArmorEnchant():
+	return [GLOBAL.AR_TYPE, Utils.chooseRandom(Data.arEnchants.keys())]
+
+func rndTalismanEnchant():
+	return [GLOBAL.TA_TYPE, Utils.chooseRandom(Data.taEnchants.keys())]

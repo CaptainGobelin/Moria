@@ -120,6 +120,7 @@ func dropItem():
 	var item = Ref.game.itemGenerator.generateItem(rarity)
 	if item == null:
 		return
+	print(GLOBAL.items[item][GLOBAL.IT_NAME])
 	var loot = lootScene.instance()
 	loots.add_child(loot)
 	loot.init(item, cell)

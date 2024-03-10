@@ -45,7 +45,7 @@ func newFloor():
 		Ref.currentLevel.spawnMonster()
 	for _i in range(0):
 		Ref.currentLevel.createChest()
-	for _i in range(0):
+	for _i in range(20):
 		Ref.currentLevel.dropItem()
 
 func _input(event):

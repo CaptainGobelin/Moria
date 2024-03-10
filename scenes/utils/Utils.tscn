@@ -29,6 +29,9 @@ func makeList(array: Array):
 			result += \" and \" + s
 		count += 1
 	return result
+
+func chooseRandom(array: Array):
+	return array[randi() % array.size()]
 "
 
 [node name="Utils" type="Node"]

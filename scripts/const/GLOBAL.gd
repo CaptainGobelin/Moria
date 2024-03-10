@@ -20,6 +20,7 @@ const VIEW_RANGE = 8
 const INV_WEAPONS = 0
 const INV_ARMORS = 1
 const INV_POTIONS = 3
+const INV_TALSMANS = 5
 
 const CHAR_SKILLS = 0
 const CHAR_FEATS = 1
@@ -28,6 +29,7 @@ const CHAR_STATUSES = 2
 const WP_TYPE = 0
 const AR_TYPE = 1
 const PO_TYPE = 2
+const TA_TYPE = 3
 
 const IT_TYPE = 0
 const IT_NAME = 1

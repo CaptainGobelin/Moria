@@ -80,5 +80,7 @@ func setTab(tab, row = 0, startRow = 0):
 			itemList.init(Ref.character.inventory.getArmorRows(), row, GLOBAL.AR_TYPE, startRow)
 		GLOBAL.INV_POTIONS:
 			itemList.init(Ref.character.inventory.getPotionRows(), row, GLOBAL.PO_TYPE, startRow)
+		GLOBAL.INV_TALSMANS:
+			itemList.init(Ref.character.inventory.getTalismanRows(), row, GLOBAL.TA_TYPE, startRow)
 		_:
 			itemList.init([], row, 0)

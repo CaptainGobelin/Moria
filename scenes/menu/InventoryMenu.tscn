@@ -59,7 +59,7 @@ show_behind_parent = true
 position = Vector2( 144, 0 )
 script = SubResource( 1 )
 
-[node name="Talisman" parent="Tabs" instance=ExtResource( 1 )]
+[node name="Talismans" parent="Tabs" instance=ExtResource( 1 )]
 show_behind_parent = true
 position = Vector2( 180, 0 )
 script = SubResource( 1 )

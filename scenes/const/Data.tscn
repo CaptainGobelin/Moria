@@ -54,51 +54,23 @@ const W_ENCH = 5
 const W_2H = 6
 const W_ICON = 7
 const weapons = {
-	0: [\"club\",			Vector2(1, 12),		Vector2(1, 6),		\"B\",	0,	0.4,false, 	15],
-	1: [\"dagger\",		Vector2(1, 12),		Vector2(1, 4),		\"S\",	1,	1.5,false, 	3],
-	2: [\"hatchet\",		Vector2(1, 8),		Vector2(1, 8),		\"S\",	1,	0.8,false, 	6],
-	3: [\"mace\",			Vector2(1, 8),		Vector2(2, 10),		\"B\",	2,	1.0,false, 	7],
-	4: [\"shortsword\",	Vector2(1, 8),		Vector2(2, 6),		\"S\",	3,	1.2,false, 	10],
-	5: [\"hand axe\",		Vector2(1, 4),		Vector2(2, 8),		\"S\",	4,	1.6,false, 	1],
-	6: [\"longsword\",	Vector2(1, 4),		Vector2(2, 10),		\"S\",	5,	2.0,false, 	2],
-	7: [\"morning star\",	Vector2(1, 4),		Vector2(3, 6),		\"-\",	6,	2.0,false, 	13],
+	0: [\"club\",			Vector2(1, 12),		Vector2(1, 6),		\"B\",	0,	0.4,false, 	0],
+	1: [\"dagger\",		Vector2(1, 12),		Vector2(1, 4),		\"S\",	1,	1.5,false, 	1],
+	2: [\"hatchet\",		Vector2(1, 8),		Vector2(1, 8),		\"S\",	1,	0.8,false, 	2],
+	3: [\"mace\",			Vector2(1, 8),		Vector2(2, 10),		\"B\",	2,	1.0,false, 	3],
+	4: [\"shortsword\",	Vector2(1, 8),		Vector2(2, 6),		\"S\",	3,	1.2,false, 	4],
+	5: [\"hand axe\",		Vector2(1, 4),		Vector2(2, 8),		\"S\",	4,	1.6,false, 	5],
+	6: [\"longsword\",	Vector2(1, 4),		Vector2(2, 10),		\"S\",	5,	2.0,false, 	6],
+	7: [\"morning star\",	Vector2(1, 4),		Vector2(3, 6),		\"-\",	6,	2.0,false, 	7],
 	
-	8: [\"staff\",		Vector2(1, 12),		Vector2(1, 8),		\"B\",	0,	2.0,true, 	0],
-	9: [\"greatclub\",	Vector2(1, 12),		Vector2(1, 10),		\"B\",	1,	0.4,true, 	14],
-	10:[\"felling axe\",	Vector2(1, 8),		Vector2(2, 6),		\"S\",	2,	0.8,true, 	5],
-	11:[\"maul\",			Vector2(1, 8),		Vector2(3, 6),		\"B\",	3,	1.2,true, 	12],
-	12:[\"broadsword\",	Vector2(1, 8),		Vector2(2, 12),		\"S\",	4,	1.2,true, 	4],
-	13:[\"halberd\",		Vector2(1, 4),		Vector2(3, 10),		\"S\",	5,	1.5,true, 	9],
-	14:[\"greataxe\",		Vector2(1, 4),		Vector2(3, 12),		\"S\",	6,	1.8,true, 	11],
-	15:[\"zweihander\",	Vector2(1, 4),		Vector2(4, 8),		\"S\",	6,	2.0,true, 	8],
-}
-
-const ENCH_FIRE_WP = 0
-const ENCH_ACID_WP = 1
-const ENCH_SHOCK_WP = 2
-const ENCH_SPEED_WP = 3
-const ENCH_VORP_WP = 4
-
-const WP_EN_PRE = 0
-const WP_EN_SUF = 1
-
-const wpEnchants = {
-	0: [null, \"+1\"],
-	1: [null, \"+2\"],
-	
-	100: [\"flaming\", \"of fire\"],
-	101: [\"shocking\", \"of shock\"],
-	102: [\"blessed\", \"of holy wrath\"],
-	103: [\"antimagic\", \"of dispel\"],
-	104: [\"venomous\", \"of poison\"],
-	105: [\"sharp\", \"of slaying\"],
-	106: [\"freezing\", \"of frost\"],
-	
-	200: [\"acidic\", \"of acid\"],
-	201: [\"vampiric\", \"of draining\"],
-	202: [\"balanced\", \"of precision\"],
-	203: [null, \"of speed\"],
-	204: [\"vorpal\", null],
+	8: [\"staff\",		Vector2(1, 12),		Vector2(1, 8),		\"B\",	0,	2.0,true, 	8],
+	9: [\"greatclub\",	Vector2(1, 12),		Vector2(1, 10),		\"B\",	1,	0.4,true, 	9],
+	10:[\"felling axe\",	Vector2(1, 8),		Vector2(2, 6),		\"S\",	2,	0.8,true, 	10],
+	11:[\"maul\",			Vector2(1, 8),		Vector2(3, 6),		\"B\",	3,	1.2,true, 	11],
+	12:[\"broadsword\",	Vector2(1, 8),		Vector2(2, 12),		\"S\",	4,	1.2,true, 	12],
+	13:[\"halberd\",		Vector2(1, 4),		Vector2(3, 10),		\"S\",	5,	1.5,true, 	13],
+	14:[\"greataxe\",		Vector2(1, 4),		Vector2(3, 12),		\"S\",	6,	1.8,true, 	14],
+	15:[\"zweihander\",	Vector2(1, 4),		Vector2(4, 8),		\"S\",	6,	2.0,true, 	15],
 }
 
 var weaponsByRarity = {}
@@ -122,17 +94,6 @@ const armors = {
 	2: [\"brigandine\",		7,	1,	2,	20, 1.0],
 	3: [\"scalemail\",		8,	1,	3,	21, 1.0],
 	4: [\"full plate\",		9,	2,	4,	22, 1.0],
-}
-
-const ENCH_FIRE_RES = 0
-
-const AR_EN_SUF = 0
-const AR_EN_RAR = 1
-const AR_EN_ALLOWED = 2
-
-const arEnchants = {
-	0: [\"of fire resistance\", 1, [0]],
-	1: [\"of poison resistance\", 0, [0]],
 }
 
 var armorsByRarity = {}
@@ -163,6 +124,72 @@ func potionsReader():
 		if !potionsByRarity.has(rarity):
 			potionsByRarity[rarity] = []
 		potionsByRarity[rarity].append(idx)
+
+const TA_NAMES = 0
+const TA_ICONS = 1
+const talismans = {
+	0: [[\"belt\"], [42, 43]],
+	1: [[\"cloak\", \"cape\", \"mantle\"], [44, 45]],
+	2: [[\"amulet\", \"necklace\", \"medallion\"], [46, 47, 52, 53]],
+	3: [[\"ring\"], [48, 49, 50, 51]],
+}
+
+const ENCH_1_WP = 0
+const ENCH_2_WP = 1
+const ENCH_3_WP = 2
+const ENCH_FIRE_DMG = 3
+const ENCH_FROST_DMG = 4
+const ENCH_SHOCK_DMG = 5
+const ENCH_HOLY_WP = 6
+const ENCH_ANTIMAGIC_WP = 7
+const ENCH_POISON_DMG = 8
+const ENCH_SLAY_WP = 9
+const ENCH_SPEED_WP = 50
+const ENCH_VORP_WP = 51
+const ENCH_ACID_DMG = 52
+const ENCH_VAMPIRIC_WP = 53
+const ENCH_PRECISED_WP = 54
+const ENCH_FIRE_RES = 100
+const ENCH_POISON_RES = 101
+const ENCH_PROTECT = 200
+
+const WP_EN_PRE = 0
+const WP_EN_SUF = 1
+const WP_EN_ID = 2
+const wpEnchants = {
+	0: [null, \"+1\", 0],
+	1: [null, \"+2\", 1],
+	
+	100: [\"flaming\", \"of fire\", 3],
+	101: [\"shocking\", \"of shock\", 5],
+	102: [\"blessed\", \"of holy wrath\", 6],
+	103: [\"antimagic\", \"of dispel\", 7],
+	104: [\"venomous\", \"of poison\", 8],
+	105: [\"sharp\", \"of slaying\", 9],
+	106: [\"freezing\", \"of frost\", 4],
+	
+	200: [\"acidic\", \"of acid\", 52],
+	201: [\"vampiric\", \"of draining\", 53],
+	202: [\"balanced\", \"of precision\", 54],
+	203: [null, \"of speed\", 50],
+	204: [\"vorpal\", null, 51],
+}
+
+const AR_EN_SUF = 0
+const AR_EN_RAR = 1
+const AR_EN_ALLOWED = 2
+const AR_EN_ID = 3
+const arEnchants = {
+	0: [\"of fire resistance\", 1, [0], 100],
+	1: [\"of poison resistance\", 0, [0], 101],
+}
+
+const TA_EN_SUF = 0
+const TA_EN_RAR = 1
+const TA_EN_ID = 2
+const taEnchants = {
+	0: [\"of protection\", 1, 200],
+}
 
 const SP_MAGIC_MISSILE = 0
 const SP_HEAL = 1
