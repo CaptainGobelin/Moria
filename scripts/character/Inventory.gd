@@ -95,3 +95,17 @@ func equipArmor(idx):
 	var stats = get_parent().stats
 	stats.ca = GLOBAL.items[idx][GLOBAL.IT_CA]
 	stats.prot = GLOBAL.items[idx][GLOBAL.IT_PROT]
+
+func switchTalisman(idx):
+	if currentTalismans.x == idx:
+		currentTalismans.x = currentTalismans.y
+		currentTalismans.y = -1
+	elif currentTalismans.y == idx:
+		currentTalismans.y = -1
+	elif currentTalismans.x == -1:
+		currentTalismans.x = idx
+	elif currentTalismans.y == -1:
+		currentTalismans.y = idx
+	else:
+		currentTalismans.x = currentTalismans.y
+		currentTalismans.y = idx

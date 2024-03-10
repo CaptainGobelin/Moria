@@ -43,7 +43,7 @@ func newFloor():
 	GLOBAL.itemsOnFloor.clear()
 	for _i in range(10):
 		Ref.currentLevel.spawnMonster()
-	for _i in range(0):
+	for _i in range(5):
 		Ref.currentLevel.createChest()
 	for _i in range(8):
 		Ref.currentLevel.dropItem()

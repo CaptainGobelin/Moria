@@ -133,6 +133,8 @@ func switchItem(idx):
 			inventory.switchWeapon(idx)
 		GLOBAL.AR_TYPE:
 			inventory.switchArmor(idx)
+		GLOBAL.TA_TYPE:
+			inventory.switchTalisman(idx)
 
 func equipItem(idx):
 	var item = GLOBAL.items[idx]
