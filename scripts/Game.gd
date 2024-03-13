@@ -25,22 +25,22 @@ func newFloor():
 		Ref.currentLevel.searched.append([])
 		for _j in range(GLOBAL.FLOOR_SIZE_Y):
 			Ref.currentLevel.searched[i].append(false)
-	var spawnPos = dungeonGenerator.newFloor()
-	Ref.currentLevel.initShadows()
-	Ref.currentLevel.placeCharacter(spawnPos)
 	for m in Ref.currentLevel.monsters.get_children():
-		m.queue_free()
+		m.free()
 	for c in Ref.currentLevel.chests.get_children():
-		c.queue_free()
+		c.free()
 	GLOBAL.chests.clear()
 	for t in Ref.currentLevel.traps.get_children():
-		t.queue_free()
+		t.free()
 	GLOBAL.traps.clear()
 	for l in Ref.currentLevel.loots.get_children():
-		l.queue_free()
+		l.free()
 	for i in GLOBAL.itemsOnFloor.keys():
 		GLOBAL.items.erase(i)
 	GLOBAL.itemsOnFloor.clear()
+	var spawnPos = dungeonGenerator.newFloor()
+	Ref.currentLevel.initShadows()
+	Ref.currentLevel.placeCharacter(spawnPos)
 	for _i in range(10):
 		Ref.currentLevel.spawnMonster()
 	for _i in range(5):
