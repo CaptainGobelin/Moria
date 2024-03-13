@@ -5,6 +5,7 @@ const FLOOR_SIZE_Y = 19
 const FULLNESS_THRESHOLD = 0.44
 const DOOR_REDUCTION_RATIO = 0.25
 const HIDDEN_DOORS_RATIO = 0.16
+const LOCKED_DOORS_RATIO = 1.2
 const TRAPPED_ROOMS_RATIO = 0.15
 const TRAPS_PER_ROOM = 3
 
@@ -58,6 +59,7 @@ const TR_INSTANCE = 2
 var traps: Dictionary = {}
 
 var hiddenDoors: Array = []
+var lockedDoors: Array = []
 
 var targets: Dictionary = {}
 

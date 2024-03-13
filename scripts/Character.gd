@@ -36,9 +36,23 @@ func moveAsync(movement):
 		return
 	match cellState[1]:
 		"door": 
-			Ref.currentLevel.openDoor(pos + movement)
-			GeneralEngine.newTurn()
-			Ref.currentLevel.refresh_view()
+			if GLOBAL.lockedDoors.has(pos + movement):
+				if inventory.lockpicks == 0:
+					Ref.ui.noLockpicksDoor()
+					return
+				Ref.ui.askToPickDoor(3)
+				Ref.ui.askForYesNo()
+				var coroutineReturn = yield(Ref.ui, "coroutine_signal")
+				if (coroutineReturn):
+					if attemptLockpick(3):
+						GLOBAL.lockedDoors.erase(pos + movement)
+						Ref.currentLevel.openDoor(pos + movement)
+						GeneralEngine.newTurn()
+						Ref.currentLevel.refresh_view()
+			else:
+				Ref.currentLevel.openDoor(pos + movement)
+				GeneralEngine.newTurn()
+				Ref.currentLevel.refresh_view()
 		"monster":
 			hit(cellState[2])
 			GeneralEngine.newTurn()

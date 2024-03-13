@@ -133,7 +133,7 @@ func addChest(cell: Vector2, rarityBonus: int):
 	chest.position = cell * 9
 	GLOBAL.chests[chest.get_instance_id()] = [cell, [], false, 0]
 	if randf() < 0.5:
-		GLOBAL.chests[chest.get_instance_id()][3] = 3
+		GLOBAL.chests[chest.get_instance_id()][GLOBAL.CH_LOCKED] = 3
 	var quantity = randi() % 3 + 1
 	for _i in range(quantity):
 		var rarity = (randi() % 1) + rarityBonus

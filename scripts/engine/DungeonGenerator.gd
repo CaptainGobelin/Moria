@@ -50,6 +50,11 @@ func newFloor():
 			if randf() < GLOBAL.HIDDEN_DOORS_RATIO:
 				GLOBAL.hiddenDoors.append(d)
 				array[d.x][d.y] = GLOBAL.WALL_ID
+	# Lock doors
+	for r in rooms[0].values():
+		for d in r[1]:
+			if randf() < GLOBAL.LOCKED_DOORS_RATIO:
+				GLOBAL.lockedDoors.append(d)
 	# Place traps
 	for t in trapList.values():
 		if randf() < GLOBAL.TRAPPED_ROOMS_RATIO:

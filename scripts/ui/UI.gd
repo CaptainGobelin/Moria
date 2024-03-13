@@ -93,6 +93,11 @@ func askToPickChest(dd: int):
 	msg += String(dd) + " (Y/n)"
 	write(color(msg, "yellow"))
 
+func askToPickDoor(dd: int):
+	var msg = "The door is locked. Do you want to pick the lock? DD"
+	msg += String(dd) + " (Y/n)"
+	write(color(msg, "yellow"))
+
 func writeLockpickSuccess(rolled: int):
 	var msg = "You successfully picked the lock ! (rolled "
 	msg +=  String(rolled) + ")"
@@ -105,6 +110,9 @@ func writeLockpickFailure(rolled: int):
 
 func noLockpicksChest():
 	write("The chest is locked and you don't have any lockpicks to pick it.")
+
+func noLockpicksDoor():
+	write("The door is locked and you don't have any lockpicks to pick it.")
 
 func writeSearch():
 	write("You look for hidden secrets around you...")
