@@ -21,6 +21,7 @@ func _ready():
 func newFloor():
 	GLOBAL.traps.clear()
 	GLOBAL.hiddenDoors.clear()
+	GLOBAL.lockedDoors.clear()
 	for i in range(GLOBAL.FLOOR_SIZE_X):
 		Ref.currentLevel.searched.append([])
 		for _j in range(GLOBAL.FLOOR_SIZE_Y):

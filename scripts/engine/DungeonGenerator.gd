@@ -63,6 +63,8 @@ func newFloor():
 				if array[trapPos.x][trapPos.y] == GLOBAL.FLOOR_ID:
 					Ref.currentLevel.placeTrap(trapPos)
 	drawFloor()
+	# Draw entry
+	dungeon.set_cellv(exits[1], GLOBAL.PASS_ID, false, false, false, Vector2(2, 0))
 	print("Generated after ", retries, " retires.")
 	return exits[0]
 
