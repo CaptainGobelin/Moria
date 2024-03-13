@@ -31,7 +31,7 @@ func hit(entity):
 		if result >= entity.stats.ca:
 			var rolledDmg = GeneralEngine.rollDices(stats.dmgDices)
 			Ref.ui.writeMonsterStrike(stats.entityName, result, entity.stats.ca)
-			var dmg = entity.takeHit(rolledDmg)
+			entity.takeHit(rolledDmg)
 		else:
 			Ref.ui.writeMonsterMiss(stats.entityName, result, entity.stats.ca)
 

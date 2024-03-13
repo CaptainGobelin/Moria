@@ -114,19 +114,20 @@ func spawnMonster():
 	monster.spawn(0)
 	monster.setPosition(cell)
 
-func dropItem():
-	var cell = getRandomFreeCell()
-	var rarity = randi() % 7
+func addLoot(cell: Vector2, rarityBonus: int):
+	var rarity = (randi() % 1) + rarityBonus
 	var item = Ref.game.itemGenerator.generateItem(rarity)
 	if item == null:
 		return
-#	print(GLOBAL.items[item][GLOBAL.IT_NAME])
 	var loot = lootScene.instance()
 	loots.add_child(loot)
 	loot.init(item, cell)
 
-func createChest():
+func dropItem():
 	var cell = getRandomFreeCell()
+	addLoot(cell, 0)
+
+func addChest(cell: Vector2, rarityBonus: int):
 	var chest = chestScene.instance()
 	chests.add_child(chest)
 	chest.position = cell * 9
@@ -135,9 +136,13 @@ func createChest():
 		GLOBAL.chests[chest.get_instance_id()][3] = 3
 	var quantity = randi() % 3 + 1
 	for _i in range(quantity):
-		var rarity = randi() % 7
+		var rarity = (randi() % 1) + rarityBonus
 		var item = Ref.game.itemGenerator.generateItem(rarity)
 		GLOBAL.chests[chest.get_instance_id()][GLOBAL.CH_CONTENT].append(item)
+
+func createChest():
+	var cell = getRandomFreeCell()
+	addChest(cell, 0)
 
 func placeTrap(pos: Vector2):
 	if GLOBAL.traps.has(pos):

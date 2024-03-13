@@ -1,17 +1,53 @@
 extends Node
 
+const neighbours = [
+	Vector2(1, 0), Vector2(1, 1), Vector2(0, 1),
+	Vector2(-1, 1), Vector2(-1, 0), Vector2(-1, -1),
+	Vector2(0, -1), Vector2(1, -1),
+	Vector2(1, 0), Vector2(1, 1), Vector2(0, 1),
+	Vector2(-1, 1), Vector2(-1, 0), Vector2(-1, -1)
+]
+
 var array: Array
 var borders: Dictionary
 var analyzed: Array
+var flags: Array
 
 func init(dungeon: Array):
 	analyzed = []
+	flags = []
 	for i in range(GLOBAL.FLOOR_SIZE_X):
 		analyzed.append([])
+		flags.append([])
 		for _j in range(GLOBAL.FLOOR_SIZE_Y):
 			analyzed[i].append(false)
+			flags[i].append(-3)
 	array = dungeon
 
+# Flag cells for chest and creatures placement
+# Flag 1 is for chest, 2 is for creatures
+func flagMap():
+	for i in range(1, GLOBAL.FLOOR_SIZE_X - 1):
+		for j in range(1, GLOBAL.FLOOR_SIZE_Y - 1):
+			if array[i][j] != GLOBAL.FLOOR_ID:
+				flags[i][j] = -2
+				continue
+			var count = 0
+			for n in neighbours:
+				var pos = Vector2(i, j) + n
+				if array[pos.x][pos.y] == GLOBAL.DOOR_ID:
+					flags[i][j] = -1
+					break
+				if array[pos.x][pos.y] != GLOBAL.FLOOR_ID:
+					count = 0
+				else:
+					count += 1
+				if count == 3:
+					flags[i][j] = 1
+				if count == 6:
+					flags[i][j] = 2
+
+# Set everw cell analyzed to true for all critical rooms
 func flagCriticalPath(path: Array):
 	for p in path:
 		if analyzed[p.x][p.y]:
@@ -19,9 +55,11 @@ func flagCriticalPath(path: Array):
 		flood(p.x, p.y)
 
 # Detect possible treasure rooms return dict of [roomCells, doorCell]
+# First entry of the dict contains the keys of dead end rooms
 func getTreasuresCandidates():
 	var rooms = {}
 	var roomId = 0
+	var deadends = []
 	for i in range(GLOBAL.FLOOR_SIZE_X):
 		for j in range(GLOBAL.FLOOR_SIZE_Y):
 			if analyzed[i][j]:
@@ -30,8 +68,14 @@ func getTreasuresCandidates():
 				var floodResult = flood(i, j)
 				if floodResult[0].size() != 0:
 					rooms[roomId] = floodResult
+					# We don't want to add corridors
+					if floodResult[1].size() == 1 and floodResult[0].size() < 25:
+						for cell in floodResult[0]:
+							if floodResult[0][0].x != cell.x and floodResult[0][0].y != cell.y:
+								deadends.append(roomId)
+								break
 					roomId += 1
-	return rooms
+	return [rooms, deadends]
 
 # Recursive function to return a room with [roomCells, doorsCell]
 func flood(i: int, j: int):

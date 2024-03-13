@@ -22,22 +22,41 @@ func newFloor():
 	fuseDoorsAndWalls()
 	decorator.init(array)
 	var exits = decorator.placeExits()
+	deleteCorridorDoors()
 	drawFloor()
 	var criticalPath = Ref.game.pathfinder.a_star(exits[0], exits[2], 9999)
 	decorator.flagCriticalPath(criticalPath)
 	var rooms = decorator.getTreasuresCandidates()
-	for r in rooms.values():
+	decorator.flagMap()
+	# Place tresor rooms
+	var nTreasures = max(0, ((randi() % 6) - 1) / 2) +20
+	for _i in range(nTreasures):
+		if rooms[1].size() == 0:
+			continue
+		var room = Utils.chooseRandom(rooms[1])
+		rooms[1].erase(room)
+		for _j in range(randi() % 10):
+			var cell = Utils.chooseRandom(rooms[0][room][0])
+			if randf() < 0.2:
+				if decorator.flags[cell.x][cell.y] == 1:
+					Ref.currentLevel.addLoot(cell, 1)
+			elif randf() < 0.45:
+				if decorator.flags[cell.x][cell.y] == 1:
+					Ref.currentLevel.addChest(cell, 1)
+			decorator.flags[cell.x][cell.y] = 0
+	# Hide doors
+	for r in rooms[0].values():
 		for d in r[1]:
 			if randf() < GLOBAL.HIDDEN_DOORS_RATIO:
 				GLOBAL.hiddenDoors.append(d)
 				array[d.x][d.y] = GLOBAL.WALL_ID
+	# Place traps
 	for t in trapList.values():
 		if randf() < GLOBAL.TRAPPED_ROOMS_RATIO:
 			for _i in range(1 + (randi() % GLOBAL.TRAPS_PER_ROOM)):
 				var trapPos = t[randi() % t.size()]
 				if array[trapPos.x][trapPos.y] == GLOBAL.FLOOR_ID:
 					Ref.currentLevel.placeTrap(trapPos)
-	deleteCorridorDoors()
 	drawFloor()
 	print("Generated after ", retries, " retires.")
 	return exits[0]
