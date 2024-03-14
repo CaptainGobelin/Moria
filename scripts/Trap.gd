@@ -11,5 +11,5 @@ func init(trapType: int, trapPos: Vector2):
 	trapName = Data.traps[type][Data.TR_NAME]
 	position = pos * 9
 	frame = Data.traps[type][Data.TR_ICON]
-	visible = false
+	visible = true
 	GLOBAL.traps[pos] = [true, type, get_instance_id()]

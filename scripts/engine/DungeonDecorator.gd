@@ -8,6 +8,13 @@ const neighbours = [
 	Vector2(-1, 1), Vector2(-1, 0), Vector2(-1, -1)
 ]
 
+const trapPatterns = {
+	0: [0.4, [Vector2(0, 0)]],
+	1: [0.6, [Vector2(-1, 0), Vector2(0, 0), Vector2(1, 0)]],
+	2: [0.8, [Vector2(0, -1), Vector2(0, 0), Vector2(0, 1)]],
+	3: [1.0, [Vector2(-1, -1), Vector2(1, -1), Vector2(0, 0), Vector2(-1, 1), Vector2(1, 1)]]
+}
+
 var array: Array
 var borders: Dictionary
 var analyzed: Array
@@ -23,6 +30,20 @@ func init(dungeon: Array):
 			analyzed[i].append(false)
 			flags[i].append(-3)
 	array = dungeon
+
+func getTrapPattern():
+	var rnd = randf()
+	for i in trapPatterns.keys():
+		if rnd < trapPatterns[i][0]:
+			return trapPatterns[i][1]
+	return [Vector2(0, 0)]
+
+func getChestCells(cells: Array):
+	var result = []
+	for cell in cells:
+		if flags[cell.x][cell.y] == 1:
+			result.append(cell)
+	return result
 
 # Flag cells for chest and creatures placement
 # Flag 1 is for chest, 2 is for creatures

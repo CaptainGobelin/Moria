@@ -22,46 +22,69 @@ func newFloor():
 	fuseDoorsAndWalls()
 	decorator.init(array)
 	var exits = decorator.placeExits()
-	deleteCorridorDoors()
 	drawFloor()
 	var criticalPath = Ref.game.pathfinder.a_star(exits[0], exits[2], 9999)
 	decorator.flagCriticalPath(criticalPath)
 	var rooms = decorator.getTreasuresCandidates()
 	decorator.flagMap()
 	# Place tresor rooms
-	var nTreasures = max(0, ((randi() % 6) - 1) / 2) +20
-	for _i in range(nTreasures):
+	var treasureThreshold = 0.215
+	var nTreasures = randf() - treasureThreshold
+	while nTreasures > 0:
 		if rooms[1].size() == 0:
-			continue
+			break
 		var room = Utils.chooseRandom(rooms[1])
 		rooms[1].erase(room)
-		for _j in range(randi() % 10):
-			var cell = Utils.chooseRandom(rooms[0][room][0])
-			if randf() < 0.2:
-				if decorator.flags[cell.x][cell.y] == 1:
-					Ref.currentLevel.addLoot(cell, 1)
-			elif randf() < 0.45:
-				if decorator.flags[cell.x][cell.y] == 1:
-					Ref.currentLevel.addChest(cell, 1)
+		var cells = decorator.getChestCells(rooms[0][room][0])
+		for _j in range(1 + (randi() % GLOBAL.LOOTS_PER_TREASURE)):
+			if cells.size() == 0:
+				break
+			var cell = Utils.chooseRandom(cells)
+			if randf() < 0.5:
+				Ref.currentLevel.addLoot(cell, 1)
+			else:
+				Ref.currentLevel.addChest(cell, 1)
 			decorator.flags[cell.x][cell.y] = 0
+			cells.erase(cell)
+		for d in rooms[0][room][1]:
+			if randf() < (1 - 2 * GLOBAL.HIDDEN_DOORS_RATIO):
+				GLOBAL.hiddenDoors.append(d)
+				array[d.x][d.y] = GLOBAL.WALL_ID
+			if randf() < (1 - 2 * GLOBAL.LOCKED_DOORS_RATIO):
+				GLOBAL.lockedDoors.append(d)
+			if validatedDoors.has(d):
+				validatedDoors.erase(d)
+		nTreasures -= (2 * treasureThreshold)
+		treasureThreshold /= 2.0
 	# Hide doors
 	for r in rooms[0].values():
 		for d in r[1]:
 			if randf() < GLOBAL.HIDDEN_DOORS_RATIO:
 				GLOBAL.hiddenDoors.append(d)
 				array[d.x][d.y] = GLOBAL.WALL_ID
+				if validatedDoors.has(d):
+					validatedDoors.erase(d)
 	# Lock doors
 	for r in rooms[0].values():
 		for d in r[1]:
 			if randf() < GLOBAL.LOCKED_DOORS_RATIO:
 				GLOBAL.lockedDoors.append(d)
+				if validatedDoors.has(d):
+					validatedDoors.erase(d)
 	# Place traps
 	for t in trapList.values():
 		if randf() < GLOBAL.TRAPPED_ROOMS_RATIO:
-			for _i in range(1 + (randi() % GLOBAL.TRAPS_PER_ROOM)):
-				var trapPos = t[randi() % t.size()]
-				if array[trapPos.x][trapPos.y] == GLOBAL.FLOOR_ID:
-					Ref.currentLevel.placeTrap(trapPos)
+			for _i in range(randi() % GLOBAL.TRAPS_PER_ROOM):
+				if t.size() == 0:
+					break
+				var pos = t[randi() % t.size()]
+				for cell in decorator.getTrapPattern():
+					var trapPos = pos + cell
+					if t.has(trapPos):
+						if array[trapPos.x][trapPos.y] == GLOBAL.FLOOR_ID:
+							Ref.currentLevel.placeTrap(trapPos)
+						t.erase(trapPos)
+	deleteCorridorDoors()
 	drawFloor()
 	# Draw entry
 	dungeon.set_cellv(exits[1], GLOBAL.PASS_ID, false, false, false, Vector2(2, 0))
