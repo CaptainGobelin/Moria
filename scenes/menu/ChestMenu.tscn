@@ -168,6 +168,8 @@ func setContent(itemRow, type):
 			setSimpleContent(itemRow)
 		GLOBAL.AR_TYPE:
 			setSimpleContent(itemRow)
+		GLOBAL.TA_TYPE:
+			setSimpleContent(itemRow)
 		GLOBAL.PO_TYPE:
 			setPotionContent(itemRow)
 		GLOBAL.LO_TYPE:
