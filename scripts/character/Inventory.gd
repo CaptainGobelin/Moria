@@ -7,6 +7,7 @@ var currentTalismans = Vector2(-1, -1)
 var weapons = []
 var armors = []
 var potions = []
+var throwings = []
 var talismans = []
 var lockpicks = 0 setget updateLockpicks
 var golds = 0 setget updateGolds
@@ -46,7 +47,20 @@ func getPotionRows():
 		if !dict.has(current[GLOBAL.IT_STACK]):
 			dict[current[GLOBAL.IT_STACK]] = [GLOBAL.PO_TYPE, current[GLOBAL.IT_NAME], current[GLOBAL.IT_ICON], [p]]
 		else:
-			dict[current[GLOBAL.IT_STACK]][2].append(p)
+			dict[current[GLOBAL.IT_STACK]][3].append(p)
+	var result = []
+	for d in dict.keys():
+		result.append(dict[d])
+	return result
+
+func getThrowingRows():
+	var dict:Dictionary = {}
+	for t in throwings:
+		var current = GLOBAL.items[t]
+		if !dict.has(current[GLOBAL.IT_STACK]):
+			dict[current[GLOBAL.IT_STACK]] = [GLOBAL.TH_TYPE, current[GLOBAL.IT_NAME], current[GLOBAL.IT_ICON], [t]]
+		else:
+			dict[current[GLOBAL.IT_STACK]][3].append(t)
 	var result = []
 	for d in dict.keys():
 		result.append(dict[d])

@@ -112,6 +112,7 @@ func pickItem(idx):
 		GLOBAL.WP_TYPE: inventory.weapons.append(idx)
 		GLOBAL.AR_TYPE: inventory.armors.append(idx)
 		GLOBAL.PO_TYPE: inventory.potions.append(idx)
+		GLOBAL.TH_TYPE: inventory.throwings.append(idx)
 		GLOBAL.TA_TYPE: inventory.talismans.append(idx)
 		GLOBAL.LO_TYPE: inventory.lockpicks += item[GLOBAL.IT_SPEC]
 		GLOBAL.GO_TYPE: inventory.golds += item[GLOBAL.IT_SPEC]
@@ -130,6 +131,8 @@ func dropItem(idx):
 			inventory.armors.erase(idx)
 		GLOBAL.PO_TYPE:
 			inventory.potions.erase(idx)
+		GLOBAL.TH_TYPE:
+			inventory.throwings.erase(idx)
 	GLOBAL.dropItemOnFloor(idx, pos)
 	Ref.ui.write("You dropped " + Utils.addArticle(item[GLOBAL.IT_NAME]) + ".")
 

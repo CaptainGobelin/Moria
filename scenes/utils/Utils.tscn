@@ -5,6 +5,9 @@ script/source = "extends Node
 
 func addArticle(name: String, nb = 1):
 	if nb > 1:
+		name = name.replace(\"Potion\", \"Potions\")
+		name = name.replace(\"Scroll\", \"Scrolls\")
+		name = name.replace(\"knife\", \"knives\")
 		return String(nb) + \" \" + name
 	var firstLetter = name[0].to_lower()
 	var article = \"a\"
