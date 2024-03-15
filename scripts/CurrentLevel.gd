@@ -178,7 +178,11 @@ func getLootMessage(cell):
 	var msg = "You see "
 	var list = []
 	for l in lootList:
-		list.append(Utils.addArticle(GLOBAL.items[l[0]][GLOBAL.IT_NAME], l.size()))
+		var item = GLOBAL.items[l[0]]
+		if item[GLOBAL.IT_TYPE] == GLOBAL.LO_TYPE or item[GLOBAL.IT_TYPE] == GLOBAL.GO_TYPE:
+			list.append(Utils.addArticle(item[GLOBAL.IT_NAME], item[GLOBAL.IT_SPEC]))
+		else:
+			list.append(Utils.addArticle(item[GLOBAL.IT_NAME], l.size()))
 	msg += Utils.makeList(list) + "."
 	return msg
 
@@ -186,8 +190,12 @@ func getLootChoice(lootList):
 	var msg = "Pick what?"
 	var count = 1
 	for l in lootList:
+		var item = GLOBAL.items[l[0]]
 		msg += " [" + Ref.ui.color(String(count), "yellow") + "] "
-		msg += Utils.addArticle(GLOBAL.items[l[0]][GLOBAL.IT_NAME], l.size())
+		if item[GLOBAL.IT_TYPE] == GLOBAL.LO_TYPE or item[GLOBAL.IT_TYPE] == GLOBAL.GO_TYPE:
+			msg += Utils.addArticle(item[GLOBAL.IT_NAME], item[GLOBAL.IT_SPEC])
+		else:
+			msg += Utils.addArticle(item[GLOBAL.IT_NAME], l.size())
 		count += 1
 	return msg
 

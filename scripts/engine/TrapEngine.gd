@@ -7,4 +7,4 @@ func triggerTrap(trapId: int, entity):
 		Data.TR_DART:
 			entity.takeHit(GeneralEngine.rollDices(Vector2(1,4)))
 	GLOBAL.traps.erase(trap.pos)
-	trap.queue_free()
+	trap.frame += 1

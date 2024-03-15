@@ -115,7 +115,12 @@ func pickItem(idx):
 		GLOBAL.AR_TYPE: inventory.armors.append(idx)
 		GLOBAL.PO_TYPE: inventory.potions.append(idx)
 		GLOBAL.TA_TYPE: inventory.talismans.append(idx)
-	Ref.ui.write("You picked " + Utils.addArticle(item[GLOBAL.IT_NAME]) + ".")
+		GLOBAL.LO_TYPE: inventory.lockpicks += item[GLOBAL.IT_SPEC]
+		GLOBAL.GO_TYPE: inventory.golds += item[GLOBAL.IT_SPEC]
+	if item[GLOBAL.IT_TYPE] == GLOBAL.LO_TYPE or item[GLOBAL.IT_TYPE] == GLOBAL.GO_TYPE:
+		Ref.ui.write("You picked " + Utils.addArticle(item[GLOBAL.IT_NAME], item[GLOBAL.IT_SPEC]) + ".")
+	else:
+		Ref.ui.write("You picked " + Utils.addArticle(item[GLOBAL.IT_NAME]) + ".")
 
 func dropItem(idx):
 	var item = GLOBAL.items[idx]

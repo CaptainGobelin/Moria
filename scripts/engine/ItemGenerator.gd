@@ -16,7 +16,9 @@ const TA_IDX = 2
 const TH_IDX = 3
 const SC_IDX = 4
 const PO_IDX = 5
-const TYPE_PROB = [0.02, 0.02, 1.0, 0.0, 0.0, 0.5]
+const LO_IDX = 6
+const GO_IDX = 7
+const TYPE_PROB = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.5]
 
 var id = -1
 
@@ -34,6 +36,8 @@ func generateItem(rarity: int):
 		AR_IDX: return generateArmor(rarity)
 		PO_IDX: return generatePotion(rarity)
 		TA_IDX: return generateTalisman(rarity)
+		LO_IDX: return generateLockpicks()
+		GO_IDX: return generateGolds(rarity)
 		_: return null
 
 func generateWeapon(rarity: int):
@@ -126,8 +130,13 @@ func mapPotionToItem(potion):
 	item[GLOBAL.IT_STACK] = potion[Data.PO_STACK]
 	return item
 
-func generateTalisman(rarity: int):
-	var baseIdx = Utils.chooseRandom(Data.talismans.keys())
+func generateTalisman(rarity: int) -> int:
+	var baseIdx = 0
+	var rnd = randf()
+	for i in Data.talismans.keys():
+		if rnd < Data.talismans[i][Data.TA_PROB]:
+			baseIdx = i
+			break
 	var base  = Data.talismans[baseIdx]
 	id += 1
 	GLOBAL.items[id] = mapTalismanToItem(base)
@@ -147,6 +156,28 @@ func mapTalismanToItem(talisman):
 	item[GLOBAL.IT_NAME] = Utils.chooseRandom(talisman[Data.TA_NAMES])
 	item[GLOBAL.IT_TYPE] = GLOBAL.TA_TYPE
 	return item
+
+func generateLockpicks() -> int:
+	id += 1
+	var item  = []
+	item.resize(GLOBAL.IT_STACK + 1)
+	item[GLOBAL.IT_ICON] = Data.LOCKPICK_ICON
+	item[GLOBAL.IT_NAME] = Data.LOCKPICK_NAME
+	item[GLOBAL.IT_TYPE] = GLOBAL.LO_TYPE
+	item[GLOBAL.IT_SPEC] = 1 + (randi() % 3)
+	GLOBAL.items[id] = item
+	return id
+
+func generateGolds(rarity: int) -> int:
+	id += 1
+	var item  = []
+	item.resize(GLOBAL.IT_STACK + 1)
+	item[GLOBAL.IT_ICON] = Data.GOLD_ICON
+	item[GLOBAL.IT_NAME] = Data.GOLD_NAME
+	item[GLOBAL.IT_TYPE] = GLOBAL.GO_TYPE
+	item[GLOBAL.IT_SPEC] = 5 + rarity * 5 + (randi() % 10)
+	GLOBAL.items[id] = item
+	return id
 
 func generateItemQuality(rarity: int):
 	var rnd = randf()

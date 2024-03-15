@@ -165,19 +165,17 @@ var item
 func setContent(itemRow, type):
 	match type:
 		GLOBAL.WP_TYPE:
-			setWeaponContent(itemRow)
+			setSimpleContent(itemRow)
 		GLOBAL.AR_TYPE:
-			setArmorContent(itemRow)
+			setSimpleContent(itemRow)
 		GLOBAL.PO_TYPE:
 			setPotionContent(itemRow)
+		GLOBAL.LO_TYPE:
+			setSimpleContent(itemRow)
+		GLOBAL.GO_TYPE:
+			setSimpleContent(itemRow)
 
-func setWeaponContent(itemRow):
-	item = itemRow[1]
-	itemName.text = itemRow[2]
-	equiped.visible = itemRow[3]
-	icon.frame = itemRow[4]
-
-func setArmorContent(itemRow):
+func setSimpleContent(itemRow):
 	item = itemRow[1]
 	itemName.text = itemRow[2]
 	equiped.visible = itemRow[3]

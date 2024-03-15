@@ -281,6 +281,27 @@ text = "10"
 align = 2
 valign = 1
 
+[node name="GoldContainer" type="Node2D" parent="UI/SideMenu"]
+position = Vector2( 360, 81 )
+scale = Vector2( 0.25, 0.25 )
+
+[node name="Label" type="Label" parent="UI/SideMenu/GoldContainer"]
+margin_right = 72.0
+margin_bottom = 35.0
+custom_fonts/font = ExtResource( 8 )
+text = "Gold"
+align = 1
+valign = 1
+
+[node name="Current" type="Label" parent="UI/SideMenu/GoldContainer/Label"]
+margin_left = 72.0
+margin_right = 180.0
+margin_bottom = 35.0
+custom_fonts/font = ExtResource( 8 )
+text = "10"
+align = 2
+valign = 1
+
 [node name="StatusBar" type="Node2D" parent="UI"]
 position = Vector2( 351, 99 )
 script = ExtResource( 25 )

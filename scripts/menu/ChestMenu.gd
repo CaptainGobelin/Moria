@@ -59,5 +59,11 @@ func getSimpleItemRows(itemList: Array):
 			GLOBAL.PO_TYPE:
 				result.append([GLOBAL.PO_TYPE, item[GLOBAL.IT_NAME], item[GLOBAL.IT_ICON], [item]])
 			GLOBAL.TA_TYPE:
-				result.append([GLOBAL.AR_TYPE, id, item[GLOBAL.IT_NAME], false, item[GLOBAL.IT_ICON]])
+				result.append([GLOBAL.TA_TYPE, id, item[GLOBAL.IT_NAME], false, item[GLOBAL.IT_ICON]])
+			GLOBAL.LO_TYPE:
+				var itemName = Utils.addArticle(item[GLOBAL.IT_NAME], item[GLOBAL.IT_SPEC])
+				result.append([GLOBAL.LO_TYPE, id, itemName, false, item[GLOBAL.IT_ICON]])
+			GLOBAL.GO_TYPE:
+				var itemName = Utils.addArticle(item[GLOBAL.IT_NAME], item[GLOBAL.IT_SPEC])
+				result.append([GLOBAL.GO_TYPE, id, itemName, false, item[GLOBAL.IT_ICON]])
 	return result

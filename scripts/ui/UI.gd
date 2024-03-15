@@ -17,6 +17,7 @@ onready var protLabel = get_node("SideMenu/ProtContainer/Label/Current")
 onready var dmgLabel = get_node("SideMenu/DmgContainer/Label/Current")
 onready var hitLabel = get_node("SideMenu/HitContainer/Label/Current")
 onready var lockLabel = get_node("SideMenu/LockContainer/Label/Current")
+onready var goldLabel = get_node("SideMenu/GoldContainer/Label/Current")
 onready var statusBar = get_node("StatusBar")
 
 var currentChoice = ""
@@ -89,13 +90,13 @@ func askToOpenChest():
 	write("Do you want to open the chest? (Y/n)")
 
 func askToPickChest(dd: int):
-	var msg = "The chest is locked. Do you want to pick the lock? DD"
-	msg += String(dd) + " (Y/n)"
+	var msg = "The chest is locked. Do you want to pick the lock? (DC "
+	msg += String(dd) + ") (Y/n)"
 	write(color(msg, "yellow"))
 
 func askToPickDoor(dd: int):
-	var msg = "The door is locked. Do you want to pick the lock? DD"
-	msg += String(dd) + " (Y/n)"
+	var msg = "The door is locked. Do you want to pick the lock? (DC "
+	msg += String(dd) + ") (Y/n)"
 	write(color(msg, "yellow"))
 
 func writeLockpickSuccess(rolled: int):
@@ -187,3 +188,5 @@ func updateStat(stat: int, value):
 			hitLabel.text = diceToString(value)
 		Data.ST_LOCK:
 			lockLabel.text = String(value)
+		Data.ST_GOLD:
+			goldLabel.text = String(value)

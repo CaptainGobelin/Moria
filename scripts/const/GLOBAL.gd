@@ -32,6 +32,8 @@ const WP_TYPE = 0
 const AR_TYPE = 1
 const PO_TYPE = 2
 const TA_TYPE = 3
+const LO_TYPE = 6
+const GO_TYPE = 7
 
 const IT_TYPE = 0
 const IT_NAME = 1

@@ -44,6 +44,7 @@ const ST_HIT = 3
 const ST_HPMAX = 4
 const ST_HP = 5
 const ST_LOCK = 6
+const ST_GOLD = 7
 
 const W_NAME = 0
 const W_HIT = 1
@@ -127,11 +128,13 @@ func potionsReader():
 
 const TA_NAMES = 0
 const TA_ICONS = 1
+const TA_PROB = 2
 const talismans = {
-	0: [[\"belt\"], [42, 43]],
-	1: [[\"cloak\", \"cape\", \"mantle\"], [44, 45]],
-	2: [[\"amulet\", \"necklace\", \"medallion\"], [46, 47, 52, 53]],
-	3: [[\"ring\"], [48, 49, 50, 51]],
+	0: [[\"belt\"], [42, 43], 0.125],
+	1: [[\"cloak\", \"cape\", \"mantle\"], [44, 45], 0.25],
+	2: [[\"amulet\", \"necklace\", \"medallion\"], [46, 47, 52, 53], 0.525],
+	3: [[\"ring\"], [48, 49, 50, 51], 0.875],
+	4: [[\"boots\", \"greaves\"], [54, 55], 1.0],
 }
 
 const ENCH_1_WP = 0
@@ -190,6 +193,12 @@ const TA_EN_ID = 2
 const taEnchants = {
 	0: [\"of protection\", 1, 200],
 }
+
+const GOLD_NAME = \"Gold coins\"
+const GOLD_ICON = 59
+
+const LOCKPICK_NAME = \"Lockpick\"
+const LOCKPICK_ICON = 58
 
 const SP_MAGIC_MISSILE = 0
 const SP_HEAL = 1

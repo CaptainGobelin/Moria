@@ -86,7 +86,7 @@ position = Vector2( 1, 1 )
 texture = ExtResource( 2 )
 centered = false
 hframes = 6
-vframes = 9
+vframes = 10
 
 [node name="TextContainer" type="Node2D" parent="."]
 position = Vector2( 21, 0 )

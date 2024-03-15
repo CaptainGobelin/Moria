@@ -9,13 +9,19 @@ var armors = []
 var potions = []
 var talismans = []
 var lockpicks = 0 setget updateLockpicks
+var golds = 0 setget updateGolds
 
 func init():
 	updateLockpicks(5)
+	updateGolds(0)
 
 func updateLockpicks(newValue):
 	lockpicks = newValue
 	Ref.ui.updateStat(Data.ST_LOCK, newValue)
+
+func updateGolds(newValue):
+	golds = newValue
+	Ref.ui.updateStat(Data.ST_GOLD, newValue)
 
 func getWeaponRows():
 	var result = []
