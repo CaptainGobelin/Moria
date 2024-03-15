@@ -9,12 +9,7 @@ var itemId
 
 func init(id, pos):
 	itemId = id
-	GLOBAL.itemsOnFloor[itemId] = [pos,  get_instance_id()]
 	position = 9 * pos
-
-func _exit_tree():
-	if GLOBAL.itemsOnFloor.has(itemId):
-		GLOBAL.itemsOnFloor.erase(itemId)
 "
 
 [node name="Loot" type="Sprite"]

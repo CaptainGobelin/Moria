@@ -18,7 +18,7 @@ const SC_IDX = 4
 const PO_IDX = 5
 const LO_IDX = 6
 const GO_IDX = 7
-const TYPE_PROB = [0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.5, 0.5]
+const TYPE_PROB = [0.5, 0.0, 0.0, 0.5, 0.0, 0.0, 0.5, 0.5]
 
 var id = -1
 
@@ -34,11 +34,12 @@ func generateItem(rarity: int):
 	match getItemType():
 		WP_IDX: return generateWeapon(rarity)
 		AR_IDX: return generateArmor(rarity)
+		TH_IDX: return generateThrowing(rarity)
 		PO_IDX: return generatePotion(rarity)
 		TA_IDX: return generateTalisman(rarity)
 		LO_IDX: return generateLockpicks()
 		GO_IDX: return generateGolds(rarity)
-		_: return null
+		_: return []
 
 func generateWeapon(rarity: int):
 	var localRarity = 0
@@ -47,7 +48,7 @@ func generateWeapon(rarity: int):
 	while !Data.weaponsByRarity.has(localRarity):
 		localRarity -= 1
 		if localRarity < 0:
-			return null
+			return []
 	var rnd = randi() % Data.weaponsByRarity[localRarity].size()
 	var base = Data.weapons[Data.weaponsByRarity[localRarity][rnd]].duplicate()
 	id += 1
@@ -75,7 +76,7 @@ func generateWeapon(rarity: int):
 	var count = 0
 	for e in enchants:
 		GLOBAL.items[id][GLOBAL.IT_SPEC][count] = Data.wpEnchants[e][Data.WP_EN_ID]
-	return id
+	return [id]
 
 func mapWeaponToItem(weapon):
 	var item = []
@@ -92,12 +93,12 @@ func generateArmor(rarity: int):
 	while !Data.armorsByRarity.has(rarity):
 		rarity -= 1
 		if rarity < 0:
-			return null
+			return []
 	var rnd = randi() % Data.armorsByRarity[rarity].size()
 	var base = Data.armors[Data.armorsByRarity[rarity][rnd]]
 	id += 1
 	GLOBAL.items[id] = mapArmorToItem(base)
-	return id
+	return [id]
 
 func mapArmorToItem(armor):
 	var item = []
@@ -109,6 +110,38 @@ func mapArmorToItem(armor):
 	item[GLOBAL.IT_TYPE] = GLOBAL.AR_TYPE
 	return item
 
+func generateThrowing(rarity: int):
+	var quality = rarity / 2
+	# Proba, item type, quantity
+	var typeChances = [[0.64, quality, 5], [0.12, 3, 3], [0.12, 4, 5], [0.12, 5, 3]]
+	var rnd = randf()
+	var idx = quality
+	var quantity = 1 + (randi() % 5)
+	for i in typeChances:
+		if rnd < i[0]:
+			idx = i[1]
+			quality = 1 + (randi() % i[2])
+			break
+		rnd -= i[0]
+	var base = Data.throwings[idx]
+	var result = []
+	for _i in range(quantity):
+		id += 1
+		result.append(id)
+		GLOBAL.items[id] = mapThrowingToItem(base)
+	return result
+
+func mapThrowingToItem(throwing):
+	var item = []
+	item.resize(GLOBAL.IT_STACK + 1)
+	item[GLOBAL.IT_ICON] = throwing[Data.TH_ICON]
+	item[GLOBAL.IT_NAME] = throwing[Data.TH_NAME]
+	item[GLOBAL.IT_DMG] = throwing[Data.TH_DMG]
+	item[GLOBAL.IT_SPEC] = throwing[Data.TH_EFFECT]
+	item[GLOBAL.IT_TYPE] = GLOBAL.TH_TYPE
+	item[GLOBAL.IT_STACK] = throwing[Data.TH_STACK]
+	return item
+
 func generatePotion(rarity: int):
 	while !Data.potionsByRarity.has(rarity):
 		rarity -= 1
@@ -118,7 +151,7 @@ func generatePotion(rarity: int):
 	var base = Data.potions[Data.potionsByRarity[rarity][rnd]]
 	id += 1
 	GLOBAL.items[id] = mapPotionToItem(base)
-	return id
+	return [id]
 
 func mapPotionToItem(potion):
 	var item = []
@@ -130,7 +163,7 @@ func mapPotionToItem(potion):
 	item[GLOBAL.IT_STACK] = potion[Data.PO_STACK]
 	return item
 
-func generateTalisman(rarity: int) -> int:
+func generateTalisman(rarity: int):
 	var baseIdx = 0
 	var rnd = randf()
 	for i in Data.talismans.keys():
@@ -147,7 +180,7 @@ func generateTalisman(rarity: int) -> int:
 		GLOBAL.items[id][GLOBAL.IT_NAME] += (" " + Data.taEnchants[enchant[1]][Data.TA_EN_SUF])
 	GLOBAL.items[id][GLOBAL.IT_NAME][0] = GLOBAL.items[id][GLOBAL.IT_NAME][0].capitalize()
 	GLOBAL.items[id][GLOBAL.IT_SPEC] = enchant
-	return id
+	return [id]
 
 func mapTalismanToItem(talisman):
 	var item  = []
@@ -157,7 +190,7 @@ func mapTalismanToItem(talisman):
 	item[GLOBAL.IT_TYPE] = GLOBAL.TA_TYPE
 	return item
 
-func generateLockpicks() -> int:
+func generateLockpicks():
 	id += 1
 	var item  = []
 	item.resize(GLOBAL.IT_STACK + 1)
@@ -166,9 +199,9 @@ func generateLockpicks() -> int:
 	item[GLOBAL.IT_TYPE] = GLOBAL.LO_TYPE
 	item[GLOBAL.IT_SPEC] = 1 + (randi() % 3)
 	GLOBAL.items[id] = item
-	return id
+	return [id]
 
-func generateGolds(rarity: int) -> int:
+func generateGolds(rarity: int):
 	id += 1
 	var item  = []
 	item.resize(GLOBAL.IT_STACK + 1)
@@ -177,7 +210,7 @@ func generateGolds(rarity: int) -> int:
 	item[GLOBAL.IT_TYPE] = GLOBAL.GO_TYPE
 	item[GLOBAL.IT_SPEC] = 5 + rarity * 5 + (randi() % 10)
 	GLOBAL.items[id] = item
-	return id
+	return [id]
 
 func generateItemQuality(rarity: int):
 	var rnd = randf()

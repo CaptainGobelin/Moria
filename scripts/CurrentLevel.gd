@@ -116,12 +116,8 @@ func spawnMonster():
 
 func addLoot(cell: Vector2, rarityBonus: int):
 	var rarity = (randi() % 1) + rarityBonus
-	var item = Ref.game.itemGenerator.generateItem(rarity)
-	if item == null:
-		return
-	var loot = lootScene.instance()
-	loots.add_child(loot)
-	loot.init(item, cell)
+	for item in Ref.game.itemGenerator.generateItem(rarity):
+		GLOBAL.dropItemOnFloor(item, cell)
 
 func dropItem():
 	var cell = getRandomFreeCell()
@@ -137,8 +133,8 @@ func addChest(cell: Vector2, rarityBonus: int):
 	var quantity = randi() % 3 + 1
 	for _i in range(quantity):
 		var rarity = (randi() % 1) + rarityBonus
-		var item = Ref.game.itemGenerator.generateItem(rarity)
-		GLOBAL.chests[chest.get_instance_id()][GLOBAL.CH_CONTENT].append(item)
+		for item in Ref.game.itemGenerator.generateItem(rarity):
+			GLOBAL.chests[chest.get_instance_id()][GLOBAL.CH_CONTENT].append(item)
 
 func createChest():
 	var cell = getRandomFreeCell()
@@ -151,51 +147,33 @@ func placeTrap(pos: Vector2):
 	traps.add_child(trap)
 	trap.init(0, pos)
 
-func checkForLoot(cell):
-	var dict:Dictionary = {}
-	var currentId = 100000
-	for idx in GLOBAL.itemsOnFloor.keys():
-		if GLOBAL.itemsOnFloor[idx][0] != cell:
-			continue
-		var current = GLOBAL.items[idx]
-		if current[GLOBAL.IT_STACK] == null:
-			dict[currentId] = [idx]
-			currentId += 1
-			continue
-		if !dict.has(current[GLOBAL.IT_STACK]):
-			dict[current[GLOBAL.IT_STACK]] = [idx]
-		else:
-			dict[current[GLOBAL.IT_STACK]].append(idx)
-	var result = []
-	for d in dict.keys():
-		result.append(dict[d])
-	return result
-
 func getLootMessage(cell):
-	var lootList = checkForLoot(cell)
-	if lootList.size() == 0:
+	var lootList = GLOBAL.getItemList(cell)
+	if lootList.keys().size() == 0:
 		return null
 	var msg = "You see "
 	var list = []
-	for l in lootList:
-		var item = GLOBAL.items[l[0]]
+	for l in lootList.keys():
+		var items = lootList[l]
+		var item = GLOBAL.items[items[0]]
 		if item[GLOBAL.IT_TYPE] == GLOBAL.LO_TYPE or item[GLOBAL.IT_TYPE] == GLOBAL.GO_TYPE:
 			list.append(Utils.addArticle(item[GLOBAL.IT_NAME], item[GLOBAL.IT_SPEC]))
 		else:
-			list.append(Utils.addArticle(item[GLOBAL.IT_NAME], l.size()))
+			list.append(Utils.addArticle(item[GLOBAL.IT_NAME], items.size()))
 	msg += Utils.makeList(list) + "."
 	return msg
 
 func getLootChoice(lootList):
 	var msg = "Pick what?"
 	var count = 1
-	for l in lootList:
-		var item = GLOBAL.items[l[0]]
+	for l in lootList.keys():
+		var items = lootList[l]
+		var item = GLOBAL.items[items[0]]
 		msg += " [" + Ref.ui.color(String(count), "yellow") + "] "
 		if item[GLOBAL.IT_TYPE] == GLOBAL.LO_TYPE or item[GLOBAL.IT_TYPE] == GLOBAL.GO_TYPE:
 			msg += Utils.addArticle(item[GLOBAL.IT_NAME], item[GLOBAL.IT_SPEC])
 		else:
-			msg += Utils.addArticle(item[GLOBAL.IT_NAME], l.size())
+			msg += Utils.addArticle(item[GLOBAL.IT_NAME], items.size())
 		count += 1
 	return msg
 

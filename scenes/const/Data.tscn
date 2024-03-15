@@ -3,6 +3,19 @@
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node
 
+# Projectiles
+const PROJ_COLOR = 0
+const PROJ_TYPE = 1
+const PROJ_PURPLE_S = [Colors.purple, 0]
+const PROJ_PURPLE_R = [Colors.purple, 9]
+const PROJ_RED_L = [Colors.red, 12]
+const PROJ_RED_R = [Colors.red, 9]
+const PROJ_WHITE_S = [Colors.white, 0]
+const PROJ_WHITE_M = [Colors.white, 6]
+const PROJ_WHITE_LONG = [Colors.white, 3]
+const PROJ_GREEN_R = [Colors.green, 9]
+
+# Skills
 const SK_COMBAT = 0
 const SK_ARMOR = 1
 const SK_EVOC = 2
@@ -15,6 +28,7 @@ const SK_WIL = 8
 const SK_PER = 9
 const SK_THI = 10
 
+# Classes
 const CL_FIGHTER = 0
 
 const CL_NAME = 0
@@ -26,6 +40,7 @@ const classes = {
 	0: [\"Fighter\", 10, 5, [1, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0], [2, 2, 0, 0, 0, 0, 0, 2, 1, 1, 1]],
 }
 
+# Monsters
 const MO_NAME = 0
 const MO_HP = 1
 const MO_HIT = 2
@@ -37,6 +52,7 @@ const monsters = {
 	0: [\"Skeleton\", 6, Vector2(1, 6), Vector2(1, 4), 5, 1, 0],
 }
 
+# Stats
 const ST_CA = 0
 const ST_PROT = 1
 const ST_DMG = 2
@@ -46,6 +62,7 @@ const ST_HP = 5
 const ST_LOCK = 6
 const ST_GOLD = 7
 
+# Weapons
 const W_NAME = 0
 const W_HIT = 1
 const W_DMG = 2
@@ -54,6 +71,7 @@ const W_RAR = 4
 const W_ENCH = 5
 const W_2H = 6
 const W_ICON = 7
+const W_STACK = 8
 const weapons = {
 	0: [\"club\",			Vector2(1, 12),		Vector2(1, 6),		\"B\",	0,	0.4,false, 	0],
 	1: [\"dagger\",		Vector2(1, 12),		Vector2(1, 4),		\"S\",	1,	1.5,false, 	1],
@@ -83,6 +101,7 @@ func weaponsReader():
 			weaponsByRarity[rarity] = []
 		weaponsByRarity[rarity].append(idx)
 
+# Armors
 const A_NAME = 0
 const A_CA = 1
 const A_PROT = 2
@@ -106,6 +125,7 @@ func armorsReader():
 			armorsByRarity[rarity] = []
 		armorsByRarity[rarity].append(idx)
 
+# Potions
 const PO_HEALING = 0
 
 const PO_NAME = 0
@@ -126,17 +146,37 @@ func potionsReader():
 			potionsByRarity[rarity] = []
 		potionsByRarity[rarity].append(idx)
 
+# Taslimans
 const TA_NAMES = 0
 const TA_ICONS = 1
 const TA_PROB = 2
 const talismans = {
 	0: [[\"belt\"], [42, 43], 0.125],
 	1: [[\"cloak\", \"cape\", \"mantle\"], [44, 45], 0.25],
-	2: [[\"amulet\", \"necklace\", \"medallion\"], [46, 47, 52, 53], 0.525],
-	3: [[\"ring\"], [48, 49, 50, 51], 0.875],
-	4: [[\"boots\", \"greaves\"], [54, 55], 1.0],
+	2: [[\"amulet\", \"necklace\", \"medallion\"], [46, 47, 52, 53], 0.50],
+	3: [[\"ring\"], [48, 49, 50, 51], 0.80],
+	4: [[\"boots\", \"greaves\"], [54, 55], 0.925],
+	5: [[\"bracers\"], [56], 1.0]
 }
 
+# Throwings
+const TH_NAME = 0
+const TH_ICON = 1
+const TH_DMG = 2
+const TH_SKILL = 3
+const TH_EFFECT = 4
+const TH_PROJ = 5
+const TH_STACK = 6
+const throwings = {
+	0: [\"Throwing knife\", 36, Vector2(1, 6), 0, null, PROJ_WHITE_S, 200],
+	1: [\"Throwing axe\", 37, Vector2(1, 10), 1, null, PROJ_WHITE_M, 201],
+	2: [\"Javelin\", 38, Vector2(2, 8), 2, null, PROJ_WHITE_LONG, 202],
+	3: [\"Fire bomb\", 39, Vector2(2, 10), 0, null, PROJ_RED_R, 203],
+	4: [\"Toxic flask\", 40, Vector2(2, 6), 0, null, PROJ_GREEN_R, 204],
+	5: [\"Sleep flask\", 41, Vector2(0, 1), 0, null, PROJ_PURPLE_R, 205],
+}
+
+# Weapon enchants
 const ENCH_1_WP = 0
 const ENCH_2_WP = 1
 const ENCH_3_WP = 2
@@ -178,6 +218,7 @@ const wpEnchants = {
 	204: [\"vorpal\", null, 51],
 }
 
+# Armor enchants
 const AR_EN_SUF = 0
 const AR_EN_RAR = 1
 const AR_EN_ALLOWED = 2
@@ -187,6 +228,7 @@ const arEnchants = {
 	1: [\"of poison resistance\", 0, [0], 101],
 }
 
+# Talisman enchants
 const TA_EN_SUF = 0
 const TA_EN_RAR = 1
 const TA_EN_ID = 2
@@ -194,31 +236,31 @@ const taEnchants = {
 	0: [\"of protection\", 1, 200],
 }
 
+# Gold
 const GOLD_NAME = \"Gold coins\"
 const GOLD_ICON = 59
 
+# Lockpick
 const LOCKPICK_NAME = \"Lockpick\"
 const LOCKPICK_ICON = 58
 
+# Spells
 const SP_MAGIC_MISSILE = 0
 const SP_HEAL = 1
 const SP_BLESS = 2
 const SP_FIREBALL = 3
 
+# Spell schools
 const SC_ENCHANTEMENT = 0
 const SC_EVOCATION = 1
 const SC_DIVINATION = 2
 const SC_ABJURATION = 3
 const SC_CONJURATION = 4
 
+# Spell lists
 const SP_LIST_ARCANE = 0
 const SP_LIST_DIVINE = 1
 const SP_LIST_NATURE = 2
-
-const PROJ_COLOR = 0
-const PROJ_TYPE = 1
-const PROJ_PURPLE_S = [Colors.purple, 0]
-const PROJ_RED_L = [Colors.red, 12]
 
 const SP_TARGET_SELF = 0
 const SP_TARGET_TARGET = 1
@@ -240,6 +282,7 @@ const spells = {
 	3: [\"Fireball\", 3, SC_EVOCATION, [true, false, false], PROJ_RED_L, 10, 10, SP_TARGET_TARGET, 3],
 }
 
+# Statuses
 const STATUS_BLESSED = 6
 
 const ST_NAME = 0
@@ -252,6 +295,7 @@ const statuses = {
 	6: [\"Blessed\", 6, 10],
 }
 
+# Traps
 const TR_DART = 0
 
 const TR_NAME = 0

@@ -107,9 +107,7 @@ func takeHit(dmg):
 
 func pickItem(idx):
 	var item = GLOBAL.items[idx]
-	if GLOBAL.itemsOnFloor.has(idx):
-		instance_from_id(GLOBAL.itemsOnFloor[idx][1]).queue_free()
-		GLOBAL.itemsOnFloor.erase(idx)
+	GLOBAL.removeItemFromFloor(idx)
 	match item[GLOBAL.IT_TYPE]:
 		GLOBAL.WP_TYPE: inventory.weapons.append(idx)
 		GLOBAL.AR_TYPE: inventory.armors.append(idx)
@@ -132,9 +130,7 @@ func dropItem(idx):
 			inventory.armors.erase(idx)
 		GLOBAL.PO_TYPE:
 			inventory.potions.erase(idx)
-	var loot = Ref.currentLevel.lootScene.instance()
-	Ref.currentLevel.loots.add_child(loot)
-	loot.init(idx, pos)
+	GLOBAL.dropItemOnFloor(idx, pos)
 	Ref.ui.write("You dropped " + Utils.addArticle(item[GLOBAL.IT_NAME]) + ".")
 
 func unequipItem(idx):

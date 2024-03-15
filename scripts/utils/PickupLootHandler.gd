@@ -1,24 +1,25 @@
 extends Node
 
 func pickupLootAsync():
-	var loots = Ref.currentLevel.checkForLoot(Ref.character.pos)
+	var loots = GLOBAL.getItemList(Ref.character.pos)
 	chooseLoot(loots)
 
-func chooseLoot(loots: Array):
-	if loots.size() == 0:
+func chooseLoot(loots: Dictionary):
+	if loots.keys().size() == 0:
 		Ref.ui.writeNoLoot()
-	elif loots.size() == 1:
-		if loots[0].size() == 1:
-			Ref.character.pickItem(loots[0][0])
+	elif loots.keys().size() == 1:
+		var idx = loots.keys()[0]
+		if loots[idx].size() == 1:
+			Ref.character.pickItem(loots[idx][0])
 		else:
-			Ref.ui.askForNumber(loots[0].size())
+			Ref.ui.askForNumber(loots[idx].size())
 			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
 			if coroutineReturn != null and coroutineReturn is int:
 				for c in range(coroutineReturn):
-					Ref.character.pickItem(loots[0][c])
+					Ref.character.pickItem(loots[idx][c])
 	else:
 		Ref.ui.write(Ref.currentLevel.getLootChoice(loots))
-		Ref.ui.askForChoice(loots)
+		Ref.ui.askForChoice(loots.keys())
 		var coroutineReturn = yield(Ref.ui, "coroutine_signal")
 		if coroutineReturn > 0:
-			chooseLoot([loots[coroutineReturn-1]])
+			chooseLoot({ 0: loots[loots.keys()[coroutineReturn-1]] })
