@@ -160,7 +160,7 @@ onready var icon = get_node(\"Icon\")
 onready var shortcut = get_node(\"TextContainer/Shortcut\")
 onready var itemName = get_node(\"TextContainer/Name\")
 
-var item
+var items: Array
 
 func setContent(itemRow, type):
 	match type:
@@ -171,31 +171,22 @@ func setContent(itemRow, type):
 		GLOBAL.TA_TYPE:
 			setSimpleContent(itemRow)
 		GLOBAL.PO_TYPE:
-			setPotionContent(itemRow)
+			setStackableContent(itemRow)
 		GLOBAL.TH_TYPE:
-			setThrowingContent(itemRow)
+			setStackableContent(itemRow)
 		GLOBAL.LO_TYPE:
 			setSimpleContent(itemRow)
 		GLOBAL.GO_TYPE:
 			setSimpleContent(itemRow)
 
 func setSimpleContent(itemRow):
-	item = itemRow[1]
+	items = [itemRow[1]]
 	itemName.text = itemRow[2]
 	equiped.visible = itemRow[3]
 	icon.frame = itemRow[4]
 
-func setPotionContent(itemRow):
-	item = itemRow[3][0]
-	var n = itemRow[1]
-	if itemRow[3].size() > 1:
-		n = n.replace(\"Potion\", \"Potions\")
-	itemName.text = String(itemRow[2].size()) + \" \" + n
-	equiped.visible = false
-	icon.frame = itemRow[2]
-
-func setThrowingContent(itemRow):
-	item = itemRow[3][0]
+func setStackableContent(itemRow):
+	items = itemRow[3]
 	var n = itemRow[1]
 	if itemRow[3].size() > 1:
 		n = Utils.addArticle(n, itemRow[3].size())

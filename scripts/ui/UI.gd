@@ -27,38 +27,38 @@ var currentMax = 0
 func _ready():
 	Ref.ui = self
 
-func askForNumber(maxNb: int):
-	Ref.game.set_process_input(false)
+func askForNumber(maxNb: int, inputer):
+	inputer.set_process_input(false)
 	numberHandler.startCoroutine(maxNb)
 	var result = yield(numberHandler, "end_coroutine")
-	Ref.game.set_process_input(true)
+	inputer.set_process_input(true)
 	emit_signal("coroutine_signal", result)
 
-func askForChoice(list: Array):
-	Ref.game.set_process_input(false)
+func askForChoice(list: Array, inputer):
+	inputer.set_process_input(false)
 	choiceHandler.startCoroutine(list)
 	var result = yield(choiceHandler, "end_coroutine")
 	if result == -1:
 		writeOk()
-	Ref.game.set_process_input(true)
+	inputer.set_process_input(true)
 	emit_signal("coroutine_signal", result)
 
-func askForYesNo():
-	Ref.game.set_process_input(false)
+func askForYesNo(inputer):
+	inputer.set_process_input(false)
 	yesNoHandler.startCoroutine()
 	var result = yield(yesNoHandler, "end_coroutine")
 	if !result:
 		writeOk()
-	Ref.game.set_process_input(true)
+	inputer.set_process_input(true)
 	emit_signal("coroutine_signal", result)
 
-func askForTarget(targets: Array):
-	Ref.game.set_process_input(false)
+func askForTarget(targets: Array, inputer):
+	inputer.set_process_input(false)
 	targetHandler.startCoroutine(targets)
 	var result = yield(targetHandler, "end_coroutine")
 	if result == -1:
 		writeOk()
-	Ref.game.set_process_input(true)
+	inputer.set_process_input(true)
 	emit_signal("coroutine_signal", result)
 
 func write(text):

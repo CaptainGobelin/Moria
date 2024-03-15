@@ -41,7 +41,7 @@ func moveAsync(movement):
 					Ref.ui.noLockpicksDoor()
 					return
 				Ref.ui.askToPickDoor(3)
-				Ref.ui.askForYesNo()
+				Ref.ui.askForYesNo(Ref.game)
 				var coroutineReturn = yield(Ref.ui, "coroutine_signal")
 				if (coroutineReturn):
 					if attemptLockpick(3):
@@ -58,7 +58,7 @@ func moveAsync(movement):
 			GeneralEngine.newTurn()
 		"pass": 
 			Ref.ui.askToChangeFloor()
-			Ref.ui.askForYesNo()
+			Ref.ui.askForYesNo(Ref.game)
 			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
 			if (coroutineReturn):
 				Ref.game.newFloor()
@@ -67,7 +67,7 @@ func moveAsync(movement):
 			var lock = GLOBAL.chests[cellState[2]][GLOBAL.CH_LOCKED]
 			if lock == 0:
 				Ref.ui.askToOpenChest()
-				Ref.ui.askForYesNo()
+				Ref.ui.askForYesNo(Ref.game)
 				var coroutineReturn = yield(Ref.ui, "coroutine_signal")
 				if (coroutineReturn):
 					Ref.game.chestMenu.open(cellState[2])
@@ -76,7 +76,7 @@ func moveAsync(movement):
 					Ref.ui.noLockpicksChest()
 					return
 				Ref.ui.askToPickChest(lock)
-				Ref.ui.askForYesNo()
+				Ref.ui.askForYesNo(Ref.game)
 				var coroutineReturn = yield(Ref.ui, "coroutine_signal")
 				if (coroutineReturn):
 					if attemptLockpick(lock):
@@ -105,21 +105,22 @@ func takeHit(dmg):
 	Ref.ui.writeCharacterTakeHit(totalDmg)
 	return totalDmg
 
-func pickItem(idx):
-	var item = GLOBAL.items[idx]
-	GLOBAL.removeItemFromFloor(idx)
-	match item[GLOBAL.IT_TYPE]:
-		GLOBAL.WP_TYPE: inventory.weapons.append(idx)
-		GLOBAL.AR_TYPE: inventory.armors.append(idx)
-		GLOBAL.PO_TYPE: inventory.potions.append(idx)
-		GLOBAL.TH_TYPE: inventory.throwings.append(idx)
-		GLOBAL.TA_TYPE: inventory.talismans.append(idx)
-		GLOBAL.LO_TYPE: inventory.lockpicks += item[GLOBAL.IT_SPEC]
-		GLOBAL.GO_TYPE: inventory.golds += item[GLOBAL.IT_SPEC]
+func pickItem(items: Array):
+	var item = GLOBAL.items[items[0]]
+	for idx in items:
+		GLOBAL.removeItemFromFloor(idx)
+		match item[GLOBAL.IT_TYPE]:
+			GLOBAL.WP_TYPE: inventory.weapons.append(idx)
+			GLOBAL.AR_TYPE: inventory.armors.append(idx)
+			GLOBAL.PO_TYPE: inventory.potions.append(idx)
+			GLOBAL.TH_TYPE: inventory.throwings.append(idx)
+			GLOBAL.TA_TYPE: inventory.talismans.append(idx)
+			GLOBAL.LO_TYPE: inventory.lockpicks += item[GLOBAL.IT_SPEC]
+			GLOBAL.GO_TYPE: inventory.golds += item[GLOBAL.IT_SPEC]
 	if item[GLOBAL.IT_TYPE] == GLOBAL.LO_TYPE or item[GLOBAL.IT_TYPE] == GLOBAL.GO_TYPE:
 		Ref.ui.write("You picked " + Utils.addArticle(item[GLOBAL.IT_NAME], item[GLOBAL.IT_SPEC]) + ".")
 	else:
-		Ref.ui.write("You picked " + Utils.addArticle(item[GLOBAL.IT_NAME]) + ".")
+		Ref.ui.write("You picked " + Utils.addArticle(item[GLOBAL.IT_NAME], items.size()) + ".")
 
 func dropItem(idx):
 	var item = GLOBAL.items[idx]

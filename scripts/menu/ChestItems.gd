@@ -23,7 +23,7 @@ func init(items: Array, row: int):
 func getSelected():
 	for i in get_children():
 		if i.visible and i.selected.visible:
-			return i.item
+			return i.items
 	return null
 
 func select(index):

@@ -42,14 +42,34 @@ func _input(event):
 		var selected = items.getSelected()
 		if selected == null:
 			return
-		Ref.character.pickItem(selected)
-		GLOBAL.chests[chestId][GLOBAL.CH_CONTENT].erase(selected)
+		if selected.size() == 1:
+			Ref.character.pickItem(selected)
+			GLOBAL.chests[chestId][GLOBAL.CH_CONTENT].erase(selected[0])
+		else:
+			Ref.ui.askForNumber(selected.size(), self)
+			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
+			if coroutineReturn != null and coroutineReturn is int:
+				var subSelected = selected.slice(0, coroutineReturn-1)
+				Ref.character.pickItem(selected.slice(0, coroutineReturn-1))
+				for s in subSelected:
+					GLOBAL.chests[chestId][GLOBAL.CH_CONTENT].erase(s)
 		var itemList = GLOBAL.chests[chestId][GLOBAL.CH_CONTENT]
 		items.init(getSimpleItemRows(itemList), items.currentIndex)
 
 func getSimpleItemRows(itemList: Array):
-	var result = []
+	var itemDict = {}
 	for id in itemList:
+		var item = GLOBAL.items[id]
+		if item[GLOBAL.IT_STACK] != null:
+			if itemDict.has(item[GLOBAL.IT_STACK]):
+				itemDict[item[GLOBAL.IT_STACK]].append(id)
+			else:
+				itemDict[item[GLOBAL.IT_STACK]] = [id]
+		else:
+			itemDict[id + 10000] = [id]
+	var result = []
+	for stackId in itemDict.keys():
+		var id = itemDict[stackId][0]
 		var item = GLOBAL.items[id]
 		match item[GLOBAL.IT_TYPE]:
 			GLOBAL.WP_TYPE:
@@ -57,9 +77,9 @@ func getSimpleItemRows(itemList: Array):
 			GLOBAL.AR_TYPE:
 				result.append([GLOBAL.AR_TYPE, id, item[GLOBAL.IT_NAME], false, item[GLOBAL.IT_ICON]])
 			GLOBAL.PO_TYPE:
-				result.append([GLOBAL.PO_TYPE, item[GLOBAL.IT_NAME], item[GLOBAL.IT_ICON], [id]])
+				result.append([GLOBAL.PO_TYPE, item[GLOBAL.IT_NAME], item[GLOBAL.IT_ICON], itemDict[stackId]])
 			GLOBAL.TH_TYPE:
-				result.append([GLOBAL.TH_TYPE, item[GLOBAL.IT_NAME], item[GLOBAL.IT_ICON], [id]])
+				result.append([GLOBAL.TH_TYPE, item[GLOBAL.IT_NAME], item[GLOBAL.IT_ICON], itemDict[stackId]])
 			GLOBAL.TA_TYPE:
 				result.append([GLOBAL.TA_TYPE, id, item[GLOBAL.IT_NAME], false, item[GLOBAL.IT_ICON]])
 			GLOBAL.LO_TYPE:

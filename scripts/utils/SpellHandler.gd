@@ -12,7 +12,7 @@ func castSpellAsync(spellId: int):
 			if GLOBAL.targets.size() == 0:
 				return
 			Ref.game.set_process_input(false)
-			Ref.ui.askForTarget(GLOBAL.targets.keys())
+			Ref.ui.askForTarget(GLOBAL.targets.keys(), Ref.game)
 			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
 			if coroutineReturn == -1:
 				return
