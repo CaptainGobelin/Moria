@@ -18,7 +18,7 @@ const SC_IDX = 4
 const PO_IDX = 5
 const LO_IDX = 6
 const GO_IDX = 7
-const TYPE_PROB = [0.5, 0.0, 0.0, 0.5, 0.0, 0.0, 0.5, 0.5]
+const TYPE_PROB = [0.0, 0.0, 0.0, 1.5, 0.0, 0.0, 0.5, 0.5]
 
 var id = -1
 
@@ -50,7 +50,8 @@ func generateWeapon(rarity: int):
 		if localRarity < 0:
 			return []
 	var rnd = randi() % Data.weaponsByRarity[localRarity].size()
-	var base = Data.weapons[Data.weaponsByRarity[localRarity][rnd]].duplicate()
+	var baseIdx = Data.weaponsByRarity[localRarity][rnd]
+	var base = Data.weapons[baseIdx].duplicate()
 	id += 1
 	var quality = generateItemQuality(rarity)
 	var enchants = generateWeaponEnchant(rarity, quality)
@@ -71,14 +72,14 @@ func generateWeapon(rarity: int):
 		2: base[Data.W_NAME] = "superior " + base[Data.W_NAME]
 		3: base[Data.W_NAME] = "flawless " + base[Data.W_NAME]
 	base[Data.W_NAME][0] = base[Data.W_NAME][0].capitalize()
-	GLOBAL.items[id] = mapWeaponToItem(base)
+	GLOBAL.items[id] = mapWeaponToItem(base, baseIdx)
 	GLOBAL.items[id][GLOBAL.IT_SPEC] = enchants.duplicate()
 	var count = 0
 	for e in enchants:
 		GLOBAL.items[id][GLOBAL.IT_SPEC][count] = Data.wpEnchants[e][Data.WP_EN_ID]
 	return [id]
 
-func mapWeaponToItem(weapon):
+func mapWeaponToItem(weapon, baseIdx: int):
 	var item = []
 	item.resize(GLOBAL.IT_STACK + 1)
 	item[GLOBAL.IT_ICON] = weapon[Data.W_ICON]
@@ -87,6 +88,7 @@ func mapWeaponToItem(weapon):
 	item[GLOBAL.IT_HIT] = weapon[Data.W_HIT]
 	item[GLOBAL.IT_2H] = weapon[Data.W_2H]
 	item[GLOBAL.IT_TYPE] = GLOBAL.WP_TYPE
+	item[GLOBAL.IT_BASE] = baseIdx
 	return item
 
 func generateArmor(rarity: int):
@@ -95,12 +97,13 @@ func generateArmor(rarity: int):
 		if rarity < 0:
 			return []
 	var rnd = randi() % Data.armorsByRarity[rarity].size()
-	var base = Data.armors[Data.armorsByRarity[rarity][rnd]]
+	var baseIdx = Data.armorsByRarity[rarity][rnd]
+	var base = Data.armors[baseIdx]
 	id += 1
-	GLOBAL.items[id] = mapArmorToItem(base)
+	GLOBAL.items[id] = mapArmorToItem(base, baseIdx)
 	return [id]
 
-func mapArmorToItem(armor):
+func mapArmorToItem(armor, baseIdx: int):
 	var item = []
 	item.resize(GLOBAL.IT_STACK + 1)
 	item[GLOBAL.IT_ICON] = armor[Data.A_ICON]
@@ -108,6 +111,7 @@ func mapArmorToItem(armor):
 	item[GLOBAL.IT_CA] = armor[Data.A_CA]
 	item[GLOBAL.IT_PROT] = armor[Data.A_PROT]
 	item[GLOBAL.IT_TYPE] = GLOBAL.AR_TYPE
+	item[GLOBAL.IT_BASE] = baseIdx
 	return item
 
 func generateThrowing(rarity: int):
@@ -128,10 +132,10 @@ func generateThrowing(rarity: int):
 	for _i in range(quantity):
 		id += 1
 		result.append(id)
-		GLOBAL.items[id] = mapThrowingToItem(base)
+		GLOBAL.items[id] = mapThrowingToItem(base, idx)
 	return result
 
-func mapThrowingToItem(throwing):
+func mapThrowingToItem(throwing, baseIdx):
 	var item = []
 	item.resize(GLOBAL.IT_STACK + 1)
 	item[GLOBAL.IT_ICON] = throwing[Data.TH_ICON]
@@ -140,6 +144,7 @@ func mapThrowingToItem(throwing):
 	item[GLOBAL.IT_SPEC] = throwing[Data.TH_EFFECT]
 	item[GLOBAL.IT_TYPE] = GLOBAL.TH_TYPE
 	item[GLOBAL.IT_STACK] = throwing[Data.TH_STACK]
+	item[GLOBAL.IT_BASE] = baseIdx
 	return item
 
 func generatePotion(rarity: int):
@@ -148,12 +153,13 @@ func generatePotion(rarity: int):
 		if rarity < 0:
 			return null
 	var rnd = randi() % Data.potionsByRarity[rarity].size()
-	var base = Data.potions[Data.potionsByRarity[rarity][rnd]]
+	var baseIdx = Data.potionsByRarity[rarity][rnd]
+	var base = Data.potions[baseIdx]
 	id += 1
-	GLOBAL.items[id] = mapPotionToItem(base)
+	GLOBAL.items[id] = mapPotionToItem(base, baseIdx)
 	return [id]
 
-func mapPotionToItem(potion):
+func mapPotionToItem(potion, baseIdx):
 	var item = []
 	item.resize(GLOBAL.IT_STACK + 1)
 	item[GLOBAL.IT_ICON] = potion[Data.PO_ICON]
@@ -161,6 +167,7 @@ func mapPotionToItem(potion):
 	item[GLOBAL.IT_SPEC] = potion[Data.PO_EF]
 	item[GLOBAL.IT_TYPE] = GLOBAL.PO_TYPE
 	item[GLOBAL.IT_STACK] = potion[Data.PO_STACK]
+	item[GLOBAL.IT_BASE] = baseIdx
 	return item
 
 func generateTalisman(rarity: int):

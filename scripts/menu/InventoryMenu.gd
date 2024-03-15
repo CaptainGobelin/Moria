@@ -68,6 +68,14 @@ func _input(event):
 			return
 		Ref.character.quaffPotion(selected)
 		setTab(currentTab, itemList.currentIndex, itemList.currentStartRow)
+	elif (event.is_action_released("throw")):
+		if currentTab != GLOBAL.INV_THROWINGS:
+			return
+		var selected = itemList.getSelected()
+		if selected == null:
+			return
+		close()
+		Ref.game.throwHandler.throwAsync(selected)
 
 func setTab(tab, row = 0, startRow = 0):
 	for t in tabs:

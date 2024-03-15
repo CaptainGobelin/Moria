@@ -13,7 +13,17 @@ const PROJ_RED_R = [Colors.red, 9]
 const PROJ_WHITE_S = [Colors.white, 0]
 const PROJ_WHITE_M = [Colors.white, 6]
 const PROJ_WHITE_LONG = [Colors.white, 3]
+const PROJ_WHITE_R = [Colors.white, 9]
 const PROJ_GREEN_R = [Colors.green, 9]
+
+# Spells
+const SP_MAGIC_MISSILE = 0
+const SP_HEAL = 1
+const SP_BLESS = 2
+const SP_FIREBALL = 3
+const SP_TH_FIREBOMB = 100
+const SP_TH_POISON = 101
+const SP_TH_SLEEP = 102
 
 # Skills
 const SK_COMBAT = 0
@@ -171,9 +181,9 @@ const throwings = {
 	0: [\"Throwing knife\", 36, Vector2(1, 6), 0, null, PROJ_WHITE_S, 200],
 	1: [\"Throwing axe\", 37, Vector2(1, 10), 1, null, PROJ_WHITE_M, 201],
 	2: [\"Javelin\", 38, Vector2(2, 8), 2, null, PROJ_WHITE_LONG, 202],
-	3: [\"Fire bomb\", 39, Vector2(2, 10), 0, null, PROJ_RED_R, 203],
-	4: [\"Toxic flask\", 40, Vector2(2, 6), 0, null, PROJ_GREEN_R, 204],
-	5: [\"Sleep flask\", 41, Vector2(0, 1), 0, null, PROJ_PURPLE_R, 205],
+	3: [\"Fire bomb\", 39, null, 0, SP_TH_FIREBOMB, PROJ_WHITE_R, 203],
+	4: [\"Toxic flask\", 40, null, 0, SP_TH_POISON, PROJ_WHITE_R, 204],
+	5: [\"Sleep flask\", 41, null, 0, SP_TH_SLEEP, PROJ_WHITE_R, 205],
 }
 
 # Weapon enchants
@@ -243,12 +253,6 @@ const GOLD_ICON = 59
 # Lockpick
 const LOCKPICK_NAME = \"Lockpick\"
 const LOCKPICK_ICON = 58
-
-# Spells
-const SP_MAGIC_MISSILE = 0
-const SP_HEAL = 1
-const SP_BLESS = 2
-const SP_FIREBALL = 3
 
 # Spell schools
 const SC_ENCHANTEMENT = 0

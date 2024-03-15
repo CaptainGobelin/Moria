@@ -11,6 +11,7 @@ onready var pathfinder = get_node("Utils/Pathfinder")
 onready var itemGenerator = get_node("Utils/ItemGenerator") as ItemGenerator
 onready var pickupLootHandler = get_node("Utils/PickupLootHandler")
 onready var spellHandler = get_node("Utils/SpellHandler")
+onready var throwHandler = get_node("Utils/ThrowHandler")
 
 func _ready():
 	randomize()
@@ -42,7 +43,7 @@ func newFloor():
 	var spawnPos = dungeonGenerator.newFloor()
 	Ref.currentLevel.initShadows()
 	Ref.currentLevel.placeCharacter(spawnPos)
-	for _i in range(0):
+	for _i in range(8):
 		Ref.currentLevel.spawnMonster()
 	for _i in range(0):
 		Ref.currentLevel.createChest()

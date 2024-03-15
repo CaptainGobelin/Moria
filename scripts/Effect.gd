@@ -3,7 +3,7 @@ extends Sprite
 
 signal completed
 
-export(int, "Fire", "Light", "Desintegrate") var type = 0 setget setType
+export(int, "Fire", "Light", "Desintegrate", "PoisonGas", "SleepGas") var type = 0 setget setType
 
 func setType(value):
 	type = value

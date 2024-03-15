@@ -2,6 +2,8 @@ extends Node
 
 onready var effectScene = preload("res://scenes/Effect.tscn")
 
+onready var throwings = get_node("Throwings")
+
 func applyEffect(entity, spell):
 	match spell:
 		Data.SP_MAGIC_MISSILE:
@@ -12,6 +14,12 @@ func applyEffect(entity, spell):
 			bless(entity)
 		Data.SP_FIREBALL:
 			fireball(entity)
+		Data.SP_TH_FIREBOMB:
+			throwings.firebomb(entity)
+		Data.SP_TH_POISON:
+			throwings.poisonFlask(entity)
+		Data.SP_TH_SLEEP:
+			throwings.sleepFlask(entity)
 
 func magicMissile(entity):
 	entity.takeHit(GeneralEngine.rollDices(Vector2(2, 1)))
