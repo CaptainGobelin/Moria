@@ -18,7 +18,7 @@ const SC_IDX = 4
 const PO_IDX = 5
 const LO_IDX = 6
 const GO_IDX = 7
-const TYPE_PROB = [0.0, 0.0, 0.0, 1.5, 0.0, 0.0, 0.5, 0.5]
+const TYPE_PROB = [0.1, 0.13, 0.07, 0.1, 0.0, 0.2, 0.1, 0.3]
 
 var id = -1
 
@@ -155,9 +155,13 @@ func generatePotion(rarity: int):
 	var rnd = randi() % Data.potionsByRarity[rarity].size()
 	var baseIdx = Data.potionsByRarity[rarity][rnd]
 	var base = Data.potions[baseIdx]
-	id += 1
-	GLOBAL.items[id] = mapPotionToItem(base, baseIdx)
-	return [id]
+	var result = []
+	var quantity = 1 + (randi() % 3)
+	for _i in range(quantity):
+		id += 1
+		result.append(id)
+		GLOBAL.items[id] = mapPotionToItem(base, baseIdx)
+	return result
 
 func mapPotionToItem(potion, baseIdx):
 	var item = []

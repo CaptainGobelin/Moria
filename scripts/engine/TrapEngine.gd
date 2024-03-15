@@ -8,3 +8,4 @@ func triggerTrap(trapId: int, entity):
 			entity.takeHit(GeneralEngine.rollDices(Vector2(1,4)))
 	GLOBAL.traps.erase(trap.pos)
 	trap.frame += 1
+	trap.visible = true

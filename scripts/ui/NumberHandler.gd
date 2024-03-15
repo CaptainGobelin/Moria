@@ -12,6 +12,8 @@ func _ready():
 func _input(event):
 	if (event.is_action_released("ui_accept")):
 		currentSuffix = currentChoice
+		if currentChoice == "":
+			currentChoice = String(currentMax)
 		rewriteLastLine()
 		returnNumber()
 	elif (event.is_action_released("ui_cancel")):

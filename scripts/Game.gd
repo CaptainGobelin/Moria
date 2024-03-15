@@ -43,11 +43,11 @@ func newFloor():
 	var spawnPos = dungeonGenerator.newFloor()
 	Ref.currentLevel.initShadows()
 	Ref.currentLevel.placeCharacter(spawnPos)
-	for _i in range(8):
-		Ref.currentLevel.spawnMonster()
 	for _i in range(0):
+		Ref.currentLevel.spawnMonster()
+	for _i in range(randi() % 4):
 		Ref.currentLevel.createChest()
-	for _i in range(20):
+	for _i in range(3 + (randi() % 4)):
 		Ref.currentLevel.dropItem()
 
 func _input(event):
