@@ -76,6 +76,25 @@ func _input(event):
 			return
 		close()
 		Ref.game.throwHandler.throwAsync(selected)
+	elif (event.is_action_released("assignShortcut")):
+		if currentTab == GLOBAL.INV_ARMORS or currentTab == GLOBAL.INV_TALSMANS:
+			return
+		var selected = itemList.getSelected()
+		if selected == null:
+			return
+		Ref.ui.askForNumber(9, self, "Assign to which key?")
+		var coroutineReturn = yield(Ref.ui, "coroutine_signal")
+		if coroutineReturn == null or !(coroutineReturn is int):
+			return
+		match currentTab:
+			GLOBAL.INV_WEAPONS:
+				Ref.character.shortcuts.assign(coroutineReturn, GLOBAL.WP_TYPE, selected)
+			GLOBAL.INV_POTIONS:
+				Ref.character.shortcuts.assign(coroutineReturn, GLOBAL.PO_TYPE, selected)
+			GLOBAL.INV_THROWINGS:
+				Ref.character.shortcuts.assign(coroutineReturn, GLOBAL.TH_TYPE, selected)
+		Ref.ui.writeAssignedKey(coroutineReturn, GLOBAL.items[selected][GLOBAL.IT_NAME])
+		setTab(currentTab, itemList.currentIndex, itemList.currentStartRow)
 
 func setTab(tab, row = 0, startRow = 0):
 	for t in tabs:

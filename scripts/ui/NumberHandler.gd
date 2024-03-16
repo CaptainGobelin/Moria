@@ -5,6 +5,7 @@ signal end_coroutine
 var currentChoice = ""
 var currentSuffix = ""
 var currentMax = 0
+var msgToPrint = ""
 
 func _ready():
 	set_process_input(false)
@@ -41,14 +42,15 @@ func _input(event):
 
 func rewriteLastLine():
 	Ref.ui.diary.remove_line(Ref.ui.diary.get_line_count()-1)
-	Ref.ui.write("How much? (1-" + String(currentMax) + ") " + currentSuffix)
+	Ref.ui.write(msgToPrint + " (1-" + String(currentMax) + ") " + currentSuffix)
 
-func startCoroutine(maxNb: int):
+func startCoroutine(maxNb: int, msg: String):
 	currentMax = maxNb
+	msgToPrint = msg
 	get_parent().set_process_input(false)
 	currentChoice = ""
 	currentSuffix = "_"
-	Ref.ui.write("How much? (1-" + String(maxNb) + ") _")
+	Ref.ui.write(msgToPrint + " (1-" + String(maxNb) + ") _")
 	set_process_input(true)
 
 func returnNumber():

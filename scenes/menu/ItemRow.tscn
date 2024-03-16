@@ -18,51 +18,38 @@ var item
 func setContent(itemRow, type):
 	match type:
 		GLOBAL.WP_TYPE:
-			setWeaponContent(itemRow)
+			setSimpleContent(itemRow)
 		GLOBAL.AR_TYPE:
-			setArmorContent(itemRow)
+			setSimpleContent(itemRow)
 		GLOBAL.PO_TYPE:
-			setPotionContent(itemRow)
+			setComplexContent(itemRow)
 		GLOBAL.TH_TYPE:
-			setThrowingContent(itemRow)
+			setComplexContent(itemRow)
 		GLOBAL.TA_TYPE:
-			setTalismanContent(itemRow)
+			setSimpleContent(itemRow)
 
-func setWeaponContent(itemRow):
+func setSimpleContent(itemRow):
 	item = itemRow[1]
 	itemName.text = itemRow[2]
 	equiped.visible = itemRow[3]
-	icon.frame = itemRow[4]
+	if itemRow[4] == null:
+		shortcut.text = \"\"
+	else:
+		shortcut.text = String(itemRow[4])
+	icon.frame = itemRow[5]
 
-func setArmorContent(itemRow):
-	item = itemRow[1]
-	itemName.text = itemRow[2]
-	equiped.visible = itemRow[3]
-	icon.frame = itemRow[4]
-
-func setPotionContent(itemRow):
-	item = itemRow[3][0]
+func setComplexContent(itemRow):
+	item = itemRow[4][0]
 	var n = itemRow[1]
-	if itemRow[3].size() > 1:
-		n = Utils.addArticle(n, itemRow[3].size())
+	if itemRow[4].size() > 1:
+		n = Utils.addArticle(n, itemRow[4].size())
 	itemName.text = n
 	equiped.visible = false
-	icon.frame = itemRow[2]
-
-func setThrowingContent(itemRow):
-	item = itemRow[3][0]
-	var n = itemRow[1]
-	if itemRow[3].size() > 1:
-		n = Utils.addArticle(n, itemRow[3].size())
-	itemName.text = n
-	equiped.visible = false
-	icon.frame = itemRow[2]
-
-func setTalismanContent(itemRow):
-	item = itemRow[1]
-	itemName.text = itemRow[2]
-	equiped.visible = itemRow[3]
-	icon.frame = itemRow[4]
+	if itemRow[2] == null:
+		shortcut.text = \"\"
+	else:
+		shortcut.text = String(itemRow[2])
+	icon.frame = itemRow[3]
 "
 
 [node name="ItemRow" type="Node2D"]
@@ -113,13 +100,11 @@ valign = 1
 autowrap = true
 
 [node name="Shortcut" type="Label" parent="TextContainer"]
-visible = false
 margin_left = 668.0
 margin_right = 704.0
 margin_bottom = 68.0
 custom_colors/font_color = Color( 0.807843, 0.858824, 0.882353, 1 )
 custom_fonts/font = ExtResource( 1 )
-text = "5"
 align = 1
 valign = 1
 

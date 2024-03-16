@@ -29,7 +29,8 @@ func getWeaponRows():
 	for w in weapons:
 		var current = GLOBAL.items[w]
 		var equiped = w == currentWeapon
-		result.append([GLOBAL.WP_TYPE, w, current[GLOBAL.IT_NAME], equiped, current[GLOBAL.IT_ICON]])
+		var key = Ref.character.shortcuts.getKey(w)
+		result.append([GLOBAL.WP_TYPE, w, current[GLOBAL.IT_NAME], equiped, key, current[GLOBAL.IT_ICON]])
 	return result
 
 func getArmorRows():
@@ -37,7 +38,7 @@ func getArmorRows():
 	for a in armors:
 		var current = GLOBAL.items[a]
 		var equiped = a == currentArmor
-		result.append([GLOBAL.AR_TYPE, a, current[GLOBAL.IT_NAME], equiped, current[GLOBAL.IT_ICON]])
+		result.append([GLOBAL.AR_TYPE, a, current[GLOBAL.IT_NAME], equiped, null, current[GLOBAL.IT_ICON]])
 	return result
 
 func getPotionRows():
@@ -45,9 +46,10 @@ func getPotionRows():
 	for p in potions:
 		var current = GLOBAL.items[p]
 		if !dict.has(current[GLOBAL.IT_STACK]):
-			dict[current[GLOBAL.IT_STACK]] = [GLOBAL.PO_TYPE, current[GLOBAL.IT_NAME], current[GLOBAL.IT_ICON], [p]]
+			var key = Ref.character.shortcuts.getKey(p)
+			dict[current[GLOBAL.IT_STACK]] = [GLOBAL.PO_TYPE, current[GLOBAL.IT_NAME], key, current[GLOBAL.IT_ICON], [p]]
 		else:
-			dict[current[GLOBAL.IT_STACK]][3].append(p)
+			dict[current[GLOBAL.IT_STACK]][4].append(p)
 	var result = []
 	for d in dict.keys():
 		result.append(dict[d])
@@ -58,9 +60,10 @@ func getThrowingRows():
 	for t in throwings:
 		var current = GLOBAL.items[t]
 		if !dict.has(current[GLOBAL.IT_STACK]):
-			dict[current[GLOBAL.IT_STACK]] = [GLOBAL.TH_TYPE, current[GLOBAL.IT_NAME], current[GLOBAL.IT_ICON], [t]]
+			var key = Ref.character.shortcuts.getKey(t)
+			dict[current[GLOBAL.IT_STACK]] = [GLOBAL.TH_TYPE, current[GLOBAL.IT_NAME], key, current[GLOBAL.IT_ICON], [t]]
 		else:
-			dict[current[GLOBAL.IT_STACK]][3].append(t)
+			dict[current[GLOBAL.IT_STACK]][4].append(t)
 	var result = []
 	for d in dict.keys():
 		result.append(dict[d])
@@ -71,7 +74,7 @@ func getTalismanRows():
 	for t in talismans:
 		var current = GLOBAL.items[t]
 		var equiped = currentTalismans.x == t or currentTalismans.y == t
-		result.append([GLOBAL.TA_TYPE, t, current[GLOBAL.IT_NAME], equiped, current[GLOBAL.IT_ICON]])
+		result.append([GLOBAL.TA_TYPE, t, current[GLOBAL.IT_NAME], equiped, null, current[GLOBAL.IT_ICON]])
 	return result
 
 func switchWeapon(idx):

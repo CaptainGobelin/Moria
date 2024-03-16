@@ -27,9 +27,9 @@ var currentMax = 0
 func _ready():
 	Ref.ui = self
 
-func askForNumber(maxNb: int, inputer):
+func askForNumber(maxNb: int, inputer, msg = "How much?"):
 	inputer.set_process_input(false)
-	numberHandler.startCoroutine(maxNb)
+	numberHandler.startCoroutine(maxNb, msg)
 	var result = yield(numberHandler, "end_coroutine")
 	inputer.set_process_input(true)
 	emit_signal("coroutine_signal", result)
@@ -76,6 +76,10 @@ func color(text: String, color: String):
 
 func writeOk():
 	write("Ok then.")
+
+func writeAssignedKey(key: int, item: String):
+	item[0] = item[0].capitalize()
+	write(item + " assigned to key " + color(String(key), "yellow") + ".")
 
 func writeNoSpell(spell: String):
 	write("You cannot cast " + spell + " until you rest.")
