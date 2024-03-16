@@ -86,6 +86,14 @@ func writeAssignedKey(key: int, item: String):
 	item[0] = item[0].capitalize()
 	write(item + " assigned to key " + color(String(key), "yellow") + ".")
 
+func writeNoPotionAssigned():
+	write("You don't have any potion assigned.")
+
+func writeWhichPotion(choices: Array):
+	var msg = "Quaff which potion?"
+	msg += listToChoices(choices)
+	write(msg)
+
 func writeNoScrollAssigned():
 	write("You don't have any scroll assigned.")
 

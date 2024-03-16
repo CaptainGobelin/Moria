@@ -100,6 +100,17 @@ func _input(event):
 			if coroutineReturn > 0:
 				var item = Ref.character.shortcuts.getItem(coroutineReturn, GLOBAL.SC_TYPE)
 				Ref.game.spellHandler.castSpellAsync(GLOBAL.items[item][GLOBAL.IT_SPEC], item)
+	elif (event.is_action_released("quaffPotion")):
+		var choices = Ref.character.shortcuts.getShortcutList(GLOBAL.PO_TYPE)
+		if choices == null:
+			Ref.ui.writeNoPotionAssigned()
+		else:
+			Ref.ui.writeWhichPotion(choices)
+			Ref.ui.askForChoice(choices, self)
+			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
+			if coroutineReturn > 0:
+				var item = Ref.character.shortcuts.getItem(coroutineReturn, GLOBAL.PO_TYPE)
+				Ref.character.quaffPotion(item)
 	elif (event.is_action_released("search")):
 		Ref.character.search()
 	elif (event.is_action_released("debug_new_floor")):
