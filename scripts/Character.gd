@@ -129,8 +129,12 @@ func dropItem(idx):
 			inventory.weapons.erase(idx)
 		GLOBAL.AR_TYPE:
 			inventory.armors.erase(idx)
+		GLOBAL.TA_TYPE:
+			inventory.talismans.erase(idx)
 		GLOBAL.PO_TYPE:
 			inventory.potions.erase(idx)
+		GLOBAL.SC_TYPE:
+			inventory.scrolls.erase(idx)
 		GLOBAL.TH_TYPE:
 			inventory.throwings.erase(idx)
 	GLOBAL.dropItemOnFloor(idx, pos)

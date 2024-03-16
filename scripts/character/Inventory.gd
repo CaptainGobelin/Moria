@@ -7,6 +7,7 @@ var currentTalismans = Vector2(-1, -1)
 var weapons = []
 var armors = []
 var potions = []
+var scrolls = []
 var throwings = []
 var talismans = []
 var lockpicks = 0 setget updateLockpicks

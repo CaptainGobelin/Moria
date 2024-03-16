@@ -41,6 +41,7 @@ const AR_TYPE = 1
 const PO_TYPE = 2
 const TA_TYPE = 3
 const TH_TYPE = 4
+const SC_TYPE = 5
 const LO_TYPE = 6
 const GO_TYPE = 7
 const SP_TYPE = 8

@@ -82,7 +82,6 @@ const W_RAR = 4
 const W_ENCH = 5
 const W_2H = 6
 const W_ICON = 7
-const W_STACK = 8
 const weapons = {
 	0: ["club",			Vector2(1, 12), Vector2(1,  6), "B", 0, 0.4, false,  0],
 	1: ["dagger",		Vector2(1, 12), Vector2(1,  4), "S", 1, 1.5, false,  1],
@@ -157,6 +156,25 @@ func potionsReader():
 			potionsByRarity[rarity] = []
 		potionsByRarity[rarity].append(idx)
 
+# Scrolls
+
+const SC_NAME = 0
+const SC_SP = 1
+const SC_RAR = 2
+const SC_STACK = 3
+const scrolls = {
+	0: ["Scroll of magic missile", SP_MAGIC_MISSILE, 0, 100],
+}
+ 
+var scrollsByRarity = {}
+
+func scrollsReader():
+	for idx in scrolls.keys():
+		var rarity = scrolls[idx][SC_RAR]
+		if !scrollsByRarity.has(rarity):
+			scrollsByRarity[rarity] = []
+		scrollsByRarity[rarity].append(idx)
+
 # Taslimans
 const TA_NAMES = 0
 const TA_ICONS = 1
@@ -179,12 +197,12 @@ const TH_EFFECT = 4
 const TH_PROJ = 5
 const TH_STACK = 6
 const throwings = {
-	0: ["Throwing knife", 	36, Vector2(1, 6), 0, null, PROJ_WHITE_S, 200],
-	1: ["Throwing axe", 	37, Vector2(1, 10), 1, null, PROJ_WHITE_M, 201],
-	2: ["Javelin", 			38, Vector2(2, 8), 2, null, PROJ_WHITE_LONG, 202],
-	3: ["Roped firebomb", 	39, null, 0, SP_TH_FIREBOMB, PROJ_WHITE_R, 203],
-	4: ["Toxic flask", 		40, null, 0, SP_TH_POISON, PROJ_WHITE_R, 204],
-	5: ["Sleep flask", 		41, null, 0, SP_TH_SLEEP, PROJ_WHITE_R, 205],
+	0: ["Throwing knife", 	36, Vector2(1,  6), 0, null,           PROJ_WHITE_S,    200],
+	1: ["Throwing axe", 	37, Vector2(1, 10), 1, null,           PROJ_WHITE_M,    201],
+	2: ["Javelin", 			38, Vector2(2,  8), 2, null,           PROJ_WHITE_LONG, 202],
+	3: ["Roped firebomb", 	39, null,           0, SP_TH_FIREBOMB, PROJ_WHITE_R,    203],
+	4: ["Toxic flask", 		40, null,           0, SP_TH_POISON,   PROJ_WHITE_R,    204],
+	5: ["Sleep flask", 		41, null,           0, SP_TH_SLEEP,    PROJ_WHITE_R,    205],
 }
 
 # Weapon enchants
