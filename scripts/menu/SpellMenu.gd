@@ -25,6 +25,17 @@ func _input(event):
 			return
 		close()
 		Ref.game.spellHandler.castSpellAsync(spell)
+	elif (event.is_action_released("assignShortcut")):
+		var spell = spellList.getSelected()
+		if spell == null:
+			return
+		Ref.ui.askForNumber(9, self, "Assign to which key?")
+		var coroutineReturn = yield(Ref.ui, "coroutine_signal")
+		if coroutineReturn == null or !(coroutineReturn is int):
+			return
+		Ref.character.shortcuts.assign(coroutineReturn, GLOBAL.SP_TYPE, spell)
+		Ref.ui.writeAssignedKey(coroutineReturn, Data.spells[spell][Data.SP_NAME])
+		spellList.init(Ref.character.spells.getSpellsRows(), spellList.currentIndex)
 
 func open():
 	spellList.init(Ref.character.spells.getSpellsRows())

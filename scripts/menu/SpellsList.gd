@@ -3,7 +3,7 @@ extends Node2D
 var maxIndex: int  = 0
 var currentIndex: int = 0
 
-func init(spells: Array):
+func init(spells: Array, index = 0):
 	maxIndex = spells.size()
 	var count = 0
 	for s in get_children():
@@ -14,7 +14,10 @@ func init(spells: Array):
 			s.visible = false
 		count += 1
 	if maxIndex > 0:
-		select(0)
+		if maxIndex > index:
+			select(index)
+		else:
+			select(maxIndex - 1)
 
 func getSelected():
 	for s in get_children():

@@ -64,6 +64,5 @@ margin_right = 540.0
 margin_bottom = 72.0
 custom_colors/font_color = Color( 0.807843, 0.858824, 0.882353, 1 )
 custom_fonts/font = ExtResource( 1 )
-text = "5"
 align = 1
 valign = 1

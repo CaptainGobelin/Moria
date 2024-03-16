@@ -85,12 +85,21 @@ script = ExtResource( 7 )
 position = Vector2( 196, 35 )
 scale = Vector2( 0.25, 0.25 )
 
-[node name="Label" type="Label" parent="TextContainer"]
+[node name="Name" type="Label" parent="TextContainer"]
 margin_left = -668.0
-margin_right = 50.0
+margin_right = -532.0
 margin_bottom = 35.0
 custom_colors/font_color = Color( 0.807843, 0.858824, 0.882353, 1 )
 custom_fonts/font = ExtResource( 5 )
-text = "Item                                            Key"
+text = "Item"
+
+[node name="Key" type="Label" parent="TextContainer"]
+margin_left = -12.0
+margin_right = 44.0
+margin_bottom = 35.0
+custom_colors/font_color = Color( 0.807843, 0.858824, 0.882353, 1 )
+custom_fonts/font = ExtResource( 5 )
+text = "Key"
+align = 1
 
 [node name="MenuScroller" parent="." instance=ExtResource( 6 )]

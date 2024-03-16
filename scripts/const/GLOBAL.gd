@@ -43,6 +43,7 @@ const TA_TYPE = 3
 const TH_TYPE = 4
 const LO_TYPE = 6
 const GO_TYPE = 7
+const SP_TYPE = 8
 
 const IT_TYPE = 0
 const IT_NAME = 1

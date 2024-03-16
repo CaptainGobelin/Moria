@@ -15,3 +15,7 @@ func setContent(spellRow):
 	icon.frame = spellRow[2]
 	remaining.text = String(spellRow[3])
 	uses.text = "/" + String(spellRow[4])
+	if spellRow[5] != null:
+		shortcut.text = String(spellRow[5])
+	else:
+		shortcut.text = ""

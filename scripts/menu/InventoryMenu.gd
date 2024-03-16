@@ -5,6 +5,7 @@ onready var description = get_node("Description")
 onready var currentItem = get_node("CurrentItem")
 onready var itemList = get_node("ItemList")
 onready var scroller = get_node("MenuScroller")
+onready var keyLabel = get_node("TextContainer/Key")
 onready var tabs = inventory.get_children()
 const weaponsTab = 0
 const armorsTab = 1
@@ -102,14 +103,19 @@ func setTab(tab, row = 0, startRow = 0):
 	tabs[tab].setActive()
 	match tab:
 		GLOBAL.INV_WEAPONS:
+			keyLabel.visible = true
 			itemList.init(Ref.character.inventory.getWeaponRows(), row, GLOBAL.WP_TYPE, startRow)
 		GLOBAL.INV_ARMORS:
+			keyLabel.visible = false
 			itemList.init(Ref.character.inventory.getArmorRows(), row, GLOBAL.AR_TYPE, startRow)
 		GLOBAL.INV_POTIONS:
+			keyLabel.visible = true
 			itemList.init(Ref.character.inventory.getPotionRows(), row, GLOBAL.PO_TYPE, startRow)
 		GLOBAL.INV_THROWINGS:
+			keyLabel.visible = true
 			itemList.init(Ref.character.inventory.getThrowingRows(), row, GLOBAL.TH_TYPE, startRow)
 		GLOBAL.INV_TALSMANS:
+			keyLabel.visible = false
 			itemList.init(Ref.character.inventory.getTalismanRows(), row, GLOBAL.TA_TYPE, startRow)
 		_:
 			itemList.init([], row, 0)
