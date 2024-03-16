@@ -5,6 +5,7 @@ onready var projScene = preload("res://scenes/Projectile.tscn")
 func throwAsync(itemId: int):
 	var item = Data.throwings[GLOBAL.items[itemId][GLOBAL.IT_BASE]]
 	if GLOBAL.targets.size() == 0:
+		Ref.ui.noTarget()
 		return
 	Ref.game.set_process_input(false)
 	Ref.ui.askForTarget(GLOBAL.targets.keys(), Ref.game)

@@ -86,6 +86,14 @@ func writeAssignedKey(key: int, item: String):
 	item[0] = item[0].capitalize()
 	write(item + " assigned to key " + color(String(key), "yellow") + ".")
 
+func writeNoThrowingAssigned():
+	write("You don't have any throwing weapon assigned.")
+
+func writeWhichThrowing(choices: Array):
+	var msg = "Throw what?"
+	msg += listToChoices(choices)
+	write(msg)
+
 func writeNoSpellAssigned():
 	write("You don't have any spell assigned.")
 
@@ -95,10 +103,10 @@ func writeWhichSpell(choices: Array):
 	write(msg)
 
 func writeCastSpell(spell: String):
-	write("You cast " + color(spell, "yellow") + ".")
+	write("You casted " + color(spell, "yellow") + ".")
 
 func writeNoSpell(spell: String):
-	write("You cannot cast " + spell + " until you rest.")
+	write("You cannot cast " + spell + " anymore until you rest.")
 
 func writeNoGoingBack():
 	write("A shadow force blocks the way. There is no going back...")

@@ -78,6 +78,17 @@ func _input(event):
 			if coroutineReturn > 0:
 				var spell = Ref.character.shortcuts.getItem(coroutineReturn, GLOBAL.SP_TYPE)
 				spellHandler.castSpellAsync(spell)
+	elif (event.is_action_released("throw")):
+		var choices = Ref.character.shortcuts.getShortcutList(GLOBAL.TH_TYPE)
+		if choices == null:
+			Ref.ui.writeNoThrowingAssigned()
+		else:
+			Ref.ui.writeWhichThrowing(choices)
+			Ref.ui.askForChoice(choices, self)
+			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
+			if coroutineReturn > 0:
+				var item = Ref.character.shortcuts.getItem(coroutineReturn, GLOBAL.TH_TYPE)
+				Ref.game.throwHandler.throwAsync(item)
 	elif (event.is_action_released("search")):
 		Ref.character.search()
 	elif (event.is_action_released("debug_new_floor")):
