@@ -86,6 +86,14 @@ func writeAssignedKey(key: int, item: String):
 	item[0] = item[0].capitalize()
 	write(item + " assigned to key " + color(String(key), "yellow") + ".")
 
+func writeNoScrollAssigned():
+	write("You don't have any scroll assigned.")
+
+func writeWhichScroll(choices: Array):
+	var msg = "Read which scroll?"
+	msg += listToChoices(choices)
+	write(msg)
+
 func writeNoThrowingAssigned():
 	write("You don't have any throwing weapon assigned.")
 

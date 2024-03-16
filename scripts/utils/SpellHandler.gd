@@ -2,11 +2,12 @@ extends Node
 
 onready var projScene = preload("res://scenes/Projectile.tscn")
 
-func castSpellAsync(spellId: int):
+func castSpellAsync(spellId: int, scrollId = null):
 	var spell = Data.spells[spellId]
-	if Ref.character.spells.spellsUses[spellId] == 0:
-		Ref.ui.writeNoSpell(spell[Data.SP_NAME])
-		return
+	if scrollId == null:
+		if Ref.character.spells.spellsUses[spellId] == 0:
+			Ref.ui.writeNoSpell(spell[Data.SP_NAME])
+			return
 	match spell[Data.SP_TARGET]:
 		Data.SP_TARGET_TARGET:
 			if GLOBAL.targets.size() == 0:
@@ -21,7 +22,10 @@ func castSpellAsync(spellId: int):
 			Ref.ui.writeCastSpell(spell[Data.SP_NAME])
 			yield(castProjectile(GLOBAL.targets[targetId], spell[Data.SP_PROJ]), "completed")
 			SpellEngine.applyEffect(instance_from_id(targetId), spellId)
-			Ref.character.spells.spellsUses[spellId] -= 1
+			if scrollId == null:
+				Ref.character.spells.spellsUses[spellId] -= 1
+			else:
+				Ref.character.inventory.scrolls.erase(scrollId)
 			Ref.game.set_process_input(true)
 		Data.SP_TARGET_SELF:
 			Ref.ui.writeCastSpell(spell[Data.SP_NAME])

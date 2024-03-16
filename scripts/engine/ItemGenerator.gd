@@ -18,7 +18,7 @@ const SC_IDX = 4
 const PO_IDX = 5
 const LO_IDX = 6
 const GO_IDX = 7
-const TYPE_PROB = [0.17, 0.2, 0.07, 0.1, 1.1, 0.1, 0.1, 0.16]
+const TYPE_PROB = [0.19, 0.23, 0.07, 0.05, 0.1, 0.1, 0.1, 0.16]
 
 var id = -1
 

@@ -12,6 +12,8 @@ func assign(key: int, category: int, item: int):
 			weapons[key] = item
 		GLOBAL.PO_TYPE:
 			potions[key] = GLOBAL.items[item][GLOBAL.IT_STACK]
+		GLOBAL.SC_TYPE:
+			scrolls[key] = GLOBAL.items[item][GLOBAL.IT_STACK]
 		GLOBAL.TH_TYPE:
 			throwings[key] = GLOBAL.items[item][GLOBAL.IT_STACK]
 		GLOBAL.SP_TYPE:
@@ -27,6 +29,11 @@ func getKey(item: int, category: int):
 			var stackId = GLOBAL.items[item][GLOBAL.IT_STACK]
 			for k in potions.keys():
 				if potions[k] == stackId:
+					return k
+		GLOBAL.SC_TYPE:
+			var stackId = GLOBAL.items[item][GLOBAL.IT_STACK]
+			for k in scrolls.keys():
+				if scrolls[k] == stackId:
 					return k
 		GLOBAL.TH_TYPE:
 			var stackId = GLOBAL.items[item][GLOBAL.IT_STACK]
@@ -52,6 +59,12 @@ func getItem(key: int, category: int):
 				for p in Ref.character.inventory.potions:
 					if GLOBAL.items[p][GLOBAL.IT_STACK] == stackId:
 						return p
+		GLOBAL.SC_TYPE:
+			if scrolls.has(key):
+				var stackId = scrolls[key]
+				for s in Ref.character.inventory.scrolls:
+					if GLOBAL.items[s][GLOBAL.IT_STACK] == stackId:
+						return s
 		GLOBAL.TH_TYPE:
 			if throwings.has(key):
 				var stackId = throwings[key]

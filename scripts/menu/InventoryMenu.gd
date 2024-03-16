@@ -46,14 +46,13 @@ func _input(event):
 		close()
 	elif (event.is_action_released("ui_cancel")):
 		close()
-	elif (event.is_action_released("ui_accept")):
+	elif (event.is_action_released("ui_accept")) \
+	and (currentTab == GLOBAL.INV_WEAPONS or currentTab == GLOBAL.INV_ARMORS \
+	or currentTab == GLOBAL.INV_TALSMANS):
 		var selected = itemList.getSelected()
 		if selected == null:
 			return
-		if GLOBAL.items[selected][GLOBAL.IT_TYPE] == GLOBAL.PO_TYPE:
-			Ref.character.quaffPotion(selected)
-		else:
-			Ref.character.switchItem(selected)
+		Ref.character.switchItem(selected)
 		setTab(currentTab, itemList.currentIndex, itemList.currentStartRow)
 	elif (event.is_action_released("dropItem")):
 		var selected = itemList.getSelected()
@@ -61,17 +60,27 @@ func _input(event):
 			return
 		Ref.character.dropItem(selected)
 		setTab(currentTab, itemList.currentIndex, itemList.currentStartRow)
-	elif (event.is_action_released("quaffPotion")):
-		if currentTab != GLOBAL.INV_POTIONS:
-			return
+	elif (event.is_action_released("quaffPotion") or event.is_action_released("ui_accept")) \
+	and currentTab == GLOBAL.INV_POTIONS:
 		var selected = itemList.getSelected()
 		if selected == null:
 			return
 		Ref.character.quaffPotion(selected)
 		setTab(currentTab, itemList.currentIndex, itemList.currentStartRow)
-	elif (event.is_action_released("throw")):
-		if currentTab != GLOBAL.INV_THROWINGS:
+	elif (event.is_action_released("readScroll") or event.is_action_released("ui_accept")) \
+	and currentTab == GLOBAL.INV_SCROLLS:
+		var selected = itemList.getSelected()
+		if selected == null:
 			return
+		var spellId = GLOBAL.items[selected][GLOBAL.IT_SPEC]
+		if Data.spells[spellId][Data.SP_TARGET] == Data.SP_TARGET_TARGET:
+			if GLOBAL.targets.size() == 0:
+				Ref.ui.noTarget()
+				return
+		close()
+		Ref.game.spellHandler.castSpellAsync(spellId, selected)
+	elif (event.is_action_released("throw") or event.is_action_released("ui_accept")) \
+	and currentTab == GLOBAL.INV_THROWINGS:
 		var selected = itemList.getSelected()
 		if selected == null:
 			return
@@ -92,6 +101,8 @@ func _input(event):
 				Ref.character.shortcuts.assign(coroutineReturn, GLOBAL.WP_TYPE, selected)
 			GLOBAL.INV_POTIONS:
 				Ref.character.shortcuts.assign(coroutineReturn, GLOBAL.PO_TYPE, selected)
+			GLOBAL.INV_SCROLLS:
+				Ref.character.shortcuts.assign(coroutineReturn, GLOBAL.SC_TYPE, selected)
 			GLOBAL.INV_THROWINGS:
 				Ref.character.shortcuts.assign(coroutineReturn, GLOBAL.TH_TYPE, selected)
 		Ref.ui.writeAssignedKey(coroutineReturn, GLOBAL.items[selected][GLOBAL.IT_NAME])
