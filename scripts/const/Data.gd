@@ -35,6 +35,9 @@ const SK_WIL = 8
 const SK_PER = 9
 const SK_THI = 10
 
+# Level caps
+const lvlCaps = [0, 30, 50, 75, 110, 150, 200, 250, 300]
+
 # Classes
 const CL_FIGHTER = 0
 
@@ -55,8 +58,9 @@ const MO_DMG = 3
 const MO_CA = 4
 const MO_PROT = 5
 const MO_SPRITE = 6
+const MO_XP = 7
 const monsters = {
-	0: ["Skeleton", 6, Vector2(1, 6), Vector2(1, 4), 5, 1, 0],
+	0: ["Skeleton", 6, Vector2(1, 6), Vector2(1, 4), 5, 1, 0, 4],
 }
 
 # Stats
@@ -80,23 +84,23 @@ const W_2H = 6
 const W_ICON = 7
 const W_STACK = 8
 const weapons = {
-	0: ["club",			Vector2(1, 12),		Vector2(1, 6),		"B",	0,	0.4,false, 	0],
-	1: ["dagger",		Vector2(1, 12),		Vector2(1, 4),		"S",	1,	1.5,false, 	1],
-	2: ["hatchet",		Vector2(1, 8),		Vector2(1, 8),		"S",	1,	0.8,false, 	2],
-	3: ["mace",			Vector2(1, 8),		Vector2(2, 10),		"B",	2,	1.0,false, 	3],
-	4: ["shortsword",	Vector2(1, 8),		Vector2(2, 6),		"S",	3,	1.2,false, 	4],
-	5: ["hand axe",		Vector2(1, 4),		Vector2(2, 8),		"S",	4,	1.6,false, 	5],
-	6: ["longsword",	Vector2(1, 4),		Vector2(2, 10),		"S",	5,	2.0,false, 	6],
-	7: ["morning star",	Vector2(1, 4),		Vector2(3, 6),		"-",	6,	2.0,false, 	7],
+	0: ["club",			Vector2(1, 12), Vector2(1,  6), "B", 0, 0.4, false,  0],
+	1: ["dagger",		Vector2(1, 12), Vector2(1,  4), "S", 1, 1.5, false,  1],
+	2: ["hatchet",		Vector2(1,  8), Vector2(1,  8), "S", 1, 0.8, false,  2],
+	3: ["mace",			Vector2(1,  8), Vector2(2, 10), "B", 2, 1.0, false,  3],
+	4: ["shortsword",	Vector2(1,  8), Vector2(2,  6), "S", 3, 1.2, false,  4],
+	5: ["hand axe",		Vector2(1,  4), Vector2(2,  8), "S", 4, 1.6, false,  5],
+	6: ["longsword",	Vector2(1,  4), Vector2(2, 10), "S", 5, 2.0, false,  6],
+	7: ["morning star",	Vector2(1,  4), Vector2(3,  6), "-", 6, 2.0, false,  7],
 	
-	8: ["staff",		Vector2(1, 12),		Vector2(1, 8),		"B",	0,	2.0,true, 	8],
-	9: ["greatclub",	Vector2(1, 12),		Vector2(1, 10),		"B",	1,	0.4,true, 	9],
-	10:["felling axe",	Vector2(1, 8),		Vector2(2, 6),		"S",	2,	0.8,true, 	10],
-	11:["maul",			Vector2(1, 8),		Vector2(3, 6),		"B",	3,	1.2,true, 	11],
-	12:["broadsword",	Vector2(1, 8),		Vector2(2, 12),		"S",	4,	1.2,true, 	12],
-	13:["halberd",		Vector2(1, 4),		Vector2(3, 10),		"S",	5,	1.5,true, 	13],
-	14:["greataxe",		Vector2(1, 4),		Vector2(3, 12),		"S",	6,	1.8,true, 	14],
-	15:["zweihander",	Vector2(1, 4),		Vector2(4, 8),		"S",	6,	2.0,true, 	15],
+	8: ["staff",		Vector2(1, 12), Vector2(1,  8), "B", 0, 2.0, true,  8],
+	9: ["greatclub",	Vector2(1, 12), Vector2(1, 10), "B", 1, 0.4, true,  9],
+	10:["felling axe",	Vector2(1,  8), Vector2(2,  6), "S", 2, 0.8, true, 10],
+	11:["maul",			Vector2(1,  8), Vector2(3,  6), "B", 3, 1.2, true, 11],
+	12:["broadsword",	Vector2(1,  8), Vector2(2, 12), "S", 4, 1.2, true, 12],
+	13:["halberd",		Vector2(1,  4), Vector2(3, 10), "S", 5, 1.5, true, 13],
+	14:["greataxe",		Vector2(1,  4), Vector2(3, 12), "S", 6, 1.8, true, 14],
+	15:["zweihander",	Vector2(1,  4), Vector2(4,  8), "S", 6, 2.0, true, 15],
 }
 
 var weaponsByRarity = {}
@@ -116,11 +120,11 @@ const A_RAR = 3
 const A_ICON = 4
 const A_ENCH = 5
 const armors = {
-	0: ["robe",				5,	0,	0,	18, 1.0],
-	1: ["leather armour",	6,	0,	1,	19, 1.0],
-	2: ["brigandine",		7,	1,	2,	20, 1.0],
-	3: ["scalemail",		8,	1,	3,	21, 1.0],
-	4: ["full plate",		9,	2,	4,	22, 1.0],
+	0: ["robe",				5, 0, 0, 18, 1.0],
+	1: ["leather armour",	6, 0, 1, 19, 1.0],
+	2: ["brigandine",		7, 1, 2, 20, 1.0],
+	3: ["scalemail",		8, 1, 3, 21, 1.0],
+	4: ["full plate",		9, 2, 4, 22, 1.0],
 }
 
 var armorsByRarity = {}
@@ -175,12 +179,12 @@ const TH_EFFECT = 4
 const TH_PROJ = 5
 const TH_STACK = 6
 const throwings = {
-	0: ["Throwing knife", 36, Vector2(1, 6), 0, null, PROJ_WHITE_S, 200],
-	1: ["Throwing axe", 37, Vector2(1, 10), 1, null, PROJ_WHITE_M, 201],
-	2: ["Javelin", 38, Vector2(2, 8), 2, null, PROJ_WHITE_LONG, 202],
-	3: ["Fire bomb", 39, null, 0, SP_TH_FIREBOMB, PROJ_WHITE_R, 203],
-	4: ["Toxic flask", 40, null, 0, SP_TH_POISON, PROJ_WHITE_R, 204],
-	5: ["Sleep flask", 41, null, 0, SP_TH_SLEEP, PROJ_WHITE_R, 205],
+	0: ["Throwing knife", 	36, Vector2(1, 6), 0, null, PROJ_WHITE_S, 200],
+	1: ["Throwing axe", 	37, Vector2(1, 10), 1, null, PROJ_WHITE_M, 201],
+	2: ["Javelin", 			38, Vector2(2, 8), 2, null, PROJ_WHITE_LONG, 202],
+	3: ["Roped firebomb", 	39, null, 0, SP_TH_FIREBOMB, PROJ_WHITE_R, 203],
+	4: ["Toxic flask", 		40, null, 0, SP_TH_POISON, PROJ_WHITE_R, 204],
+	5: ["Sleep flask", 		41, null, 0, SP_TH_SLEEP, PROJ_WHITE_R, 205],
 }
 
 # Weapon enchants

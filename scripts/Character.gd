@@ -93,10 +93,8 @@ func hit(entity):
 	if entity.is_in_group("Monster"):
 		var result = GeneralEngine.rollDices(stats.hitDices)
 		if result >= entity.stats.ca:
-			var rolledDmg = GeneralEngine.rollDices(stats.dmgDices)
-			var dmg = entity.checkDmg(rolledDmg)
 			Ref.ui.writeCharacterStrike(entity.stats.entityName, result, entity.stats.ca)
-			entity.takeHit(dmg)
+			entity.takeHit(GeneralEngine.rollDices(stats.dmgDices))
 		else:
 			Ref.ui.writeCharacterMiss(entity.stats.entityName, result, entity.stats.ca)
 

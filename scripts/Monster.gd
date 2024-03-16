@@ -51,12 +51,10 @@ func setPosition(newPos: Vector2):
 func refreshMapPosition():
 	position = 9 * pos
 
-func checkDmg(dmg):
-	return dmg - stats.prot
-
 func takeHit(dmg):
-	stats.currentHp -= dmg
-	Ref.ui.writeMonsterTakeHit(stats.entityName, dmg)
+	var realDmg = (dmg - stats.prot)
+	stats.currentHp -= realDmg
+	Ref.ui.writeMonsterTakeHit(stats.entityName, realDmg)
 	if stats.currentHp <= 0:
 		die()
 

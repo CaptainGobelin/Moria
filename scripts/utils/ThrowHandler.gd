@@ -14,6 +14,14 @@ func throwAsync(itemId: int):
 		return
 	var targetId = GLOBAL.targets.keys()[coroutineReturn]
 	yield(castProjectile(GLOBAL.targets[targetId], item[Data.TH_PROJ]), "completed")
+	if item[Data.TH_DMG] != null:
+		var entity = instance_from_id(targetId)
+		var result = GeneralEngine.rollDices(Ref.character.stats.hitDices)
+		if result >= entity.stats.ca:
+			Ref.ui.writeCharacterStrike(entity.stats.entityName, result, entity.stats.ca)
+			entity.takeHit(GeneralEngine.rollDices(item[Data.TH_DMG]))
+		else:
+			Ref.ui.writeCharacterMiss(entity.stats.entityName, result, entity.stats.ca)
 	if item[Data.TH_EFFECT] != null:
 		SpellEngine.applyEffect(instance_from_id(targetId), item[Data.TH_EFFECT])
 	Ref.character.inventory.throwings.erase(itemId)
