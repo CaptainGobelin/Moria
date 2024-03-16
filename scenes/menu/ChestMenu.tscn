@@ -172,6 +172,8 @@ func setContent(itemRow, type):
 			setSimpleContent(itemRow)
 		GLOBAL.PO_TYPE:
 			setStackableContent(itemRow)
+		GLOBAL.SC_TYPE:
+			setStackableContent(itemRow)
 		GLOBAL.TH_TYPE:
 			setStackableContent(itemRow)
 		GLOBAL.LO_TYPE:

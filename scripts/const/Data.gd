@@ -162,6 +162,7 @@ const SC_NAME = 0
 const SC_SP = 1
 const SC_RAR = 2
 const SC_STACK = 3
+const SC_ICON_ALL = 17
 const scrolls = {
 	0: ["Scroll of magic missile", SP_MAGIC_MISSILE, 0, 100],
 }
@@ -332,3 +333,4 @@ func _ready():
 	weaponsReader()
 	armorsReader()
 	potionsReader()
+	scrollsReader()

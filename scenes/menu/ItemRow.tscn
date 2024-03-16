@@ -23,6 +23,8 @@ func setContent(itemRow, type):
 			setSimpleContent(itemRow)
 		GLOBAL.PO_TYPE:
 			setComplexContent(itemRow)
+		GLOBAL.SC_TYPE:
+			setComplexContent(itemRow)
 		GLOBAL.TH_TYPE:
 			setComplexContent(itemRow)
 		GLOBAL.TA_TYPE:

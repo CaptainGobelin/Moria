@@ -111,6 +111,9 @@ func setTab(tab, row = 0, startRow = 0):
 		GLOBAL.INV_POTIONS:
 			keyLabel.visible = true
 			itemList.init(Ref.character.inventory.getPotionRows(), row, GLOBAL.PO_TYPE, startRow)
+		GLOBAL.INV_SCROLLS:
+			keyLabel.visible = true
+			itemList.init(Ref.character.inventory.getScrollRows(), row, GLOBAL.SC_TYPE, startRow)
 		GLOBAL.INV_THROWINGS:
 			keyLabel.visible = true
 			itemList.init(Ref.character.inventory.getThrowingRows(), row, GLOBAL.TH_TYPE, startRow)

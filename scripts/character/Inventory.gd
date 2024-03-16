@@ -56,6 +56,20 @@ func getPotionRows():
 		result.append(dict[d])
 	return result
 
+func getScrollRows():
+	var dict:Dictionary = {}
+	for s in scrolls:
+		var current = GLOBAL.items[s]
+		if !dict.has(current[GLOBAL.IT_STACK]):
+			var key = Ref.character.shortcuts.getKey(s, GLOBAL.SC_TYPE)
+			dict[current[GLOBAL.IT_STACK]] = [GLOBAL.SC_TYPE, current[GLOBAL.IT_NAME], key, current[GLOBAL.IT_ICON], [s]]
+		else:
+			dict[current[GLOBAL.IT_STACK]][4].append(s)
+	var result = []
+	for d in dict.keys():
+		result.append(dict[d])
+	return result
+
 func getThrowingRows():
 	var dict:Dictionary = {}
 	for t in throwings:

@@ -112,6 +112,7 @@ func pickItem(items: Array):
 			GLOBAL.WP_TYPE: inventory.weapons.append(idx)
 			GLOBAL.AR_TYPE: inventory.armors.append(idx)
 			GLOBAL.PO_TYPE: inventory.potions.append(idx)
+			GLOBAL.SC_TYPE: inventory.scrolls.append(idx)
 			GLOBAL.TH_TYPE: inventory.throwings.append(idx)
 			GLOBAL.TA_TYPE: inventory.talismans.append(idx)
 			GLOBAL.LO_TYPE: inventory.lockpicks += item[GLOBAL.IT_SPEC]

@@ -18,7 +18,7 @@ const SC_IDX = 4
 const PO_IDX = 5
 const LO_IDX = 6
 const GO_IDX = 7
-const TYPE_PROB = [0.17, 0.2, 0.07, 0.1, 0.1, 0.1, 0.1, 0.16]
+const TYPE_PROB = [0.17, 0.2, 0.07, 0.1, 1.1, 0.1, 0.1, 0.16]
 
 var id = -1
 
@@ -36,6 +36,7 @@ func generateItem(rarity: int):
 		AR_IDX: return generateArmor(rarity)
 		TH_IDX: return generateThrowing(rarity)
 		PO_IDX: return generatePotion(rarity)
+		SC_IDX: return generateScroll(rarity)
 		TA_IDX: return generateTalisman(rarity)
 		LO_IDX: return generateLockpicks()
 		GO_IDX: return generateGolds(rarity)
@@ -171,6 +172,29 @@ func mapPotionToItem(potion, baseIdx):
 	item[GLOBAL.IT_SPEC] = potion[Data.PO_EF]
 	item[GLOBAL.IT_TYPE] = GLOBAL.PO_TYPE
 	item[GLOBAL.IT_STACK] = potion[Data.PO_STACK]
+	item[GLOBAL.IT_BASE] = baseIdx
+	return item
+
+func generateScroll(rarity: int):
+	while !Data.scrollsByRarity.has(rarity):
+		rarity -= 1
+		if rarity < 0:
+			return null
+	var rnd = randi() % Data.scrollsByRarity[rarity].size()
+	var baseIdx = Data.scrollsByRarity[rarity][rnd]
+	var base = Data.scrolls[baseIdx]
+	id += 1
+	GLOBAL.items[id] = mapScrollToItem(base, baseIdx)
+	return [id]
+
+func mapScrollToItem(scroll, baseIdx):
+	var item = []
+	item.resize(GLOBAL.IT_STACK + 1)
+	item[GLOBAL.IT_ICON] = Data.SC_ICON_ALL
+	item[GLOBAL.IT_NAME] = scroll[Data.SC_NAME]
+	item[GLOBAL.IT_SPEC] = scroll[Data.SC_SP]
+	item[GLOBAL.IT_TYPE] = GLOBAL.SC_TYPE
+	item[GLOBAL.IT_STACK] = scroll[Data.SC_STACK]
 	item[GLOBAL.IT_BASE] = baseIdx
 	return item
 
