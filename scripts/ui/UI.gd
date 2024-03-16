@@ -67,6 +67,11 @@ func write(text):
 	text = '\n' + '<' + String(GeneralEngine.turn) + '> ' + text
 	diary.append_bbcode(text)
 
+func simpleWrite(text):
+	if text == null:
+		return
+	diary.append_bbcode(text)
+
 func color(text: String, color: String):
 	match color:
 		"red": return "[color=#c13137]" + text + "[/color]"
@@ -80,6 +85,14 @@ func writeOk():
 func writeAssignedKey(key: int, item: String):
 	item[0] = item[0].capitalize()
 	write(item + " assigned to key " + color(String(key), "yellow") + ".")
+
+func writeNoSpellAssigned():
+	write("You don't have any spell assigned.")
+
+func writeWhichSpell(choices: Array):
+	var msg = "Cast which spell?"
+	msg += listToChoices(choices)
+	write(msg)
 
 func writeNoSpell(spell: String):
 	write("You cannot cast " + spell + " until you rest.")
@@ -173,8 +186,21 @@ func writeMonsterDie(name: String):
 func writeQuaffedPotion(potion: String):
 	write("You quaffed the " + potion + ".")
 
-func diceToString(dice: Vector2):
+func noTarget():
+	write("There is no targets at range for this.")
+
+func diceToString(dice: Vector2) -> String:
 	return String(dice.x) + "d" + String(dice.y)
+
+func listToChoices(list: Array) -> String:
+	var msg = ""
+	var count = 0
+	for item in list:
+		count += 1
+		if item != null:
+			msg += " [" + Ref.ui.color(String(count), "yellow") + "] "
+			msg += item
+	return msg
 
 func updateStat(stat: int, value):
 	match stat:

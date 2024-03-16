@@ -64,14 +64,18 @@ func getItem(key: int, category: int):
 	return null
 
 func getShortcutList(category: int):
-	var count = 1
-	var msg = ""
+	var result = []
+	var nullResult = true
 	for key in range(1, 10):
 		var item = getItem(key, category)
-		msg += " [" + Ref.ui.color(String(count), "yellow") + "] "
+		if item == null:
+			result.append(null)
+			continue
+		nullResult = false
 		if category == GLOBAL.SP_TYPE:
-			msg += item[Data.SP_NAME]
+			result.append(Data.spells[item][Data.SP_NAME])
 		else:
-			msg += item[GLOBAL.IT_NAME]
-		count += 1
-	return msg
+			result.append(GLOBAL.items[item][GLOBAL.IT_NAME])
+	if nullResult:
+		return null
+	return result

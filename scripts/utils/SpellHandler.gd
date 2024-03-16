@@ -10,6 +10,7 @@ func castSpellAsync(spellId: int):
 	match spell[Data.SP_TARGET]:
 		Data.SP_TARGET_TARGET:
 			if GLOBAL.targets.size() == 0:
+				Ref.ui.noTarget()
 				return
 			Ref.game.set_process_input(false)
 			Ref.ui.askForTarget(GLOBAL.targets.keys(), Ref.game)

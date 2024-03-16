@@ -68,7 +68,16 @@ func _input(event):
 	elif (event.is_action_released("pickLoot")):
 		pickupLootHandler.pickupLootAsync()
 	elif (event.is_action_released("castSpell")):
-		spellHandler.castSpellAsync(Data.SP_BLESS)
+		var choices = Ref.character.shortcuts.getShortcutList(GLOBAL.SP_TYPE)
+		if choices == null:
+			Ref.ui.writeNoSpellAssigned()
+		else:
+			Ref.ui.writeWhichSpell(choices)
+			Ref.ui.askForChoice(choices, self)
+			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
+			if coroutineReturn != null and coroutineReturn is int:
+				var spell = Ref.character.shortcuts.getItem(coroutineReturn, GLOBAL.SP_TYPE)
+				spellHandler.castSpellAsync(spell)
 	elif (event.is_action_released("search")):
 		Ref.character.search()
 	elif (event.is_action_released("debug_new_floor")):
