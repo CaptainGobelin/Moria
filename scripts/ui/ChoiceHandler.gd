@@ -15,6 +15,8 @@ func _input(event):
 		if (event.is_action_released("shortcut" + String(i))):
 			if choiceList.size() < i:
 				return
+			if choiceList[i-1] == null:
+				return
 			endCoroutine(i)
 			return
 

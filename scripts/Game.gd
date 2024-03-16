@@ -75,7 +75,7 @@ func _input(event):
 			Ref.ui.writeWhichSpell(choices)
 			Ref.ui.askForChoice(choices, self)
 			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
-			if coroutineReturn != null and coroutineReturn is int:
+			if coroutineReturn > 0:
 				var spell = Ref.character.shortcuts.getItem(coroutineReturn, GLOBAL.SP_TYPE)
 				spellHandler.castSpellAsync(spell)
 	elif (event.is_action_released("search")):

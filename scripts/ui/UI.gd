@@ -94,6 +94,9 @@ func writeWhichSpell(choices: Array):
 	msg += listToChoices(choices)
 	write(msg)
 
+func writeCastSpell(spell: String):
+	write("You cast " + color(spell, "yellow") + ".")
+
 func writeNoSpell(spell: String):
 	write("You cannot cast " + spell + " until you rest.")
 

@@ -18,11 +18,13 @@ func castSpellAsync(spellId: int):
 			if coroutineReturn == -1:
 				return
 			var targetId = GLOBAL.targets.keys()[coroutineReturn]
+			Ref.ui.writeCastSpell(spell[Data.SP_NAME])
 			yield(castProjectile(GLOBAL.targets[targetId], spell[Data.SP_PROJ]), "completed")
 			SpellEngine.applyEffect(instance_from_id(targetId), spellId)
 			Ref.character.spells.spellsUses[spellId] -= 1
 			Ref.game.set_process_input(true)
 		Data.SP_TARGET_SELF:
+			Ref.ui.writeCastSpell(spell[Data.SP_NAME])
 			SpellEngine.applyEffect(Ref.character, spellId)
 			Ref.character.spells.spellsUses[spellId] -= 1
 	GeneralEngine.newTurn()
