@@ -56,8 +56,10 @@ const IT_CA = 6
 const IT_PROT = 7
 # Special is enchants, talisman effect, scroll spell, quantity or potion effect
 const IT_SPEC = 8
-const IT_BASE = 9
-const IT_STACK = 10
+# Skill is for weapon and armor to see if you can use it
+const IT_SKILL = 9
+const IT_BASE = 10
+const IT_STACK = 11
 var items: Dictionary = {}
 
 # Index is pos content is a list of item ID

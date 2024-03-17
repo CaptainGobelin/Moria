@@ -43,6 +43,8 @@ func generateItem(rarity: int):
 		_: return []
 
 func generateWeapon(rarity: int):
+	if rarity >= Data.shields[0][Data.SH_RAR] and randf() < 0.1:
+		return generateShield(rarity)
 	var localRarity = 0
 	for _i in range(2):
 		localRarity = max(localRarity, randi() % (rarity+1))
@@ -88,6 +90,32 @@ func mapWeaponToItem(weapon, baseIdx: int):
 	item[GLOBAL.IT_DMG] = weapon[Data.W_DMG]
 	item[GLOBAL.IT_HIT] = weapon[Data.W_HIT]
 	item[GLOBAL.IT_2H] = weapon[Data.W_2H]
+	item[GLOBAL.IT_TYPE] = GLOBAL.WP_TYPE
+	item[GLOBAL.IT_BASE] = baseIdx
+	return item
+
+func generateShield(rarity: int):
+	var shieldList = Data.shields.keys()
+	shieldList.invert()
+	var ratio = 1.0/float(shieldList.size())
+	var baseIdx = 0
+	for k in shieldList:
+		if rarity >= Data.shields[k][Data.SH_RAR] and randf() < ratio:
+			baseIdx = k
+			break
+	var base = Data.shields[baseIdx].duplicate()
+	id += 1
+	GLOBAL.items[id] = mapShieldToItem(base, baseIdx)
+	return [id]
+
+func mapShieldToItem(shield, baseIdx: int):
+	var item = []
+	item.resize(GLOBAL.IT_STACK + 1)
+	item[GLOBAL.IT_ICON] = shield[Data.SH_ICON]
+	item[GLOBAL.IT_NAME] = shield[Data.SH_NAME]
+	item[GLOBAL.IT_CA] = shield[Data.SH_AC]
+	item[GLOBAL.IT_PROT] = shield[Data.SH_PROT]
+	item[GLOBAL.IT_SKILL] = shield[Data.SH_MALUS]
 	item[GLOBAL.IT_TYPE] = GLOBAL.WP_TYPE
 	item[GLOBAL.IT_BASE] = baseIdx
 	return item

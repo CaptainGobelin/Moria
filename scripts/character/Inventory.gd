@@ -1,6 +1,7 @@
 extends Node
 
-var currentWeapon = -1
+# X is Weapon Y is Shield
+var currentWeapon = Vector2(-1, -1)
 var currentArmor = -1
 var currentTalismans = Vector2(-1, -1)
 
@@ -29,7 +30,7 @@ func getWeaponRows():
 	var result = []
 	for w in weapons:
 		var current = GLOBAL.items[w]
-		var equiped = w == currentWeapon
+		var equiped = (w == currentWeapon.x) or (w == currentWeapon.y)
 		var key = Ref.character.shortcuts.getKey(w, GLOBAL.WP_TYPE)
 		result.append([GLOBAL.WP_TYPE, w, current[GLOBAL.IT_NAME], equiped, key, current[GLOBAL.IT_ICON]])
 	return result
@@ -93,25 +94,45 @@ func getTalismanRows():
 	return result
 
 func switchWeapon(idx):
-	if currentWeapon == idx:
+	if (currentWeapon.x == idx) or (currentWeapon.y == idx):
 		unequipWeapon(idx)
 	else:
 		equipWeapon(idx)
 
 func unequipWeapon(idx):
-	if currentWeapon != idx:
-		return
-	var stats = get_parent().stats
-	stats.dmgDices = Vector2(1, 1)
-	stats.hitDices = Vector2(1, 1)
-	currentWeapon = -1
+	var item = GLOBAL.items[idx]
+	# Weapon
+	if item[GLOBAL.IT_CA] == null:
+		if currentWeapon.x != idx:
+			return
+		var stats = get_parent().stats
+		stats.dmgDices = Vector2(1, 1)
+		stats.hitDices = Vector2(1, 1)
+		currentWeapon.x = -1
+	# Shield
+	else:
+		if currentWeapon.y != idx:
+			return
+		var stats = get_parent().stats
+		stats.ca -= item[GLOBAL.IT_CA]
+		stats.prot -= item[GLOBAL.IT_PROT]
+		currentWeapon.y = -1
 
 func equipWeapon(idx):
 	unequipWeapon(idx)
-	currentWeapon = idx
-	var stats = get_parent().stats
-	stats.dmgDices = GLOBAL.items[idx][GLOBAL.IT_DMG]
-	stats.hitDices = GLOBAL.items[idx][GLOBAL.IT_HIT]
+	var item = GLOBAL.items[idx]
+	# Weapon
+	if item[GLOBAL.IT_CA] == null:
+		currentWeapon.x = idx
+		var stats = get_parent().stats
+		stats.dmgDices = item[GLOBAL.IT_DMG]
+		stats.hitDices = item[GLOBAL.IT_HIT]
+	# Shield
+	else:
+		currentWeapon.y = idx
+		var stats = get_parent().stats
+		stats.ca += item[GLOBAL.IT_CA]
+		stats.prot += item[GLOBAL.IT_PROT]
 
 func switchArmor(idx):
 	if currentArmor == idx:

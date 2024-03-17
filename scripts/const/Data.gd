@@ -82,6 +82,7 @@ const W_RAR = 4
 const W_ENCH = 5
 const W_2H = 6
 const W_ICON = 7
+const W_IS_SHIELD = 8
 const weapons = {
 	0: ["club",			Vector2(1, 12), Vector2(1,  6), "B", 0, 0.4, false,  0],
 	1: ["dagger",		Vector2(1, 12), Vector2(1,  4), "S", 1, 1.5, false,  1],
@@ -110,6 +111,28 @@ func weaponsReader():
 		if !weaponsByRarity.has(rarity):
 			weaponsByRarity[rarity] = []
 		weaponsByRarity[rarity].append(idx)
+
+const SH_NAME = 0
+const SH_AC = 1
+const SH_PROT = 2
+const SH_MALUS = 3
+const SH_RAR = 4
+const SH_ENCH = 5
+const SH_ICON = 6
+const shields = {
+	0: ["buckler",       1, 0, 1, 0, 1.0, 33],
+	1: ["shield",        1, 1, 2, 2, 1.0, 34],
+	2: ["heater shield", 2, 1, 4, 4, 1.0, 35]
+}
+
+var shieldsByRarity = {}
+
+func shieldsReader():
+	for idx in shields.keys():
+		var rarity = shields[idx][SH_RAR]
+		if !shieldsByRarity.has(rarity):
+			shieldsByRarity[rarity] = []
+		shieldsByRarity[rarity].append(idx)
 
 # Armors
 const A_NAME = 0
@@ -162,7 +185,7 @@ const SC_NAME = 0
 const SC_SP = 1
 const SC_RAR = 2
 const SC_STACK = 3
-const SC_ICON_ALL = 17
+const SC_ICON_ALL = 57
 const scrolls = {
 	0: ["Scroll of magic missile", SP_MAGIC_MISSILE, 0, 100],
 }
@@ -331,6 +354,7 @@ const traps = {
 
 func _ready():
 	weaponsReader()
+	shieldsReader()
 	armorsReader()
 	potionsReader()
 	scrollsReader()
