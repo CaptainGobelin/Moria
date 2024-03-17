@@ -61,6 +61,7 @@ func takeHit(dmg):
 func die():
 	status = "dead"
 	Ref.ui.writeMonsterDie(stats.entityName)
+	Ref.character.stats.xp += stats.xp
 	if GLOBAL.monstersByPosition.has(pos):
 		GLOBAL.monstersByPosition.erase(pos)
 	GLOBAL.targets.erase(get_instance_id())

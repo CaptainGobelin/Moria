@@ -36,7 +36,8 @@ const SK_PER = 9
 const SK_THI = 10
 
 # Level caps
-const lvlCaps = [0, 30, 50, 75, 110, 150, 200, 250, 300]
+const lvlCaps = [0, 6, 50, 75, 110, 150, 200, 275]
+const skpGains = [0, 0, 2, 1, 2, 1, 2, 1, 2]
 
 # Classes
 const CL_FIGHTER = 0
@@ -64,14 +65,18 @@ const monsters = {
 }
 
 # Stats
-const ST_CA = 0
-const ST_PROT = 1
-const ST_DMG = 2
-const ST_HIT = 3
-const ST_HPMAX = 4
-const ST_HP = 5
-const ST_LOCK = 6
-const ST_GOLD = 7
+const CHAR_NAME = -1
+const CHAR_CA = 0
+const CHAR_PROT = 1
+const CHAR_DMG = 2
+const CHAR_HIT = 3
+const CHAR_HPMAX = 4
+const CHAR_HP = 5
+const CHAR_LOCK = 6
+const CHAR_GOLD = 7
+const CHAR_LVL = 8
+const CHAR_XP = 9
+const CHAR_XPMAX = 10
 
 # Weapons
 const W_NAME = 0

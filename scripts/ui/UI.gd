@@ -10,6 +10,10 @@ onready var yesNoHandler = get_node("Utils/YesNoHandler")
 onready var targetHandler = get_node("Utils/TargetHandler")
 
 onready var diary = get_node("TextBox/TextContainer/DiaryPanel")
+onready var nameLabel = get_node("SideMenu/Name/Label")
+onready var levelLabel = get_node("SideMenu/Level/Label/Level")
+onready var xpLabel = get_node("SideMenu/Level/Label/CurrentXP")
+onready var maxXpLabel = get_node("SideMenu/Level/Label/MaxXP")
 onready var hpMaxLabel = get_node("SideMenu/HPContainer/Label/Max")
 onready var hpLabel = get_node("SideMenu/HPContainer/Label/Current")
 onready var caLabel = get_node("SideMenu/CAContainer/Label/Current")
@@ -81,6 +85,19 @@ func color(text: String, color: String):
 
 func writeOk():
 	write("Ok then.")
+
+func writeXpGain(xp: int):
+	write("You earn " + color(String(xp), "yellow") + " XP.")
+
+func writeLevelUp(level: int, hp: int, skp: int, feat: int):
+	write(color("You reach level " + String(level) + " !", "green"))
+	var msg = "You gain " + String(hp) + "HP"
+	if feat == 1:
+		msg += ", " + String(skp) + " skill point and you can choose a feat."
+	else:
+		msg += " and " + String(skp) + " skill points."
+	write(color(msg, "green"))
+	
 
 func writeAssignedKey(key: int, item: String):
 	item[0] = item[0].capitalize()
@@ -231,19 +248,27 @@ func listToChoices(list: Array) -> String:
 
 func updateStat(stat: int, value):
 	match stat:
-		Data.ST_HPMAX:
+		Data.CHAR_NAME:
+			nameLabel.text = value[0] + " the " + value[1]
+		Data.CHAR_HPMAX:
 			hpMaxLabel.text = String(value)
-		Data.ST_HP:
+		Data.CHAR_HP:
 			hpLabel.text = String(value)
-		Data.ST_CA:
+		Data.CHAR_CA:
 			caLabel.text = String(value)
-		Data.ST_PROT:
+		Data.CHAR_PROT:
 			protLabel.text = String(value)
-		Data.ST_DMG:
+		Data.CHAR_DMG:
 			dmgLabel.text = diceToString(value)
-		Data.ST_HIT:
+		Data.CHAR_HIT:
 			hitLabel.text = diceToString(value)
-		Data.ST_LOCK:
+		Data.CHAR_LOCK:
 			lockLabel.text = String(value)
-		Data.ST_GOLD:
+		Data.CHAR_GOLD:
 			goldLabel.text = String(value)
+		Data.CHAR_LVL:
+			levelLabel.text = String(value)
+		Data.CHAR_XP:
+			xpLabel.text = String(value)
+		Data.CHAR_XPMAX:
+			maxXpLabel.text = String(value)

@@ -14,6 +14,7 @@ onready var currentHp = 1
 onready var atkRange = 1
 onready var hitDices = Vector2(1, 1)
 onready var dmgDices = Vector2(1, 1)
+onready var xp = 0
 
 func init(type: int):
 	entityName = Data.monsters[type][Data.MO_NAME]
@@ -23,6 +24,7 @@ func init(type: int):
 	currentHp = maxHp
 	hitDices = Data.monsters[type][Data.MO_HIT]
 	dmgDices = Data.monsters[type][Data.MO_DMG]
+	xp = Data.monsters[type][Data.MO_XP]
 "
 
 [node name="Monster" type="Node2D" groups=["Monster"]]

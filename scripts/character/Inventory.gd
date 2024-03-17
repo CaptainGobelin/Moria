@@ -20,11 +20,11 @@ func init():
 
 func updateLockpicks(newValue):
 	lockpicks = newValue
-	Ref.ui.updateStat(Data.ST_LOCK, newValue)
+	Ref.ui.updateStat(Data.CHAR_LOCK, newValue)
 
 func updateGolds(newValue):
 	golds = newValue
-	Ref.ui.updateStat(Data.ST_GOLD, newValue)
+	Ref.ui.updateStat(Data.CHAR_GOLD, newValue)
 
 func getWeaponRows():
 	var result = []
