@@ -36,7 +36,7 @@ const SK_PER = 9
 const SK_THI = 10
 
 # Level caps
-const lvlCaps = [0, 6, 50, 75, 110, 150, 200, 275]
+const lvlCaps = [0, 30, 50, 75, 110, 150, 200, 275]
 const skpGains = [0, 0, 2, 1, 2, 1, 2, 1, 2]
 
 # Classes
@@ -332,6 +332,14 @@ const spells = {
 	1: ["Heal", 1, SC_EVOCATION, [false, true, true], null, 2, 5, SP_TARGET_SELF, 0],
 	2: ["Bless", 1, SC_ENCHANTEMENT, [false, true, true], null, 17, 10, SP_TARGET_SELF, 0],
 	3: ["Fireball", 3, SC_EVOCATION, [true, false, false], PROJ_RED_L, 10, 10, SP_TARGET_TARGET, 3],
+}
+
+const spellDescriptions = {
+	SP_MAGIC_MISSILE: [
+		"Fires two arcane projectiles dealing 1d2+1 damages to random targets.",
+		"Fires three projectiles, increase damages to 1d4+1",
+		"Fires four projectiles, increase damages to 1d6+1"
+	]
 }
 
 # Statuses

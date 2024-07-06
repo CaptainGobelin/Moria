@@ -72,6 +72,7 @@ Data="*res://scenes/const/Data.tscn"
 PotionEngine="*res://scenes/engine/PotionEngine.tscn"
 SpellEngine="*res://scenes/engine/SpellEngine.tscn"
 TrapEngine="*res://scenes/engine/TrapEngine.tscn"
+Tests="*res://tests/TESTS.tscn"
 
 [debug]
 

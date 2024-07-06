@@ -1,6 +1,7 @@
 extends Node
 
 var turn = 0
+var isFaking = false
 
 func newTurn():
 	turn += 1
@@ -11,6 +12,8 @@ func newTurn():
 	Ref.ui.statusBar.refreshStatuses()
 
 func rollDices(dices: Vector2):
+	if (isFaking):
+		return 4
 	var result = 0
 	for _d in range(int(dices.x)):
 		result += (randi() % int(dices.y)) + 1

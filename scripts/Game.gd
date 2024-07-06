@@ -16,10 +16,11 @@ onready var throwHandler = get_node("Utils/ThrowHandler")
 func _ready():
 	randomize()
 	Ref.game = self
-	newFloor()
+	testFloor()
 	set_process_input(true)
+	Tests.loadTest(0)
 
-func newFloor():
+func cleanFloor():
 	GLOBAL.traps.clear()
 	GLOBAL.hiddenDoors.clear()
 	GLOBAL.lockedDoors.clear()
@@ -40,7 +41,15 @@ func newFloor():
 	for i in GLOBAL.itemsOnFloor.keys():
 		GLOBAL.items.erase(i)
 	GLOBAL.itemsOnFloor.clear()
-	var spawnPos = dungeonGenerator.newFloor()
+
+func testFloor():
+	cleanFloor()
+	dungeonGenerator.simpleFloor()
+	Ref.currentLevel.initShadows()
+
+func newFloor():
+	cleanFloor()
+	var spawnPos = dungeonGenerator.generate()
 	Ref.currentLevel.initShadows()
 	Ref.currentLevel.placeCharacter(spawnPos)
 	for _i in range(5):
