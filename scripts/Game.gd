@@ -19,7 +19,7 @@ func _ready():
 	testFloor()
 	set_process_input(true)
 	GLOBAL.currentMode = GLOBAL.MODE_NORMAL
-	Tests.loadTest(0)
+	Tests.runAll()
 
 func cleanFloor():
 	GLOBAL.traps.clear()
