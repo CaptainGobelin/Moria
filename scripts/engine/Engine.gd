@@ -2,6 +2,7 @@ extends Node
 
 var turn = 0
 var isFaking = false
+var fakedValue = 4
 
 func newTurn():
 	turn += 1
@@ -13,7 +14,7 @@ func newTurn():
 
 func rollDices(dices: Vector2):
 	if (isFaking):
-		return 4
+		return fakedValue
 	var result = 0
 	for _d in range(int(dices.x)):
 		result += (randi() % int(dices.y)) + 1

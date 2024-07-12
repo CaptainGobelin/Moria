@@ -26,6 +26,7 @@ func throwAsync(itemId: int):
 		SpellEngine.applyEffect(instance_from_id(targetId), item[Data.TH_EFFECT])
 	Ref.character.inventory.throwings.erase(itemId)
 	Ref.game.set_process_input(true)
+	GLOBAL.currentMode = GLOBAL.MODE_NORMAL
 	GeneralEngine.newTurn()
 
 func castProjectile(path: Array, projInfo):

@@ -18,6 +18,7 @@ func _ready():
 	Ref.game = self
 	testFloor()
 	set_process_input(true)
+	GLOBAL.currentMode = GLOBAL.MODE_NORMAL
 	Tests.loadTest(0)
 
 func cleanFloor():

@@ -22,12 +22,14 @@ func open():
 	setTab(currentTab)
 	visible = true
 	Ref.currentLevel.visible = false
+	GLOBAL.currentMode = GLOBAL.MODE_INVENTORY
 	Ref.game.set_process_input(false)
 	set_process_input(true)
 
 func close():
 	visible = false
 	Ref.currentLevel.visible = true
+	GLOBAL.currentMode = GLOBAL.MODE_NORMAL
 	Ref.game.set_process_input(true)
 	set_process_input(false)
 
@@ -94,6 +96,7 @@ func _input(event):
 			return
 		Ref.ui.askForNumber(9, self, "Assign to which key?")
 		var coroutineReturn = yield(Ref.ui, "coroutine_signal")
+		GLOBAL.currentMode = GLOBAL.MODE_INVENTORY
 		if coroutineReturn == null or !(coroutineReturn is int):
 			return
 		match currentTab:

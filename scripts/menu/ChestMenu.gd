@@ -19,6 +19,7 @@ func open(id: int):
 	items.init(getSimpleItemRows(itemList), 0)
 	visible = true
 	Ref.currentLevel.visible = false
+	GLOBAL.currentMode = GLOBAL.MODE_CHEST
 	Ref.game.set_process_input(false)
 	set_process_input(true)
 
@@ -28,6 +29,7 @@ func close():
 		GLOBAL.chests.erase(chestId)
 	visible = false
 	Ref.currentLevel.visible = true
+	GLOBAL.currentMode = GLOBAL.MODE_NORMAL
 	Ref.game.set_process_input(true)
 	set_process_input(false)
 
@@ -48,6 +50,7 @@ func _input(event):
 		else:
 			Ref.ui.askForNumber(selected.size(), self)
 			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
+			GLOBAL.currentMode = GLOBAL.MODE_CHEST
 			if coroutineReturn != null and coroutineReturn is int:
 				var subSelected = selected.slice(0, coroutineReturn-1)
 				Ref.character.pickItem(selected.slice(0, coroutineReturn-1))

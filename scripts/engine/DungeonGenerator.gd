@@ -24,7 +24,11 @@ func simpleFloor():
 			else:
 				array[i].append(GLOBAL.FLOOR_ID)
 	array[4][3] = GLOBAL.WALL_ID
+	array[4][4] = GLOBAL.WALL_ID
+	array[4][5] = GLOBAL.DOOR_ID
+	array[4][6] = GLOBAL.WALL_ID
 	array[3][4] = GLOBAL.WALL_ID
+	array[3][6] = GLOBAL.WALL_ID
 	drawFloor()
 	return Vector2(int(GLOBAL.FLOOR_SIZE_X/2), int(GLOBAL.FLOOR_SIZE_Y/2))
 

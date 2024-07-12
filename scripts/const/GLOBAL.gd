@@ -2,6 +2,17 @@ extends Node
 
 onready var lootScene = preload("res://scenes/Loot.tscn")
 
+# Game modes
+const MODE_NONE = 0
+const MODE_NORMAL = 1
+const MODE_TARGET = 10
+const MODE_CHOICE = 11
+const MODE_YESNO = 12
+const MODE_NUMBER = 13
+const MODE_INVENTORY = 20
+
+var currentMode: int = MODE_NONE
+
 # Dungeon
 const FLOOR_SIZE_X = 37
 const FLOOR_SIZE_Y = 19
