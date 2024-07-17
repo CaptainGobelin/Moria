@@ -331,3 +331,16 @@ func rndArmorEnchant():
 
 func rndTalismanEnchant():
 	return [GLOBAL.TA_TYPE, Utils.chooseRandom(Data.taEnchants.keys())]
+
+func getWeapon(idx: int):
+	var base = Data.weapons[idx].duplicate()
+	id += 1
+	base[Data.W_NAME][0] = base[Data.W_NAME][0].capitalize()
+	GLOBAL.items[id] = mapWeaponToItem(base, idx)
+	return [id]
+
+func getShield(idx: int):
+	var base = Data.weapons[idx].duplicate()
+	id += 1
+	GLOBAL.items[id] = mapShieldToItem(base, idx)
+	return [id]
