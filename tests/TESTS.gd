@@ -96,6 +96,15 @@ func spawn_weapon(id: int, pos):
 		Ref.character.pickItem(items)
 	spawnedItems.append_array(items)
 
+func spawn_potion(id: int, pos):
+	var items = Ref.game.itemGenerator.getPotion(id)
+	if pos != null:
+		for item in items:
+			GLOBAL.dropItemOnFloor(item, pos)
+	else:
+		Ref.character.pickItem(items)
+	spawnedItems.append_array(items)
+
 func spawn_lockpicks(pos: Vector2, count: int):
 	var items = Ref.game.itemGenerator.generateLockpicks(count)
 	for item in items:

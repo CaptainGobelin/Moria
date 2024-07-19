@@ -28,7 +28,28 @@ const tests = {
 		"assert_last_printed_pickup", ["assert_no_loot", Vector2(11, 10)],
 		"assert_normal_mode", ["assert_weapon_in_bag", 1]]
 	],
+	2: [
+		"Pickup stack of items",
+		Vector2(10, 10),
+		[
+			["spawn_potion", 0, Vector2(11, 10)],
+			["spawn_potion", 0, Vector2(11, 10)],
+			["spawn_potion", 0, Vector2(11, 10)],
+			["spawn_potion", 0, Vector2(11, 10)],
+			["spawn_potion", 0, Vector2(11, 10)],
+		],
+		["ui_right", "pickLoot", "assert_number_mode", "shortcut0", "ui_accept",
+		["assert_potions_in_bag", 0]]
+	],
 	3: [
+		"Item gategories",
+		Vector2(10, 10),
+		[
+			
+		],
+		[]
+	],
+	4: [
 		"Inventory scrolling",
 		Vector2(10, 10),
 		[
@@ -40,9 +61,13 @@ const tests = {
 			["spawn_weapon", 0, null],
 			["spawn_weapon", 0, null],
 		],
-		["inventory", ["assert_inventory_tab_size", 7], "ui_cancel"]
+		["inventory", ["assert_inventory_tab_size", 7],
+		["assert_selected_item_index", 0], "ui_up", 
+		["assert_selected_item_index", 6], "ui_down",
+		["assert_selected_item_index", 0], "ui_down",
+		["assert_selected_item_index", 0], "ui_cancel"]
 	],
-	4: [
+	5: [
 		"Pickup lockpicks",
 		Vector2(10, 10),
 		[
@@ -51,7 +76,7 @@ const tests = {
 		],
 		["ui_right", "pickLoot", "assert_five_lockpicks", ["assert_no_loot", Vector2(11, 10)]]
 	],
-	5: [
+	6: [
 		"Pickup golds",
 		Vector2(10, 10),
 		[
@@ -60,10 +85,52 @@ const tests = {
 		],
 		["ui_right", "pickLoot", "assert_five_golds", ["assert_no_loot", Vector2(11, 10)]]
 	],
-	
+	7: [
+		"Drop single item",
+		Vector2(10, 10),
+		[
+			
+		],
+		[]
+	],
+	8: [
+		"Drop stackable items",
+		Vector2(10, 10),
+		[
+			
+		],
+		[]
+	],
+	9: [
+		"Wear weapon",
+		Vector2(10, 10),
+		[
+			
+		],
+		[]
+	],
+	10: [
+		"Wear armour",
+		Vector2(10, 10),
+		[
+			
+		],
+		[]
+	],
+	11: [
+		"Wear talisman",
+		Vector2(10, 10),
+		[
+			
+		],
+		[]
+	],
 }
 func assert_choice_mode(testId: int):
 	assert(GLOBAL.currentMode == GLOBAL.MODE_CHOICE)
+
+func assert_number_mode(testId: int):
+	assert(GLOBAL.currentMode == GLOBAL.MODE_NUMBER)
 
 func assert_normal_mode(testId: int):
 	assert(GLOBAL.currentMode == GLOBAL.MODE_NORMAL)
@@ -73,6 +140,9 @@ func assert_no_move(testId: int):
 
 func assert_last_printed_pickup(testId: int):
 	assert(Ref.ui.lastPrinted == "writePickupLoot")
+
+func assert_selected_item_index(testId: int, index: int):
+	assert(Ref.game.inventoryMenu.itemList.currentIndex == index)
 
 func assert_no_loot(testId: int, cell: Vector2):
 	assert(not GLOBAL.itemsOnFloor.has(cell))
@@ -85,6 +155,9 @@ func assert_two_loots(testId: int, cell: Vector2):
 
 func assert_weapon_in_bag(testId: int, id: int):
 	assert(Ref.character.inventory.weapons.has(get_parent().spawnedItems[id]))
+
+func assert_potions_in_bag(testId: int, count: int):
+	assert(Ref.character.inventory.potions.count() == count)
 
 func assert_inventory_tab_size(testId: int, size: int):
 	assert(Ref.game.inventoryMenu.itemList.currentItems.size() == size)

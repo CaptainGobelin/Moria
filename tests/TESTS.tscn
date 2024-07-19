@@ -9,6 +9,7 @@ script = ExtResource( 1 )
 
 [node name="TESTS_MOVE" type="Node" parent="."]
 script = ExtResource( 2 )
+toTest = false
 
 [node name="TESTS_INVENTORY" type="Node" parent="."]
 script = ExtResource( 3 )

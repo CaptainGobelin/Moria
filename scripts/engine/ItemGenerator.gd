@@ -350,3 +350,9 @@ func getShield(idx: int):
 	id += 1
 	GLOBAL.items[id] = mapShieldToItem(base, idx)
 	return [id]
+
+func getPotion(idx: int):
+	var base = Data.potions[idx]
+	id += 1
+	GLOBAL.items[id] = mapPotionToItem(base, idx)
+	return [id]
