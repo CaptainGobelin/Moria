@@ -6,7 +6,7 @@ onready var tests_inventory = get_node("TESTS_INVENTORY")
 signal tested
 signal done
 
-var TEST_SPEED = 0.1
+var TEST_SPEED = 0.05
 
 const TEST_NAME = 0
 const TEST_POS = 1
@@ -88,10 +88,20 @@ func set_lockpicks(value: int):
 	Ref.character.inventory.updateLockpicks(value)
 
 func spawn_weapon(id: int, pos):
-	var weapons = Ref.game.itemGenerator.getWeapon(id)
+	var items = Ref.game.itemGenerator.getWeapon(id)
 	if pos != null:
-		for item in weapons:
+		for item in items:
 			GLOBAL.dropItemOnFloor(item, pos)
 	else:
-		Ref.character.pickItem(weapons)
-	spawnedItems.append_array(weapons)
+		Ref.character.pickItem(items)
+	spawnedItems.append_array(items)
+
+func spawn_lockpicks(pos: Vector2, count: int):
+	var items = Ref.game.itemGenerator.generateLockpicks(count)
+	for item in items:
+		GLOBAL.dropItemOnFloor(item, pos)
+
+func spawn_golds(pos: Vector2, count: int):
+	var items = Ref.game.itemGenerator.generateGolds(0, count)
+	for item in items:
+		GLOBAL.dropItemOnFloor(item, pos)

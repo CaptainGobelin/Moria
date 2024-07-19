@@ -253,25 +253,31 @@ func mapTalismanToItem(talisman):
 	item[GLOBAL.IT_TYPE] = GLOBAL.TA_TYPE
 	return item
 
-func generateLockpicks():
+func generateLockpicks(count = null):
 	id += 1
 	var item  = []
 	item.resize(GLOBAL.IT_STACK + 1)
 	item[GLOBAL.IT_ICON] = Data.LOCKPICK_ICON
 	item[GLOBAL.IT_NAME] = Data.LOCKPICK_NAME
 	item[GLOBAL.IT_TYPE] = GLOBAL.LO_TYPE
-	item[GLOBAL.IT_SPEC] = 1 + (randi() % 3)
+	if count == null:
+		item[GLOBAL.IT_SPEC] = 1 + (randi() % 3)
+	else:
+		item[GLOBAL.IT_SPEC] = count
 	GLOBAL.items[id] = item
 	return [id]
 
-func generateGolds(rarity: int):
+func generateGolds(rarity: int, count = null):
 	id += 1
 	var item  = []
 	item.resize(GLOBAL.IT_STACK + 1)
 	item[GLOBAL.IT_ICON] = Data.GOLD_ICON
 	item[GLOBAL.IT_NAME] = Data.GOLD_NAME
 	item[GLOBAL.IT_TYPE] = GLOBAL.GO_TYPE
-	item[GLOBAL.IT_SPEC] = 5 + rarity * 5 + (randi() % 10)
+	if count == null:
+		item[GLOBAL.IT_SPEC] = 5 + rarity * 5 + (randi() % 10)
+	else:
+		item[GLOBAL.IT_SPEC] = count
 	GLOBAL.items[id] = item
 	return [id]
 

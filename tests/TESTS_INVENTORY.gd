@@ -40,8 +40,27 @@ const tests = {
 			["spawn_weapon", 0, null],
 			["spawn_weapon", 0, null],
 		],
-		["inventory", ["assert_inventory_tab_size", 7]]
+		["inventory", ["assert_inventory_tab_size", 7], "ui_cancel"]
 	],
+	4: [
+		"Pickup lockpicks",
+		Vector2(10, 10),
+		[
+			["spawn_lockpicks", Vector2(11, 10), 2],
+			["spawn_lockpicks", Vector2(11, 10), 3],
+		],
+		["ui_right", "pickLoot", "assert_five_lockpicks", ["assert_no_loot", Vector2(11, 10)]]
+	],
+	5: [
+		"Pickup golds",
+		Vector2(10, 10),
+		[
+			["spawn_golds", Vector2(11, 10), 2],
+			["spawn_golds", Vector2(11, 10), 3],
+		],
+		["ui_right", "pickLoot", "assert_five_golds", ["assert_no_loot", Vector2(11, 10)]]
+	],
+	
 }
 func assert_choice_mode(testId: int):
 	assert(GLOBAL.currentMode == GLOBAL.MODE_CHOICE)
@@ -69,3 +88,9 @@ func assert_weapon_in_bag(testId: int, id: int):
 
 func assert_inventory_tab_size(testId: int, size: int):
 	assert(Ref.game.inventoryMenu.itemList.currentItems.size() == size)
+
+func assert_five_lockpicks(testId: int):
+	assert(Ref.character.inventory.lockpicks == 5)
+
+func assert_five_golds(testId: int):
+	assert(Ref.character.inventory.golds == 5)

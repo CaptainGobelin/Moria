@@ -96,6 +96,11 @@ func getItemList(cell: Vector2) -> Dictionary:
 
 func dropItemOnFloor(idx: int, cell: Vector2):
 	if itemsOnFloor.has(cell):
+		if items[idx][IT_TYPE] == LO_TYPE or items[idx][IT_TYPE] == GO_TYPE:
+			for i in itemsOnFloor[cell][0]:
+				if items[i][IT_TYPE] == items[idx][IT_TYPE]:
+					items[i][IT_SPEC] += items[idx][IT_SPEC]
+					return
 		itemsOnFloor[cell][FLOOR_IDS].append(idx)
 	else:
 		var loot = lootScene.instance()
