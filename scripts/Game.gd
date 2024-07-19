@@ -50,7 +50,7 @@ func testFloor():
 
 func newFloor():
 	cleanFloor()
-	var spawnPos = dungeonGenerator.generate()
+	var spawnPos = dungeonGenerator.newFloor()
 	Ref.currentLevel.initShadows()
 	Ref.currentLevel.placeCharacter(spawnPos)
 	for _i in range(5):
