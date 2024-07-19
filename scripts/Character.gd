@@ -118,9 +118,9 @@ func pickItem(items: Array):
 			GLOBAL.LO_TYPE: inventory.lockpicks += item[GLOBAL.IT_SPEC]
 			GLOBAL.GO_TYPE: inventory.golds += item[GLOBAL.IT_SPEC]
 	if item[GLOBAL.IT_TYPE] == GLOBAL.LO_TYPE or item[GLOBAL.IT_TYPE] == GLOBAL.GO_TYPE:
-		Ref.ui.write("You picked " + Utils.addArticle(item[GLOBAL.IT_NAME], item[GLOBAL.IT_SPEC]) + ".")
+		Ref.ui.writePickupLoot(item[GLOBAL.IT_NAME], item[GLOBAL.IT_SPEC])
 	else:
-		Ref.ui.write("You picked " + Utils.addArticle(item[GLOBAL.IT_NAME], items.size()) + ".")
+		Ref.ui.writePickupLoot(item[GLOBAL.IT_NAME], items.size())
 
 func dropItem(idx):
 	var item = GLOBAL.items[idx]

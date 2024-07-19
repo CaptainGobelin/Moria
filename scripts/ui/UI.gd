@@ -28,45 +28,54 @@ var currentChoice = ""
 var currentSuffix = ""
 var currentMax = 0
 var lastPrinted: String = ""
+var previousMode: int = GLOBAL.MODE_NONE
 
 func _ready():
 	Ref.ui = self
 
 func askForNumber(maxNb: int, inputer, msg = "How much?"):
+	previousMode = GLOBAL.currentMode
 	GLOBAL.currentMode = GLOBAL.MODE_NUMBER
 	inputer.set_process_input(false)
 	numberHandler.startCoroutine(maxNb, msg)
 	var result = yield(numberHandler, "end_coroutine")
+	GLOBAL.currentMode = previousMode
 	inputer.set_process_input(true)
 	emit_signal("coroutine_signal", result)
 
 func askForChoice(list: Array, inputer):
+	previousMode = GLOBAL.currentMode
 	GLOBAL.currentMode = GLOBAL.MODE_CHOICE
 	inputer.set_process_input(false)
 	choiceHandler.startCoroutine(list)
 	var result = yield(choiceHandler, "end_coroutine")
 	if result == -1:
 		writeOk()
+	GLOBAL.currentMode = previousMode
 	inputer.set_process_input(true)
 	emit_signal("coroutine_signal", result)
 
 func askForYesNo(inputer):
+	previousMode = GLOBAL.currentMode
 	GLOBAL.currentMode = GLOBAL.MODE_YESNO
 	inputer.set_process_input(false)
 	yesNoHandler.startCoroutine()
 	var result = yield(yesNoHandler, "end_coroutine")
 	if !result:
 		writeOk()
+	GLOBAL.currentMode = previousMode
 	inputer.set_process_input(true)
 	emit_signal("coroutine_signal", result)
 
 func askForTarget(targets: Array, inputer):
+	previousMode = GLOBAL.currentMode
 	GLOBAL.currentMode = GLOBAL.MODE_TARGET
 	inputer.set_process_input(false)
 	targetHandler.startCoroutine(targets)
 	var result = yield(targetHandler, "end_coroutine")
 	if result == -1:
 		writeOk()
+	GLOBAL.currentMode = previousMode
 	inputer.set_process_input(true)
 	emit_signal("coroutine_signal", result)
 
@@ -219,6 +228,10 @@ func writeHiddenTrapDetected(name: String):
 func writeNoLoot():
 	write("Nothing to pick here.")
 	lastPrinted = "writeNoLoot"
+
+func writePickupLoot(item: String, count: int):
+	write("You picked " + Utils.addArticle(item, count) + ".")
+	lastPrinted = "writePickupLoot"
 
 func writeNoSkp():
 	write("You don't have any remaining skill point.")

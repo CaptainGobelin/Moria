@@ -1,5 +1,7 @@
 extends Node
 
+export var toTest = true
+
 const tests = {
 	0: [
 		"Move",

@@ -15,7 +15,13 @@ var lockpicks = 0 setget updateLockpicks
 var golds = 0 setget updateGolds
 
 func init():
-	updateLockpicks(5)
+	weapons = []
+	armors = []
+	potions = []
+	scrolls = []
+	throwings = []
+	talismans = []
+	updateLockpicks(0)
 	updateGolds(0)
 
 func updateLockpicks(newValue):

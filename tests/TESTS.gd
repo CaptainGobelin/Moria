@@ -13,20 +13,24 @@ const TEST_POS = 1
 const TEST_INIT = 2
 const TEST_INPUTS = 3
 
+var spawnedItems: Array = []
+
 func runAll():
-#	prints("Testing collection MOVE")
-#	runCollection(tests_move)
-#	yield(self, "done")
-	prints("Testing collection INVENTORY")
-	runCollection(tests_inventory)
-	yield(self, "done")
-	#get_tree().quit()
+	for c in get_children():
+		if not c.toTest:
+			continue
+		prints("Testing collection", c.name)
+		runCollection(c)
+		yield(self, "done")
+	get_tree().quit()
 
 func runCollection(tester: Node):
+	var time_start = Time.get_unix_time_from_system()
 	for testId in tester.tests.keys():
 		runTest(tester, testId)
 		yield(self, "tested")
-	prints("Tested", tester.tests.size(), "/", tester.tests.size())
+	var time_elapsed = Time.get_unix_time_from_system() - time_start
+	prints("Tested", tester.tests.size(), "/", tester.tests.size(), "in", time_elapsed, "seconds")
 	emit_signal("done")
 
 func runTest(tester: Node, testId: int):
@@ -35,6 +39,7 @@ func runTest(tester: Node, testId: int):
 	prints('\t', "Testing", test[TEST_NAME], "...")
 	GeneralEngine.isFaking = true
 	yield(get_tree(), "idle_frame")
+	Ref.character.init()
 	Ref.currentLevel.placeCharacter(test[TEST_POS])
 	yield(get_tree(), "idle_frame")
 	for step in test[TEST_INIT]:
@@ -45,7 +50,9 @@ func runTest(tester: Node, testId: int):
 	yield(get_tree(), "idle_frame")
 	for input in test[TEST_INPUTS]:
 		yield(get_tree().create_timer(TEST_SPEED), "timeout")
-		if input.begins_with("assert"):
+		if input is Array:
+			tester.call(input[0], testId, input[1])
+		elif input.begins_with("assert"):
 			tester.call(input, testId)
 		elif input.begins_with("fake"):
 			call(input, testId)
@@ -81,8 +88,10 @@ func set_lockpicks(value: int):
 	Ref.character.inventory.updateLockpicks(value)
 
 func spawn_weapon(id: int, pos):
+	var weapons = Ref.game.itemGenerator.getWeapon(id)
 	if pos != null:
-		for item in Ref.game.itemGenerator.getWeapon(id):
+		for item in weapons:
 			GLOBAL.dropItemOnFloor(item, pos)
 	else:
-		Ref.character.pickItem(Ref.game.itemGenerator.getWeapon(id))
+		Ref.character.pickItem(weapons)
+	spawnedItems.append_array(weapons)

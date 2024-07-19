@@ -10,6 +10,8 @@ const MODE_CHOICE = 11
 const MODE_YESNO = 12
 const MODE_NUMBER = 13
 const MODE_INVENTORY = 20
+const MODE_SPELL = 21
+const MODE_CHEST = 30
 
 var currentMode: int = MODE_NONE
 
