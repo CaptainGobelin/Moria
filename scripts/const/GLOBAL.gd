@@ -64,6 +64,7 @@ const IT_NAME = 1
 const IT_ICON = 2
 const IT_DMG = 3
 const IT_HIT = 4
+# 2H is true for 2 handed weapon of helmets
 const IT_2H = 5
 const IT_CA = 6
 const IT_PROT = 7

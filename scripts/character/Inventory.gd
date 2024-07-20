@@ -2,7 +2,7 @@ extends Node
 
 # X is Weapon Y is Shield
 var currentWeapon = Vector2(-1, -1)
-var currentArmor = -1
+var currentArmor = Vector2(-1, -1)
 var currentTalismans = Vector2(-1, -1)
 
 var weapons = []
@@ -45,7 +45,7 @@ func getArmorRows():
 	var result = []
 	for a in armors:
 		var current = GLOBAL.items[a]
-		var equiped = a == currentArmor
+		var equiped = (a == currentArmor.x) or (a == currentArmor.y)
 		result.append([GLOBAL.AR_TYPE, a, current[GLOBAL.IT_NAME], equiped, null, current[GLOBAL.IT_ICON]])
 	return result
 
@@ -141,22 +141,33 @@ func equipWeapon(idx):
 		stats.prot += item[GLOBAL.IT_PROT]
 
 func switchArmor(idx):
-	if currentArmor == idx:
+	if (currentArmor.x == idx) or (currentArmor.y == idx):
 		unequipArmor(idx)
 	else:
 		equipArmor(idx)
 
 func unequipArmor(idx):
-	if currentArmor != idx:
-		return
-	var stats = get_parent().stats
-	stats.ca = 4
-	stats.prot = 0
-	currentArmor = -1
+	if GLOBAL.items[idx][GLOBAL.IT_2H]:
+		if currentArmor.y != idx:
+			return
+		var stats = get_parent().stats
+		stats.ca = 4
+		stats.prot = 0
+		currentArmor.y = -1
+	else:
+		if currentArmor.x != idx:
+			return
+		var stats = get_parent().stats
+		stats.ca = 4
+		stats.prot = 0
+		currentArmor.x = -1
 
 func equipArmor(idx):
 	unequipArmor(idx)
-	currentArmor = idx
+	if GLOBAL.items[idx][GLOBAL.IT_2H]:
+		currentArmor.y = idx
+	else:
+		currentArmor.x = idx
 	var stats = get_parent().stats
 	stats.ca = GLOBAL.items[idx][GLOBAL.IT_CA]
 	stats.prot = GLOBAL.items[idx][GLOBAL.IT_PROT]

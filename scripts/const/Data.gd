@@ -155,7 +155,7 @@ const armors = {
 	4: ["scalemail",		3, 2, 3, 22, 1.0, false],
 	5: ["full plate",		3, 3, 4, 23, 1.0, false],
 	
-	10: ["leather cap",		0, 1, 2, 16, 1.0, true],
+	10: ["leather cap",		0, 1, 0, 16, 1.0, true],
 	11: ["horned helm",		1, 1, 4, 17, 1.0, true],
 }
 

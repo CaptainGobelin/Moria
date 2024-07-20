@@ -18,7 +18,7 @@ const SC_IDX = 4
 const PO_IDX = 5
 const LO_IDX = 6
 const GO_IDX = 7
-const TYPE_PROB = [0.19, 0.23, 0.07, 0.05, 0.1, 0.1, 0.1, 0.16]
+const TYPE_PROB = [0.019, 10.23, 0.07, 0.05, 0.1, 0.1, 0.1, 0.16]
 
 var id = -1
 
@@ -140,6 +140,7 @@ func mapArmorToItem(armor, baseIdx: int):
 	item[GLOBAL.IT_CA] = armor[Data.A_CA]
 	item[GLOBAL.IT_PROT] = armor[Data.A_PROT]
 	item[GLOBAL.IT_TYPE] = GLOBAL.AR_TYPE
+	item[GLOBAL.IT_2H] = armor[Data.A_HELM]
 	item[GLOBAL.IT_BASE] = baseIdx
 	return item
 
