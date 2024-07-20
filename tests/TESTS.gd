@@ -35,6 +35,9 @@ func runCollection(tester: Node):
 
 func runTest(tester: Node, testId: int):
 	Ref.game.testFloor()
+	GLOBAL.items.empty()
+	Ref.game.itemGenerator.id = -1
+	spawnedItems = []
 	var test = tester.tests[testId]
 	prints('\t', "Testing", test[TEST_NAME], "...")
 	GeneralEngine.isFaking = true
@@ -96,8 +99,53 @@ func spawn_weapon(id: int, pos):
 		Ref.character.pickItem(items)
 	spawnedItems.append_array(items)
 
+func spawn_shield(id: int, pos):
+	var items = Ref.game.itemGenerator.getShield(id)
+	if pos != null:
+		for item in items:
+			GLOBAL.dropItemOnFloor(item, pos)
+	else:
+		Ref.character.pickItem(items)
+	spawnedItems.append_array(items)
+
+func spawn_armor(id: int, pos):
+	var items = Ref.game.itemGenerator.getArmor(id)
+	if pos != null:
+		for item in items:
+			GLOBAL.dropItemOnFloor(item, pos)
+	else:
+		Ref.character.pickItem(items)
+	spawnedItems.append_array(items)
+
+func spawn_talisman(id: int, pos):
+	var items = Ref.game.itemGenerator.getTalisman(id)
+	if pos != null:
+		for item in items:
+			GLOBAL.dropItemOnFloor(item, pos)
+	else:
+		Ref.character.pickItem(items)
+	spawnedItems.append_array(items)
+
 func spawn_potion(id: int, pos):
 	var items = Ref.game.itemGenerator.getPotion(id)
+	if pos != null:
+		for item in items:
+			GLOBAL.dropItemOnFloor(item, pos)
+	else:
+		Ref.character.pickItem(items)
+	spawnedItems.append_array(items)
+
+func spawn_scroll(id: int, pos):
+	var items = Ref.game.itemGenerator.getScroll(id)
+	if pos != null:
+		for item in items:
+			GLOBAL.dropItemOnFloor(item, pos)
+	else:
+		Ref.character.pickItem(items)
+	spawnedItems.append_array(items)
+
+func spawn_throwable(id: int, pos):
+	var items = Ref.game.itemGenerator.getThrowable(id)
 	if pos != null:
 		for item in items:
 			GLOBAL.dropItemOnFloor(item, pos)

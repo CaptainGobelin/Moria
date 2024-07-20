@@ -23,10 +23,10 @@ const tests = {
 		["ui_right", "pickLoot", "assert_choice_mode", "shortcut0",
 		"assert_choice_mode", "shortcut3", "assert_choice_mode", "ui_cancel",
 		"assert_normal_mode", ["assert_two_loots", Vector2(11, 10)],
-		"pickLoot", "shortcut2", "assert_normal_mode", ["assert_weapon_in_bag", 2],
+		"pickLoot", "shortcut2", "assert_normal_mode", ["assert_weapon_in_bag", 1],
 		["assert_one_loot", Vector2(11, 10)], "pickLoot",
 		"assert_last_printed_pickup", ["assert_no_loot", Vector2(11, 10)],
-		"assert_normal_mode", ["assert_weapon_in_bag", 1]]
+		"assert_normal_mode", ["assert_weapon_in_bag", 0]]
 	],
 	2: [
 		"Pickup stack of items",
@@ -39,15 +39,31 @@ const tests = {
 			["spawn_potion", 0, Vector2(11, 10)],
 		],
 		["ui_right", "pickLoot", "assert_number_mode", "shortcut0", "ui_accept",
-		["assert_potions_in_bag", 0]]
+		["assert_potions_in_bag", 0], "pickLoot", "shortcut3", "ui_accept",
+		["assert_potions_in_bag", 3], "pickLoot", "shortcut2", "ui_accept",
+		["assert_potions_in_bag", 5], ["assert_no_loot", Vector2(11, 10)]]
 	],
 	3: [
-		"Item gategories",
+		"Item categories",
 		Vector2(10, 10),
 		[
-			
+			["spawn_weapon", 0, null],
+			["spawn_shield", 0, null],
+			["spawn_armor", 0, null],
+			["spawn_armor", 10, null],
+			["spawn_talisman", 0, null],
+			["spawn_potion", 0, null],
+			["spawn_scroll", 0, null],
+			["spawn_throwable", 0, null],
 		],
-		[]
+		[
+			"inventory", ["assert_item_in_item_list", 0], ["assert_item_in_item_list", 1],
+			"ui_right", ["assert_item_in_item_list", 2], ["assert_item_in_item_list", 3],
+			"ui_right", ["assert_stackable_in_item_list", 6],
+			"ui_right", ["assert_stackable_in_item_list", 5],
+			"ui_right", ["assert_stackable_in_item_list", 7],
+			"ui_right", ["assert_item_in_item_list", 4], "ui_right", "ui_cancel"
+		]
 	],
 	4: [
 		"Inventory scrolling",
@@ -63,9 +79,9 @@ const tests = {
 		],
 		["inventory", ["assert_inventory_tab_size", 7],
 		["assert_selected_item_index", 0], "ui_up", 
-		["assert_selected_item_index", 6], "ui_down",
+		["assert_selected_item_index", 5], "ui_down",
 		["assert_selected_item_index", 0], "ui_down",
-		["assert_selected_item_index", 0], "ui_cancel"]
+		["assert_selected_item_index", 1], "ui_cancel"]
 	],
 	5: [
 		"Pickup lockpicks",
@@ -157,7 +173,7 @@ func assert_weapon_in_bag(testId: int, id: int):
 	assert(Ref.character.inventory.weapons.has(get_parent().spawnedItems[id]))
 
 func assert_potions_in_bag(testId: int, count: int):
-	assert(Ref.character.inventory.potions.count() == count)
+	assert(Ref.character.inventory.potions.size() == count)
 
 func assert_inventory_tab_size(testId: int, size: int):
 	assert(Ref.game.inventoryMenu.itemList.currentItems.size() == size)
@@ -167,3 +183,17 @@ func assert_five_lockpicks(testId: int):
 
 func assert_five_golds(testId: int):
 	assert(Ref.character.inventory.golds == 5)
+
+func assert_item_in_item_list(testId:int, id: int):
+	var result = false
+	for item in Ref.game.inventoryMenu.itemList.currentItems:
+		if item[1] == id:
+			result = true
+	assert(result)
+
+func assert_stackable_in_item_list(testId:int, id: int):
+	var result = false
+	for item in Ref.game.inventoryMenu.itemList.currentItems:
+		if item[4][0] == id:
+			result = true
+	assert(result)
