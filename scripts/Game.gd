@@ -16,10 +16,11 @@ onready var throwHandler = get_node("Utils/ThrowHandler")
 func _ready():
 	randomize()
 	Ref.game = self
-	newFloor()
+#	newFloor()
+	testFloor()
 	set_process_input(true)
 	GLOBAL.currentMode = GLOBAL.MODE_NORMAL
-#	Tests.runAll()
+	Tests.runAll()
 
 func cleanFloor():
 	GLOBAL.traps.clear()

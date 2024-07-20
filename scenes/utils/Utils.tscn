@@ -35,6 +35,9 @@ func makeList(array: Array):
 
 func chooseRandom(array: Array):
 	return array[randi() % array.size()]
+
+func modulo(a: int, b: int):
+	return (b + (a % b)) % b
 "
 
 [node name="Utils" type="Node"]

@@ -35,10 +35,10 @@ func close():
 
 func _input(event):
 	if (event.is_action_pressed("ui_left")):
-		currentTab = max(currentTab-1, 0)
+		currentTab = Utils.modulo(currentTab-1, tabs.size())
 		setTab(currentTab)
 	elif (event.is_action_pressed("ui_right")):
-		currentTab = min(currentTab+1, tabs.size()-1)
+		currentTab = Utils.modulo(currentTab+1, tabs.size())
 		setTab(currentTab)
 	elif (event.is_action_pressed("ui_up")):
 		itemList.selectPrevious()

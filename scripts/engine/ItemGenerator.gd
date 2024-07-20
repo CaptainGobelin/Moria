@@ -347,7 +347,7 @@ func getWeapon(idx: int):
 	return [id]
 
 func getShield(idx: int):
-	var base = Data.weapons[idx].duplicate()
+	var base = Data.shields[idx].duplicate()
 	id += 1
 	GLOBAL.items[id] = mapShieldToItem(base, idx)
 	return [id]
