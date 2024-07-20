@@ -146,13 +146,17 @@ const A_PROT = 2
 const A_RAR = 3
 const A_ICON = 4
 const A_ENCH = 5
+const A_HELM = 6
 const armors = {
-	0: ["robe",				0, 0, 0, 18, 1.0],
-	1: ["padded armour",	1, 0, 0, 19, 1.0],
-	2: ["leather armour",	2, 1, 1, 20, 1.0],
-	3: ["brigandine",		2, 1, 2, 21, 1.0],
-	4: ["scalemail",		3, 2, 3, 22, 1.0],
-	5: ["full plate",		3, 3, 4, 23, 1.0],
+	0: ["robe",				0, 0, 0, 18, 1.0, false],
+	1: ["padded armour",	1, 0, 0, 19, 1.0, false],
+	2: ["leather armour",	2, 1, 1, 20, 1.0, false],
+	3: ["brigandine",		2, 1, 2, 21, 1.0, false],
+	4: ["scalemail",		3, 2, 3, 22, 1.0, false],
+	5: ["full plate",		3, 3, 4, 23, 1.0, false],
+	
+	10: ["leather cap",		0, 1, 2, 16, 1.0, true],
+	11: ["horned helm",		1, 1, 4, 17, 1.0, true],
 }
 
 var armorsByRarity = {}

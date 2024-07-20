@@ -351,8 +351,39 @@ func getShield(idx: int):
 	GLOBAL.items[id] = mapShieldToItem(base, idx)
 	return [id]
 
+func getArmor(idx: int):
+	var base = Data.armors[idx]
+	id += 1
+	GLOBAL.items[id] = mapArmorToItem(base, idx)
+	return [id]
+
 func getPotion(idx: int):
 	var base = Data.potions[idx]
 	id += 1
 	GLOBAL.items[id] = mapPotionToItem(base, idx)
+	return [id]
+
+func getScroll(idx: int):
+	var base = Data.scrolls[idx]
+	id += 1
+	GLOBAL.items[id] = mapScrollToItem(base, idx)
+	return [id]
+
+func getThrowable(idx: int):
+	var base = Data.throwings[idx]
+	id += 1
+	GLOBAL.items[id] = mapThrowingToItem(base, idx)
+	return [id]
+
+func getTalisman(idx: int):
+	var base  = Data.talismans[idx]
+	id += 1
+	GLOBAL.items[id] = mapTalismanToItem(base)
+	var enchant  = generateTalismanEnchant(0)
+	if enchant[0] == GLOBAL.AR_TYPE:
+		GLOBAL.items[id][GLOBAL.IT_NAME] += (" " + Data.arEnchants[enchant[1]][Data.AR_EN_SUF])
+	else:
+		GLOBAL.items[id][GLOBAL.IT_NAME] += (" " + Data.taEnchants[enchant[1]][Data.TA_EN_SUF])
+	GLOBAL.items[id][GLOBAL.IT_NAME][0] = GLOBAL.items[id][GLOBAL.IT_NAME][0].capitalize()
+	GLOBAL.items[id][GLOBAL.IT_SPEC] = enchant
 	return [id]
