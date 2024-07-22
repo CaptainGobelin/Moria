@@ -22,7 +22,7 @@ func applyEffect(entity, spell):
 			throwings.sleepFlask(entity)
 
 func magicMissile(entity):
-	entity.takeHit(GeneralEngine.rollDices(Vector2(2, 1)))
+	entity.takeHit(GeneralEngine.dice(2, 1, 1).roll())
 
 func heal(entity):
 	var result:float = entity.stats.hpMax * 0.5
@@ -42,7 +42,7 @@ func fireball(entity):
 		effect.play(pos, 0, 5, 0.1)
 		if GLOBAL.monstersByPosition.has(pos):
 			var target = instance_from_id(GLOBAL.monstersByPosition[pos])
-			target.takeHit(GeneralEngine.rollDices(Vector2(3, 6	)))
+			target.takeHit(GeneralEngine.dice(3, 6, 0).roll())
 
 func getArea(pos: Vector2, size: int):
 	var result = []

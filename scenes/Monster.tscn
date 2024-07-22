@@ -12,8 +12,8 @@ onready var prot = 0
 onready var maxHp = 10
 onready var currentHp = 1
 onready var atkRange = 1
-onready var hitDices = Vector2(1, 1)
-onready var dmgDices = Vector2(1, 1)
+onready var hitDices = GeneralEngine.dice(1, 6, 0)
+onready var dmgDices = GeneralEngine.dmgDice(1, 1, 0, Data.DMG_BLUNT)
 onready var xp = 0
 
 func init(type: int):
@@ -22,8 +22,10 @@ func init(type: int):
 	prot = Data.monsters[type][Data.MO_PROT]
 	maxHp = Data.monsters[type][Data.MO_HP]
 	currentHp = maxHp
-	hitDices = Data.monsters[type][Data.MO_HIT]
-	dmgDices = Data.monsters[type][Data.MO_DMG]
+	var hit = Data.monsters[type][Data.MO_HIT]
+	hitDices = GeneralEngine.dice(hit.x, hit.y, hit.z)
+	var dmg = Data.monsters[type][Data.MO_DMG]
+	dmgDices = [GeneralEngine.dmgDice(dmg.x, dmg.y, dmg.z, Data.DMG_SLASH)]
 	xp = Data.monsters[type][Data.MO_XP]
 "
 

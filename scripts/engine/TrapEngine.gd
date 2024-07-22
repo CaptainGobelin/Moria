@@ -5,7 +5,7 @@ func triggerTrap(trapId: int, entity):
 	Ref.ui.writeTriggerTrap(trap.trapName)
 	match trap.type:
 		Data.TR_DART:
-			entity.takeHit(GeneralEngine.rollDices(Vector2(1,4)))
+			entity.takeHit(GeneralEngine.dice(1, 4, 0).roll())
 	GLOBAL.traps.erase(trap.pos)
 	trap.frame += 1
 	trap.visible = true

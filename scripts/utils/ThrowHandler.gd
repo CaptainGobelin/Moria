@@ -16,7 +16,7 @@ func throwAsync(itemId: int):
 	yield(castProjectile(GLOBAL.targets[targetId], item[Data.TH_PROJ]), "completed")
 	if item[Data.TH_DMG] != null:
 		var entity = instance_from_id(targetId)
-		var result = GeneralEngine.rollDices(Ref.character.stats.hitDices)
+		var result = Ref.character.stats.hitDices.roll()
 		if result >= entity.stats.ca:
 			Ref.ui.writeCharacterStrike(entity.stats.entityName, result, entity.stats.ca)
 			entity.takeHit(GeneralEngine.rollDices(item[Data.TH_DMG]))

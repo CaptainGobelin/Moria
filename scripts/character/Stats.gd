@@ -1,18 +1,18 @@
 extends Node
 
-onready var currentClass = Data.classes[0]
-onready var entityName = "Mendiant"
-onready var level = 1 setget updateLevel
-onready var xp = 0 setget updateXp
-onready var hpMax = 10 setget updateHpMax
-onready var hp = 10 setget updateHp
-onready var ca = 3 setget updateCA
-onready var prot = 0 setget updateProt
-onready var dmgDices = Vector2(1, 1) setget updateDmg
-onready var hitDices = Vector2(1, 1) setget updateHit
+onready var currentClass: Array = Data.classes[0]
+onready var entityName: String = "Mendiant"
+onready var level: int = 1 setget updateLevel
+onready var xp: int = 0 setget updateXp
+onready var hpMax: int = 10 setget updateHpMax
+onready var hp: int = 10 setget updateHp
+onready var ca: int = 3 setget updateCA
+onready var prot: int = 0 setget updateProt
+onready var dmgDices: Array = [GeneralEngine.dmgDice(1, 1, 0, Data.DMG_BLUNT)] setget updateDmg
+onready var hitDices = GeneralEngine.dice(1, 6, 0) setget updateHit
 onready var skills = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 onready var masteries = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-onready var skp = 0
+onready var skp: int = 0
 
 func init():
 	entityName = currentClass[Data.CL_NAME]
@@ -23,45 +23,89 @@ func init():
 	updateHp(currentClass[Data.CL_HP])
 	updateCA(4)
 	updateProt(0)
-	updateDmg(Vector2(10, 4))
-	updateHit(Vector2(10, 12))
+	updateDmg([GeneralEngine.dmgDice(1, 1, 0, Data.DMG_BLUNT)])
+	updateHit(GeneralEngine.dice(1, 6, 0))
 	skills = currentClass[Data.CL_SK]
 	masteries = currentClass[Data.CL_SKMAS]
+
+func computeStats():
+	computeHpMax()
+	computeCA()
+	computeProt()
+	computeDmg()
+	computeHit()
 
 func computeHpMax():
 	var value = currentClass[Data.CL_HP]
 	value += (level-1) * currentClass[Data.CL_HPLVL] 
 	updateHpMax(value)
 
-func updateHpMax(newValue):
+func updateHpMax(newValue: int):
 	hpMax = newValue
 	Ref.ui.updateStat(Data.CHAR_HPMAX, newValue)
 
-func updateHp(newValue):
+func updateHp(newValue: int):
 	newValue = min(newValue, hpMax)
 	hp = newValue
 	Ref.ui.updateStat(Data.CHAR_HP, newValue)
 
 func computeCA():
+	var items = [
+		Ref.character.inventory.currentArmor.x,
+		Ref.character.inventory.currentArmor.y
+	]
+	var weapon = Ref.character.inventory.currentWeapon.x
+	if weapon != -1 and GLOBAL.items[weapon][GLOBAL.IT_2H]:
+		items.append(Ref.character.inventory.currentWeapon.y)
 	var value = 0
-	var armor = Ref.character.inventory.currentArmor.x
-	if armor != -1:
-		value += GLOBAL.items[armor][GLOBAL.IT_CA]
-	var helmet = Ref.character.inventory.currentArmor.y
-	if helmet != -1:
-		value += GLOBAL.items[helmet][GLOBAL.IT_CA]
+	for i in items:
+		if i != -1:
+			value += GLOBAL.items[i][GLOBAL.IT_CA]
+	updateProt(value)
 
-func updateCA(newValue):
+func updateCA(newValue: int):
 	ca = newValue
 	Ref.ui.updateStat(Data.CHAR_CA, newValue)
 
-func updateProt(newValue):
+func computeProt():
+	var items = [
+		Ref.character.inventory.currentArmor.x,
+		Ref.character.inventory.currentArmor.y
+	]
+	var weapon = Ref.character.inventory.currentWeapon.x
+	if weapon != -1 and GLOBAL.items[weapon][GLOBAL.IT_2H]:
+		items.append(Ref.character.inventory.currentWeapon.y)
+	var value = 0
+	for i in items:
+		if i != -1:
+			value += GLOBAL.items[i][GLOBAL.IT_PROT]
+	updateProt(value)
+
+func updateProt(newValue: int):
 	prot = newValue
 	Ref.ui.updateStat(Data.CHAR_PROT, newValue)
 
-func updateDmg(newValue):
+func computeDmg():
+	var value = []
+	var weapon = Ref.character.inventory.currentWeapon.x
+	if weapon != -1:
+		value = GLOBAL.items[weapon][GLOBAL.IT_DMG]
+	else:
+		value = [GeneralEngine.dmgDice(1, 1, 0, Data.DMG_BLUNT)]
+	updateDmg(value)
+
+func updateDmg(newValue: Array):
 	dmgDices = newValue
 	Ref.ui.updateStat(Data.CHAR_DMG, newValue)
+
+func computeHit():
+	var value = []
+	var weapon = Ref.character.inventory.currentWeapon.x
+	if weapon != -1:
+		value = GLOBAL.items[weapon][GLOBAL.IT_HIT]
+	else:
+		value = GeneralEngine.dice(1, 6, 0)
+	updateHit(value)
 
 func updateHit(newValue):
 	hitDices = newValue

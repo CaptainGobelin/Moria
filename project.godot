@@ -63,8 +63,8 @@ config/icon="res://icon.png"
 
 [autoload]
 
-Ref="*res://scenes/const/REF.tscn"
 Utils="*res://scenes/utils/Utils.tscn"
+Ref="*res://scenes/const/REF.tscn"
 Colors="*res://scenes/const/COLORS.tscn"
 GeneralEngine="*res://scenes/engine/Engine.tscn"
 GLOBAL="*res://scenes/const/GLOBAL.tscn"

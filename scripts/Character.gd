@@ -91,10 +91,10 @@ func hit(entity):
 	if entity == null:
 		return
 	if entity.is_in_group("Monster"):
-		var result = GeneralEngine.rollDices(stats.hitDices)
+		var result = stats.hitDices.roll()
 		if result >= entity.stats.ca:
 			Ref.ui.writeCharacterStrike(entity.stats.entityName, result, entity.stats.ca)
-			entity.takeHit(GeneralEngine.rollDices(stats.dmgDices))
+			entity.takeHit(stats.dmgDices[0].roll()) #TODO [0] is temp
 		else:
 			Ref.ui.writeCharacterMiss(entity.stats.entityName, result, entity.stats.ca)
 
@@ -175,7 +175,7 @@ func quaffPotion(idx):
 	GLOBAL.items.erase(idx)
 
 func attemptLockpick(dd: int):
-	var roll = GeneralEngine.rollDices(Vector2(1, 6))
+	var roll = GeneralEngine.dice(1, 6, 0).roll()
 	if roll >= dd:
 		Ref.ui.writeLockpickSuccess(roll)
 		return true
@@ -194,7 +194,7 @@ func search():
 				rollPerception(cell)
 
 func rollPerception(cell: Vector2):
-	var perceptionRoll = GeneralEngine.rollDices(Vector2(1, 6))
+	var perceptionRoll = GeneralEngine.dice(1, 6, 0).roll()
 	if perceptionRoll > 3:
 		# Detect traps
 		if GLOBAL.traps.has(cell):

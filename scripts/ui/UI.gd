@@ -290,9 +290,6 @@ func noTarget():
 	write("There is no targets at range for this.")
 	lastPrinted = "noTarget"
 
-func diceToString(dice: Vector2) -> String:
-	return String(dice.x) + "d" + String(dice.y)
-
 func listToChoices(list: Array) -> String:
 	var msg = ""
 	var count = 0
@@ -315,10 +312,10 @@ func updateStat(stat: int, value):
 			caLabel.text = String(value)
 		Data.CHAR_PROT:
 			protLabel.text = String(value)
-		Data.CHAR_DMG:
-			dmgLabel.text = diceToString(value)
+		Data.CHAR_DMG: #TODO [0] is temp
+			dmgLabel.text = value[0].toString()
 		Data.CHAR_HIT:
-			hitLabel.text = diceToString(value)
+			hitLabel.text = value.toString()
 		Data.CHAR_LOCK:
 			lockLabel.text = String(value)
 		Data.CHAR_GOLD:

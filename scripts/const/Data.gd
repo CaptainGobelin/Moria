@@ -1,5 +1,13 @@
 extends Node
 
+# Damage types
+const DMG_SLASH = 0
+const DMG_BLUNT = 1
+const DMG_FIRE = 2
+const DMG_POISON = 3
+const DMG_HOLY = 4
+const DMG_MAGIC = 5
+
 # Projectiles
 const PROJ_COLOR = 0
 const PROJ_TYPE = 1
@@ -61,7 +69,7 @@ const MO_PROT = 5
 const MO_SPRITE = 6
 const MO_XP = 7
 const monsters = {
-	0: ["Skeleton", 6, Vector2(1, 6), Vector2(1, 4), 5, 1, 0, 4],
+	0: ["Skeleton", 6, Vector3(1, 6, 0), Vector3(1, 4, 0), 5, 1, 0, 4],
 }
 
 # Stats
@@ -259,7 +267,11 @@ const ENCH_FIRE_RES = 100
 const ENCH_POISON_RES = 101
 const ENCH_PROTECT = 200
 # Armor enchants
-const ENCH_AR_1 = 0
+const ENCH_1_AR = 1000
+const ENCH_2_AR = 1001
+const ENCH_3_AR = 1002
+const ENCH_FIRE_RESIST = 1003
+const ENCH_POISON_RESIST = 1004
 # Talisman enchants
 
 const WP_EN_PRE = 0
@@ -268,6 +280,7 @@ const WP_EN_ID = 2
 const wpEnchants = {
 	0: [null, "+1", 0],
 	1: [null, "+2", 1],
+	2: [null, "+3", 2],
 	
 	100: ["flaming", "of fire", 3],
 	101: ["shocking", "of shock", 5],
@@ -287,14 +300,14 @@ const wpEnchants = {
 # Armor enchants
 const AR_EN_SUF = 0
 const AR_EN_RAR = 1
-const AR_EN_ALLOWED = 2
-const AR_EN_ID = 3
+const AR_EN_ID = 2
 const arEnchants = {
-	0: ["+1", 0],
-	1: ["+2", 1],
+	0: ["+1", 0, 1001],
+	1: ["+2", 1, 1002],
+	2: ["+3", 2, 1003],
 	
-	100: ["of fire resistance", 1, [0], 103],
-	101: ["of poison resistance", 0, [0], 104],
+	100: ["of fire resistance", 1, 1004],
+	101: ["of poison resistance", 0, 1005],
 }
 
 # Talisman enchants
@@ -302,7 +315,7 @@ const TA_EN_SUF = 0
 const TA_EN_RAR = 1
 const TA_EN_ID = 2
 const taEnchants = {
-	0: ["of protection", 1, 200],
+	0: ["of protection", 1, 2000],
 }
 
 # Gold
