@@ -87,8 +87,13 @@ func mapWeaponToItem(weapon, baseIdx: int):
 	item.resize(GLOBAL.IT_STACK + 1)
 	item[GLOBAL.IT_ICON] = weapon[Data.W_ICON]
 	item[GLOBAL.IT_NAME] = weapon[Data.W_NAME]
-	item[GLOBAL.IT_DMG] = weapon[Data.W_DMG]
-	item[GLOBAL.IT_HIT] = weapon[Data.W_HIT]
+	var dmgDice = GeneralEngine.basicDice(weapon[Data.W_DMG])
+	var dmgType = Data.DMG_SLASH
+	if weapon[Data.W_TYPE] == "B":
+		dmgType = Data.DMG_BLUNT
+	item[GLOBAL.IT_DMG] = GeneralEngine.dmgFromDice(dmgDice, dmgType)
+	var hitDice = GeneralEngine.basicDice(weapon[Data.W_HIT])
+	item[GLOBAL.IT_HIT] = hitDice
 	item[GLOBAL.IT_2H] = weapon[Data.W_2H]
 	item[GLOBAL.IT_TYPE] = GLOBAL.WP_TYPE
 	item[GLOBAL.IT_BASE] = baseIdx
@@ -170,7 +175,8 @@ func mapThrowingToItem(throwing, baseIdx):
 	item.resize(GLOBAL.IT_STACK + 1)
 	item[GLOBAL.IT_ICON] = throwing[Data.TH_ICON]
 	item[GLOBAL.IT_NAME] = throwing[Data.TH_NAME]
-	item[GLOBAL.IT_DMG] = throwing[Data.TH_DMG]
+	var dmgDice = GeneralEngine.basicDice(throwing[Data.W_DMG])
+	item[GLOBAL.IT_DMG] = GeneralEngine.dmgFromDice(dmgDice, Data.DMG_SLASH)
 	item[GLOBAL.IT_SPEC] = throwing[Data.TH_EFFECT]
 	item[GLOBAL.IT_TYPE] = GLOBAL.TH_TYPE
 	item[GLOBAL.IT_STACK] = throwing[Data.TH_STACK]

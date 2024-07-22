@@ -111,18 +111,19 @@ func unequipWeapon(idx):
 	if item[GLOBAL.IT_CA] == null:
 		if currentWeapon.x != idx:
 			return
-		var stats = get_parent().stats
-		stats.dmgDices = Vector2(1, 1)
-		stats.hitDices = Vector2(1, 1)
 		currentWeapon.x = -1
+		var stats = get_parent().stats
+		stats.computeHit()
+		stats.computeDmg()
 	# Shield
 	else:
 		if currentWeapon.y != idx:
 			return
-		var stats = get_parent().stats
-		stats.ca -= item[GLOBAL.IT_CA]
-		stats.prot -= item[GLOBAL.IT_PROT]
+		
 		currentWeapon.y = -1
+		var stats = get_parent().stats
+		stats.computeCA()
+		stats.computeProt()
 
 func equipWeapon(idx):
 	unequipWeapon(idx)
@@ -131,14 +132,14 @@ func equipWeapon(idx):
 	if item[GLOBAL.IT_CA] == null:
 		currentWeapon.x = idx
 		var stats = get_parent().stats
-		stats.dmgDices = item[GLOBAL.IT_DMG]
-		stats.hitDices = item[GLOBAL.IT_HIT]
+		stats.computeCA()
+		stats.computeProt()
 	# Shield
 	else:
 		currentWeapon.y = idx
 		var stats = get_parent().stats
-		stats.ca += item[GLOBAL.IT_CA]
-		stats.prot += item[GLOBAL.IT_PROT]
+		stats.computeCA()
+		stats.computeProt()
 
 func switchArmor(idx):
 	if (currentArmor.x == idx) or (currentArmor.y == idx):
@@ -150,17 +151,17 @@ func unequipArmor(idx):
 	if GLOBAL.items[idx][GLOBAL.IT_2H]:
 		if currentArmor.y != idx:
 			return
-		var stats = get_parent().stats
-		stats.ca = 4
-		stats.prot = 0
 		currentArmor.y = -1
+		var stats = get_parent().stats
+		stats.computeCA()
+		stats.computeProt()
 	else:
 		if currentArmor.x != idx:
 			return
-		var stats = get_parent().stats
-		stats.ca = 4
-		stats.prot = 0
 		currentArmor.x = -1
+		var stats = get_parent().stats
+		stats.computeCA()
+		stats.computeProt()
 
 func equipArmor(idx):
 	unequipArmor(idx)
@@ -169,8 +170,8 @@ func equipArmor(idx):
 	else:
 		currentArmor.x = idx
 	var stats = get_parent().stats
-	stats.ca = GLOBAL.items[idx][GLOBAL.IT_CA]
-	stats.prot = GLOBAL.items[idx][GLOBAL.IT_PROT]
+	stats.computeCA()
+	stats.computeProt()
 
 func switchTalisman(idx):
 	if currentTalismans.x == idx:

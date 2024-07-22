@@ -91,8 +91,7 @@ func computeDmg():
 	var value = []
 	var weapon = Ref.character.inventory.currentWeapon.x
 	if weapon != -1:
-		var dice = GLOBAL.items[weapon][GLOBAL.IT_DMG]
-		value = [GeneralEngine.dmgDice(dice.x, dice.y, 0, Data.DMG_SLASH)]
+		value = [GLOBAL.items[weapon][GLOBAL.IT_DMG]]
 	else:
 		value = [GeneralEngine.dmgDice(1, 1, 0, Data.DMG_BLUNT)]
 	updateDmg(value)
@@ -105,8 +104,7 @@ func computeHit():
 	var value = []
 	var weapon = Ref.character.inventory.currentWeapon.x
 	if weapon != -1:
-		var dice = GLOBAL.items[weapon][GLOBAL.IT_DMG]
-		value = GeneralEngine.dice(dice.x, dice.y, 0)
+		value = GLOBAL.items[weapon][GLOBAL.IT_HIT]
 	else:
 		value = GeneralEngine.dice(1, 6, 0)
 	updateHit(value)

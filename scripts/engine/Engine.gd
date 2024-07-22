@@ -43,8 +43,14 @@ class DmgDice:
 func dice(n: int, d: int, b: int):
 	return GeneralEngine.Dice.new(n, d, b)
 
+func basicDice(v: Vector2):
+	return GeneralEngine.Dice.new(v.x, v.y, 0)
+
 func dmgDice(n: int, d: int, b: int, t: int):
 	return GeneralEngine.DmgDice.new(n, d, b, t)
+
+func dmgFromDice(dice: Dice, type: int):
+	return GeneralEngine.DmgDice.new(dice.n, dice.d, dice.b, type)
 
 func newTurn():
 	turn += 1
