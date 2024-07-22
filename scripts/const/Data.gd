@@ -258,6 +258,9 @@ const ENCH_PRECISED_WP = 54
 const ENCH_FIRE_RES = 100
 const ENCH_POISON_RES = 101
 const ENCH_PROTECT = 200
+# Armor enchants
+const ENCH_AR_1 = 0
+# Talisman enchants
 
 const WP_EN_PRE = 0
 const WP_EN_SUF = 1
@@ -287,8 +290,11 @@ const AR_EN_RAR = 1
 const AR_EN_ALLOWED = 2
 const AR_EN_ID = 3
 const arEnchants = {
-	0: ["of fire resistance", 1, [0], 100],
-	1: ["of poison resistance", 0, [0], 101],
+	0: ["+1", 0],
+	1: ["+2", 1],
+	
+	100: ["of fire resistance", 1, [0], 103],
+	101: ["of poison resistance", 0, [0], 104],
 }
 
 # Talisman enchants

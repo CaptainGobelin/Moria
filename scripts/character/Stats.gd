@@ -28,6 +28,11 @@ func init():
 	skills = currentClass[Data.CL_SK]
 	masteries = currentClass[Data.CL_SKMAS]
 
+func computeHpMax():
+	var value = currentClass[Data.CL_HP]
+	value += (level-1) * currentClass[Data.CL_HPLVL] 
+	updateHpMax(value)
+
 func updateHpMax(newValue):
 	hpMax = newValue
 	Ref.ui.updateStat(Data.CHAR_HPMAX, newValue)
@@ -36,6 +41,15 @@ func updateHp(newValue):
 	newValue = min(newValue, hpMax)
 	hp = newValue
 	Ref.ui.updateStat(Data.CHAR_HP, newValue)
+
+func computeCA():
+	var value = 0
+	var armor = Ref.character.inventory.currentArmor.x
+	if armor != -1:
+		value += GLOBAL.items[armor][GLOBAL.IT_CA]
+	var helmet = Ref.character.inventory.currentArmor.y
+	if helmet != -1:
+		value += GLOBAL.items[helmet][GLOBAL.IT_CA]
 
 func updateCA(newValue):
 	ca = newValue
