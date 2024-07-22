@@ -54,13 +54,10 @@ func newTurn():
 		s.turns -= 1
 	Ref.ui.statusBar.refreshStatuses()
 
-func rollDices(dice: Dice):
-	if (isFaking):
-		return fakedValue
+func computeDamages(dmgDices: Array, resist: Array):
 	var result = 0
-	for _d in range(int(dice.n)):
-		result += (randi() % int(dice.d)) + dice.b
-	return result
-
-func dicesToString(dices: Vector2):
-	return String(dices.x) + "d" + String(dices.y)
+	for dice in dmgDices:
+		var dmg = dice.roll()
+		if resist[dice.type] > 0:
+			dmg /= pow(2, resist[dice.type])
+		result += dmg

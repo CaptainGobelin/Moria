@@ -15,7 +15,7 @@ func firebomb(entity):
 		effect.play(pos, 0, 5)
 		if GLOBAL.monstersByPosition.has(pos):
 			var target = instance_from_id(GLOBAL.monstersByPosition[pos])
-			target.takeHit(GeneralEngine.rollDices(Vector2(2, 10)))
+			target.takeHit(GeneralEngine.dice(2, 10, 0).roll())
 
 func poisonFlask(entity):
 	var targetedCells = get_parent().getArea(entity.pos, 4)
@@ -27,7 +27,7 @@ func poisonFlask(entity):
 		effect.play(pos, 3, 5)
 		if GLOBAL.monstersByPosition.has(pos):
 			var target = instance_from_id(GLOBAL.monstersByPosition[pos])
-			target.takeHit(GeneralEngine.rollDices(Vector2(1, 6)))
+			target.takeHit(GeneralEngine.dice(1, 6, 0).roll())
 
 func sleepFlask(entity):
 	var targetedCells = get_parent().getArea(entity.pos, 4)
@@ -39,7 +39,7 @@ func sleepFlask(entity):
 		effect.play(pos, 4, 5)
 		if GLOBAL.monstersByPosition.has(pos):
 			var target = instance_from_id(GLOBAL.monstersByPosition[pos])
-			target.takeHit(GeneralEngine.rollDices(Vector2(1, 6)))
+			target.takeHit(GeneralEngine.dice(1, 6, 0).roll())
 "
 
 [node name="SpellEngine" type="Node"]

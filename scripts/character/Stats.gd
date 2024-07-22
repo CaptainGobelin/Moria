@@ -10,6 +10,8 @@ onready var ca: int = 3 setget updateCA
 onready var prot: int = 0 setget updateProt
 onready var dmgDices: Array = [GeneralEngine.dmgDice(1, 1, 0, Data.DMG_BLUNT)] setget updateDmg
 onready var hitDices = GeneralEngine.dice(1, 6, 0) setget updateHit
+onready var resists: Array = []
+onready var maxResists: Array = []
 onready var skills = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 onready var masteries = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 onready var skp: int = 0
@@ -89,7 +91,8 @@ func computeDmg():
 	var value = []
 	var weapon = Ref.character.inventory.currentWeapon.x
 	if weapon != -1:
-		value = GLOBAL.items[weapon][GLOBAL.IT_DMG]
+		var dice = GLOBAL.items[weapon][GLOBAL.IT_DMG]
+		value = [GeneralEngine.dmgDice(dice.x, dice.y, 0, Data.DMG_SLASH)]
 	else:
 		value = [GeneralEngine.dmgDice(1, 1, 0, Data.DMG_BLUNT)]
 	updateDmg(value)
@@ -102,7 +105,8 @@ func computeHit():
 	var value = []
 	var weapon = Ref.character.inventory.currentWeapon.x
 	if weapon != -1:
-		value = GLOBAL.items[weapon][GLOBAL.IT_HIT]
+		var dice = GLOBAL.items[weapon][GLOBAL.IT_DMG]
+		value = GeneralEngine.dice(dice.x, dice.y, 0)
 	else:
 		value = GeneralEngine.dice(1, 6, 0)
 	updateHit(value)
@@ -110,6 +114,9 @@ func computeHit():
 func updateHit(newValue):
 	hitDices = newValue
 	Ref.ui.updateStat(Data.CHAR_HIT, newValue)
+
+func updateReissts(newValue):
+	pass
 
 func updateLevel(newValue):
 	level = newValue

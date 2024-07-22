@@ -19,7 +19,8 @@ func throwAsync(itemId: int):
 		var result = Ref.character.stats.hitDices.roll()
 		if result >= entity.stats.ca:
 			Ref.ui.writeCharacterStrike(entity.stats.entityName, result, entity.stats.ca)
-			entity.takeHit(GeneralEngine.rollDices(item[Data.TH_DMG]))
+			var wpDmg = item[Data.TH_DMG]
+			entity.takeHit(GeneralEngine.dmgDice(wpDmg.x, wpDmg.y, 0, Data.DMG_SLASH))
 		else:
 			Ref.ui.writeCharacterMiss(entity.stats.entityName, result, entity.stats.ca)
 	if item[Data.TH_EFFECT] != null:
