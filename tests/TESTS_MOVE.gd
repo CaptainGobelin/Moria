@@ -87,7 +87,7 @@ const tests = {
 		["search", "assert_one_hidden_door", "ui_up", "assert_no_move"]
 	],
 	9: [
-		"Move against a hidden  locked door",
+		"Move against a hidden locked door",
 		Vector2(10, 12),
 		[
 			["spawn_hidden_door", Vector2(10,11)],

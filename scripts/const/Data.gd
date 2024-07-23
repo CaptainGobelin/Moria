@@ -80,8 +80,10 @@ const MO_CA = 4
 const MO_PROT = 5
 const MO_SPRITE = 6
 const MO_XP = 7
+const MO_MOVE = 8
 const monsters = {
-	0: ["Skeleton", 6, Vector3(1, 6, 0), Vector3(1, 4, 0), 5, 1, 0, 4],
+	0: ["Skeleton", 6, Vector3(1, 6, 0), Vector3(1, 4, 0), 5, 1, 0, 4, true],
+	1000: ["Dummy target", 100, Vector3(1, 6, 0), Vector3(1, 1, 0), 2, 1, 1, 10, false],
 }
 
 # Stats

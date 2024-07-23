@@ -7,11 +7,6 @@ onready var itemList = get_node("ItemList")
 onready var scroller = get_node("MenuScroller")
 onready var keyLabel = get_node("TextContainer/Key")
 onready var tabs = inventory.get_children()
-const weaponsTab = 0
-const armorsTab = 1
-const scrollsTab = 2
-const potionsTab = 3
-const throwingsTab = 4
 
 var currentTab = 0
 

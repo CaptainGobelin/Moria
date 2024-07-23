@@ -36,6 +36,8 @@ func runCollection(tester: Node):
 func runTest(tester: Node, testId: int):
 	Ref.game.testFloor()
 	GLOBAL.items.empty()
+	Ref.ui.lastPrinted = ""
+	Ref.game.inventoryMenu.currentTab = 0
 	Ref.game.itemGenerator.id = -1
 	spawnedItems = []
 	var test = tester.tests[testId]
@@ -162,3 +164,6 @@ func spawn_golds(pos: Vector2, count: int):
 	var items = Ref.game.itemGenerator.generateGolds(0, count)
 	for item in items:
 		GLOBAL.dropItemOnFloor(item, pos)
+
+func spawn_monster(idx: int, pos: Vector2):
+	Ref.currentLevel.spawnMonster(idx, pos)

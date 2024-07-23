@@ -107,11 +107,13 @@ func placeCharacter(pos: Vector2 = Vector2(-1,-1)):
 	Ref.character.init()
 	Ref.character.setPosition(pos)
 
-func spawnMonster():
-	var cell = getRandomFreeCell()
+func spawnMonster(idx: int = 0, pos = null):
+	var cell = pos
+	if cell == null:
+		cell = getRandomFreeCell()
 	var monster = monsterScene.instance()
 	monsters.add_child(monster)
-	monster.spawn(0)
+	monster.spawn(idx)
 	monster.setPosition(cell)
 
 func addLoot(cell: Vector2, rarityBonus: int):

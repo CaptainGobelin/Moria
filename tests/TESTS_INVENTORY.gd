@@ -105,7 +105,7 @@ const tests = {
 		"Drop single item",
 		Vector2(10, 10),
 		[
-			
+
 		],
 		[]
 	],
@@ -113,7 +113,7 @@ const tests = {
 		"Drop stackable items",
 		Vector2(10, 10),
 		[
-			
+
 		],
 		[]
 	],
@@ -121,15 +121,15 @@ const tests = {
 		"Wear weapon",
 		Vector2(10, 10),
 		[
-			
+
 		],
 		[]
 	],
 	10: [
-		"Wear armour",
+		"Wear armor",
 		Vector2(10, 10),
 		[
-			
+
 		],
 		[]
 	],
@@ -137,9 +137,50 @@ const tests = {
 		"Wear talisman",
 		Vector2(10, 10),
 		[
-			
+
 		],
 		[]
+	],
+	12: [
+		"Quaff potion",
+		Vector2(10, 10),
+		[
+			["spawn_potion", 0, Vector2(11, 10)],
+		],
+		[
+			"inventory", "ui_right", "ui_right", "ui_right", "quaffPotion",
+			"assert_last_printed_null", "assert_inventory_mode", "ui_cancel",
+			"ui_right", "pickLoot", "inventory", "quaffPotion",
+			"assert_last_printed_quaffed", "ui_cancel"
+		]
+	],
+	13: [
+		"Read scroll",
+		Vector2(10, 10),
+		[
+			["spawn_scroll", 0, Vector2(11, 10)],
+			["spawn_monster", 1000, Vector2(11, 6)],
+		],
+		[
+			"inventory", "ui_right", "ui_right", "readScroll",
+			"assert_last_printed_null", "assert_inventory_mode", "ui_cancel",
+			"ui_right", "pickLoot", "inventory", "readScroll",
+			"assert_target_mode", "ui_cancel"
+		]
+	],
+	14: [
+		"Throw item",
+		Vector2(10, 10),
+		[
+			["spawn_throwable", 0, Vector2(11, 10)],
+			["spawn_monster", 1000, Vector2(11, 6)],
+		],
+		[
+			"inventory", "ui_right", "ui_right", "ui_right", "ui_right", "throw",
+			"assert_last_printed_null", "assert_inventory_mode", "ui_cancel",
+			"ui_right", "pickLoot", "inventory", "throw",
+			"assert_target_mode", "ui_cancel"
+		]
 	],
 }
 func assert_choice_mode(testId: int):
@@ -148,14 +189,26 @@ func assert_choice_mode(testId: int):
 func assert_number_mode(testId: int):
 	assert(GLOBAL.currentMode == GLOBAL.MODE_NUMBER)
 
+func assert_target_mode(testId: int):
+	assert(GLOBAL.currentMode == GLOBAL.MODE_TARGET)
+
 func assert_normal_mode(testId: int):
 	assert(GLOBAL.currentMode == GLOBAL.MODE_NORMAL)
+
+func assert_inventory_mode(testId: int):
+	assert(GLOBAL.currentMode == GLOBAL.MODE_INVENTORY)
 
 func assert_no_move(testId: int):
 	assert(Ref.character.pos == tests[testId][get_parent().TEST_POS])
 
 func assert_last_printed_pickup(testId: int):
 	assert(Ref.ui.lastPrinted == "writePickupLoot")
+
+func assert_last_printed_quaffed(testId: int):
+	assert(Ref.ui.lastPrinted == "writeQuaffedPotion")
+
+func assert_last_printed_null(testId: int):
+	assert(Ref.ui.lastPrinted == "")
 
 func assert_selected_item_index(testId: int, index: int):
 	assert(Ref.game.inventoryMenu.itemList.currentIndex == index)
