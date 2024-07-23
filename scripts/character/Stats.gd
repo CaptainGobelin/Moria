@@ -23,7 +23,7 @@ func init():
 	updateXp(0)
 	updateHpMax(currentClass[Data.CL_HP])
 	updateHp(currentClass[Data.CL_HP])
-	updateCA(4)
+	updateCA(0)
 	updateProt(0)
 	updateDmg([GeneralEngine.dmgDice(1, 1, 0, Data.DMG_BLUNT)])
 	updateHit(GeneralEngine.dice(1, 6, 0))
@@ -53,17 +53,17 @@ func updateHp(newValue: int):
 
 func computeCA():
 	var items = [
-		Ref.character.inventory.currentArmor.x,
-		Ref.character.inventory.currentArmor.y
+		Ref.character.inventory.getArmor(),
+		Ref.character.inventory.getHelmet()
 	]
-	var weapon = Ref.character.inventory.currentWeapon.x
+	var weapon = Ref.character.inventory.getWeapon()
 	if weapon != -1 and GLOBAL.items[weapon][GLOBAL.IT_2H]:
-		items.append(Ref.character.inventory.currentWeapon.y)
+		items.append(Ref.character.inventory.getShield())
 	var value = 0
 	for i in items:
 		if i != -1:
 			value += GLOBAL.items[i][GLOBAL.IT_CA]
-	updateProt(value)
+	updateCA(value)
 
 func updateCA(newValue: int):
 	ca = newValue
@@ -71,12 +71,12 @@ func updateCA(newValue: int):
 
 func computeProt():
 	var items = [
-		Ref.character.inventory.currentArmor.x,
-		Ref.character.inventory.currentArmor.y
+		Ref.character.inventory.getArmor(),
+		Ref.character.inventory.getHelmet()
 	]
-	var weapon = Ref.character.inventory.currentWeapon.x
+	var weapon = Ref.character.inventory.getWeapon()
 	if weapon != -1 and GLOBAL.items[weapon][GLOBAL.IT_2H]:
-		items.append(Ref.character.inventory.currentWeapon.y)
+		items.append(Ref.character.inventory.getShield())
 	var value = 0
 	for i in items:
 		if i != -1:
@@ -89,7 +89,7 @@ func updateProt(newValue: int):
 
 func computeDmg():
 	var value = []
-	var weapon = Ref.character.inventory.currentWeapon.x
+	var weapon = Ref.character.inventory.getWeapon()
 	if weapon != -1:
 		value = [GLOBAL.items[weapon][GLOBAL.IT_DMG]]
 	else:
@@ -102,7 +102,7 @@ func updateDmg(newValue: Array):
 
 func computeHit():
 	var value = []
-	var weapon = Ref.character.inventory.currentWeapon.x
+	var weapon = Ref.character.inventory.getWeapon()
 	if weapon != -1:
 		value = GLOBAL.items[weapon][GLOBAL.IT_HIT]
 	else:

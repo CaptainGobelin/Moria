@@ -24,6 +24,24 @@ func init():
 	updateLockpicks(0)
 	updateGolds(0)
 
+func getWeapon():
+	return int(currentWeapon.x)
+
+func getShield():
+	return int(currentWeapon.y)
+
+func getHelmet():
+	return int(currentArmor.y)
+
+func getArmor():
+	return int(currentArmor.x)
+
+func getTalisman1():
+	return int(currentTalismans.x)
+
+func getTalisman2():
+	return int(currentTalismans.y)
+
 func updateLockpicks(newValue):
 	lockpicks = newValue
 	Ref.ui.updateStat(Data.CHAR_LOCK, newValue)
@@ -119,7 +137,6 @@ func unequipWeapon(idx):
 	else:
 		if currentWeapon.y != idx:
 			return
-		
 		currentWeapon.y = -1
 		var stats = get_parent().stats
 		stats.computeCA()
@@ -132,8 +149,8 @@ func equipWeapon(idx):
 	if item[GLOBAL.IT_CA] == null:
 		currentWeapon.x = idx
 		var stats = get_parent().stats
-		stats.computeCA()
-		stats.computeProt()
+		stats.computeHit()
+		stats.computeDmg()
 	# Shield
 	else:
 		currentWeapon.y = idx

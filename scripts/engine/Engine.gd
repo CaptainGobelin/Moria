@@ -24,7 +24,10 @@ class Dice:
 		return result
 	
 	func toString():
-		return String(n) + "d" + String(d) + "+" + String(b)
+		var result = String(n) + "d" + String(d)
+		if b > 0:
+			result += "+" + String(b)
+		return result
 
 class DmgDice:
 	var dice: Dice
@@ -67,3 +70,4 @@ func computeDamages(dmgDices: Array, resist: Array):
 		if resist[dice.type] > 0:
 			dmg /= pow(2, resist[dice.type])
 		result += dmg
+	return result

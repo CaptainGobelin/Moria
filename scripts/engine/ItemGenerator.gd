@@ -18,7 +18,7 @@ const SC_IDX = 4
 const PO_IDX = 5
 const LO_IDX = 6
 const GO_IDX = 7
-const TYPE_PROB = [0.019, 10.23, 0.07, 0.05, 0.1, 0.1, 0.1, 0.16]
+const TYPE_PROB = [0.19, 0.23, 0.07, 0.05, 0.1, 0.1, 0.1, 0.16]
 
 var id = -1
 
@@ -175,8 +175,9 @@ func mapThrowingToItem(throwing, baseIdx):
 	item.resize(GLOBAL.IT_STACK + 1)
 	item[GLOBAL.IT_ICON] = throwing[Data.TH_ICON]
 	item[GLOBAL.IT_NAME] = throwing[Data.TH_NAME]
-	var dmgDice = GeneralEngine.basicDice(throwing[Data.W_DMG])
-	item[GLOBAL.IT_DMG] = GeneralEngine.dmgFromDice(dmgDice, Data.DMG_SLASH)
+	if throwing[Data.W_DMG] != null:
+		var dmgDice = GeneralEngine.basicDice(throwing[Data.W_DMG])
+		item[GLOBAL.IT_DMG] = GeneralEngine.dmgFromDice(dmgDice, Data.DMG_SLASH)
 	item[GLOBAL.IT_SPEC] = throwing[Data.TH_EFFECT]
 	item[GLOBAL.IT_TYPE] = GLOBAL.TH_TYPE
 	item[GLOBAL.IT_STACK] = throwing[Data.TH_STACK]

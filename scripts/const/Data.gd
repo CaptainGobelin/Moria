@@ -133,9 +133,9 @@ const SH_RAR = 4
 const SH_ENCH = 5
 const SH_ICON = 6
 const shields = {
-	0: ["buckler",       1, 0, 1, 0, 1.0, 33],
-	1: ["shield",        1, 1, 2, 2, 1.0, 34],
-	2: ["heater shield", 2, 1, 4, 4, 1.0, 35]
+	0: ["buckler",       1, 1, 1, 0, 1.0, 33],
+	1: ["shield",        1, 2, 2, 2, 1.0, 34],
+	2: ["heater shield", 1, 3, 4, 4, 1.0, 35]
 }
 
 var shieldsByRarity = {}
@@ -156,12 +156,12 @@ const A_ICON = 4
 const A_ENCH = 5
 const A_HELM = 6
 const armors = {
-	0: ["robe",				0, 0, 0, 18, 1.0, false],
-	1: ["padded armour",	1, 0, 0, 19, 1.0, false],
-	2: ["leather armour",	2, 1, 1, 20, 1.0, false],
-	3: ["brigandine",		2, 1, 2, 21, 1.0, false],
-	4: ["scalemail",		3, 2, 3, 22, 1.0, false],
-	5: ["full plate",		3, 3, 4, 23, 1.0, false],
+	0: ["robe",				2, 0, 0, 18, 1.0, false],
+	1: ["padded armour",	3, 0, 0, 19, 1.0, false],
+	2: ["leather armour",	4, 1, 1, 20, 1.0, false],
+	3: ["brigandine",		4, 1, 2, 21, 1.0, false],
+	4: ["scalemail",		5, 2, 3, 22, 1.0, false],
+	5: ["full plate",		5, 3, 4, 23, 1.0, false],
 	
 	10: ["leather cap",		0, 1, 0, 16, 1.0, true],
 	11: ["horned helm",		1, 1, 4, 17, 1.0, true],
