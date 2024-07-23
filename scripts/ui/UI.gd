@@ -313,7 +313,7 @@ func updateStat(stat: int, value):
 		Data.CHAR_PROT:
 			protLabel.text = String(value)
 		Data.CHAR_DMG: #TODO [0] is temp
-			dmgLabel.text = value[0].toString()
+			dmgLabel.text = GeneralEngine.dmgDicesToString(value)
 		Data.CHAR_HIT:
 			hitLabel.text = value.toString()
 		Data.CHAR_LOCK:

@@ -71,3 +71,17 @@ func computeDamages(dmgDices: Array, resist: Array):
 			dmg /= pow(2, resist[dice.type])
 		result += dmg
 	return result
+
+func dmgDicesToString(dmgDices: Array, rich: bool = false):
+	var result = ""
+	for dmgDice in dmgDices:
+		if rich:
+			result += "[color=#" + Data.DMG_COLORS[dmgDice.type].to_html(false) + "]"
+			if result != "":
+				result += "+"
+			result += dmgDice.toString() + "[/color]"
+		else:
+			if result != "":
+				result += "+"
+			result += dmgDice.toString()
+	return result

@@ -94,7 +94,7 @@ func hit(entity):
 		var result = stats.hitDices.roll()
 		if result >= entity.stats.ca:
 			Ref.ui.writeCharacterStrike(entity.stats.entityName, result, entity.stats.ca)
-			entity.takeHit(stats.dmgDices[0].roll()) #TODO [0] is temp
+			entity.takeHit(GeneralEngine.computeDamages(stats.dmgDices, entity.stats.resists))
 		else:
 			Ref.ui.writeCharacterMiss(entity.stats.entityName, result, entity.stats.ca)
 

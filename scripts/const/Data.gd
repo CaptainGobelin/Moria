@@ -5,8 +5,20 @@ const DMG_SLASH = 0
 const DMG_BLUNT = 1
 const DMG_FIRE = 2
 const DMG_POISON = 3
-const DMG_HOLY = 4
+const DMG_RADIANT = 4
 const DMG_MAGIC = 5
+const DMG_ICE = 6
+const DMG_LIGHTNING = 7
+const DMG_COLORS = [
+	Colors.white,
+	Colors.white,
+	Colors.red,
+	Colors.green,
+	Colors.yellow,
+	Colors.purple,
+	Colors.cyan,
+	Colors.yellow
+]
 
 # Projectiles
 const PROJ_COLOR = 0
