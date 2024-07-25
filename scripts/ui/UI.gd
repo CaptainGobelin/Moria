@@ -312,8 +312,10 @@ func updateStat(stat: int, value):
 			caLabel.text = String(value)
 		Data.CHAR_PROT:
 			protLabel.text = String(value)
-		Data.CHAR_DMG: #TODO [0] is temp
-			dmgLabel.text = GeneralEngine.dmgDicesToString(value)
+		Data.CHAR_DMG:
+			dmgLabel.bbcode_text = "[right]"
+			dmgLabel.bbcode_text += GeneralEngine.dmgDicesToString(value, true)
+			dmgLabel.bbcode_text += "[/right]"
 		Data.CHAR_HIT:
 			hitLabel.text = value.toString()
 		Data.CHAR_LOCK:

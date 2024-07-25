@@ -126,6 +126,21 @@ const CH_OPENED = 2
 const CH_LOCKED = 3
 var chests: Dictionary = {}
 
+# Statuses
+const ST_NAME = 0
+const ST_ICON = 1
+const ST_TURNS = 2
+const ST_TIMING = 3
+const TIMING_TIMER = 0
+const TIMING_REST = 1
+const TIMING_FLOOR = 2
+const TIMING_UNDEF = 3
+const ST_TYPE = 4
+const ST_RANK = 5
+const ST_ID = 6
+const ST_HIDDEN = 7
+var statuses: Dictionary = {}
+
 # Traps
 const TR_HIDDEN = 0
 const TR_TYPE = 1

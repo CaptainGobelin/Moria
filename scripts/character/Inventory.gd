@@ -130,17 +130,13 @@ func unequipWeapon(idx):
 		if currentWeapon.x != idx:
 			return
 		currentWeapon.x = -1
-		var stats = get_parent().stats
-		stats.computeHit()
-		stats.computeDmg()
+		EnchantEngine.removeEnchant(get_parent(), idx)
 	# Shield
 	else:
 		if currentWeapon.y != idx:
 			return
 		currentWeapon.y = -1
-		var stats = get_parent().stats
-		stats.computeCA()
-		stats.computeProt()
+	get_parent().stats.computeStats()
 
 func equipWeapon(idx):
 	unequipWeapon(idx)
@@ -148,15 +144,12 @@ func equipWeapon(idx):
 	# Weapon
 	if item[GLOBAL.IT_CA] == null:
 		currentWeapon.x = idx
-		var stats = get_parent().stats
-		stats.computeHit()
-		stats.computeDmg()
+		for e in item[GLOBAL.IT_SPEC]:
+			EnchantEngine.applyEffect(get_parent(), e, idx)
 	# Shield
 	else:
 		currentWeapon.y = idx
-		var stats = get_parent().stats
-		stats.computeCA()
-		stats.computeProt()
+	get_parent().stats.computeStats()
 
 func switchArmor(idx):
 	if (currentArmor.x == idx) or (currentArmor.y == idx):
@@ -169,16 +162,11 @@ func unequipArmor(idx):
 		if currentArmor.y != idx:
 			return
 		currentArmor.y = -1
-		var stats = get_parent().stats
-		stats.computeCA()
-		stats.computeProt()
 	else:
 		if currentArmor.x != idx:
 			return
 		currentArmor.x = -1
-		var stats = get_parent().stats
-		stats.computeCA()
-		stats.computeProt()
+	get_parent().stats.computeStats()
 
 func equipArmor(idx):
 	unequipArmor(idx)
@@ -186,9 +174,7 @@ func equipArmor(idx):
 		currentArmor.y = idx
 	else:
 		currentArmor.x = idx
-	var stats = get_parent().stats
-	stats.computeCA()
-	stats.computeProt()
+	get_parent().stats.computeStats()
 
 func switchTalisman(idx):
 	if currentTalismans.x == idx:

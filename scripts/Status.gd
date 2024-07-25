@@ -8,7 +8,7 @@ var turns: int = 0 setget setTurn
 
 func init(type: int, totalTurns):
 	status = type
-	icon.frame = Data.statuses[type][Data.ST_ICON]
+#	icon.frame = Data.statuses[type][Data.ST_ICON]
 	setTurn(totalTurns)
 
 func setTurn(value):

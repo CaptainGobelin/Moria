@@ -7,6 +7,8 @@ onready var inventory = get_node("Inventory")
 onready var spells = get_node("Spells")
 onready var shortcuts = get_node("Shortcuts")
 
+var statuses: Dictionary = {}
+var enchants: Dictionary = {}
 var pos = Vector2(0, 0)
 
 func _ready():

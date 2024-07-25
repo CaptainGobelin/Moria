@@ -36,6 +36,7 @@ func computeStats():
 	computeProt()
 	computeDmg()
 	computeHit()
+	StatusEngine.applyEffect(get_parent())
 
 func computeHpMax():
 	var value = currentClass[Data.CL_HP]
@@ -99,6 +100,10 @@ func computeDmg():
 func updateDmg(newValue: Array):
 	dmgDices = newValue
 	Ref.ui.updateStat(Data.CHAR_DMG, newValue)
+
+func addDmg(newValue):
+	dmgDices.append(newValue)
+	updateDmg(dmgDices)
 
 func computeHit():
 	var value = []

@@ -2,6 +2,8 @@ extends Node2D
 
 class_name Game
 
+export var runTests = false
+
 onready var inventoryMenu = get_node("InventoryMenu")
 onready var characterMenu = get_node("CharacterMenu")
 onready var spellMenu = get_node("SpellMenu")
@@ -16,11 +18,14 @@ onready var throwHandler = get_node("Utils/ThrowHandler")
 func _ready():
 	randomize()
 	Ref.game = self
-#	newFloor()
-	testFloor()
+	if runTests:
+		testFloor()
+	else:
+		newFloor()
 	set_process_input(true)
 	GLOBAL.currentMode = GLOBAL.MODE_NORMAL
-	Tests.runAll()
+	if runTests:
+		Tests.runAll()
 
 func cleanFloor():
 	GLOBAL.traps.clear()
@@ -54,7 +59,7 @@ func newFloor():
 	var spawnPos = dungeonGenerator.newFloor()
 	Ref.currentLevel.initShadows()
 	Ref.currentLevel.placeCharacter(spawnPos)
-	for _i in range(5):
+	for _i in range(0):
 		Ref.currentLevel.spawnMonster()
 	for _i in range(randi() % 4):
 		Ref.currentLevel.createChest()

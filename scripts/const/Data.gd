@@ -382,16 +382,7 @@ const spellDescriptions = {
 
 # Statuses
 const STATUS_BLESSED = 6
-
-const ST_NAME = 0
-const ST_ICON = 1
-const ST_TURNS = 2
-
-const statuses = {
-	3: ["Blinded", 3, 5],
-	4: ["Might", 4, 10],
-	6: ["Blessed", 6, 10],
-}
+const STATUS_FIRE_WEAPON = 1000 + ENCH_FIRE_DMG
 
 # Traps
 const TR_DART = 0

@@ -30,7 +30,8 @@ func heal(entity):
 
 func bless(entity):
 	if entity is Character:
-		Ref.ui.statusBar.addStatus(Data.STATUS_BLESSED, Data.statuses[Data.STATUS_BLESSED][Data.ST_TURNS])
+#		Ref.ui.statusBar.addStatus(Data.STATUS_BLESSED, Data.statuses[Data.STATUS_BLESSED][Data.ST_TURNS])
+		pass
 
 func fireball(entity):
 	var targetedCells = getArea(entity.pos, 4)
