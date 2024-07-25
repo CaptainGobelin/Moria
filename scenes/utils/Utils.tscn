@@ -38,6 +38,10 @@ func chooseRandom(array: Array):
 
 func modulo(a: int, b: int):
 	return (b + (a % b)) % b
+
+func printDict(dict: Dictionary):
+	for k in dict.keys():
+		prints(String(k), \":\", dict[k])
 "
 
 [node name="Utils" type="Node"]

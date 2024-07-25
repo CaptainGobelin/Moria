@@ -384,6 +384,10 @@ const spellDescriptions = {
 const STATUS_BLESSED = 6
 const STATUS_FIRE_WEAPON = 1000 + ENCH_FIRE_DMG
 
+const statusPrefabs = {
+	STATUS_BLESSED: ["Blessed", 6, null, null, STATUS_BLESSED, null, null, false],
+}
+
 # Traps
 const TR_DART = 0
 

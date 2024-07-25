@@ -3,16 +3,15 @@ extends Node2D
 onready var icon = get_node("Icon")
 onready var timer = get_node("Timer")
 
-var status: int = 0
-var turns: int = 0 setget setTurn
+func init(status: int):
+	visible = true
+	icon.frame = GLOBAL.statuses[status][GLOBAL.ST_ICON]
+	var turns = 99
+	if GLOBAL.statuses[status][GLOBAL.ST_TIMING] == GLOBAL.TIMING_TIMER:
+		turns = GLOBAL.statuses[status][GLOBAL.ST_TURNS]
+	setTurn(turns)
 
-func init(type: int, totalTurns):
-	status = type
-#	icon.frame = Data.statuses[type][Data.ST_ICON]
-	setTurn(totalTurns)
-
-func setTurn(value):
-	turns = value
+func setTurn(turns: int):
 	if turns == 0:
 		visible = false
 		queue_free()

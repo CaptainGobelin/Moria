@@ -59,9 +59,9 @@ func newTurn():
 	turn += 1
 	for m in Ref.currentLevel.monsters.get_children():
 		m.takeTurn()
-	for s in Ref.ui.statusBar.icons.get_children():
-		s.turns -= 1
-	Ref.ui.statusBar.refreshStatuses()
+	for m in Ref.currentLevel.monsters.get_children():
+		StatusEngine.decreaseStatusesTime(m)
+	StatusEngine.decreaseStatusesTime(Ref.character)
 
 func computeDamages(dmgDices: Array, resist: Array):
 	var result = 0

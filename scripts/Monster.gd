@@ -5,6 +5,7 @@ onready var type = -1
 onready var stats = get_node("Stats")
 onready var status = "sleep"
 
+var statuses: Dictionary = {}
 var pos = Vector2(0, 0)
 
 func spawn(monsterType: int):

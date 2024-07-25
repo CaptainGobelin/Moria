@@ -22,6 +22,8 @@ func addStatus(entity, status: Array):
 	else:
 		entity.statuses[idx] = [id]
 	GLOBAL.statuses[id] = status
+	if not status[GLOBAL.ST_HIDDEN] and entity is Character:
+		Ref.ui.statusBar.refreshStatuses()
 	return id
 
 func removeStatus(entity, statusId: int):
@@ -36,27 +38,35 @@ func removeStatus(entity, statusId: int):
 				entity.statuses.erase(type)
 			return
 
-func decreaseStatusesTime(statuses: Dictionary):
-	for type in statuses:
-		for st in type:
-			if st[GLOBAL.ST_TIMING] == GLOBAL.TIMING_TIMER:
-				st[GLOBAL.ST_TURNS] -= 1
-				if st[GLOBAL.ST_TURNS] <= 0:
-					type.erase(st)
-					if type.empty():
-						statuses.erase(type)
+func decreaseStatusesTime(entity):
+	var toRefresh = false
+	for type in entity.statuses.keys():
+		for st in entity.statuses[type]:
+			var status = GLOBAL.statuses[st]
+			if status[GLOBAL.ST_TIMING] == GLOBAL.TIMING_TIMER:
+				status[GLOBAL.ST_TURNS] -= 1
+				if status[GLOBAL.ST_TURNS] <= 0:
+					toRefresh = true
+					entity.statuses[type].erase(st)
+					GLOBAL.statuses.erase(st)
+					if entity.statuses[type].empty():
+						entity.statuses.erase(type)
+	if entity is Character:
+		Ref.ui.statusBar.refreshStatuses()
+	if toRefresh:
+		entity.stats.computeStats()
 
 func applyEffect(entity):
 	for type in entity.statuses.values():
-		for status in type:
-			match GLOBAL.statuses[status][GLOBAL.ST_TYPE]:
-				Data.STATUS_BLESSED:
-					blessed(entity, GLOBAL.statuses[status][GLOBAL.ST_RANK])
-				Data.STATUS_FIRE_WEAPON:
-					fireWeapon(entity, GLOBAL.statuses[status][GLOBAL.ST_RANK])
+		var status = type[0]
+		match GLOBAL.statuses[status][GLOBAL.ST_TYPE]:
+			Data.STATUS_BLESSED:
+				blessed(entity, GLOBAL.statuses[status][GLOBAL.ST_RANK])
+			Data.STATUS_FIRE_WEAPON:
+				fireWeapon(entity, GLOBAL.statuses[status][GLOBAL.ST_RANK])
 
 func blessed(entity, rank: int):
-	pass
+	entity.stats.hitDices.b += 1
 
 func fireWeapon(entity, rank: int):
 	entity.stats.addDmg(GeneralEngine.dmgDice(1, 4, 0, Data.DMG_FIRE))

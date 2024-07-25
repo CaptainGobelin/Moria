@@ -29,9 +29,12 @@ func heal(entity):
 	entity.stats.hp += ceil(result)
 
 func bless(entity):
-	if entity is Character:
-#		Ref.ui.statusBar.addStatus(Data.STATUS_BLESSED, Data.statuses[Data.STATUS_BLESSED][Data.ST_TURNS])
-		pass
+	var status = Data.statusPrefabs[Data.STATUS_BLESSED]
+	status[GLOBAL.ST_TIMING] = GLOBAL.TIMING_TIMER
+	status[GLOBAL.ST_TURNS] = 21
+	status[GLOBAL.ST_RANK] = 1
+	StatusEngine.addStatus(entity, status)
+	Ref.character.stats.computeStats()
 
 func fireball(entity):
 	var targetedCells = getArea(entity.pos, 4)
