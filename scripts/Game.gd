@@ -18,6 +18,7 @@ onready var throwHandler = get_node("Utils/ThrowHandler")
 func _ready():
 	randomize()
 	Ref.game = self
+	Ref.character.init()
 	if runTests:
 		testFloor()
 	else:

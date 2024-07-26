@@ -104,7 +104,6 @@ func getRandomFreeCell():
 func placeCharacter(pos: Vector2 = Vector2(-1,-1)):
 	if pos == Vector2(-1, -1):
 		pos = getRandomFreeCell()
-	Ref.character.init()
 	Ref.character.setPosition(pos)
 
 func spawnMonster(idx: int = 0, pos = null):

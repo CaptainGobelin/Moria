@@ -35,9 +35,9 @@ const PROJ_GREEN_R = [Colors.green, 9]
 
 # Spells
 const SP_MAGIC_MISSILE = 0
-const SP_HEAL = 1
-const SP_BLESS = 2
-const SP_FIREBALL = 3
+const SP_HEAL = 3
+const SP_FIREBALL = 10
+const SP_BLESS = 17
 const SP_TH_FIREBOMB = 100
 const SP_TH_POISON = 101
 const SP_TH_SLEEP = 102
@@ -364,19 +364,23 @@ const SP_ICON = 5
 const SP_USES = 6
 const SP_TARGET = 7
 const SP_AREA = 8
+const SP_SAVE = 9
+const SAVE_WIL = 0
+const SAVE_PHY = 1
+const SAVE_NO = 2
 
 const spells = {
-	0: ["Magic Missile", 1, SC_EVOCATION, [true, false, false], PROJ_PURPLE_S, 0, 15, SP_TARGET_TARGET, 0],
-	1: ["Heal", 1, SC_EVOCATION, [false, true, true], null, 2, 5, SP_TARGET_SELF, 0],
-	2: ["Bless", 1, SC_ENCHANTEMENT, [false, true, true], null, 17, 10, SP_TARGET_SELF, 0],
-	3: ["Fireball", 3, SC_EVOCATION, [true, false, false], PROJ_RED_L, 10, 10, SP_TARGET_TARGET, 3],
+	SP_MAGIC_MISSILE: 	["Magic Missile", 1, SC_EVOCATION, [true, false, false], PROJ_PURPLE_S, 0, [15, 15, 15], SP_TARGET_TARGET, 0, SAVE_NO],
+	SP_HEAL: 			["Heal", 1, SC_EVOCATION, [false, true, true], null, 2, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_FIREBALL: 		["Fireball", 3, SC_EVOCATION, [true, false, false], PROJ_RED_L, 10, [10, 10, 10], SP_TARGET_TARGET, 3, SAVE_PHY],
+	SP_BLESS: 			["Bless", 1, SC_ENCHANTEMENT, [false, true, true], null, 17, [15, 15, 15], SP_TARGET_SELF, 0, SAVE_NO],
 }
 
 const spellDescriptions = {
 	SP_MAGIC_MISSILE: [
-		"Fires two arcane projectiles dealing 1d2+1 damages to random targets.",
-		"Fires three projectiles, increase damages to 1d4+1",
-		"Fires four projectiles, increase damages to 1d6+1"
+		"Fires two arcane projectiles, each dealing 1d2+1 damages to random targets.",
+		"Fires three projectiles.",
+		"Fires four projectiles."
 	]
 }
 
