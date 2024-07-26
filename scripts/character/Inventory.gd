@@ -123,7 +123,7 @@ func switchWeapon(idx):
 	else:
 		equipWeapon(idx)
 
-func unequipWeapon(idx):
+func unequipWeapon(idx: int, renewStats: bool = true):
 	var item = GLOBAL.items[idx]
 	# Weapon
 	if item[GLOBAL.IT_CA] == null:
@@ -136,18 +136,22 @@ func unequipWeapon(idx):
 		if currentWeapon.y != idx:
 			return
 		currentWeapon.y = -1
-	get_parent().stats.computeStats()
+	if renewStats:
+		get_parent().stats.computeStats()
 
 func equipWeapon(idx):
-	unequipWeapon(idx)
 	var item = GLOBAL.items[idx]
 	# Weapon
 	if item[GLOBAL.IT_CA] == null:
+		if currentWeapon.x != -1:
+			unequipWeapon(currentWeapon.x, false)
 		currentWeapon.x = idx
 		for e in item[GLOBAL.IT_SPEC]:
 			EnchantEngine.applyEffect(get_parent(), e, idx)
 	# Shield
 	else:
+		if currentWeapon.y != -1:
+			unequipWeapon(currentWeapon.x, false)
 		currentWeapon.y = idx
 	get_parent().stats.computeStats()
 

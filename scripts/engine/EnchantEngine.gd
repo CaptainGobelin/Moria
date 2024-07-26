@@ -6,6 +6,7 @@ func createItemEnchant(type: int, rank: int):
 	status[GLOBAL.ST_TIMING] = GLOBAL.TIMING_UNDEF
 	status[GLOBAL.ST_TYPE] = type
 	status[GLOBAL.ST_RANK] = rank
+	status[GLOBAL.ST_HIDDEN] = true
 	return status
 
 func removeEnchant(entity, item: int):

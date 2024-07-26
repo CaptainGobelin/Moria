@@ -60,7 +60,7 @@ func computeCA():
 		Ref.character.inventory.getHelmet()
 	]
 	var weapon = Ref.character.inventory.getWeapon()
-	if weapon != -1 and GLOBAL.items[weapon][GLOBAL.IT_2H]:
+	if weapon == -1 or GLOBAL.items[weapon][GLOBAL.IT_2H]:
 		items.append(Ref.character.inventory.getShield())
 	var value = 0
 	for i in items:
@@ -78,7 +78,7 @@ func computeProt():
 		Ref.character.inventory.getHelmet()
 	]
 	var weapon = Ref.character.inventory.getWeapon()
-	if weapon != -1 and GLOBAL.items[weapon][GLOBAL.IT_2H]:
+	if weapon == -1 or GLOBAL.items[weapon][GLOBAL.IT_2H]:
 		items.append(Ref.character.inventory.getShield())
 	var value = 0
 	for i in items:

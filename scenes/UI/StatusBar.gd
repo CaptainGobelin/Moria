@@ -17,6 +17,8 @@ func refreshStatuses():
 		s.visible = false
 	var count = 0
 	for type in Ref.character.statuses.values():
+		if GLOBAL.statuses[type[0]][GLOBAL.ST_HIDDEN]:
+			continue
 		icons.get_child(count).init(type[0])
 		count += 1
 		if count == MAX_DISPLAYED:
