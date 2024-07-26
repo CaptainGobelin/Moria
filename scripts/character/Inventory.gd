@@ -42,11 +42,11 @@ func getTalisman1():
 func getTalisman2():
 	return int(currentTalismans.y)
 
-func updateLockpicks(newValue):
+func updateLockpicks(newValue: int):
 	lockpicks = newValue
 	Ref.ui.updateStat(Data.CHAR_LOCK, newValue)
 
-func updateGolds(newValue):
+func updateGolds(newValue: int):
 	golds = newValue
 	Ref.ui.updateStat(Data.CHAR_GOLD, newValue)
 
@@ -117,7 +117,7 @@ func getTalismanRows():
 		result.append([GLOBAL.TA_TYPE, t, current[GLOBAL.IT_NAME], equiped, null, current[GLOBAL.IT_ICON]])
 	return result
 
-func switchWeapon(idx):
+func switchWeapon(idx: int):
 	if (currentWeapon.x == idx) or (currentWeapon.y == idx):
 		unequipWeapon(idx)
 	else:
@@ -136,10 +136,11 @@ func unequipWeapon(idx: int, renewStats: bool = true):
 		if currentWeapon.y != idx:
 			return
 		currentWeapon.y = -1
+		EnchantEngine.removeEnchant(get_parent(), idx)
 	if renewStats:
 		get_parent().stats.computeStats()
 
-func equipWeapon(idx):
+func equipWeapon(idx: int):
 	var item = GLOBAL.items[idx]
 	# Weapon
 	if item[GLOBAL.IT_CA] == null:
@@ -153,43 +154,71 @@ func equipWeapon(idx):
 		if currentWeapon.y != -1:
 			unequipWeapon(currentWeapon.x, false)
 		currentWeapon.y = idx
+		for e in item[GLOBAL.IT_SPEC]:
+			EnchantEngine.applyEffect(get_parent(), e, idx)
 	get_parent().stats.computeStats()
 
-func switchArmor(idx):
+func switchArmor(idx: int):
 	if (currentArmor.x == idx) or (currentArmor.y == idx):
 		unequipArmor(idx)
 	else:
 		equipArmor(idx)
 
-func unequipArmor(idx):
+func unequipArmor(idx: int, renewStats: bool = true):
+	# Helmet
 	if GLOBAL.items[idx][GLOBAL.IT_2H]:
 		if currentArmor.y != idx:
 			return
 		currentArmor.y = -1
+		EnchantEngine.removeEnchant(get_parent(), idx)
+	# Armor
 	else:
 		if currentArmor.x != idx:
 			return
 		currentArmor.x = -1
-	get_parent().stats.computeStats()
+		EnchantEngine.removeEnchant(get_parent(), idx)
+	if renewStats:
+		get_parent().stats.computeStats()
 
-func equipArmor(idx):
-	unequipArmor(idx)
-	if GLOBAL.items[idx][GLOBAL.IT_2H]:
+func equipArmor(idx: int):
+	var item = GLOBAL.items[idx]
+	# Helmet
+	if item[GLOBAL.IT_2H]:
+		if currentArmor.y != -1:
+			unequipArmor(currentArmor.y, false)
 		currentArmor.y = idx
+		for e in item[GLOBAL.IT_SPEC]:
+			EnchantEngine.applyEffect(get_parent(), e, idx)
+	# Armor
 	else:
+		if currentArmor.y != -1:
+			unequipArmor(currentArmor.y, false)
 		currentArmor.x = idx
+		for e in item[GLOBAL.IT_SPEC]:
+			EnchantEngine.applyEffect(get_parent(), e, idx)
 	get_parent().stats.computeStats()
 
-func switchTalisman(idx):
+func switchTalisman(idx: int):
+	var item = GLOBAL.items[idx]
 	if currentTalismans.x == idx:
+		EnchantEngine.removeEnchant(get_parent(), currentTalismans.x)
 		currentTalismans.x = currentTalismans.y
 		currentTalismans.y = -1
 	elif currentTalismans.y == idx:
+		EnchantEngine.removeEnchant(get_parent(), currentTalismans.y)
 		currentTalismans.y = -1
 	elif currentTalismans.x == -1:
 		currentTalismans.x = idx
+		for e in item[GLOBAL.IT_SPEC]:
+			EnchantEngine.applyEffect(get_parent(), e, idx)
 	elif currentTalismans.y == -1:
 		currentTalismans.y = idx
+		for e in item[GLOBAL.IT_SPEC]:
+			EnchantEngine.applyEffect(get_parent(), e, idx)
 	else:
+		EnchantEngine.removeEnchant(get_parent(), currentTalismans.x)
 		currentTalismans.x = currentTalismans.y
 		currentTalismans.y = idx
+		for e in item[GLOBAL.IT_SPEC]:
+			EnchantEngine.applyEffect(get_parent(), e, idx)
+	get_parent().stats.computeStats()
