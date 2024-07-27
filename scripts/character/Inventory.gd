@@ -192,8 +192,8 @@ func equipArmor(idx: int):
 			EnchantEngine.applyEffect(get_parent(), e, idx)
 	# Armor
 	else:
-		if currentArmor.y != -1:
-			unequipArmor(currentArmor.y, false)
+		if currentArmor.x != -1:
+			unequipArmor(currentArmor.x, false)
 		currentArmor.x = idx
 		for e in item[GLOBAL.IT_SPEC]:
 			EnchantEngine.applyEffect(get_parent(), e, idx)

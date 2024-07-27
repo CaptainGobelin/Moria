@@ -371,6 +371,48 @@ text = "10"
 align = 2
 valign = 1
 
+[node name="rFire" type="Node2D" parent="UI/SideMenu"]
+position = Vector2( 360, 99 )
+scale = Vector2( 0.25, 0.25 )
+
+[node name="Label" type="Label" parent="UI/SideMenu/rFire"]
+margin_right = 72.0
+margin_bottom = 35.0
+custom_fonts/font = ExtResource( 8 )
+text = "rFire"
+align = 1
+valign = 1
+
+[node name="Current" type="Label" parent="UI/SideMenu/rFire/Label"]
+margin_left = 72.0
+margin_right = 180.0
+margin_bottom = 35.0
+custom_fonts/font = ExtResource( 8 )
+text = "-"
+align = 2
+valign = 1
+
+[node name="rPoison" type="Node2D" parent="UI/SideMenu"]
+position = Vector2( 360, 108 )
+scale = Vector2( 0.25, 0.25 )
+
+[node name="Label" type="Label" parent="UI/SideMenu/rPoison"]
+margin_right = 72.0
+margin_bottom = 35.0
+custom_fonts/font = ExtResource( 8 )
+text = "rPois"
+align = 1
+valign = 1
+
+[node name="Current" type="Label" parent="UI/SideMenu/rPoison/Label"]
+margin_left = 72.0
+margin_right = 180.0
+margin_bottom = 35.0
+custom_fonts/font = ExtResource( 8 )
+text = "-"
+align = 2
+valign = 1
+
 [node name="StatusBar" type="Node2D" parent="UI"]
 position = Vector2( 351, 108 )
 script = ExtResource( 25 )

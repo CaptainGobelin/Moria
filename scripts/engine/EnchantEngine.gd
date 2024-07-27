@@ -17,7 +17,7 @@ func removeEnchant(entity, item: int):
 	entity.enchants.erase(item)
 
 func applyEffect(entity, enchant: int, item: int):
-	var id = -1
+	var id = []
 	match enchant:
 		Data.ENCH_FIRE_DMG:
 			id = weaponEnch(entity, Data.STATUS_FIRE_WEAPON, 1)
@@ -33,13 +33,24 @@ func applyEffect(entity, enchant: int, item: int):
 			id = weaponEnch(entity, Data.STATUS_PRECISE_WEAPON, 1)
 		Data.ENCH_VORP_WP:
 			id = weaponEnch(entity, Data.STATUS_VORPAL_WEAPON, 1)
-	if id == -1:
+		Data.ENCH_FIRE_RES:
+			id = resistEnchant(entity, Data.STATUS_FIRE_RESIST, 1)
+		Data.ENCH_POISON_RES:
+			id = resistEnchant(entity, Data.STATUS_POISON_RESIST, 1)
+	if id.empty():
 		return
 	if entity.enchants.has(item):
-		entity.enchants[item].append(id)
+		entity.enchants[item].append_array(id)
 	else:
-		entity.enchants[item] = [id]
+		entity.enchants[item] = id
 
 func weaponEnch(entity, type: int, rank: int):
 	var status = createItemEnchant(type, rank)
-	return StatusEngine.addStatus(entity, status)
+	return [StatusEngine.addStatus(entity, status)]
+
+func resistEnchant(entity, type: int, rank: int):
+	var result = []
+	for i in range(rank):
+		var status = createItemEnchant(type, 1)
+		result.append(StatusEngine.addStatus(entity, status))
+	return result

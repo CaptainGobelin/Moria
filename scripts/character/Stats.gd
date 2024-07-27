@@ -37,6 +37,7 @@ func computeStats():
 	computeDmg()
 	computeHit()
 	StatusEngine.applyEffect(get_parent())
+	computeReissts()
 	Utils.printDict(get_parent().enchants)
 	Utils.printDict(get_parent().statuses)
 
@@ -150,8 +151,14 @@ func updateHit(newValue):
 	hitDices = newValue
 	Ref.ui.updateStat(Data.CHAR_HIT, newValue)
 
-func updateReissts(newValue):
-	pass
+func computeReissts():
+	for i in range(8):
+		var resist = 0
+		if get_parent().statuses.has(10000+i):
+			resist = get_parent().statuses[10000+i].size()
+		resists[i] = min(resist, maxResists[i])
+	Ref.ui.updateStat(Data.CHAR_R_FIRE, [resists[Data.DMG_FIRE], maxResists[Data.DMG_FIRE]])
+	Ref.ui.updateStat(Data.CHAR_R_POISON, [resists[Data.DMG_POISON], maxResists[Data.DMG_POISON]])
 
 func updateLevel(newValue):
 	level = newValue

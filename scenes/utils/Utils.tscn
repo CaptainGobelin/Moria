@@ -40,6 +40,8 @@ func modulo(a: int, b: int):
 	return (b + (a % b)) % b
 
 func printDict(dict: Dictionary):
+	if dict.empty():
+		print(\"Empty dict\")
 	for k in dict.keys():
 		prints(String(k), \":\", dict[k])
 "

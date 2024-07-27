@@ -22,6 +22,8 @@ onready var dmgLabel = get_node("SideMenu/DmgContainer/Label/Current")
 onready var hitLabel = get_node("SideMenu/HitContainer/Label/Current")
 onready var lockLabel = get_node("SideMenu/LockContainer/Label/Current")
 onready var goldLabel = get_node("SideMenu/GoldContainer/Label/Current")
+onready var rFire = get_node("SideMenu/rFire/Label/Current")
+onready var rPois = get_node("SideMenu/rPoison/Label/Current")
 onready var statusBar = get_node("StatusBar")
 
 var currentChoice = ""
@@ -328,3 +330,15 @@ func updateStat(stat: int, value):
 			xpLabel.text = String(value)
 		Data.CHAR_XPMAX:
 			maxXpLabel.text = String(value)
+		Data.CHAR_R_FIRE:
+			rFire.text = ""
+			for i in range(value[1]):
+				rFire.text += "-"
+			for i in range(value[0]):
+				rFire.text[i] = "*"
+		Data.CHAR_R_POISON:
+			rPois.text = ""
+			for i in range(value[1]):
+				rPois.text += "-"
+			for i in range(value[0]):
+				rPois.text[i] = "*"

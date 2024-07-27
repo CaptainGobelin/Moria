@@ -5,6 +5,10 @@ var id = -1
 class StatusSorter:
 	static func sort_by_rank(a, b):
 		if GLOBAL.statuses[a][GLOBAL.ST_RANK] == GLOBAL.statuses[b][GLOBAL.ST_RANK]:
+			if GLOBAL.statuses[a][GLOBAL.ST_TIMING] != GLOBAL.TIMING_TIMER:
+				return true
+			if GLOBAL.statuses[b][GLOBAL.ST_TIMING] != GLOBAL.TIMING_TIMER:
+				return false
 			if GLOBAL.statuses[a][GLOBAL.ST_TURNS] > GLOBAL.statuses[b][GLOBAL.ST_TURNS]:
 				return true
 			return false
@@ -15,13 +19,13 @@ class StatusSorter:
 func addStatus(entity, status: Array):
 	id += 1
 	status[GLOBAL.ST_ID] = id
+	GLOBAL.statuses[id] = status
 	var idx = status[GLOBAL.ST_TYPE]
 	if entity.statuses.has(idx):
 		entity.statuses[idx].append(id)
 		entity.statuses[idx].sort_custom(StatusSorter, "sort_by_rank")
 	else:
 		entity.statuses[idx] = [id]
-	GLOBAL.statuses[id] = status
 	if not status[GLOBAL.ST_HIDDEN] and entity is Character:
 		Ref.ui.statusBar.refreshStatuses()
 	return id
