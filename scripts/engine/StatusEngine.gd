@@ -59,14 +59,35 @@ func decreaseStatusesTime(entity):
 func applyEffect(entity):
 	for type in entity.statuses.values():
 		var status = type[0]
+		var rank = GLOBAL.statuses[status][GLOBAL.ST_RANK]
 		match GLOBAL.statuses[status][GLOBAL.ST_TYPE]:
 			Data.STATUS_BLESSED:
-				blessed(entity, GLOBAL.statuses[status][GLOBAL.ST_RANK])
+				blessed(entity, rank)
 			Data.STATUS_FIRE_WEAPON:
-				fireWeapon(entity, GLOBAL.statuses[status][GLOBAL.ST_RANK])
+				dmgWeapon(entity, rank, 6, Data.DMG_FIRE)
+			Data.STATUS_FROST_WEAPON:
+				dmgWeapon(entity, rank, 4, Data.DMG_ICE)
+			Data.STATUS_POISON_WEAPON:
+				dmgWeapon(entity, rank, 4, Data.DMG_POISON)
+			Data.STATUS_SHOCK_WEAPON:
+				dmgWeapon(entity, rank, 4, Data.DMG_LIGHTNING)
+			Data.STATUS_HOLY_WEAPON:
+				dmgWeapon(entity, rank, 8, Data.DMG_RADIANT)
+			Data.STATUS_PRECISE_WEAPON:
+				addToHit(entity, rank)
+			Data.STATUS_VORPAL_WEAPON:
+				increaseDmgDices(entity, rank)
 
 func blessed(entity, rank: int):
 	entity.stats.hitDices.b += 1
 
-func fireWeapon(entity, rank: int):
-	entity.stats.addDmg(GeneralEngine.dmgDice(1, 4, 0, Data.DMG_FIRE))
+func dmgWeapon(entity, rank: int, dice: int, type: int):
+	entity.stats.addDmg(GeneralEngine.dmgDice(rank, dice, 0, type))
+
+func addToHit(entity, rank: int):
+	entity.stats.hitDices.b += 1
+	entity.stats.updateHit(entity.stats.hitDices)
+
+func increaseDmgDices(entity, rank: int):
+	entity.stats.dmgDices[0].dice.d += 1
+	entity.stats.updateDmg(entity.stats.dmgDices)

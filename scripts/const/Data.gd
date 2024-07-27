@@ -276,10 +276,11 @@ const ENCH_SPEED_WP = 50
 const ENCH_VORP_WP = 51
 const ENCH_ACID_DMG = 52
 const ENCH_VAMPIRIC_WP = 53
-const ENCH_PRECISED_WP = 54
+const ENCH_PRECISE_WP = 54
 const ENCH_FIRE_RES = 100
 const ENCH_POISON_RES = 101
-const ENCH_PROTECT = 200
+const ENCH_PHY_SAVE = 200
+const ENCH_WIL_SAVE = 201
 # Armor enchants
 const ENCH_1_AR = 1000
 const ENCH_2_AR = 1001
@@ -290,25 +291,26 @@ const ENCH_POISON_RESIST = 1004
 
 const WP_EN_PRE = 0
 const WP_EN_SUF = 1
-const WP_EN_ID = 2
+const WP_EN_RAR = 2
+const WP_EN_ID = 3
 const wpEnchants = {
-	0: [null, "+1", 0],
-	1: [null, "+2", 1],
-	2: [null, "+3", 2],
+	ENCH_1_WP: [null, "+1", 3, 0],
+#	ENCH_2_WP: [null, "+2", 1],
+#	ENCH_3_WP: [null, "+3", 2],
 	
-	100: ["flaming", "of fire", 3],
-	101: ["shocking", "of shock", 5],
-	102: ["blessed", "of holy wrath", 6],
-	103: ["antimagic", "of dispel", 7],
-	104: ["venomous", "of poison", 8],
-	105: ["sharp", "of slaying", 9],
-	106: ["freezing", "of frost", 4],
+	ENCH_FIRE_DMG: 	["flaming", "of fire", 1, 3],
+	ENCH_SHOCK_DMG: ["shocking", "of shock", 1, 5],
+	ENCH_HOLY_WP: 	["blessed", "of holy wrath", 2, 6],
+#	103: ["antimagic", "of dispel", 2, 7],
+	ENCH_POISON_DMG:["venomous", "of poison", 1, 8],
+#	105: ["sharp", "of slaying", 0, 9],
+	ENCH_FROST_DMG: ["freezing", "of frost", 1, 4],
 	
-	200: ["acidic", "of acid", 52],
-	201: ["vampiric", "of draining", 53],
-	202: ["balanced", "of precision", 54],
-	203: [null, "of speed", 50],
-	204: ["vorpal", null, 51],
+#	200: ["acidic", "of acid", 1, 52],
+#	201: ["vampiric", "of draining", 4, 53],
+	ENCH_PRECISE_WP:["balanced", "of precision", 3, 54],
+#	203: [null, "of speed", 50],
+	ENCH_VORP_WP: 	["vorpal", null, 4, 51],
 }
 
 # Armor enchants
@@ -316,12 +318,14 @@ const AR_EN_SUF = 0
 const AR_EN_RAR = 1
 const AR_EN_ID = 2
 const arEnchants = {
-	0: ["+1", 0, 1001],
-	1: ["+2", 1, 1002],
-	2: ["+3", 2, 1003],
+	ENCH_1_AR: ["+1", 3, 1001],
+#	ENCH_2_AR: ["+2", 1, 1002],
+#	ENCH_3_AR: ["+3", 2, 1003],
 	
-	100: ["of fire resistance", 1, 1004],
-	101: ["of poison resistance", 0, 1005],
+	ENCH_FIRE_RES: 	["of fire resistance", 1, 1004],
+	ENCH_POISON_RES:["of poison resistance", 0, 1005],
+	ENCH_PHY_SAVE:	["of endurance", 2, 1005],
+	ENCH_WIL_SAVE: 	["of willpower", 3, 1005],
 }
 
 # Talisman enchants
@@ -387,6 +391,12 @@ const spellDescriptions = {
 # Statuses
 const STATUS_BLESSED = 6
 const STATUS_FIRE_WEAPON = 1000 + ENCH_FIRE_DMG
+const STATUS_FROST_WEAPON = 1000 + ENCH_FROST_DMG
+const STATUS_POISON_WEAPON = 1000 + ENCH_POISON_DMG
+const STATUS_SHOCK_WEAPON = 1000 + ENCH_SHOCK_DMG
+const STATUS_HOLY_WEAPON = 1000 + ENCH_HOLY_WP
+const STATUS_PRECISE_WEAPON = 1000 + ENCH_PRECISE_WP
+const STATUS_VORPAL_WEAPON = 1000 + ENCH_VORP_WP
 
 const statusPrefabs = {
 	STATUS_BLESSED: ["Blessed", 6, null, null, STATUS_BLESSED, null, null, false],

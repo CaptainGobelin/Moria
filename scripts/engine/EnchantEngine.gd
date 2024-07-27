@@ -20,7 +20,19 @@ func applyEffect(entity, enchant: int, item: int):
 	var id = -1
 	match enchant:
 		Data.ENCH_FIRE_DMG:
-			id = fireWeapon(entity, 1)
+			id = weaponEnch(entity, Data.STATUS_FIRE_WEAPON, 1)
+		Data.ENCH_FROST_DMG:
+			id = weaponEnch(entity, Data.STATUS_FROST_WEAPON, 1)
+		Data.ENCH_POISON_DMG:
+			id = weaponEnch(entity, Data.STATUS_POISON_WEAPON, 1)
+		Data.ENCH_SHOCK_DMG:
+			id = weaponEnch(entity, Data.STATUS_SHOCK_WEAPON, 1)
+		Data.ENCH_HOLY_WP:
+			id = weaponEnch(entity, Data.STATUS_HOLY_WEAPON, 1)
+		Data.ENCH_PRECISE_WP:
+			id = weaponEnch(entity, Data.STATUS_PRECISE_WEAPON, 1)
+		Data.ENCH_VORP_WP:
+			id = weaponEnch(entity, Data.STATUS_VORPAL_WEAPON, 1)
 	if id == -1:
 		return
 	if entity.enchants.has(item):
@@ -28,6 +40,6 @@ func applyEffect(entity, enchant: int, item: int):
 	else:
 		entity.enchants[item] = [id]
 
-func fireWeapon(entity, rank: int):
-	var status = createItemEnchant(Data.STATUS_FIRE_WEAPON, rank)
+func weaponEnch(entity, type: int, rank: int):
+	var status = createItemEnchant(type, rank)
 	return StatusEngine.addStatus(entity, status)

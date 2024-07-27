@@ -18,7 +18,7 @@ const SC_IDX = 4
 const PO_IDX = 5
 const LO_IDX = 6
 const GO_IDX = 7
-const TYPE_PROB = [10.19, 0.23, 0.07, 0.05, 0.1, 0.1, 0.1, 0.16]
+const TYPE_PROB = [0.19, 1.23, 0.07, 0.05, 0.1, 0.1, 0.1, 0.16]
 
 var id = -1
 
@@ -77,9 +77,6 @@ func generateWeapon(rarity: int):
 	base[Data.W_NAME][0] = base[Data.W_NAME][0].capitalize()
 	GLOBAL.items[id] = mapWeaponToItem(base, baseIdx)
 	GLOBAL.items[id][GLOBAL.IT_SPEC] = enchants.duplicate()
-	var count = 0
-	for e in enchants:
-		GLOBAL.items[id][GLOBAL.IT_SPEC][count] = Data.wpEnchants[e][Data.WP_EN_ID]
 	return [id]
 
 func mapWeaponToItem(weapon, baseIdx: int):
@@ -132,9 +129,13 @@ func generateArmor(rarity: int):
 			return []
 	var rnd = randi() % Data.armorsByRarity[rarity].size()
 	var baseIdx = Data.armorsByRarity[rarity][rnd]
-	var base = Data.armors[baseIdx]
+	var base = Data.armors[baseIdx].duplicate()
+	var enchants = generateArmorEnchant(rarity, 0)
+	for e in enchants:
+		base[Data.W_NAME] = base[Data.W_NAME] + " " + Data.arEnchants[e][Data.AR_EN_SUF]
 	id += 1
 	GLOBAL.items[id] = mapArmorToItem(base, baseIdx)
+	GLOBAL.items[id][GLOBAL.IT_SPEC] = enchants.duplicate()
 	return [id]
 
 func mapArmorToItem(armor, baseIdx: int):
@@ -162,7 +163,7 @@ func generateThrowing(rarity: int):
 			quality = 1 + (randi() % i[2])
 			break
 		rnd -= i[0]
-	var base = Data.throwings[idx]
+	var base = Data.throwings[idx].duplicate()
 	var result = []
 	for _i in range(quantity):
 		id += 1
@@ -191,7 +192,7 @@ func generatePotion(rarity: int):
 			return null
 	var rnd = randi() % Data.potionsByRarity[rarity].size()
 	var baseIdx = Data.potionsByRarity[rarity][rnd]
-	var base = Data.potions[baseIdx]
+	var base = Data.potions[baseIdx].duplicate()
 	var result = []
 	var quantity = 1 + (randi() % 3)
 	for _i in range(quantity):
@@ -218,7 +219,7 @@ func generateScroll(rarity: int):
 			return null
 	var rnd = randi() % Data.scrollsByRarity[rarity].size()
 	var baseIdx = Data.scrollsByRarity[rarity][rnd]
-	var base = Data.scrolls[baseIdx]
+	var base = Data.scrolls[baseIdx].duplicate()
 	id += 1
 	GLOBAL.items[id] = mapScrollToItem(base, baseIdx)
 	return [id]
@@ -297,49 +298,16 @@ func generateItemQuality(rarity: int):
 	return 0 
 
 func generateWeaponEnchant(rarity: int, quality: int):
-	return [100]
-	var enchantValue = randf() * RARITY_ENCH[rarity] + QU_ENCH[quality]
-	if enchantValue > 0.96:
-		var first = rndWeaponEnchant()
-		var second = lowValueWeaponEnchant(first)
-		return [first, second, 1]
-	if enchantValue > 0.91:
-		var first = rndWeaponEnchant()
-		var second = lowValueWeaponEnchant(first)
-		return [first, second, 0]
-	if enchantValue > 0.85:
-		return [rndWeaponEnchant(), 1]
-	if enchantValue > 0.815:
-		return [1]
-	if enchantValue > 0.78:
-		return [lowValueWeaponEnchant(), 0]
-	if enchantValue > 0.70:
-		return [lowValueWeaponEnchant()]
-	if enchantValue > 0.61:
-		return [0]
-	return []
+	return [Utils.chooseRandom(Data.wpEnchants.keys())]
+
+func generateArmorEnchant(rarity: int, quality: int):
+	return [Utils.chooseRandom(Data.arEnchants.keys())]
 
 func generateTalismanEnchant(rarity: int):
 	if randf() < 0.5:
 		return rndArmorEnchant()
 	else:
 		return rndTalismanEnchant()
-
-func lowValueWeaponEnchant(forbidden = -1):
-	var result = forbidden
-	while result == forbidden:
-		result = randi() % 7 + 100
-	return result
-
-func rndWeaponEnchant(forbidden = -1):
-	var result = forbidden
-	if randf() < 0.5:
-		while result == forbidden:
-			result = randi() % 5 + 200
-	else:
-		while result == forbidden:
-			result = randi() % 7 + 100
-	return result
 
 func rndArmorEnchant():
 	return [GLOBAL.AR_TYPE, Utils.chooseRandom(Data.arEnchants.keys())]
@@ -361,31 +329,31 @@ func getShield(idx: int):
 	return [id]
 
 func getArmor(idx: int):
-	var base = Data.armors[idx]
+	var base = Data.armors[idx].duplicate()
 	id += 1
 	GLOBAL.items[id] = mapArmorToItem(base, idx)
 	return [id]
 
 func getPotion(idx: int):
-	var base = Data.potions[idx]
+	var base = Data.potions[idx].duplicate()
 	id += 1
 	GLOBAL.items[id] = mapPotionToItem(base, idx)
 	return [id]
 
 func getScroll(idx: int):
-	var base = Data.scrolls[idx]
+	var base = Data.scrolls[idx].duplicate()
 	id += 1
 	GLOBAL.items[id] = mapScrollToItem(base, idx)
 	return [id]
 
 func getThrowable(idx: int):
-	var base = Data.throwings[idx]
+	var base = Data.throwings[idx].duplicate()
 	id += 1
 	GLOBAL.items[id] = mapThrowingToItem(base, idx)
 	return [id]
 
 func getTalisman(idx: int):
-	var base  = Data.talismans[idx]
+	var base  = Data.talismans[idx].duplicate()
 	id += 1
 	GLOBAL.items[id] = mapTalismanToItem(base)
 	var enchant  = generateTalismanEnchant(0)

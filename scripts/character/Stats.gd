@@ -65,7 +65,14 @@ func computeCA():
 	var value = 0
 	for i in items:
 		if i != -1:
-			value += GLOBAL.items[i][GLOBAL.IT_CA]
+			var diceBonus = 0
+			if GLOBAL.items[i][GLOBAL.IT_SPEC].has(Data.ENCH_1_AR):
+				diceBonus = 1
+			elif GLOBAL.items[i][GLOBAL.IT_SPEC].has(Data.ENCH_2_AR):
+				diceBonus = 1
+			elif GLOBAL.items[i][GLOBAL.IT_SPEC].has(Data.ENCH_3_AR):
+				diceBonus = 1
+			value += GLOBAL.items[i][GLOBAL.IT_CA] + diceBonus
 	updateCA(value)
 
 func updateCA(newValue: int):
@@ -83,7 +90,14 @@ func computeProt():
 	var value = 0
 	for i in items:
 		if i != -1:
-			value += GLOBAL.items[i][GLOBAL.IT_PROT]
+			var diceBonus = 0
+			if GLOBAL.items[i][GLOBAL.IT_SPEC].has(Data.ENCH_1_AR):
+				diceBonus = 1
+			elif GLOBAL.items[i][GLOBAL.IT_SPEC].has(Data.ENCH_2_AR):
+				diceBonus = 1
+			elif GLOBAL.items[i][GLOBAL.IT_SPEC].has(Data.ENCH_3_AR):
+				diceBonus = 1
+			value += GLOBAL.items[i][GLOBAL.IT_PROT] + diceBonus
 	updateProt(value)
 
 func updateProt(newValue: int):
@@ -94,7 +108,15 @@ func computeDmg():
 	var value = []
 	var weapon = Ref.character.inventory.getWeapon()
 	if weapon != -1:
+		var diceBonus = 0
+		if GLOBAL.items[weapon][GLOBAL.IT_SPEC].has(Data.ENCH_1_WP):
+			diceBonus = 1
+		elif GLOBAL.items[weapon][GLOBAL.IT_SPEC].has(Data.ENCH_2_WP):
+			diceBonus = 1
+		elif GLOBAL.items[weapon][GLOBAL.IT_SPEC].has(Data.ENCH_3_WP):
+			diceBonus = 1
 		value = [GLOBAL.items[weapon][GLOBAL.IT_DMG]]
+		value[0].dice.b = diceBonus
 	else:
 		value = [GeneralEngine.dmgDice(1, 1, 0, Data.DMG_BLUNT)]
 	updateDmg(value)
@@ -111,7 +133,15 @@ func computeHit():
 	var value = []
 	var weapon = Ref.character.inventory.getWeapon()
 	if weapon != -1:
+		var diceBonus = 0
+		if GLOBAL.items[weapon][GLOBAL.IT_SPEC].has(Data.ENCH_1_WP):
+			diceBonus = 1
+		elif GLOBAL.items[weapon][GLOBAL.IT_SPEC].has(Data.ENCH_2_WP):
+			diceBonus = 1
+		elif GLOBAL.items[weapon][GLOBAL.IT_SPEC].has(Data.ENCH_3_WP):
+			diceBonus = 1
 		value = GLOBAL.items[weapon][GLOBAL.IT_HIT]
+		value.b = diceBonus
 	else:
 		value = GeneralEngine.dice(1, 6, 0)
 	updateHit(value)
