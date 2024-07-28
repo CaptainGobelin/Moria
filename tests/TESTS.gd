@@ -44,7 +44,7 @@ func runTest(tester: Node, testId: int):
 	prints('\t', "Testing", test[TEST_NAME], "...")
 	GeneralEngine.isFaking = true
 	yield(get_tree(), "idle_frame")
-	Ref.character.init()
+	Ref.character.init(-1)
 	Ref.currentLevel.placeCharacter(test[TEST_POS])
 	yield(get_tree(), "idle_frame")
 	for step in test[TEST_INIT]:

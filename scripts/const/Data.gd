@@ -68,7 +68,7 @@ const CL_HPLVL = 2
 const CL_SK = 3
 const CL_SKMAS = 4
 const classes = {
-	0: ["Fighter", 10, 5, [1, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0], [2, 2, 0, 0, 0, 0, 0, 2, 1, 1, 1]],
+	CL_FIGHTER: ["Fighter", 10, 5, [1, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0], [2, 2, 0, 0, 0, 0, 0, 2, 1, 1, 1]],
 }
 
 # Monsters
@@ -267,6 +267,24 @@ const throwings = {
 	3: ["Roped firebomb", 	39, null,           0, SP_TH_FIREBOMB, PROJ_WHITE_R,    203],
 	4: ["Toxic flask", 		40, null,           0, SP_TH_POISON,   PROJ_WHITE_R,    204],
 	5: ["Sleep flask", 		41, null,           0, SP_TH_SLEEP,    PROJ_WHITE_R,    205],
+}
+
+# Starting kits
+const KIT_WP = 0
+const KIT_SH = 1
+const KIT_AR = 2
+const KIT_PO = 3
+const KIT_SC = 4
+const KIT_TH = 5
+const KIT_GO = 6
+const KIT_LO = 7
+
+const KIT_UNDEF = [-1, -1, -1, [], [], [], 0, 0]
+const KIT_FIGHTER = [2, 0, 1, [0, 0], [], [0, 0, 0], 30, 2]
+
+const CLASS_KITS = {
+	-1: KIT_UNDEF,
+	CL_FIGHTER: KIT_FIGHTER,
 }
 
 # Weapon enchants

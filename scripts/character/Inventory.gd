@@ -15,15 +15,45 @@ var talismans = []
 var lockpicks = 0 setget updateLockpicks
 var golds = 0 setget updateGolds
 
-func init():
-	weapons = []
-	armors = []
-	potions = []
-	scrolls = []
-	throwings = []
+func init(charClass: int):
+	var classKit = Data.CLASS_KITS[charClass]
+	if classKit[Data.KIT_WP] != -1:
+		var items = Ref.game.itemGenerator.getWeapon(classKit[Data.KIT_WP])
+		weapons = items
+		equipWeapon(items[0])
+	else:
+		weapons = []
+	if classKit[Data.KIT_SH] != -1:
+		var items = Ref.game.itemGenerator.getWeapon(classKit[Data.KIT_SH])
+		weapons = items
+		equipWeapon(items[0])
+	if classKit[Data.KIT_AR] != -1:
+		var items = Ref.game.itemGenerator.getArmor(classKit[Data.KIT_AR])
+		armors = items
+		equipArmor(items[0])
+	else:
+		armors = []
+	if not classKit[Data.KIT_PO].empty():
+		for p in classKit[Data.KIT_PO]:
+			var items = Ref.game.itemGenerator.getPotion(p)
+			potions.append_array(items)
+	else:
+		potions = []
+	if not classKit[Data.KIT_SC].empty():
+		for s in classKit[Data.KIT_SC]:
+			var items = Ref.game.itemGenerator.getScroll(s)
+			scrolls.append_array(items)
+	else:
+		scrolls = []
+	if not classKit[Data.KIT_TH].empty():
+		for t in classKit[Data.KIT_TH]:
+			var items = Ref.game.itemGenerator.getThrowable(t)
+			throwings.append_array(items)
+	else:
+		throwings = []
 	talismans = []
-	updateLockpicks(0)
-	updateGolds(0)
+	updateLockpicks(classKit[Data.KIT_LO])
+	updateGolds(classKit[Data.KIT_GO])
 
 func getWeapon():
 	return int(currentWeapon.x)

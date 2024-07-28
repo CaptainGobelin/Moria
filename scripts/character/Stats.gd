@@ -1,6 +1,6 @@
 extends Node
 
-onready var currentClass: Array = Data.classes[0]
+onready var classStats: Array
 onready var entityName: String = "Mendiant"
 onready var level: int = 1 setget updateLevel
 onready var xp: int = 0 setget updateXp
@@ -16,19 +16,22 @@ onready var skills = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 onready var masteries = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 onready var skp: int = 0
 
-func init():
-	entityName = currentClass[Data.CL_NAME]
+func init(charClass: int):
+	if charClass == -1:
+		charClass = 0
+	classStats = Data.classes[charClass]
+	entityName = classStats[Data.CL_NAME]
 	Ref.ui.updateStat(Data.CHAR_NAME, ["Fridolin", entityName])
 	updateLevel(1)
 	updateXp(0)
-	updateHpMax(currentClass[Data.CL_HP])
-	updateHp(currentClass[Data.CL_HP])
+	updateHpMax(classStats[Data.CL_HP])
+	updateHp(classStats[Data.CL_HP])
 	updateCA(0)
 	updateProt(0)
 	updateDmg([GeneralEngine.dmgDice(1, 1, 0, Data.DMG_BLUNT)])
 	updateHit(GeneralEngine.dice(1, 6, 0))
-	skills = currentClass[Data.CL_SK]
-	masteries = currentClass[Data.CL_SKMAS]
+	skills = classStats[Data.CL_SK]
+	masteries = classStats[Data.CL_SKMAS]
 
 func computeStats():
 	computeHpMax()
@@ -42,8 +45,8 @@ func computeStats():
 	Utils.printDict(get_parent().statuses)
 
 func computeHpMax():
-	var value = currentClass[Data.CL_HP]
-	value += (level-1) * currentClass[Data.CL_HPLVL] 
+	var value = classStats[Data.CL_HP]
+	value += (level-1) * classStats[Data.CL_HPLVL] 
 	updateHpMax(value)
 
 func updateHpMax(newValue: int):
@@ -172,7 +175,7 @@ func updateXp(newValue):
 		xp = (newValue % Data.lvlCaps[level])
 		updateLevel(level + 1)
 		skp += Data.skpGains[level]
-		Ref.ui.writeLevelUp(level, currentClass[Data.CL_HPLVL], Data.skpGains[level], 0)
+		Ref.ui.writeLevelUp(level, classStats[Data.CL_HPLVL], Data.skpGains[level], 0)
 		Ref.ui.updateStat(Data.CHAR_XP, xp)
 	else:
 		xp = newValue

@@ -320,18 +320,21 @@ func getWeapon(idx: int):
 	id += 1
 	base[Data.W_NAME][0] = base[Data.W_NAME][0].capitalize()
 	GLOBAL.items[id] = mapWeaponToItem(base, idx)
+	GLOBAL.items[id][GLOBAL.IT_SPEC] = []
 	return [id]
 
 func getShield(idx: int):
 	var base = Data.shields[idx].duplicate()
 	id += 1
 	GLOBAL.items[id] = mapShieldToItem(base, idx)
+	GLOBAL.items[id][GLOBAL.IT_SPEC] = []
 	return [id]
 
 func getArmor(idx: int):
 	var base = Data.armors[idx].duplicate()
 	id += 1
 	GLOBAL.items[id] = mapArmorToItem(base, idx)
+	GLOBAL.items[id][GLOBAL.IT_SPEC] = []
 	return [id]
 
 func getPotion(idx: int):
