@@ -35,9 +35,34 @@ const PROJ_GREEN_R = [Colors.green, 9]
 
 # Spells
 const SP_MAGIC_MISSILE = 0
-const SP_HEAL = 3
+const SP_ELECTRIC_GRASP = 1
+const SP_HEAL = 2
+const SP_SMITE = 3
+const SP_FIREBOLT = 4
 const SP_FIREBALL = 10
+
+const SP_SLEEP = 15
+const SP_UNLOCK = 16
 const SP_BLESS = 17
+const SP_COMMAND = 18
+const SP_LIGHT = 19
+
+const SP_BLIND = 30
+const SP_MIND_SPIKE = 31
+const SP_DETECT_EVIL = 32
+const SP_REVEAL_TRAPS = 33
+
+const SP_SHIELD = 45
+const SP_MAGE_ARMOR = 46
+const SP_ARMOR_OF_FAITH = 47
+const SP_PROTECTION_FROM_EVIL = 48
+const SP_SANCTUARY = 49
+
+const SP_ACID_SPLASH = 60
+const SP_CONJURE_ANIMAL = 61
+const SP_SPIRITUAL_HAMMER = 62
+const SP_LESSER_AQUIREMENT = 63
+
 const SP_TH_FIREBOMB = 100
 const SP_TH_POISON = 101
 const SP_TH_SLEEP = 102
@@ -220,7 +245,6 @@ func potionsReader():
 		potionsByRarity[rarity].append(idx)
 
 # Scrolls
-
 const SC_NAME = 0
 const SC_SP = 1
 const SC_RAR = 2
@@ -414,6 +438,25 @@ const spellDescriptions = {
 	]
 }
 
+const spellsPerSchool: Dictionary = {}
+
+func spellsReader():
+	for idx in spells.keys():
+		var school = spells[idx][SP_SCHOOL]
+		var rank = spells[idx][SP_LVL]
+		var list = spells[idx][SP_LISTS]
+		for l in range(3):
+			if not list[l]:
+				continue
+			if !spellsPerSchool.has(l):
+				spellsPerSchool[l] = {}
+			if !spellsPerSchool[l].has(school):
+				spellsPerSchool[l][school] = {}
+			if !spellsPerSchool[l][school].has(rank):
+				spellsPerSchool[l][school][rank] = []
+			spellsPerSchool[l][school][rank].append(idx)
+	Utils.printDict(spellsPerSchool)
+
 # Statuses
 const STATUS_BLESSED = 6
 const STATUS_FIRE_WEAPON = 1000 + ENCH_FIRE_DMG
@@ -452,3 +495,4 @@ func _ready():
 	armorsReader()
 	potionsReader()
 	scrollsReader()
+	spellsReader()

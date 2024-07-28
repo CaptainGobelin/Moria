@@ -508,3 +508,4 @@ visible = false
 [node name="ChestMenu" parent="." instance=ExtResource( 26 )]
 
 [node name="ChooseSpellMenu" parent="." instance=ExtResource( 28 )]
+visible = false
