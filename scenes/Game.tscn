@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://scenes/engine/DungeonGenerator.tscn" type="PackedScene" id=1]
 [ext_resource path="res://tilesets/basic.tres" type="TileSet" id=2]
@@ -27,11 +27,11 @@
 [ext_resource path="res://scenes/UI/StatusBar.gd" type="Script" id=25]
 [ext_resource path="res://scenes/menu/ChestMenu.tscn" type="PackedScene" id=26]
 [ext_resource path="res://scripts/utils/ThrowHandler.gd" type="Script" id=27]
+[ext_resource path="res://scenes/menu/ChooseSpellMenu.tscn" type="PackedScene" id=28]
 
 [node name="Game" type="Node2D"]
 scale = Vector2( 4, 4 )
 script = ExtResource( 15 )
-runTests = true
 
 [node name="Utils" type="Node" parent="."]
 
@@ -506,3 +506,5 @@ text = "3"
 visible = false
 
 [node name="ChestMenu" parent="." instance=ExtResource( 26 )]
+
+[node name="ChooseSpellMenu" parent="." instance=ExtResource( 28 )]

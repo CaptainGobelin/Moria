@@ -44,6 +44,28 @@ func printDict(dict: Dictionary):
 		print(\"Empty dict\")
 	for k in dict.keys():
 		prints(String(k), \":\", dict[k])
+
+func toRoman(number: int) -> String:
+	match number:
+		1:
+			return \"I\"
+		2:
+			return \"II\"
+		3:
+			return \"III\"
+		4:
+			return \"IV\"
+		5:
+			return \"V\"
+		6:
+			return \"VI\"
+		7:
+			return \"VII\"
+		8:
+			return \"VIII\"
+		9:
+			return \"IX\"
+	return String(number)
 "
 
 [node name="Utils" type="Node"]
