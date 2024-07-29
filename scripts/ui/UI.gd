@@ -7,6 +7,7 @@ signal coroutine_signal
 onready var numberHandler = get_node("Utils/NumberHandler")
 onready var choiceHandler = get_node("Utils/ChoiceHandler")
 onready var yesNoHandler = get_node("Utils/YesNoHandler")
+onready var directionHandler = get_node("Utils/DirectionHandler")
 onready var targetHandler = get_node("Utils/TargetHandler")
 
 onready var diary = get_node("TextBox/TextContainer/DiaryPanel")
@@ -65,6 +66,15 @@ func askForYesNo(inputer):
 	var result = yield(yesNoHandler, "end_coroutine")
 	if !result:
 		writeOk()
+	GLOBAL.currentMode = previousMode
+	inputer.set_process_input(true)
+	emit_signal("coroutine_signal", result)
+
+func askForDirection(inputer):
+	previousMode = GLOBAL.currentMode
+	inputer.set_process_input(false)
+	directionHandler.startCoroutine()
+	var result = yield(directionHandler, "end_coroutine")
 	GLOBAL.currentMode = previousMode
 	inputer.set_process_input(true)
 	emit_signal("coroutine_signal", result)
@@ -156,6 +166,10 @@ func writeWhichThrowing(choices: Array):
 func writeNoSpellAssigned():
 	write("You don't have any spell assigned.")
 	lastPrinted = "writeNoSpellAssigned"
+
+func writeSpellDirection():
+	write("Cast spell in which direction?")
+	lastPrinted = "writeSpellDirection"
 
 func writeWhichSpell(choices: Array):
 	var msg = "Cast which spell?"

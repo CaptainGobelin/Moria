@@ -3,6 +3,7 @@ extends Node
 onready var projScene = preload("res://scenes/Projectile.tscn")
 
 func castSpellAsync(spellId: int, scrollId = null):
+	var spellCasted = false
 	var spell = Data.spells[spellId]
 	if scrollId == null:
 		if Ref.character.spells.spellsUses[spellId] == 0:
@@ -22,16 +23,26 @@ func castSpellAsync(spellId: int, scrollId = null):
 			Ref.ui.writeCastSpell(spell[Data.SP_NAME])
 			yield(castProjectile(GLOBAL.targets[targetId], spell[Data.SP_PROJ]), "completed")
 			SpellEngine.applyEffect(instance_from_id(targetId), spellId)
-			if scrollId == null:
-				Ref.character.spells.spellsUses[spellId] -= 1
-			else:
-				Ref.character.inventory.scrolls.erase(scrollId)
-			Ref.game.set_process_input(true)
+			spellCasted = true
+		Data.SP_TARGET_DIRECT:
+			Ref.ui.writeSpellDirection()
+			Ref.ui.askForDirection(Ref.game)
+			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
+			if coroutineReturn == Vector2(0, 0):
+				return
+			Ref.ui.writeCastSpell(spell[Data.SP_NAME])
+			SpellEngine.applyEffect(Ref.character, spellId, coroutineReturn)
+			spellCasted = true
 		Data.SP_TARGET_SELF:
 			Ref.ui.writeCastSpell(spell[Data.SP_NAME])
 			SpellEngine.applyEffect(Ref.character, spellId)
+			spellCasted = true
+	if (spellCasted):
+		if scrollId == null:
 			Ref.character.spells.spellsUses[spellId] -= 1
-	GeneralEngine.newTurn()
+		else:
+			Ref.character.inventory.scrolls.erase(scrollId)
+		GeneralEngine.newTurn()
 
 func castProjectile(path: Array, projInfo):
 	var p = projScene.instance()

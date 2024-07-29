@@ -107,7 +107,7 @@ const MO_SPRITE = 6
 const MO_XP = 7
 const MO_MOVE = 8
 const monsters = {
-	0: ["Skeleton", 6, Vector3(1, 6, 0), Vector3(1, 4, 0), 5, 1, 0, 4, true],
+	0: ["Skeleton", 6, Vector3(1, 6, 0), Vector3(1, 4, 0), 5, 1, 0, 4, false],
 	1000: ["Dummy target", 100, Vector3(1, 6, 0), Vector3(1, 1, 0), 2, 1, 1, 10, false],
 }
 
@@ -406,9 +406,6 @@ const SP_LIST_ARCANE = 0
 const SP_LIST_DIVINE = 1
 const SP_LIST_NATURE = 2
 
-const SP_TARGET_SELF = 0
-const SP_TARGET_TARGET = 1
-
 const SP_NAME = 0
 const SP_LVL = 1
 const SP_SCHOOL = 2
@@ -417,6 +414,9 @@ const SP_PROJ = 4
 const SP_ICON = 5
 const SP_USES = 6
 const SP_TARGET = 7
+const SP_TARGET_SELF = 0
+const SP_TARGET_TARGET = 1
+const SP_TARGET_DIRECT = 2
 const SP_AREA = 8
 const SP_SAVE = 9
 const SAVE_WIL = 0
@@ -424,9 +424,12 @@ const SAVE_PHY = 1
 const SAVE_NO = 2
 
 const spells = {
-	SP_MAGIC_MISSILE: 	["Magic Missile", 1, SC_EVOCATION, [true, false, false], PROJ_PURPLE_S, 0, [15, 15, 15], SP_TARGET_TARGET, 0, SAVE_NO],
+	SP_MAGIC_MISSILE: 	["Magic missile", 1, SC_EVOCATION, [true, false, false], PROJ_PURPLE_S, 0, [20, 20, 20], SP_TARGET_TARGET, 0, SAVE_NO],
+	SP_ELECTRIC_GRASP: 	["Shocking grasp", 1, SC_EVOCATION, [true, false, true], null, 1, [10, 10, 10], SP_TARGET_DIRECT, 1, SAVE_PHY],
 	SP_HEAL: 			["Heal", 1, SC_EVOCATION, [false, true, true], null, 2, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
-	SP_FIREBALL: 		["Fireball", 3, SC_EVOCATION, [true, false, false], PROJ_RED_L, 10, [10, 10, 10], SP_TARGET_TARGET, 3, SAVE_PHY],
+	SP_SMITE: 			["Sunscorch", 1, SC_EVOCATION, [false, false, true], null, 3, [10, 10, 10], SP_TARGET_DIRECT, 1, SAVE_PHY],
+	SP_FIREBOLT: 		["Fire bolt", 1, SC_EVOCATION, [true, false, false], PROJ_RED_L, 4, [15, 15, 15], SP_TARGET_TARGET, 0, SAVE_PHY],
+	SP_FIREBALL: 		["Fireball", 3, SC_EVOCATION, [true, false, false], PROJ_RED_R, 10, [10, 10, 10], SP_TARGET_TARGET, 3, SAVE_PHY],
 	SP_BLESS: 			["Bless", 1, SC_ENCHANTEMENT, [false, true, true], null, 17, [15, 15, 15], SP_TARGET_SELF, 0, SAVE_NO],
 }
 

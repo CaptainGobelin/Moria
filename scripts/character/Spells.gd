@@ -1,8 +1,10 @@
 extends Node
 
-var spells = [Data.SP_BLESS]
+var spells = [Data.SP_BLESS, Data.SP_FIREBOLT, Data.SP_SMITE]
 var spellsUses = {
-	Data.SP_BLESS: 5
+	Data.SP_BLESS: 5,
+	Data.SP_FIREBOLT: 10,
+	Data.SP_SMITE: 8
 }
 var schoolRanks = [0, 0, 0, 0, 0]
 

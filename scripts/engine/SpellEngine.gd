@@ -4,12 +4,23 @@ onready var effectScene = preload("res://scenes/Effect.tscn")
 
 onready var throwings = get_node("Throwings")
 
-func applyEffect(entity, spell):
+func playEffect(pos: Vector2, type: int, length: int, speed: float):
+	var effect = effectScene.instance()
+	Ref.currentLevel.effects.add_child(effect)
+	effect.play(pos, type, length, speed)
+
+func applyEffect(entity, spell: int, direction: Vector2 = Vector2(0, 0)):
 	match spell:
 		Data.SP_MAGIC_MISSILE:
 			magicMissile(entity)
+		Data.SP_ELECTRIC_GRASP:
+			electricGrasp(entity, direction)
 		Data.SP_HEAL:
 			heal(entity)
+		Data.SP_SMITE:
+			smite(entity, direction)
+		Data.SP_FIREBOLT:
+			firebolt(entity)
 		Data.SP_BLESS:
 			bless(entity)
 		Data.SP_FIREBALL:
@@ -24,9 +35,39 @@ func applyEffect(entity, spell):
 func magicMissile(entity):
 	entity.takeHit(GeneralEngine.dice(2, 1, 1).roll())
 
+func electricGrasp(entity, direction):
+	var targetCell = entity.pos + direction
+	playEffect(targetCell, 5, 5, 1.1)
+	if GLOBAL.monstersByPosition.has(targetCell):
+		var target = instance_from_id(GLOBAL.monstersByPosition[targetCell])
+		var dmgDice = [GeneralEngine.dmgDice(1, 12, 0, Data.DMG_LIGHTNING)]
+		var dmg = GeneralEngine.computeDamages(dmgDice, target.stats.resists)
+		target.takeHit(dmg)
+
 func heal(entity):
+	playEffect(entity.pos, 7, 5, 0.6)
 	var result:float = entity.stats.hpMax * 0.5
 	entity.stats.hp += ceil(result)
+
+func smite(entity, direction):
+	var targetCell = entity.pos + direction
+	for _i in range(GLOBAL.VIEW_RANGE) :
+		if Ref.currentLevel.isCellFree(targetCell)[4]:
+			return
+		if Ref.currentLevel.fog.get_cellv(targetCell) == 1:
+			return
+		playEffect(targetCell, 6, 5, 0.8)
+		if GLOBAL.monstersByPosition.has(targetCell):
+			var target = instance_from_id(GLOBAL.monstersByPosition[targetCell])
+			var dmgDice = [GeneralEngine.dmgDice(1, 8, 0, Data.DMG_RADIANT)]
+			var dmg = GeneralEngine.computeDamages(dmgDice, target.stats.resists)
+			target.takeHit(dmg)
+		targetCell += direction
+
+func firebolt(entity):
+	var dmgDice = [GeneralEngine.dmgDice(1, 10, 0, Data.DMG_FIRE)]
+	var dmg = GeneralEngine.computeDamages(dmgDice, entity.stats.resists)
+	entity.takeHit(dmg)
 
 func bless(entity):
 	var status = Data.statusPrefabs[Data.STATUS_BLESSED]
@@ -41,9 +82,7 @@ func fireball(entity):
 	targetedCells.append(Vector2(0, 0))
 	for cell in targetedCells:
 		var pos = entity.pos + cell
-		var effect = effectScene.instance()
-		Ref.currentLevel.effects.add_child(effect)
-		effect.play(pos, 0, 5, 0.1)
+		playEffect(pos, 0, 5, 0.1)
 		if GLOBAL.monstersByPosition.has(pos):
 			var target = instance_from_id(GLOBAL.monstersByPosition[pos])
 			target.takeHit(GeneralEngine.dice(3, 6, 0).roll())
