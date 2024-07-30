@@ -25,7 +25,8 @@ func castSpellAsync(spellId: int, scrollId = null):
 				return
 			var targetId = GLOBAL.targets.keys()[coroutineReturn]
 			Ref.ui.writeCastSpell(spell[Data.SP_NAME])
-			yield(castProjectile(GLOBAL.targets[targetId], spell[Data.SP_PROJ]), "completed")
+			if spell[Data.SP_PROJ] != null:
+				yield(castProjectile(GLOBAL.targets[targetId], spell[Data.SP_PROJ]), "completed")
 			SpellEngine.applyEffect(instance_from_id(targetId), spellId, true, spellRank, savingCap)
 			spellCasted = true
 		Data.SP_TARGET_DIRECT:
@@ -34,6 +35,14 @@ func castSpellAsync(spellId: int, scrollId = null):
 			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
 			if coroutineReturn == Vector2(0, 0):
 				return
+			# Special case for unlock spell
+			if spellId == Data.SP_UNLOCK:
+				var doorPos = Ref.character.pos + coroutineReturn
+				var chest = GLOBAL.getChestByPos(doorPos)
+				if (not GLOBAL.lockedDoors.has(doorPos)) or GLOBAL.hiddenDoors.has(doorPos):
+					if chest == null or chest[GLOBAL.CH_LOCKED] <= 0:
+						Ref.ui.writeNoLockedDoor()
+						return
 			Ref.ui.writeCastSpell(spell[Data.SP_NAME])
 			SpellEngine.applyEffect(Ref.character, spellId, true, spellRank, savingCap, coroutineReturn)
 			spellCasted = true

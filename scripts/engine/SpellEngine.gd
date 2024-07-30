@@ -8,6 +8,20 @@ var saveType = Data.SAVE_NO
 var saveCap = 99
 var fromChar = false
 
+func createSpellStatus(type: int, rank: int, time: int):
+	var status = Data.statusPrefabs[type]
+	if rank > 1:
+		status[GLOBAL.ST_NAME] += " " + Utils.toRoman(rank)
+	status[GLOBAL.ST_TIMING] = GLOBAL.TIMING_TIMER
+	status[GLOBAL.ST_TURNS] = time
+	status[GLOBAL.ST_RANK] = rank
+	return status
+
+func applySpellStatus(entity, type: int, rank: int, time: int):
+	var status = createSpellStatus(type, rank, time)
+	StatusEngine.addStatus(entity, status)
+	entity.stats.computeStats()
+
 func playEffect(pos: Vector2, type: int, length: int, speed: float):
 	var effect = effectScene.instance()
 	Ref.currentLevel.effects.add_child(effect)
@@ -44,8 +58,12 @@ func applyEffect(entity, spellId: int, fromCharacter: bool, rank: int, savingCap
 			smite(entity, direction)
 		Data.SP_FIREBOLT:
 			firebolt(entity)
+		Data.SP_SLEEP:
+			sleep(entity, rank)
+		Data.SP_UNLOCK:
+			unlock(entity, direction)
 		Data.SP_BLESS:
-			bless(entity)
+			bless(entity, rank)
 		Data.SP_FIREBALL:
 			fireball(entity)
 		Data.SP_TH_FIREBOMB:
@@ -95,13 +113,34 @@ func firebolt(entity):
 	var dmg = GeneralEngine.computeDamages(dmgDice, entity.stats.resists)
 	entity.takeHit(dmg)
 
-func bless(entity):
-	var status = Data.statusPrefabs[Data.STATUS_BLESSED]
-	status[GLOBAL.ST_TIMING] = GLOBAL.TIMING_TIMER
-	status[GLOBAL.ST_TURNS] = 21
-	status[GLOBAL.ST_RANK] = 1
-	StatusEngine.addStatus(entity, status)
-	Ref.character.stats.computeStats()
+func sleep(entity, rank: int):
+	playEffect(entity.pos, 4, 5, 0.6)
+	if not rollsavingThrow(entity):
+		applySpellStatus(entity, Data.STATUS_SLEEP, rank, 20)
+
+func unlock(entity, direction: Vector2):
+	var cell = entity.pos + direction
+	if GLOBAL.lockedDoors.has(cell) and (not GLOBAL.hiddenDoors.has(cell)):
+		GLOBAL.lockedDoors.erase(cell)
+		Ref.ui.writeDoorUnlocked()
+		return
+	var chest = GLOBAL.getChestByPos(cell)
+	if chest != null and chest[GLOBAL.CH_LOCKED] > 0:
+		chest[GLOBAL.CH_LOCKED] = 0
+		Ref.ui.writeChestUnlocked()
+
+func bless(entity, rank: int):
+	playEffect(entity.pos, 7, 5, 0.6)
+	applySpellStatus(entity, Data.STATUS_BLESSED, rank, 20)
+
+func command(entity, rank: int):
+	playEffect(entity.pos, 6, 5, 0.6)
+	if not rollsavingThrow(entity):
+		applySpellStatus(entity, Data.STATUS_TERROR, rank, 5)
+
+func light(entity, rank: int):
+	playEffect(entity.pos, 7, 5, 0.6)
+	applySpellStatus(entity, Data.STATUS_LIGHT, rank, 40)
 
 func fireball(entity):
 	var targetedCells = getArea(entity.pos, 4)

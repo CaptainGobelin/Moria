@@ -398,7 +398,7 @@ const LOCKPICK_NAME = "Lockpick"
 const LOCKPICK_ICON = 58
 
 # Spell schools
-const SC_ENCHANTEMENT = 0
+const SC_ENCHANTMENT = 0
 const SC_EVOCATION = 1
 const SC_DIVINATION = 2
 const SC_ABJURATION = 3
@@ -427,13 +427,19 @@ const SAVE_PHY = 1
 const SAVE_NO = 2
 
 const spells = {
+	# Evocation
 	SP_MAGIC_MISSILE: 	["Magic missile", 1, SC_EVOCATION, [true, false, false], PROJ_PURPLE_S, 0, [20, 20, 20], SP_TARGET_TARGET, 0, SAVE_NO],
 	SP_ELECTRIC_GRASP: 	["Shocking grasp", 1, SC_EVOCATION, [true, false, true], null, 1, [10, 10, 10], SP_TARGET_DIRECT, 1, SAVE_PHY],
 	SP_HEAL: 			["Heal", 1, SC_EVOCATION, [false, true, true], null, 2, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
 	SP_SMITE: 			["Sunscorch", 1, SC_EVOCATION, [false, false, true], null, 3, [10, 10, 10], SP_TARGET_DIRECT, 1, SAVE_PHY],
 	SP_FIREBOLT: 		["Fire bolt", 1, SC_EVOCATION, [true, false, false], PROJ_RED_L, 4, [15, 15, 15], SP_TARGET_TARGET, 0, SAVE_PHY],
 	SP_FIREBALL: 		["Fireball", 3, SC_EVOCATION, [true, false, false], PROJ_RED_R, 10, [10, 10, 10], SP_TARGET_TARGET, 3, SAVE_PHY],
-	SP_BLESS: 			["Bless", 1, SC_ENCHANTEMENT, [false, true, true], null, 17, [15, 15, 15], SP_TARGET_SELF, 0, SAVE_NO],
+	# Enchantment
+	SP_SLEEP:	 		["Sleep", 1, SC_ENCHANTMENT, [true, false, true], null, 15, [8, 8, 8], SP_TARGET_TARGET, 0, SAVE_WIL],
+	SP_UNLOCK:	 		["Unlock", 1, SC_ENCHANTMENT, [true, false, false], null, 16, [5, 10, 15], SP_TARGET_DIRECT, 1, SAVE_NO],
+	SP_BLESS: 			["Bless", 1, SC_ENCHANTMENT, [false, true, true], null, 17, [15, 15, 15], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_COMMAND:	 		["Command", 1, SC_ENCHANTMENT, [false, true, false], null, 18, [5, 5, 5], SP_TARGET_TARGET, 0, SAVE_WIL],
+	SP_LIGHT:	 		["Light", 1, SC_ENCHANTMENT, [true, true, true], null, 19, [20, 20, 20], SP_TARGET_SELF, 0, SAVE_NO],
 }
 
 const spellDescriptions = {
@@ -464,7 +470,10 @@ func spellsReader():
 	Utils.printDict(spellsPerSchool)
 
 # Statuses
+const STATUS_SLEEP = 5
 const STATUS_BLESSED = 6
+const STATUS_TERROR = 7
+const STATUS_LIGHT = 8
 const STATUS_FIRE_WEAPON = 1000 + ENCH_FIRE_DMG
 const STATUS_FROST_WEAPON = 1000 + ENCH_FROST_DMG
 const STATUS_POISON_WEAPON = 1000 + ENCH_POISON_DMG
@@ -482,7 +491,11 @@ const STATUS_ICE_RESIST = 10000 + DMG_ICE
 const STATUS_LIGHTNING_RESIST = 10000 + DMG_LIGHTNING
 
 const statusPrefabs = {
-	STATUS_BLESSED: ["Blessed", 6, null, null, STATUS_BLESSED, null, null, false],
+	STATUS_SLEEP: ["Asleep", 7, null, null, STATUS_SLEEP, null, null, false],
+	STATUS_BLESSED: ["Blessed", 11, null, null, STATUS_BLESSED, null, null, false],
+	STATUS_TERROR: ["Terror", 2, null, null, STATUS_TERROR, null, null, false],
+	STATUS_LIGHT: ["Light", 23, null, null, STATUS_LIGHT, null, null, false],
+	
 }
 
 # Traps

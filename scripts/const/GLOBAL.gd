@@ -126,6 +126,12 @@ const CH_OPENED = 2
 const CH_LOCKED = 3
 var chests: Dictionary = {}
 
+func getChestByPos(cell: Vector2):
+	for chest in chests.values():
+		if chest[CH_POS] == cell:
+			return chest
+	return null
+
 # Statuses
 const ST_NAME = 0
 const ST_ICON = 1

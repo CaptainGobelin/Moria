@@ -213,6 +213,14 @@ func askToPickDoor(dd: int):
 	write(color(msg, "yellow"))
 	lastPrinted = "askToPickDoor"
 
+func writeDoorUnlocked():
+	write("The door is unlocked.")
+	lastPrinted = "writeDoorUnlocked"
+
+func writeChestUnlocked():
+	write("The chest is unlocked.")
+	lastPrinted = "writeChestUnlocked"
+
 func writeLockpickSuccess(rolled: int):
 	var msg = "You successfully picked the lock ! (rolled "
 	msg +=  String(rolled) + ")"
@@ -232,6 +240,10 @@ func noLockpicksChest():
 func noLockpicksDoor():
 	write("The door is locked and you don't have any lockpicks to pick it.")
 	lastPrinted = "noLockpicksDoor"
+
+func writeNoLockedDoor():
+	write("There is no locked door or chest to unlock there.")
+	lastPrinted = "writeNoLockedDoor"
 
 func writeSearch():
 	write("You look for hidden secrets around you...")
