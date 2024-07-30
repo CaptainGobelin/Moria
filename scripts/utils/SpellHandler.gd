@@ -26,7 +26,7 @@ func castSpellAsync(spellId: int, scrollId = null):
 			var targetId = GLOBAL.targets.keys()[coroutineReturn]
 			Ref.ui.writeCastSpell(spell[Data.SP_NAME])
 			yield(castProjectile(GLOBAL.targets[targetId], spell[Data.SP_PROJ]), "completed")
-			SpellEngine.applyEffect(instance_from_id(targetId), spellId, spellRank, savingCap)
+			SpellEngine.applyEffect(instance_from_id(targetId), spellId, true, spellRank, savingCap)
 			spellCasted = true
 		Data.SP_TARGET_DIRECT:
 			Ref.ui.writeSpellDirection()
@@ -35,11 +35,11 @@ func castSpellAsync(spellId: int, scrollId = null):
 			if coroutineReturn == Vector2(0, 0):
 				return
 			Ref.ui.writeCastSpell(spell[Data.SP_NAME])
-			SpellEngine.applyEffect(Ref.character, spellId, spellRank, savingCap, coroutineReturn)
+			SpellEngine.applyEffect(Ref.character, spellId, true, spellRank, savingCap, coroutineReturn)
 			spellCasted = true
 		Data.SP_TARGET_SELF:
 			Ref.ui.writeCastSpell(spell[Data.SP_NAME])
-			SpellEngine.applyEffect(Ref.character, spellId, spellRank, savingCap)
+			SpellEngine.applyEffect(Ref.character, spellId, true, spellRank, savingCap)
 			spellCasted = true
 	if (spellCasted):
 		if scrollId == null:

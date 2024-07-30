@@ -6,11 +6,21 @@ onready var throwings = get_node("Throwings")
 
 var saveType = Data.SAVE_NO
 var saveCap = 99
+var fromChar = false
 
 func playEffect(pos: Vector2, type: int, length: int, speed: float):
 	var effect = effectScene.instance()
 	Ref.currentLevel.effects.add_child(effect)
 	effect.play(pos, type, length, speed)
+
+func getValidTarget(cell: Vector2):
+	if fromChar:
+		if GLOBAL.monstersByPosition.has(cell):
+			return instance_from_id(GLOBAL.monstersByPosition[cell])
+	else:
+		if Ref.character.pos == cell:
+			return Ref.character
+	return null
 
 func rollsavingThrow(entity) -> bool:
 	var saved = GeneralEngine.dice(1, 6, entity.stats.saveBonus[saveType]).roll() >= saveCap
@@ -18,10 +28,11 @@ func rollsavingThrow(entity) -> bool:
 		Ref.ui.writeSavingThrowSuccess(entity.stats.entityName)
 	return saved
 
-func applyEffect(entity, spellId: int, rank: int, savingCap: int, direction: Vector2 = Vector2(0, 0)):
+func applyEffect(entity, spellId: int, fromCharacter: bool, rank: int, savingCap: int, direction: Vector2 = Vector2(0, 0)):
 	var spell = Data.spells[spellId]
 	saveCap = savingCap
 	saveType = spell[Data.SP_SAVE]
+	fromChar = fromCharacter
 	match spellId:
 		Data.SP_MAGIC_MISSILE:
 			magicMissile(entity)
@@ -50,8 +61,8 @@ func magicMissile(entity):
 func electricGrasp(entity, rank: int, direction: Vector2):
 	var targetCell = entity.pos + direction
 	playEffect(targetCell, 5, 5, 1.1)
-	if GLOBAL.monstersByPosition.has(targetCell):
-		var target = instance_from_id(GLOBAL.monstersByPosition[targetCell])
+	var target = getValidTarget(targetCell)
+	if target != null:
 		var saved = rollsavingThrow(target)
 		var dmgDice = [GeneralEngine.dmgDice(1, 12, 0, Data.DMG_LIGHTNING)]
 		var dmg = GeneralEngine.computeDamages(dmgDice, target.stats.resists)
@@ -72,8 +83,8 @@ func smite(entity, direction):
 		if Ref.currentLevel.fog.get_cellv(targetCell) == 1:
 			return
 		playEffect(targetCell, 6, 5, 0.8)
-		if GLOBAL.monstersByPosition.has(targetCell):
-			var target = instance_from_id(GLOBAL.monstersByPosition[targetCell])
+		var target = getValidTarget(targetCell)
+		if target != null:
 			var dmgDice = [GeneralEngine.dmgDice(1, 8, 0, Data.DMG_RADIANT)]
 			var dmg = GeneralEngine.computeDamages(dmgDice, target.stats.resists)
 			target.takeHit(dmg)
@@ -98,8 +109,8 @@ func fireball(entity):
 	for cell in targetedCells:
 		var pos = entity.pos + cell
 		playEffect(pos, 0, 5, 0.1)
-		if GLOBAL.monstersByPosition.has(pos):
-			var target = instance_from_id(GLOBAL.monstersByPosition[pos])
+		var target = getValidTarget(cell)
+		if target != null:
 			target.takeHit(GeneralEngine.dice(3, 6, 0).roll())
 
 func getArea(pos: Vector2, size: int):

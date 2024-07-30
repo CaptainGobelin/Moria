@@ -24,7 +24,7 @@ func throwAsync(itemId: int):
 		else:
 			Ref.ui.writeCharacterMiss(entity.stats.entityName, result, entity.stats.ca)
 	if item[Data.TH_EFFECT] != null:
-		SpellEngine.applyEffect(instance_from_id(targetId), item[Data.TH_EFFECT],1, 99)
+		SpellEngine.applyEffect(instance_from_id(targetId), item[Data.TH_EFFECT], true, 1, 99)
 	Ref.character.inventory.throwings.erase(itemId)
 	Ref.game.set_process_input(true)
 	GLOBAL.currentMode = GLOBAL.MODE_NORMAL
