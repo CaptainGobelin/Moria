@@ -185,6 +185,10 @@ func writeNoSpell(spell: String):
 	write("You cannot cast " + spell + " anymore until you rest.")
 	lastPrinted = "writeNoSpell"
 
+func writeSavingThrowSuccess(entityName: String):
+	write(entityName + " succeded its saving throw.")
+	lastPrinted = "writeSavingThrowSuccess"
+
 func writeNoGoingBack():
 	write("A shadow force blocks the way. There is no going back...")
 	lastPrinted = "writeNoGoingBack"

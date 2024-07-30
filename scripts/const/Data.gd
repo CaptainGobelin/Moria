@@ -20,6 +20,9 @@ const DMG_COLORS = [
 	Colors.yellow
 ]
 
+# Saving throw
+const SAVING_BASE = 4
+
 # Projectiles
 const PROJ_COLOR = 0
 const PROJ_TYPE = 1

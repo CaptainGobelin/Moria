@@ -5,6 +5,10 @@ onready var projScene = preload("res://scenes/Projectile.tscn")
 func castSpellAsync(spellId: int, scrollId = null):
 	var spellCasted = false
 	var spell = Data.spells[spellId]
+	var savingCap = 0
+	if spell[Data.SP_SAVE] != Data.SAVE_NO:
+		savingCap = Data.SAVING_BASE + Ref.character.spells.getSavingThrow(spell[Data.SP_SCHOOL])
+	var spellRank = Ref.character.spells.getSpellRank(spell[Data.SP_SCHOOL])
 	if scrollId == null:
 		if Ref.character.spells.spellsUses[spellId] == 0:
 			Ref.ui.writeNoSpell(spell[Data.SP_NAME])
@@ -22,7 +26,7 @@ func castSpellAsync(spellId: int, scrollId = null):
 			var targetId = GLOBAL.targets.keys()[coroutineReturn]
 			Ref.ui.writeCastSpell(spell[Data.SP_NAME])
 			yield(castProjectile(GLOBAL.targets[targetId], spell[Data.SP_PROJ]), "completed")
-			SpellEngine.applyEffect(instance_from_id(targetId), spellId)
+			SpellEngine.applyEffect(instance_from_id(targetId), spellId, spellRank, savingCap)
 			spellCasted = true
 		Data.SP_TARGET_DIRECT:
 			Ref.ui.writeSpellDirection()
@@ -31,11 +35,11 @@ func castSpellAsync(spellId: int, scrollId = null):
 			if coroutineReturn == Vector2(0, 0):
 				return
 			Ref.ui.writeCastSpell(spell[Data.SP_NAME])
-			SpellEngine.applyEffect(Ref.character, spellId, coroutineReturn)
+			SpellEngine.applyEffect(Ref.character, spellId, spellRank, savingCap, coroutineReturn)
 			spellCasted = true
 		Data.SP_TARGET_SELF:
 			Ref.ui.writeCastSpell(spell[Data.SP_NAME])
-			SpellEngine.applyEffect(Ref.character, spellId)
+			SpellEngine.applyEffect(Ref.character, spellId, spellRank, savingCap)
 			spellCasted = true
 	if (spellCasted):
 		if scrollId == null:

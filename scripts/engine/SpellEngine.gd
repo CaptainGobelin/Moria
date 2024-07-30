@@ -4,17 +4,29 @@ onready var effectScene = preload("res://scenes/Effect.tscn")
 
 onready var throwings = get_node("Throwings")
 
+var saveType = Data.SAVE_NO
+var saveCap = 99
+
 func playEffect(pos: Vector2, type: int, length: int, speed: float):
 	var effect = effectScene.instance()
 	Ref.currentLevel.effects.add_child(effect)
 	effect.play(pos, type, length, speed)
 
-func applyEffect(entity, spell: int, direction: Vector2 = Vector2(0, 0)):
-	match spell:
+func rollsavingThrow(entity) -> bool:
+	var saved = GeneralEngine.dice(1, 6, entity.stats.saveBonus[saveType]).roll() >= saveCap
+	if saved:
+		Ref.ui.writeSavingThrowSuccess(entity.stats.entityName)
+	return saved
+
+func applyEffect(entity, spellId: int, rank: int, savingCap: int, direction: Vector2 = Vector2(0, 0)):
+	var spell = Data.spells[spellId]
+	saveCap = savingCap
+	saveType = spell[Data.SP_SAVE]
+	match spellId:
 		Data.SP_MAGIC_MISSILE:
 			magicMissile(entity)
 		Data.SP_ELECTRIC_GRASP:
-			electricGrasp(entity, direction)
+			electricGrasp(entity, rank, direction)
 		Data.SP_HEAL:
 			heal(entity)
 		Data.SP_SMITE:
@@ -35,13 +47,16 @@ func applyEffect(entity, spell: int, direction: Vector2 = Vector2(0, 0)):
 func magicMissile(entity):
 	entity.takeHit(GeneralEngine.dice(2, 1, 1).roll())
 
-func electricGrasp(entity, direction):
+func electricGrasp(entity, rank: int, direction: Vector2):
 	var targetCell = entity.pos + direction
 	playEffect(targetCell, 5, 5, 1.1)
 	if GLOBAL.monstersByPosition.has(targetCell):
 		var target = instance_from_id(GLOBAL.monstersByPosition[targetCell])
+		var saved = rollsavingThrow(target)
 		var dmgDice = [GeneralEngine.dmgDice(1, 12, 0, Data.DMG_LIGHTNING)]
 		var dmg = GeneralEngine.computeDamages(dmgDice, target.stats.resists)
+		if saved:
+			dmg = int(dmg) / int(2)
 		target.takeHit(dmg)
 
 func heal(entity):
