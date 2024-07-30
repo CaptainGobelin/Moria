@@ -64,6 +64,10 @@ func applyEffect(entity, spellId: int, fromCharacter: bool, rank: int, savingCap
 			unlock(entity, direction)
 		Data.SP_BLESS:
 			bless(entity, rank)
+		Data.SP_COMMAND:
+			command(entity)
+		Data.SP_LIGHT:
+			light(entity)
 		Data.SP_FIREBALL:
 			fireball(entity)
 		Data.SP_TH_FIREBOMB:
@@ -133,14 +137,14 @@ func bless(entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)
 	applySpellStatus(entity, Data.STATUS_BLESSED, rank, 20)
 
-func command(entity, rank: int):
+func command(entity):
 	playEffect(entity.pos, 6, 5, 0.6)
 	if not rollsavingThrow(entity):
-		applySpellStatus(entity, Data.STATUS_TERROR, rank, 5)
+		applySpellStatus(entity, Data.STATUS_TERROR, 1, 5)
 
-func light(entity, rank: int):
+func light(entity):
 	playEffect(entity.pos, 7, 5, 0.6)
-	applySpellStatus(entity, Data.STATUS_LIGHT, rank, 40)
+	applySpellStatus(entity, Data.STATUS_LIGHT, 1, 40)
 
 func fireball(entity):
 	var targetedCells = getArea(entity.pos, 4)

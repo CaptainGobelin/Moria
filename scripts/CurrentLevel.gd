@@ -112,8 +112,7 @@ func spawnMonster(idx: int = 0, pos = null):
 		cell = getRandomFreeCell()
 	var monster = monsterScene.instance()
 	monsters.add_child(monster)
-	monster.spawn(idx)
-	monster.setPosition(cell)
+	monster.spawn(idx, cell)
 
 func addLoot(cell: Vector2, rarityBonus: int):
 	var rarity = (randi() % 1) + rarityBonus

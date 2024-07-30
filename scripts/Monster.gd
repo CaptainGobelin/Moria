@@ -8,8 +8,9 @@ onready var status = "sleep"
 var statuses: Dictionary = {}
 var pos = Vector2(0, 0)
 
-func spawn(monsterType: int):
+func spawn(monsterType: int, cell: Vector2):
 	type = monsterType
+	setPosition(cell)
 	stats.init(type)
 
 func takeTurn():
