@@ -7,6 +7,7 @@ onready var inventory = get_node("Inventory")
 onready var spells = get_node("Spells")
 onready var shortcuts = get_node("Shortcuts")
 
+var currentVision: Array = []
 var charClass: int = 0
 var statuses: Dictionary = {}
 var enchants: Dictionary = {}
@@ -25,19 +26,22 @@ func setPosition(newPos):
 	Ref.currentLevel.refresh_view()
 	refreshMapPosition()
 
+func move(movement):
+	pos += movement
+	animator.play("walk")
+	GeneralEngine.newTurn()
+	Ref.currentLevel.refresh_view()
+	refreshMapPosition()
+	Ref.ui.write(Ref.currentLevel.getLootMessage(pos))
+	if GLOBAL.traps.has(pos):
+		var trap = GLOBAL.traps[pos]
+		if trap[GLOBAL.TR_HIDDEN]:
+			TrapEngine.triggerTrap(trap[GLOBAL.TR_INSTANCE], self)
+
 func moveAsync(movement):
 	var cellState = Ref.currentLevel.isCellFree(pos + movement)
 	if cellState[0]:
-		pos += movement
-		animator.play("walk")
-		GeneralEngine.newTurn()
-		Ref.currentLevel.refresh_view()
-		refreshMapPosition()
-		Ref.ui.write(Ref.currentLevel.getLootMessage(pos))
-		if GLOBAL.traps.has(pos):
-			var trap = GLOBAL.traps[pos]
-			if trap[GLOBAL.TR_HIDDEN]:
-				TrapEngine.triggerTrap(trap[GLOBAL.TR_INSTANCE], self)
+		move(movement)
 		return
 	match cellState[1]:
 		"door": 
@@ -59,6 +63,11 @@ func moveAsync(movement):
 				GeneralEngine.newTurn()
 				Ref.currentLevel.refresh_view()
 		"monster":
+			if cellState[2].status == "help":
+				cellState[2].setPosition(pos)
+				cellState[2].skipNextTurn = true
+				move(movement)
+				return
 			hit(cellState[2])
 			GeneralEngine.newTurn()
 		"pass": 
@@ -218,3 +227,11 @@ func rollPerception(cell: Vector2):
 
 func refreshMapPosition():
 	position = 9 * pos
+
+func getRandomCloseCell():
+	if currentVision.empty():
+		return null
+	var result = Utils.chooseRandom(currentVision)
+	while randf() > (1.0 / float(Utils.dist(pos, result))):
+		result = Utils.chooseRandom(currentVision)
+	return result

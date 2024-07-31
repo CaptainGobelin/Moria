@@ -50,7 +50,7 @@ func weaponEnch(entity, type: int, rank: int):
 
 func resistEnchant(entity, type: int, rank: int):
 	var result = []
-	for i in range(rank):
+	for _i in range(rank):
 		var status = createItemEnchant(type, 1)
 		result.append(StatusEngine.addStatus(entity, status))
 	return result

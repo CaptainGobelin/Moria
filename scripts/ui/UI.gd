@@ -368,7 +368,7 @@ func updateStat(stat: int, value):
 				rFire.text[i] = "*"
 		Data.CHAR_R_POISON:
 			rPois.text = ""
-			for i in range(value[1]):
+			for _i in range(value[1]):
 				rPois.text += "-"
 			for i in range(value[0]):
 				rPois.text[i] = "*"

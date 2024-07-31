@@ -45,7 +45,7 @@ script = ExtResource( 1 )
 texture = ExtResource( 2 )
 centered = false
 hframes = 4
-vframes = 4
+vframes = 16
 
 [node name="Stats" type="Node" parent="."]
 script = ExtResource( 4 )

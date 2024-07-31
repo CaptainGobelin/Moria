@@ -71,6 +71,8 @@ tile_data = PoolIntArray( 0, 1, 2, 1, 1, 2, 2, 1, 2, 3, 1, 1, 4, 1, 2, 5, 1, 655
 
 [node name="Character" parent="CurrentLevel" instance=ExtResource( 5 )]
 
+[node name="Allies" type="Node2D" parent="CurrentLevel"]
+
 [node name="Monsters" type="Node2D" parent="CurrentLevel"]
 
 [node name="Effects" type="Node2D" parent="CurrentLevel"]

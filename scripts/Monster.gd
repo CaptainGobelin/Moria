@@ -3,17 +3,23 @@ class_name Monster
 
 onready var type = -1
 onready var stats = get_node("Stats")
+onready var bodySprite = get_node("BodySprite")
 onready var status = "sleep"
 
 var statuses: Dictionary = {}
 var pos = Vector2(0, 0)
+var skipNextTurn = false
 
 func spawn(monsterType: int, cell: Vector2):
 	type = monsterType
+	bodySprite.frame = Data.monsters[monsterType][Data.MO_SPRITE]
 	setPosition(cell)
 	stats.init(type)
 
 func takeTurn():
+	if skipNextTurn:
+		skipNextTurn = false
+		return
 	match status:
 		"sleep":
 			return
@@ -23,6 +29,10 @@ func takeTurn():
 			else:
 				if Data.monsters[type][Data.MO_MOVE]:
 					moveTo(Ref.character)
+			return
+		"help": # Allies behavior
+			if Utils.dist(Ref.character.pos, pos) > (1 + randi() % 3):
+				moveTo(Ref.character)
 			return
 
 func hit(entity):

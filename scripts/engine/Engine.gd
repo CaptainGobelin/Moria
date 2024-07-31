@@ -59,7 +59,11 @@ func newTurn():
 	turn += 1
 	for m in Ref.currentLevel.monsters.get_children():
 		m.takeTurn()
+	for m in Ref.currentLevel.allies.get_children():
+		m.takeTurn()
 	for m in Ref.currentLevel.monsters.get_children():
+		StatusEngine.decreaseStatusesTime(m)
+	for m in Ref.currentLevel.allies.get_children():
 		StatusEngine.decreaseStatusesTime(m)
 	StatusEngine.decreaseStatusesTime(Ref.character)
 
