@@ -34,6 +34,7 @@ const PROJ_WHITE_S = [Colors.white, 0]
 const PROJ_WHITE_M = [Colors.white, 6]
 const PROJ_WHITE_LONG = [Colors.white, 3]
 const PROJ_WHITE_R = [Colors.white, 9]
+const PROJ_GREEN_M = [Colors.green, 6]
 const PROJ_GREEN_R = [Colors.green, 9]
 
 # Spells
@@ -422,6 +423,7 @@ const SP_TARGET = 7
 const SP_TARGET_SELF = 0
 const SP_TARGET_TARGET = 1
 const SP_TARGET_DIRECT = 2
+const SP_TARGET_ITEM_CHOICE = 3
 const SP_AREA = 8
 const SP_SAVE = 9
 const SAVE_WIL = 0
@@ -443,8 +445,10 @@ const spells = {
 	SP_COMMAND:	 		["Command", 1, SC_ENCHANTMENT, [false, true, false], null, 18, [5, 5, 5], SP_TARGET_TARGET, 0, SAVE_WIL],
 	SP_LIGHT:	 		["Light", 1, SC_ENCHANTMENT, [true, true, true], null, 19, [20, 20, 20], SP_TARGET_SELF, 0, SAVE_NO],
 	# Conjuration
+	SP_ACID_SPLASH: 	["Acid arrow", 1, SC_CONJURATION, [true, false, true], PROJ_GREEN_M, 60, [15, 15, 15], SP_TARGET_TARGET, 0, SAVE_PHY],
 	SP_CONJURE_ANIMAL:	["Conjure animals", 1, SC_CONJURATION, [true, false, true], null, 61, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
 	SP_SPIRITUAL_HAMMER:["Spiritual hammer", 1, SC_CONJURATION, [false, true, false], null, 62, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_LESSER_AQUIREMENT:["Lesser acquirement", 1, SC_CONJURATION, [true, true, false], null, 63, [5, 5, 5], SP_TARGET_ITEM_CHOICE, 0, SAVE_NO],
 }
 
 const spellDescriptions = {

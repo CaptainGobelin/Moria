@@ -322,6 +322,27 @@ func noTarget():
 	write("There is no targets at range for this.")
 	lastPrinted = "noTarget"
 
+func writeWishChoice():
+	var msg = "Ask for what?"
+	msg += listToChoices(["Weapon", "Armor", "Scrolls", "Potions", "Gold"])
+	write(msg)
+	lastPrinted = "writeWishChoice"
+
+func writeWishResult(items: Array):
+	var msg = ""
+	var list = []
+	if items.empty():
+		msg = "Nothing"
+	else:
+		var item = GLOBAL.items[items[0]]
+		if item[GLOBAL.IT_TYPE] == GLOBAL.LO_TYPE or item[GLOBAL.IT_TYPE] == GLOBAL.GO_TYPE:
+			list.append(Utils.addArticle(item[GLOBAL.IT_NAME], item[GLOBAL.IT_SPEC]))
+		else:
+			list.append(Utils.addArticle(item[GLOBAL.IT_NAME], items.size()))
+	msg += Utils.makeList(list) + " appeared at your feet."
+	write(msg)
+	lastPrinted = "writeWishResult"
+
 func listToChoices(list: Array) -> String:
 	var msg = ""
 	var count = 0

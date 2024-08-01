@@ -30,8 +30,10 @@ func getItemType():
 		result = (result + 1) % TYPE_PROB.size()
 	return result
 
-func generateItem(rarity: int):
-	match getItemType():
+func generateItem(rarity: int, type: int = -1):
+	if type == -1:
+		type = getItemType()
+	match type:
 		WP_IDX: return generateWeapon(rarity)
 		AR_IDX: return generateArmor(rarity)
 		TH_IDX: return generateThrowing(rarity)

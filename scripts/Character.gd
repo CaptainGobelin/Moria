@@ -112,8 +112,10 @@ func hit(entity):
 		else:
 			Ref.ui.writeCharacterMiss(entity.stats.entityName, result, entity.stats.ca)
 
-func takeHit(dmg):
+func takeHit(dmg: int, bypassProt: bool = false):
 	var totalDmg = dmg - stats.prot
+	if bypassProt:
+		totalDmg = dmg
 	stats.hp -= totalDmg
 	Ref.ui.writeCharacterTakeHit(totalDmg)
 	return totalDmg

@@ -2,6 +2,8 @@ extends Node
 
 onready var projScene = preload("res://scenes/Projectile.tscn")
 
+var wishableItems = [0, 1, 4, 5, 7]
+
 func castSpellAsync(spellId: int, scrollId = null):
 	var spellCasted = false
 	var spell = Data.spells[spellId]
@@ -50,6 +52,13 @@ func castSpellAsync(spellId: int, scrollId = null):
 			Ref.ui.writeCastSpell(spell[Data.SP_NAME])
 			SpellEngine.applyEffect(Ref.character, spellId, true, spellRank, savingCap)
 			spellCasted = true
+		Data.SP_TARGET_ITEM_CHOICE:
+			Ref.ui.writeWishChoice()
+			Ref.ui.askForChoice(wishableItems, self)
+			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
+			if coroutineReturn > 0:
+				SpellEngine.applyEffect(Ref.character, spellId, true, spellRank, wishableItems[coroutineReturn-1])
+				spellCasted = true
 	if (spellCasted):
 		if scrollId == null:
 			Ref.character.spells.spellsUses[spellId] -= 1

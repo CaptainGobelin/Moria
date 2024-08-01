@@ -79,8 +79,10 @@ func setPosition(newPos: Vector2):
 func refreshMapPosition():
 	position = 9 * pos
 
-func takeHit(dmg):
+func takeHit(dmg: int, bypassProt: bool = false):
 	var realDmg = (dmg - stats.prot)
+	if bypassProt:
+		realDmg = dmg
 	stats.currentHp -= realDmg
 	Ref.ui.writeMonsterTakeHit(stats.entityName, realDmg)
 	if stats.currentHp <= 0:

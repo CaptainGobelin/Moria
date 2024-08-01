@@ -45,7 +45,8 @@ func rollsavingThrow(entity) -> bool:
 func applyEffect(entity, spellId: int, fromCharacter: bool, rank: int, savingCap: int, direction: Vector2 = Vector2(0, 0)):
 	var spell = Data.spells[spellId]
 	saveCap = savingCap
-	saveType = spell[Data.SP_SAVE]
+	if spell[Data.SP_SAVE] != Data.SAVE_NO:
+		saveType = spell[Data.SP_SAVE]
 	fromChar = fromCharacter
 	match spellId:
 		Data.SP_MAGIC_MISSILE:
@@ -68,10 +69,14 @@ func applyEffect(entity, spellId: int, fromCharacter: bool, rank: int, savingCap
 			command(entity)
 		Data.SP_LIGHT:
 			light(entity)
+		Data.SP_ACID_SPLASH:
+			acidSplash(entity, rank)
 		Data.SP_CONJURE_ANIMAL:
 			conjureAnimal(entity)
 		Data.SP_SPIRITUAL_HAMMER:
 			spiritualHammer(entity)
+		Data.SP_LESSER_AQUIREMENT:
+			lesserAcquirement(entity, rank, savingCap)
 		Data.SP_FIREBALL:
 			fireball(entity)
 		Data.SP_TH_FIREBOMB:
@@ -150,6 +155,14 @@ func light(entity):
 	playEffect(entity.pos, 7, 5, 0.6)
 	applySpellStatus(entity, Data.STATUS_LIGHT, 1, 40)
 
+func acidSplash(entity, rank: int):
+	var saved = rollsavingThrow(entity)
+	var dmgDice = [GeneralEngine.dmgDice(1 + rank, 4, 0, Data.DMG_SLASH)]
+	var dmg = GeneralEngine.computeDamages(dmgDice, entity.stats.resists, true)
+	if saved:
+		dmg = int(dmg) / int(2)
+	entity.takeHit(dmg, true)
+
 func conjureAnimal(entity):
 	if entity is Character:
 		var cell = entity.getRandomCloseCell()
@@ -165,6 +178,12 @@ func spiritualHammer(entity):
 			if cell == null:
 				return
 			Ref.currentLevel.spawnMonster(901, cell, true)
+
+func lesserAcquirement(entity, rank: int, itemType: int):
+	var items = Ref.game.itemGenerator.generateItem(rank * 2, itemType)
+	for item in items:
+		GLOBAL.dropItemOnFloor(item, entity.pos)
+	Ref.ui.writeWishResult(items)
 
 func fireball(entity):
 	var targetedCells = getArea(entity.pos, 4)

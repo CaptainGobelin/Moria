@@ -67,11 +67,11 @@ func newTurn():
 		StatusEngine.decreaseStatusesTime(m)
 	StatusEngine.decreaseStatusesTime(Ref.character)
 
-func computeDamages(dmgDices: Array, resist: Array):
+func computeDamages(dmgDices: Array, resist: Array, byPassResists: bool = false):
 	var result = 0
 	for dice in dmgDices:
 		var dmg = dice.roll()
-		if resist[dice.type] > 0:
+		if !byPassResists and resist[dice.type] > 0:
 			dmg /= pow(2, resist[dice.type])
 		result += dmg
 	return result
