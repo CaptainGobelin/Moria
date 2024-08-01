@@ -110,8 +110,9 @@ const MO_SPRITE = 6
 const MO_XP = 7
 const MO_MOVE = 8
 const monsters = {
-	0: ["Skeleton", 6, Vector3(1, 6, 0), Vector3(1, 4, 0), 5, 1, 2, 4, false],
-	900: ["Conjured wolf", 10, Vector3(1, 6, 0), Vector3(1, 4, 0), 2, 0, 24, 0, true],
+	0: ["Skeleton", 6, Vector3(1, 6, 0), Vector3(1, 4, 0), 3, 1, 2, 4, false],
+	900: ["Conjured wolf", 10, Vector3(1, 6, 0), Vector3(1, 6, 0), 2, 0, 24, 0, true],
+	901: ["Spiritual hammer", 4, Vector3(1, 6, 0), Vector3(1, 4, 0), 4, 2, 28, 0, true],
 	1000: ["Dummy target", 100, Vector3(1, 6, 0), Vector3(1, 1, 0), 2, 1, 1, 10, false],
 }
 
@@ -443,6 +444,7 @@ const spells = {
 	SP_LIGHT:	 		["Light", 1, SC_ENCHANTMENT, [true, true, true], null, 19, [20, 20, 20], SP_TARGET_SELF, 0, SAVE_NO],
 	# Conjuration
 	SP_CONJURE_ANIMAL:	["Conjure animals", 1, SC_CONJURATION, [true, false, true], null, 61, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_SPIRITUAL_HAMMER:["Spiritual hammer", 1, SC_CONJURATION, [false, true, false], null, 62, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
 }
 
 const spellDescriptions = {

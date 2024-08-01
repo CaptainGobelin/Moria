@@ -70,6 +70,8 @@ func applyEffect(entity, spellId: int, fromCharacter: bool, rank: int, savingCap
 			light(entity)
 		Data.SP_CONJURE_ANIMAL:
 			conjureAnimal(entity)
+		Data.SP_SPIRITUAL_HAMMER:
+			spiritualHammer(entity)
 		Data.SP_FIREBALL:
 			fireball(entity)
 		Data.SP_TH_FIREBOMB:
@@ -154,6 +156,15 @@ func conjureAnimal(entity):
 		if cell == null:
 			return
 		Ref.currentLevel.spawnMonster(900, cell, true)
+
+func spiritualHammer(entity):
+	if entity is Character:
+		var count = 1 + randi() % 2
+		for _i in range(count):
+			var cell = entity.getRandomCloseCell()
+			if cell == null:
+				return
+			Ref.currentLevel.spawnMonster(901, cell, true)
 
 func fireball(entity):
 	var targetedCells = getArea(entity.pos, 4)

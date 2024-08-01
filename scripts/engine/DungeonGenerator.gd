@@ -43,7 +43,7 @@ func newFloor():
 	decorator.init(array)
 	var exits = decorator.placeExits()
 	drawFloor()
-	var criticalPath = Ref.game.pathfinder.a_star(exits[0], exits[2], 9999)
+	var criticalPath = Ref.game.pathfinder.a_star(exits[0], exits[2], 9999, true)
 	decorator.flagCriticalPath(criticalPath)
 	var rooms = decorator.getTreasuresCandidates()
 	decorator.flagMap()

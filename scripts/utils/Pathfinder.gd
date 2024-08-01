@@ -35,13 +35,17 @@ func check_cell_vision(position):
 func dist(a, b):
 	return sqrt(pow(b.x-a.x, 2) + pow(b.y-a.y, 2))
 
-func get_neighbors(cell, end, length):
+func get_neighbors(cell, end, length, ignoreDoors: bool):
 	var result = []
 	var pos = cell[0]
 	var cost = cell[1] + 1
 	for i in [Vector2(-1, 0), Vector2(0, -1), Vector2(0, 1), Vector2(1, 0)]:
+		if (pos + i) == end:
+			result.append([pos + Vector2(i.x, i.y), cost, cell])
 		var cellState = Ref.currentLevel.isCellFree(pos+i)
-		if !cellState[0] and cellState[1] != "door" and cellState[1] != "pass":
+		if (pos + i) == Ref.character.pos:
+			continue
+		if !cellState[0] and (cellState[1] != "door" or !ignoreDoors) and cellState[1] != "pass":
 			continue
 		if (cost + dist(pos + Vector2(i.x, i.y), end) <= length):
 			result.append([pos + Vector2(i.x, i.y), cost, cell])
@@ -71,7 +75,7 @@ func add_sorted(cell, list):
 		k += 1
 	list.insert(k, cell)
 
-func a_star(start, end, length):
+func a_star(start, end, length, ignoreDoors: bool = false):
 	if (end == null):
 		return null
 	if (dist(start, end) > length) or (dist(start, end) == 0):
@@ -82,7 +86,7 @@ func a_star(start, end, length):
 		var u = openList.pop_front()
 		if (u[0].x == end.x and u[0].y == end.y):
 			return path_to(u)
-		for v in get_neighbors(u, end, length):
+		for v in get_neighbors(u, end, length, ignoreDoors):
 			if (shorter_in(v, openList) or shorter_in(v, closedList)):
 				continue
 			add_sorted(v, openList)

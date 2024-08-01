@@ -1,9 +1,9 @@
 extends Node
 
-var spells = [Data.SP_CONJURE_ANIMAL, Data.SP_COMMAND, Data.SP_UNLOCK]
+var spells = [Data.SP_CONJURE_ANIMAL, Data.SP_SPIRITUAL_HAMMER, Data.SP_UNLOCK]
 var spellsUses = {
 	Data.SP_CONJURE_ANIMAL: 5,
-	Data.SP_COMMAND: 10,
+	Data.SP_SPIRITUAL_HAMMER: 10,
 	Data.SP_UNLOCK: 8
 }
 var schoolRanks = [0, 0, 0, 0, 0]

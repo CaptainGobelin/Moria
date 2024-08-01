@@ -293,14 +293,14 @@ func writeCharacterTakeHit(dmg: int):
 	write(color("You suffer " + String(dmg) + " damages.", "red"))
 	lastPrinted = "writeCharacterTakeHit"
 
-func writeMonsterStrike(name: String, hit: int, ca: int):
-	var msg = "The " + name + " strikes you "
+func writeMonsterStrike(name: String, target: String, hit: int, ca: int):
+	var msg = "The " + name + " strikes " + target + " "
 	msg += "(rolled " + String(hit) + " vs " + String(ca) + ")."
 	write(color(msg, "red"))
 	lastPrinted = "writeMonsterStrike"
 
-func writeMonsterMiss(name: String, hit: int, ca: int):
-	var msg = "The " + name + " misses you"
+func writeMonsterMiss(name: String, target: String, hit: int, ca: int):
+	var msg = "The " + name + " misses " + target + " "
 	msg += " (rolled " + String(hit) + " vs " + String(ca) + ")."
 	write(msg)
 	lastPrinted = "writeMonsterMiss"

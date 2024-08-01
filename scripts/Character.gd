@@ -206,6 +206,7 @@ func search():
 				continue
 			if pow(i, 2) + pow(j, 2) <= 16:
 				rollPerception(cell)
+	GeneralEngine.newTurn()
 
 func rollPerception(cell: Vector2):
 	var perceptionRoll = GeneralEngine.dice(1, 6, 0).roll()
