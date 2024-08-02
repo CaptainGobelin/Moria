@@ -30,7 +30,7 @@ func _ready():
 		Tests.runAll()
 
 func cleanFloor():
-	GLOBAL.traps.clear()
+	GLOBAL.trapsByPos.clear()
 	GLOBAL.hiddenDoors.clear()
 	GLOBAL.lockedDoors.clear()
 	for i in range(GLOBAL.FLOOR_SIZE_X):
@@ -44,7 +44,7 @@ func cleanFloor():
 	GLOBAL.chests.clear()
 	for t in Ref.currentLevel.traps.get_children():
 		t.free()
-	GLOBAL.traps.clear()
+	GLOBAL.trapsByPos.clear()
 	for l in Ref.currentLevel.loots.get_children():
 		l.free()
 	for i in GLOBAL.itemsOnFloor.keys():
@@ -61,6 +61,11 @@ func newFloor():
 	var spawnPos = dungeonGenerator.newFloor()
 	Ref.currentLevel.initShadows()
 	Ref.currentLevel.placeCharacter(spawnPos)
+	for a in Ref.currentLevel.allies.get_children():
+		var cell = Ref.character.getRandomCloseCell()
+		if cell == null:
+			a.die()
+		a.setPosition(cell)
 	for _i in range(10):
 		Ref.currentLevel.spawnMonster()
 	for _i in range(randi() % 4):

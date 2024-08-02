@@ -69,6 +69,14 @@ func applyEffect(entity, spellId: int, fromCharacter: bool, rank: int, savingCap
 			command(entity)
 		Data.SP_LIGHT:
 			light(entity)
+		Data.SP_BLIND:
+			blind(entity, rank)
+		Data.SP_MIND_SPIKE:
+			mindSpike(entity, rank)
+		Data.SP_DETECT_EVIL:
+			detectEvil(entity, rank)
+		Data.SP_REVEAL_TRAPS:
+			revealTraps(entity)
 		Data.SP_ACID_SPLASH:
 			acidSplash(entity, rank)
 		Data.SP_CONJURE_ANIMAL:
@@ -154,6 +162,29 @@ func command(entity):
 func light(entity):
 	playEffect(entity.pos, 7, 5, 0.6)
 	applySpellStatus(entity, Data.STATUS_LIGHT, 1, 40)
+	Ref.currentLevel.refresh_view()
+
+func blind(entity, rank: int):
+	playEffect(entity.pos, 4, 5, 0.6)
+	if not rollsavingThrow(entity):
+		applySpellStatus(entity, Data.STATUS_BLIND, rank, 15)
+
+func mindSpike(entity, rank: int):
+	playEffect(entity.pos, 8, 5, 0.6)
+	if not rollsavingThrow(entity):
+		var dmgDice = [GeneralEngine.dmgDice(1, 6, 1, Data.DMG_MAGIC)]
+		var dmg = GeneralEngine.computeDamages(dmgDice, entity.stats.resists)
+		entity.takeHit(dmg)
+
+func detectEvil(entity, rank: int):
+	playEffect(entity.pos, 7, 5, 0.6)
+	applySpellStatus(entity, Data.STATUS_DETECT_EVIL, 1, 20)
+	Ref.currentLevel.refresh_view()
+
+func revealTraps(entity):
+	playEffect(entity.pos, 7, 5, 0.6)
+	applySpellStatus(entity, Data.STATUS_REVEAL_TRAPS, 1, 40)
+	Ref.currentLevel.refresh_view()
 
 func acidSplash(entity, rank: int):
 	var saved = rollsavingThrow(entity)

@@ -58,13 +58,25 @@ func refresh_view():
 	for m in monsters.get_children():
 		if fog.get_cellv(m.pos) == 0:
 			m.bodySprite.visible = true
+			m.mask.visible = false
 		else:
 			m.bodySprite.visible = false
+			m.mask.visible = false
+			if m.tags.has("evil"):
+				if Ref.character.statuses.has(Data.STATUS_DETECT_EVIL):
+					m.mask.visible = true
 	for a in allies.get_children():
 		if fog.get_cellv(a.pos) == 0:
 			a.bodySprite.visible = true
 		else:
 			a.bodySprite.visible = false
+	for t in traps.get_children():
+		t.mask.visible = false
+		if Ref.character.statuses.has(Data.STATUS_REVEAL_TRAPS):
+			if fog.get_cellv(t.pos) == 0:
+				TrapEngine.reveal(t.pos)
+			elif t.hidden:
+				t.mask.visible = true
 	Ref.character.currentVision.erase(Ref.character.pos)
 
 func initShadows():
@@ -164,7 +176,7 @@ func createChest():
 	addChest(cell, 0)
 
 func placeTrap(pos: Vector2):
-	if GLOBAL.traps.has(pos):
+	if GLOBAL.trapsByPos.has(pos):
 		return
 	var trap = trapScene.instance()
 	traps.add_child(trap)

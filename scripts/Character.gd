@@ -33,10 +33,10 @@ func move(movement):
 	Ref.currentLevel.refresh_view()
 	refreshMapPosition()
 	Ref.ui.write(Ref.currentLevel.getLootMessage(pos))
-	if GLOBAL.traps.has(pos):
-		var trap = GLOBAL.traps[pos]
-		if trap[GLOBAL.TR_HIDDEN]:
-			TrapEngine.triggerTrap(trap[GLOBAL.TR_INSTANCE], self)
+	if GLOBAL.trapsByPos.has(pos):
+		var trap = GLOBAL.getTrapByPos(pos)
+		if trap.hidden:
+			TrapEngine.trigger(trap, self)
 
 func moveAsync(movement):
 	var cellState = Ref.currentLevel.isCellFree(pos + movement)
@@ -214,13 +214,8 @@ func rollPerception(cell: Vector2):
 	var perceptionRoll = GeneralEngine.dice(1, 6, 0).roll()
 	if perceptionRoll > 3:
 		# Detect traps
-		if GLOBAL.traps.has(cell):
-			var trap = GLOBAL.traps[cell]
-			if trap[GLOBAL.TR_HIDDEN]:
-				trap[GLOBAL.TR_HIDDEN] = false
-				instance_from_id(trap[GLOBAL.TR_INSTANCE]).visible = true
-				var trapData = Data.traps[trap[GLOBAL.TR_TYPE]]
-				Ref.ui.writeHiddenTrapDetected(trapData[Data.TR_NAME])
+		if GLOBAL.trapsByPos.has(cell):
+			TrapEngine.reveal(cell)
 	if perceptionRoll > 5:
 		# Detect doors
 		if GLOBAL.hiddenDoors.has(cell):

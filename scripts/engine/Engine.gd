@@ -19,8 +19,8 @@ class Dice:
 		if (GeneralEngine.isFaking):
 			return GeneralEngine.fakedValue
 		var result = 0
-		for _d in range(int(self.n)):
-			result += (randi() % int(self.d)) + self.b
+		for _d in range(self.n):
+			result += (randi() % self.d) + self.b + 1
 		return result
 	
 	func toString():

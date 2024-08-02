@@ -148,10 +148,10 @@ const ST_HIDDEN = 7
 var statuses: Dictionary = {}
 
 # Traps
-const TR_HIDDEN = 0
-const TR_TYPE = 1
-const TR_INSTANCE = 2
-var traps: Dictionary = {}
+var trapsByPos: Dictionary = {}
+
+func getTrapByPos(cell: Vector2) -> Trap:
+	return instance_from_id(trapsByPos[cell]) as Trap
 
 # Doors
 var hiddenDoors: Array = []

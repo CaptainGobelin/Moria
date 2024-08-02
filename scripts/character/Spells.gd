@@ -1,10 +1,16 @@
 extends Node
 
-var spells = [Data.SP_LESSER_AQUIREMENT, Data.SP_SPIRITUAL_HAMMER, Data.SP_ACID_SPLASH]
+var spells = [
+	Data.SP_DETECT_EVIL,
+	Data.SP_REVEAL_TRAPS,
+	Data.SP_MIND_SPIKE,
+	Data.SP_CONJURE_ANIMAL
+]
 var spellsUses = {
-	Data.SP_LESSER_AQUIREMENT: 15,
-	Data.SP_SPIRITUAL_HAMMER: 10,
-	Data.SP_ACID_SPLASH: 8
+	Data.SP_DETECT_EVIL: 15,
+	Data.SP_REVEAL_TRAPS: 10,
+	Data.SP_MIND_SPIKE: 8,
+	Data.SP_CONJURE_ANIMAL: 10
 }
 var schoolRanks = [0, 0, 0, 0, 0]
 var schoolSaves = [0, 0, 0, 0, 0]

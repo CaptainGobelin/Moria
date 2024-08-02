@@ -101,6 +101,11 @@ const classes = {
 }
 
 # Monsters
+const MO_SKELETON = 0
+const MO_SUM_WOLF = 900
+const MO_SUM_HAMMER = 901
+const MO_DUMMY = 1000
+
 const MO_NAME = 0
 const MO_HP = 1
 const MO_HIT = 2
@@ -111,10 +116,16 @@ const MO_SPRITE = 6
 const MO_XP = 7
 const MO_MOVE = 8
 const monsters = {
-	0: ["Skeleton", 6, Vector3(1, 6, 0), Vector3(1, 4, 0), 3, 1, 2, 4, false],
-	900: ["Conjured wolf", 10, Vector3(1, 6, 0), Vector3(1, 6, 0), 2, 0, 24, 0, true],
-	901: ["Spiritual hammer", 4, Vector3(1, 6, 0), Vector3(1, 4, 0), 4, 2, 28, 0, true],
-	1000: ["Dummy target", 100, Vector3(1, 6, 0), Vector3(1, 1, 0), 2, 1, 1, 10, false],
+	MO_SKELETON: ["Skeleton", 6, Vector3(1, 6, 0), Vector3(1, 4, 0), 3, 1, 2, 4, false],
+	MO_SUM_WOLF: ["Conjured wolf", 10, Vector3(1, 6, 0), Vector3(1, 6, 0), 2, 0, 24, 0, true],
+	MO_SUM_HAMMER: ["Spiritual hammer", 4, Vector3(1, 6, 0), Vector3(1, 4, 0), 4, 2, 28, 0, true],
+	MO_DUMMY: ["Dummy target", 100, Vector3(1, 6, 0), Vector3(1, 1, 0), 2, 1, 1, 10, false],
+}
+
+const monsterTags = {
+	MO_SKELETON: ["evil", "undead"],
+	MO_SUM_WOLF: ["animal", "summoned"],
+	MO_SUM_HAMMER: ["animated", "summoned"]
 }
 
 # Stats
@@ -444,6 +455,11 @@ const spells = {
 	SP_BLESS: 			["Bless", 1, SC_ENCHANTMENT, [false, true, true], null, 17, [15, 15, 15], SP_TARGET_SELF, 0, SAVE_NO],
 	SP_COMMAND:	 		["Command", 1, SC_ENCHANTMENT, [false, true, false], null, 18, [5, 5, 5], SP_TARGET_TARGET, 0, SAVE_WIL],
 	SP_LIGHT:	 		["Light", 1, SC_ENCHANTMENT, [true, true, true], null, 19, [20, 20, 20], SP_TARGET_SELF, 0, SAVE_NO],
+	# Divination
+	SP_BLIND: 			["Blind", 1, SC_DIVINATION, [true, false, true], null, 30, [15, 15, 15], SP_TARGET_TARGET, 0, SAVE_PHY],
+	SP_MIND_SPIKE: 		["Mind spike", 1, SC_DIVINATION, [false, true, false], null, 31, [10, 10, 10], SP_TARGET_TARGET, 0, SAVE_WIL],
+	SP_DETECT_EVIL:		["Detect evil", 1, SC_DIVINATION, [false, true, true], null, 32, [10, 10, 10], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_REVEAL_TRAPS:	["Find traps", 1, SC_DIVINATION, [true, true, true], null, 33, [5, 10, 15], SP_TARGET_SELF, 0, SAVE_NO],
 	# Conjuration
 	SP_ACID_SPLASH: 	["Acid arrow", 1, SC_CONJURATION, [true, false, true], PROJ_GREEN_M, 60, [15, 15, 15], SP_TARGET_TARGET, 0, SAVE_PHY],
 	SP_CONJURE_ANIMAL:	["Conjure animals", 1, SC_CONJURATION, [true, false, true], null, 61, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
@@ -479,10 +495,15 @@ func spellsReader():
 	Utils.printDict(spellsPerSchool)
 
 # Statuses
-const STATUS_SLEEP = 5
-const STATUS_BLESSED = 6
-const STATUS_TERROR = 7
-const STATUS_LIGHT = 8
+const STATUS_SLEEP = 0
+const STATUS_TERROR = 1
+const STATUS_BLIND = 2
+const STATUS_LIGHT = 100
+
+const STATUS_DETECT_EVIL = 101
+const STATUS_REVEAL_TRAPS = 102
+const STATUS_BLESSED = 103
+
 const STATUS_FIRE_WEAPON = 1000 + ENCH_FIRE_DMG
 const STATUS_FROST_WEAPON = 1000 + ENCH_FROST_DMG
 const STATUS_POISON_WEAPON = 1000 + ENCH_POISON_DMG
@@ -500,11 +521,14 @@ const STATUS_ICE_RESIST = 10000 + DMG_ICE
 const STATUS_LIGHTNING_RESIST = 10000 + DMG_LIGHTNING
 
 const statusPrefabs = {
-	STATUS_SLEEP: ["Asleep", 7, null, null, STATUS_SLEEP, null, null, false],
-	STATUS_BLESSED: ["Blessed", 11, null, null, STATUS_BLESSED, null, null, false],
+	STATUS_SLEEP: ["Sleep", 7, null, null, STATUS_SLEEP, null, null, false],
 	STATUS_TERROR: ["Terror", 2, null, null, STATUS_TERROR, null, null, false],
-	STATUS_LIGHT: ["Light", 23, null, null, STATUS_LIGHT, null, null, false],
+	STATUS_BLIND: ["Blind", 3, null, null, STATUS_BLIND, null, null, false],
 	
+	STATUS_LIGHT: ["Light", 23, null, null, STATUS_LIGHT, null, null, false],
+	STATUS_DETECT_EVIL: ["Detect evil", 9, null, null, STATUS_DETECT_EVIL, null, null, false],
+	STATUS_REVEAL_TRAPS: ["Find traps", 15, null, null, STATUS_REVEAL_TRAPS, null, null, false],
+	STATUS_BLESSED: ["Blessed", 11, null, null, STATUS_BLESSED, null, null, false],
 }
 
 # Traps

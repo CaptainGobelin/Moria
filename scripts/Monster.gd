@@ -4,8 +4,10 @@ class_name Monster
 onready var type = -1
 onready var stats = get_node("Stats")
 onready var bodySprite = get_node("BodySprite")
+onready var mask = get_node("Mask")
 onready var status = "sleep"
 
+var tags: Array = []
 var statuses: Dictionary = {}
 var pos = Vector2(0, 0)
 var skipNextTurn = false
@@ -15,6 +17,8 @@ func spawn(monsterType: int, cell: Vector2):
 	bodySprite.frame = Data.monsters[monsterType][Data.MO_SPRITE]
 	setPosition(cell)
 	stats.init(type)
+	if Data.monsterTags.has(monsterType):
+		tags = Data.monsterTags[monsterType]
 
 func takeTurn():
 	if skipNextTurn:
@@ -90,11 +94,11 @@ func takeHit(dmg: int, bypassProt: bool = false):
 
 func die():
 	status = "dead"
+	GLOBAL.targets.erase(get_instance_id())
 	Ref.ui.writeMonsterDie(stats.entityName)
 	Ref.character.stats.xp += stats.xp
 	if GLOBAL.monstersByPosition.has(pos):
 		GLOBAL.monstersByPosition.erase(pos)
-	GLOBAL.targets.erase(get_instance_id())
 	queue_free()
 
 func awake():
