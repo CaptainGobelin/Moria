@@ -55,6 +55,16 @@ func refresh_view():
 						break
 					if vision[0] and not Ref.character.currentVision.has(p):
 						Ref.character.currentVision.append(p)
+	for m in monsters.get_children():
+		if fog.get_cellv(m.pos) == 0:
+			m.bodySprite.visible = true
+		else:
+			m.bodySprite.visible = false
+	for a in allies.get_children():
+		if fog.get_cellv(a.pos) == 0:
+			a.bodySprite.visible = true
+		else:
+			a.bodySprite.visible = false
 	Ref.character.currentVision.erase(Ref.character.pos)
 
 func initShadows():

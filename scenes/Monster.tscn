@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://sprites/chars.png" type="Texture" id=1]
 [ext_resource path="res://scripts/Monster.gd" type="Script" id=2]
+[ext_resource path="res://sprites/masks.png" type="Texture" id=3]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node
@@ -37,6 +38,15 @@ func computeStats():
 
 [node name="Monster" type="Node2D" groups=["Monster"]]
 script = ExtResource( 2 )
+
+[node name="Mask" type="Sprite" parent="."]
+visible = false
+z_index = 1
+texture = ExtResource( 3 )
+centered = false
+hframes = 6
+vframes = 2
+frame = 6
 
 [node name="BodySprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )

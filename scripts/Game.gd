@@ -23,6 +23,7 @@ func _ready():
 		testFloor()
 	else:
 		newFloor()
+	Ref.currentLevel.refresh_view()
 	set_process_input(true)
 	GLOBAL.currentMode = GLOBAL.MODE_NORMAL
 	if runTests:
