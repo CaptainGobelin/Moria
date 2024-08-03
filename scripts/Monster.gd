@@ -94,11 +94,11 @@ func takeHit(dmg: int, bypassProt: bool = false):
 
 func die():
 	status = "dead"
-	GLOBAL.targets.erase(get_instance_id())
 	Ref.ui.writeMonsterDie(stats.entityName)
 	Ref.character.stats.xp += stats.xp
 	if GLOBAL.monstersByPosition.has(pos):
 		GLOBAL.monstersByPosition.erase(pos)
+	GLOBAL.targets.erase(get_instance_id())
 	queue_free()
 
 func awake():
@@ -114,7 +114,7 @@ func wander():
 		if Ref.currentLevel.isCellFree(c)[0]:
 			moveTo(c)
 
-func getClosestTarget(targets: Array):
+func getClosestTarget(targets):
 	if targets.empty():
 		return null
 	var result = null

@@ -46,7 +46,7 @@ func refresh_view():
 							Ref.character.rollPerception(p)
 							searched[p.x][p.y] = true
 					for m in monsters.get_children():
-						if m.pos == p:
+						if m.pos == p and m.status != "dead":
 							m.awake()
 							if !GLOBAL.targets.has(m.get_instance_id()):
 								GLOBAL.targets[m.get_instance_id()] = currentPath.duplicate()
