@@ -3,13 +3,13 @@ extends Node
 var spells = [
 	Data.SP_DETECT_EVIL,
 	Data.SP_REVEAL_TRAPS,
-	Data.SP_MIND_SPIKE,
+	Data.SP_MAGIC_MISSILE,
 	Data.SP_CONJURE_ANIMAL
 ]
 var spellsUses = {
 	Data.SP_DETECT_EVIL: 15,
 	Data.SP_REVEAL_TRAPS: 10,
-	Data.SP_MIND_SPIKE: 8,
+	Data.SP_MAGIC_MISSILE: 8,
 	Data.SP_CONJURE_ANIMAL: 10
 }
 var schoolRanks = [0, 0, 0, 0, 0]

@@ -95,7 +95,10 @@ func applyEffect(entity, spellId: int, fromCharacter: bool, rank: int, savingCap
 			throwings.sleepFlask(entity)
 
 func magicMissile(entity):
-	entity.takeHit(GeneralEngine.dice(2, 1, 1).roll())
+	playEffect(entity.pos, 8, 5, 0.6)
+	var dmgDice = [GeneralEngine.dmgDice(1, 4, 1, Data.DMG_MAGIC)]
+	var dmg = GeneralEngine.computeDamages(dmgDice, entity.stats.resists)
+	entity.takeHit(dmg)
 
 func electricGrasp(entity, rank: int, direction: Vector2):
 	var targetCell = entity.pos + direction

@@ -435,6 +435,7 @@ const SP_TARGET_SELF = 0
 const SP_TARGET_TARGET = 1
 const SP_TARGET_DIRECT = 2
 const SP_TARGET_ITEM_CHOICE = 3
+const SP_TARGET_RANDOM = 4
 const SP_AREA = 8
 const SP_SAVE = 9
 const SAVE_WIL = 0
@@ -443,7 +444,7 @@ const SAVE_NO = 2
 
 const spells = {
 	# Evocation
-	SP_MAGIC_MISSILE: 	["Magic missile", 1, SC_EVOCATION, [true, false, false], PROJ_PURPLE_S, 0, [20, 20, 20], SP_TARGET_TARGET, 0, SAVE_NO],
+	SP_MAGIC_MISSILE: 	["Magic missile", 1, SC_EVOCATION, [true, false, false], PROJ_PURPLE_S, 0, [20, 20, 20], SP_TARGET_RANDOM, 0, SAVE_NO],
 	SP_ELECTRIC_GRASP: 	["Shocking grasp", 1, SC_EVOCATION, [true, false, true], null, 1, [10, 10, 10], SP_TARGET_DIRECT, 1, SAVE_PHY],
 	SP_HEAL: 			["Heal", 1, SC_EVOCATION, [false, true, true], null, 2, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
 	SP_SMITE: 			["Sunscorch", 1, SC_EVOCATION, [false, false, true], null, 3, [10, 10, 10], SP_TARGET_DIRECT, 1, SAVE_PHY],

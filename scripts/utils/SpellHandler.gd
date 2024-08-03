@@ -16,6 +16,23 @@ func castSpellAsync(spellId: int, scrollId = null):
 			Ref.ui.writeNoSpell(spell[Data.SP_NAME])
 			return
 	match spell[Data.SP_TARGET]:
+		Data.SP_TARGET_RANDOM:
+			if GLOBAL.targets.size() == 0:
+				Ref.ui.noTarget()
+				return
+			if spellId == Data.SP_MAGIC_MISSILE:
+				Ref.ui.writeCastSpell(spell[Data.SP_NAME])
+				var targets = []
+				for _i in spellRank:
+					var targetId = Utils.chooseRandom(GLOBAL.targets.keys())
+					targets.append(targetId)
+					yield(castProjectile(GLOBAL.targets[targetId], spell[Data.SP_PROJ], "launched"), "completed")
+				var targetId = Utils.chooseRandom(GLOBAL.targets.keys())
+				targets.append(targetId)
+				yield(castProjectile(GLOBAL.targets[targetId], spell[Data.SP_PROJ]), "completed")
+				for target in targets:
+					SpellEngine.applyEffect(instance_from_id(target), spellId, true, spellRank, savingCap)
+			spellCasted = true
 		Data.SP_TARGET_TARGET:
 			if GLOBAL.targets.size() == 0:
 				Ref.ui.noTarget()
@@ -66,8 +83,8 @@ func castSpellAsync(spellId: int, scrollId = null):
 			Ref.character.inventory.scrolls.erase(scrollId)
 		GeneralEngine.newTurn()
 
-func castProjectile(path: Array, projInfo):
+func castProjectile(path: Array, projInfo, yieldFor: String = "end_coroutine"):
 	var p = projScene.instance()
 	Ref.currentLevel.effects.add_child(p)
 	p.init(path, projInfo[Data.PROJ_TYPE], projInfo[Data.PROJ_COLOR])
-	yield(p, "end_coroutine")
+	yield(p, yieldFor)

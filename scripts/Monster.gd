@@ -25,6 +25,8 @@ func takeTurn():
 		skipNextTurn = false
 		return
 	match status:
+		"dead":
+			return
 		"sleep":
 			return
 		"awake":
@@ -84,6 +86,8 @@ func refreshMapPosition():
 	position = 9 * pos
 
 func takeHit(dmg: int, bypassProt: bool = false):
+	if status == "dead":
+		return
 	var realDmg = (dmg - stats.prot)
 	if bypassProt:
 		realDmg = dmg
