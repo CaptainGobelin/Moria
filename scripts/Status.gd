@@ -9,7 +9,9 @@ func init(status: int):
 	var turns = 99
 	if GLOBAL.statuses[status][GLOBAL.ST_TIMING] == GLOBAL.TIMING_TIMER:
 		turns = GLOBAL.statuses[status][GLOBAL.ST_TURNS]
-	setTurn(turns)
+		setTurn(turns)
+	else:
+		timer.visible = false
 
 func setTurn(turns: int):
 	if turns == 0:

@@ -1,16 +1,18 @@
 extends Node
 
 var spells = [
-	Data.SP_DETECT_EVIL,
-	Data.SP_REVEAL_TRAPS,
-	Data.SP_MAGIC_MISSILE,
-	Data.SP_CONJURE_ANIMAL
+	Data.SP_SHIELD,
+	Data.SP_MAGE_ARMOR,
+	Data.SP_ARMOR_OF_FAITH,
+	Data.SP_PROTECTION_FROM_EVIL,
+	Data.SP_SANCTUARY
 ]
 var spellsUses = {
-	Data.SP_DETECT_EVIL: 15,
-	Data.SP_REVEAL_TRAPS: 10,
-	Data.SP_MAGIC_MISSILE: 8,
-	Data.SP_CONJURE_ANIMAL: 10
+	Data.SP_SHIELD: 15,
+	Data.SP_MAGE_ARMOR: 10,
+	Data.SP_ARMOR_OF_FAITH: 8,
+	Data.SP_PROTECTION_FROM_EVIL: 10,
+	Data.SP_SANCTUARY: 10
 }
 var schoolRanks = [0, 0, 0, 0, 0]
 var schoolSaves = [0, 0, 0, 0, 0]

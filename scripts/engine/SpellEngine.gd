@@ -77,6 +77,16 @@ func applyEffect(entity, spellId: int, fromCharacter: bool, rank: int, savingCap
 			detectEvil(entity, rank)
 		Data.SP_REVEAL_TRAPS:
 			revealTraps(entity)
+		Data.SP_SHIELD:
+			shield(entity, rank)
+		Data.SP_MAGE_ARMOR:
+			mageArmor(entity, rank)
+		Data.SP_ARMOR_OF_FAITH:
+			armorFaith(entity, rank)
+		Data.SP_PROTECTION_FROM_EVIL:
+			protectEvil(entity, rank)
+		Data.SP_SANCTUARY:
+			sanctuary(entity, rank)
 		Data.SP_ACID_SPLASH:
 			acidSplash(entity, rank)
 		Data.SP_CONJURE_ANIMAL:
@@ -188,6 +198,29 @@ func revealTraps(entity):
 	playEffect(entity.pos, 7, 5, 0.6)
 	applySpellStatus(entity, Data.STATUS_REVEAL_TRAPS, 1, 40)
 	Ref.currentLevel.refresh_view()
+
+func shield(entity, rank: int):
+	playEffect(entity.pos, 7, 5, 0.6)
+	applySpellStatus(entity, Data.STATUS_SHIELD, 5 * (rank + 1), 40)
+
+func mageArmor(entity, rank: int):
+	playEffect(entity.pos, 7, 5, 0.6)
+	var status = createSpellStatus(Data.STATUS_MAGE_ARMOR, 5 * (rank + 1), 40)
+	status[GLOBAL.ST_TIMING] = GLOBAL.TIMING_REST
+	StatusEngine.addStatus(entity, status)
+	entity.stats.computeStats()
+
+func armorFaith(entity, rank: int):
+	playEffect(entity.pos, 7, 5, 0.6)
+	applySpellStatus(entity, Data.STATUS_ARMOR_FAITH, rank, 50)
+
+func protectEvil(entity, rank: int):
+	playEffect(entity.pos, 7, 5, 0.6)
+	applySpellStatus(entity, Data.STATUS_PROTECT_EVIL, rank, 50)
+
+func sanctuary(entity, rank: int):
+	playEffect(entity.pos, 7, 5, 0.6)
+	applySpellStatus(entity, Data.STATUS_SANCTUARY, rank, 10)
 
 func acidSplash(entity, rank: int):
 	var saved = rollsavingThrow(entity)

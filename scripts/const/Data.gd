@@ -461,6 +461,12 @@ const spells = {
 	SP_MIND_SPIKE: 		["Mind spike", 1, SC_DIVINATION, [false, true, false], null, 31, [10, 10, 10], SP_TARGET_TARGET, 0, SAVE_WIL],
 	SP_DETECT_EVIL:		["Detect evil", 1, SC_DIVINATION, [false, true, true], null, 32, [10, 10, 10], SP_TARGET_SELF, 0, SAVE_NO],
 	SP_REVEAL_TRAPS:	["Find traps", 1, SC_DIVINATION, [true, true, true], null, 33, [5, 10, 15], SP_TARGET_SELF, 0, SAVE_NO],
+	# Abjuration
+	SP_SHIELD:			["Shield", 1, SC_ABJURATION, [true, false, false], null, 45, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_MAGE_ARMOR:		["Mage armor", 1, SC_ABJURATION, [true, false, false], null, 46, [15, 15, 15], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_ARMOR_OF_FAITH:	["Armor of faith", 1, SC_ABJURATION, [false, true, false], null, 47, [10, 10, 10], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_PROTECTION_FROM_EVIL:["Protection from evil", 1, SC_ABJURATION, [false, true, true], null, 48, [10, 10, 10], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_SANCTUARY:		["Sanctuary", 1, SC_ABJURATION, [false, true, true], null, 49, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
 	# Conjuration
 	SP_ACID_SPLASH: 	["Acid arrow", 1, SC_CONJURATION, [true, false, true], PROJ_GREEN_M, 60, [15, 15, 15], SP_TARGET_TARGET, 0, SAVE_PHY],
 	SP_CONJURE_ANIMAL:	["Conjure animals", 1, SC_CONJURATION, [true, false, true], null, 61, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
@@ -499,11 +505,16 @@ func spellsReader():
 const STATUS_SLEEP = 0
 const STATUS_TERROR = 1
 const STATUS_BLIND = 2
-const STATUS_LIGHT = 100
 
+const STATUS_LIGHT = 100
 const STATUS_DETECT_EVIL = 101
 const STATUS_REVEAL_TRAPS = 102
 const STATUS_BLESSED = 103
+const STATUS_SHIELD = 104
+const STATUS_MAGE_ARMOR = 105
+const STATUS_ARMOR_FAITH = 106
+const STATUS_PROTECT_EVIL = 107
+const STATUS_SANCTUARY = 108
 
 const STATUS_FIRE_WEAPON = 1000 + ENCH_FIRE_DMG
 const STATUS_FROST_WEAPON = 1000 + ENCH_FROST_DMG
@@ -530,6 +541,11 @@ const statusPrefabs = {
 	STATUS_DETECT_EVIL: ["Detect evil", 9, null, null, STATUS_DETECT_EVIL, null, null, false],
 	STATUS_REVEAL_TRAPS: ["Find traps", 15, null, null, STATUS_REVEAL_TRAPS, null, null, false],
 	STATUS_BLESSED: ["Blessed", 11, null, null, STATUS_BLESSED, null, null, false],
+	STATUS_SHIELD: ["Shield", 39, null, null, STATUS_SHIELD, null, null, false],
+	STATUS_MAGE_ARMOR: ["Mage armor", 27, null, null, STATUS_MAGE_ARMOR, null, null, false],
+	STATUS_ARMOR_FAITH: ["Armor of faith", 5, null, null, STATUS_ARMOR_FAITH, null, null, false],
+	STATUS_PROTECT_EVIL: ["Protection from evil", 41, null, null, STATUS_PROTECT_EVIL, null, null, false],
+	STATUS_SANCTUARY: ["Sanctuary", 33, null, null, STATUS_SANCTUARY, null, null, false],
 }
 
 # Traps
