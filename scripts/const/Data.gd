@@ -19,6 +19,10 @@ const DMG_COLORS = [
 	Colors.cyan,
 	Colors.yellow
 ]
+const DMG_NAMES = [
+	"slashing", "bludgeoning", "fire", "poison",
+	 "radiant", "magic", "cold", "shock"
+]
 
 # Saving throw
 const SAVING_BASE = 4
@@ -465,8 +469,8 @@ const spells = {
 	SP_SHIELD:			["Shield", 1, SC_ABJURATION, [true, false, false], null, 45, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
 	SP_MAGE_ARMOR:		["Mage armor", 1, SC_ABJURATION, [true, false, false], null, 46, [15, 15, 15], SP_TARGET_SELF, 0, SAVE_NO],
 	SP_ARMOR_OF_FAITH:	["Armor of faith", 1, SC_ABJURATION, [false, true, false], null, 47, [10, 10, 10], SP_TARGET_SELF, 0, SAVE_NO],
-	SP_PROTECTION_FROM_EVIL:["Protection from evil", 1, SC_ABJURATION, [false, true, true], null, 48, [10, 10, 10], SP_TARGET_SELF, 0, SAVE_NO],
-	SP_SANCTUARY:		["Sanctuary", 1, SC_ABJURATION, [false, true, true], null, 49, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_PROTECTION_FROM_EVIL:["Protection from evil", 1, SC_ABJURATION, [false, true, true], null, 49, [10, 10, 10], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_SANCTUARY:		["Sanctuary", 1, SC_ABJURATION, [false, true, true], null, 48, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
 	# Conjuration
 	SP_ACID_SPLASH: 	["Acid arrow", 1, SC_CONJURATION, [true, false, true], PROJ_GREEN_M, 60, [15, 15, 15], SP_TARGET_TARGET, 0, SAVE_PHY],
 	SP_CONJURE_ANIMAL:	["Conjure animals", 1, SC_CONJURATION, [true, false, true], null, 61, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
@@ -474,13 +478,179 @@ const spells = {
 	SP_LESSER_AQUIREMENT:["Lesser acquirement", 1, SC_CONJURATION, [true, true, false], null, 63, [5, 5, 5], SP_TARGET_ITEM_CHOICE, 0, SAVE_NO],
 }
 
-const spellDescriptions = {
+const spellDamages = {
+	SP_MAGIC_MISSILE: [[1, 4, 1, DMG_MAGIC], [1, 4, 1, DMG_MAGIC], [1, 4, 1, DMG_MAGIC]],
+	SP_ELECTRIC_GRASP: [[1, 12, 0, DMG_LIGHTNING], [1, 12, 0, DMG_LIGHTNING], [2, 12, 0, DMG_LIGHTNING]],
+	SP_HEAL: [[1, 6, 0, DMG_MAGIC], [1, 8, 0, DMG_MAGIC], [1, 10, 0, DMG_MAGIC]],
+	SP_SMITE: [[1, 8, 1, DMG_RADIANT], [1, 10, 2, DMG_RADIANT], [1, 12, 3, DMG_RADIANT]],
+	SP_FIREBOLT: [[1, 10, 0, DMG_FIRE], [1, 10, 2, DMG_FIRE], [1, 10, 4, DMG_FIRE]],
+	SP_FIREBALL: [[], [], [3, 6, 0, DMG_FIRE]],
+	SP_MIND_SPIKE: [[1, 8, 0, DMG_MAGIC], [1, 8, 2, DMG_MAGIC], [1, 8, 4, DMG_MAGIC]],
+	SP_ACID_SPLASH: [[2, 4, 0, DMG_SLASH], [3, 4, 0, DMG_SLASH], [4, 4, 0, DMG_SLASH]],
+}
+
+const spellTurns = {
+	SP_SLEEP: [15, 15, 15],
+	SP_BLESS: [15, 15, 15],
+	SP_COMMAND: [5, 5, 5],
+	SP_LIGHT: [40, 40, 40],
+	SP_BLIND: [15, 15, 15],
+	SP_DETECT_EVIL: [40, 40, 40],
+	SP_REVEAL_TRAPS: [40, 40, 40],
+	SP_SHIELD: [25, 25, 25],
+	SP_ARMOR_OF_FAITH: [100, 100, 100],
+	SP_PROTECTION_FROM_EVIL: [25, 25, 25],
+	SP_SANCTUARY: [15, 15, 15],
+	SP_SPIRITUAL_HAMMER: [40, 40, 40],
+}
+
+var spellDescriptions = {
 	SP_MAGIC_MISSILE: [
-		"Fires two arcane projectiles, each dealing 1d2+1 damages to random targets.",
+		"Fires arcane projectiles to random targets, each dealing %%DMG_1 damages. No saving throw.",
+		"Fires two projectiles.",
 		"Fires three projectiles.",
 		"Fires four projectiles."
+	],
+	SP_ELECTRIC_GRASP: [
+		"Gives a powerful electrical jolt to %%CONTACT.",
+		"%%D_DMG_1",
+		"Also inflicts [PARALYZE] the target for two turns.",
+		"%%INC_DMG_3"
+	],
+	SP_HEAL: [
+		"Conjures healing energies to cure your wounds.",
+		"Heals you for %%DMGN_1 damages.",
+		"Increases healing to %%DMGN_2.",
+		"Increases healing to %%DMGN_3."
+	],
+	SP_SMITE: [
+		"Conjures a beam of sunlight to damage %%LINE.",
+		"%%D_DMG_1",
+		"%%INC_DMG_2",
+		"%%INC_DMG_3"
+	],
+	SP_FIREBOLT: [
+		"Fires a bolt of flame to %%TARGET.",
+		"%%D_DMG_1",
+		"%%INC_DMG_2",
+		"%%INC_DMG_3"
+	],
+	SP_SLEEP: [
+		"Forces a creature to fall asleep. Any damage will break the spell.",
+		"Inflicts [SLEEP] for %%TURNS_1 to a creature at range.",
+		"Also targets all creatures at range 1.",
+		"Also targets all creatures at range 3."
+	],
+	SP_UNLOCK: [
+		"Magically opens a locked door or chest.",
+		"%%USES_1.",
+		"%%USES_2.",
+		"%%USES_3."
+	],
+	SP_BLESS: [
+		"Bless you with divine energy to improve all your save rolls.",
+		"Gives [BLESS] (+1 to all save rolls) for %%TURNS_1.",
+		"Lasts for %%TURNS_2.",
+		"Lasts for %%TURNS_3.",
+	],
+	SP_COMMAND: [
+		"Enables you to command another creature with a single word. Applies [TERROR].",
+		"Lasts %%TURNS_1.",
+		"Lasts %%TURNS_2.",
+		"Lasts %%TURNS_3.",
+	],
+	SP_LIGHT: [
+		"Surrounds you with a floating light that follows you for %%TURNS_1.",
+		"Gives you [LIGHT] (+1 range).",
+		"Gives you [LIGHT II] (+1 perception rolls).",
+		"Lasts until rest.",
+	],
+	SP_BLIND: [
+		"Causes the target to become blind for %%TURNS_1.",
+		"Inflicts [BLIND] (-1 to hit rolls) to %%TARGET.",
+		"Also targets all creatures at range 1.",
+		"Also targets all creatures at range 3.",
+	],
+	SP_MIND_SPIKE: [
+		"Reaches another creature's mind to damage it.",
+		"%%D_DMG_1",
+		"%%INC_DMG_2",
+		"%%INC_DMG_3"
+	],
+	SP_DETECT_EVIL: [
+		"Detects all evil creatures (undeads and demons) on the current floor. No saving throw.",
+		"Gives [DETECT EVIL] for %%TURNS_1.",
+		"Inflicts [VULNERABLE] (-1 AC) to revealed creatures.",
+		"%%USES_3."
+	],
+	SP_REVEAL_TRAPS: [
+		"Reveals all traps on the current floor. Lasts %%TURNS_1.",
+		"%%USES_1.",
+		"%%USES_2.",
+		"%%USES_3."
+	],
+	SP_SHIELD: [
+		"Protects you with an invisible barrier that absorbs incoming damages.",
+		"Gives you [SHIELD] (absorb 10 damages) for %%TURNS_1.",
+		"Absorbs 15 damages.",
+		"Absorbs 20 damages."
+	],
+	SP_MAGE_ARMOR: [
+		"Creates a magical field of force that replaces your armor. Lasts until rest.",
+		"Gives you [MAGE ARMOR] (set your AC to 4).",
+		"Set your AC to 5.",
+		"Set your AC to 6."
+	],
+	SP_ARMOR_OF_FAITH: [
+		"Invokes divine forces to protect you during %%TURNS_1.",
+		"Gives you [PROTECTION] (+1 CA).",
+		"Gives you [PROTECTION II] (+1 CA +1 protection).",
+		"Lasts until rest."
+	],
+	SP_PROTECTION_FROM_EVIL: [
+		"Protects you from spells casted by evil creatures (undeads and demons). Lasts %%TURNS_1.",
+		"Gives you [PROTECTION FROM EVIL] (+1 to all saves).",
+		"Lasts %%TURNS_2.",
+		"Increases bonus to +2."
+	],
+	SP_SANCTUARY: [
+		"Prevent any creatures to harm you until you attack, drink a potion or cast a spell.",
+		"Gives you [SANCTUARY] for %%TURNS_1.",
+		"You can drink potions.",
+		"You can cast spells on yourself."
+	],
+	SP_ACID_SPLASH: [
+		"Creates a magic arrow that inflicts acid damages to %%TARGET. It bypass protection and resistances.",
+		"%%D_DMG_1",
+		"%%INC_DMG_2",
+		"%%INC_DMG_3"
+	],
+	SP_CONJURE_ANIMAL: [
+		"Conjures a wolf to fight by your side.",
+		"Conures 1d2 wolves.",
+		"Conures 1d2+1 wolves.",
+		"Conures 1d2+2 wolves.",
+	],
+	SP_SPIRITUAL_HAMMER: [
+		"Conjures an animated hammer that will fight your enemies.",
+		"Convokes a hamer for %%TURNS_1.",
+		"Improves the hammer.",
+		"Improves the hammer."
+	],
+	SP_LESSER_AQUIREMENT: [
+		"Creates a small object from nothing.",
+		"Creates a weapon, an armor, a scroll, a potion or golds.",
+		"Improves object quality.",
+		"Improves object quality."
 	]
 }
+
+#	3000: [
+#		"",
+#		"",
+#		"",
+#		""
+#	],
 
 const spellsPerSchool: Dictionary = {}
 

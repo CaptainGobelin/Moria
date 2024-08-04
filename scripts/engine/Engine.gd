@@ -52,6 +52,12 @@ func basicDice(v: Vector2):
 func dmgDice(n: int, d: int, b: int, t: int):
 	return GeneralEngine.DmgDice.new(n, d, b, t)
 
+func diceFromArray(array: Array):
+	return dice(array[0], array[1], array[2])
+
+func dmgDiceFromArray(array: Array):
+	return dmgDice(array[0], array[1], array[2], array[3])
+
 func dmgFromDice(dice: Dice, type: int):
 	return GeneralEngine.DmgDice.new(dice.n, dice.d, dice.b, type)
 
