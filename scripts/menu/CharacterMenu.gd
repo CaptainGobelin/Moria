@@ -49,18 +49,23 @@ func _input(event):
 				buySkill(currentRow)
 
 func buySkill(row):
-	var charSkp = Ref.character.stats.skp
+	var charSkp = Ref.character.skills.skp
 	if charSkp == 0:
 		Ref.ui.writeNoSkp()
 		return
-	var skill = Ref.character.stats.skills[row]
-	var mastery = Ref.character.stats.masteries[row]
+	var skill = Ref.character.skills.skills[row]
+	var mastery = Ref.character.skills.masteries[row]
 	if skill == (mastery*2 + 1):
 		Ref.ui.writeNoMastery()
 		return
-	Ref.character.stats.skills[row] += 1
-	Ref.character.stats.skp -= 1
-	setTab(currentTab, currentRow)
+	var event = Ref.character.skills.improve(row)
+	if event == null:
+		setTab(currentTab, currentRow)
+		return
+	match event[0]:
+		"chooseSpell":
+			close()
+			Ref.game.chooseSpellMenu.open(event[1], event[2], self)
 
 func setTab(tab, row = 0):
 	for t in tabs:
@@ -71,9 +76,9 @@ func setTab(tab, row = 0):
 			skillsScreen.visible = true
 			var count = 0
 			for s in skills:
-				s.setValue(Ref.character.stats.skills[count], Ref.character.stats.masteries[count])
+				s.setValue(Ref.character.skills.skills[count], Ref.character.skills.masteries[count])
 				count += 1
-			skp.text = String(Ref.character.stats.skp)
+			skp.text = String(Ref.character.skills.skp)
 			selectSkill(max(min(row, skills.size()-1), 0))
 		GLOBAL.CHAR_FEATS:
 			skillsScreen.visible = false

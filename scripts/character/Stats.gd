@@ -13,9 +13,6 @@ onready var hitDices = GeneralEngine.dice(1, 6, 0) setget updateHit
 onready var resists: Array = [0, 0, 0, 0, 0, 0, 0, 0]
 onready var maxResists: Array = [1, 1, 1, 1, 1, 1, 1, 1]
 onready var saveBonus: Array = [0, 0]
-onready var skills = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-onready var masteries = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-onready var skp: int = 0
 
 func init(charClass: int):
 	if charClass == -1:
@@ -31,8 +28,6 @@ func init(charClass: int):
 	updateProt(0)
 	updateDmg([GeneralEngine.dmgDice(1, 1, 0, Data.DMG_BLUNT)])
 	updateHit(GeneralEngine.dice(1, 6, 0))
-	skills = classStats[Data.CL_SK].duplicate()
-	masteries = classStats[Data.CL_SKMAS].duplicate()
 
 func computeStats():
 	computeHpMax()
@@ -175,7 +170,7 @@ func updateXp(newValue):
 	if newValue >= Data.lvlCaps[level]:
 		xp = (newValue % Data.lvlCaps[level])
 		updateLevel(level + 1)
-		skp += Data.skpGains[level]
+		Ref.character.skills.skp += Data.skpGains[level]
 		Ref.ui.writeLevelUp(level, classStats[Data.CL_HPLVL], Data.skpGains[level], 0)
 		Ref.ui.updateStat(Data.CHAR_XP, xp)
 	else:

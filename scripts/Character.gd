@@ -5,6 +5,7 @@ onready var animator = get_node("AnimationPlayer")
 onready var stats = get_node("Stats")
 onready var inventory = get_node("Inventory")
 onready var spells = get_node("Spells")
+onready var skills = get_node("Skills")
 onready var shortcuts = get_node("Shortcuts")
 
 var currentVision: Array = []
@@ -19,6 +20,7 @@ func _ready():
 func init(charClass: int):
 	self.charClass = charClass
 	stats.init(charClass)
+	skills.init(charClass)
 	inventory.init(charClass)
 
 func setPosition(newPos):

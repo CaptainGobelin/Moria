@@ -1,18 +1,18 @@
 extends Node
 
 var spells = [
-	Data.SP_SHIELD,
+	Data.SP_UNLOCK,
 	Data.SP_MAGE_ARMOR,
-	Data.SP_ARMOR_OF_FAITH,
-	Data.SP_PROTECTION_FROM_EVIL,
-	Data.SP_SANCTUARY
+	Data.SP_MAGIC_MISSILE,
+	Data.SP_CONJURE_ANIMAL,
+	Data.SP_DETECT_EVIL
 ]
 var spellsUses = {
-	Data.SP_SHIELD: 15,
+	Data.SP_UNLOCK: 15,
 	Data.SP_MAGE_ARMOR: 10,
-	Data.SP_ARMOR_OF_FAITH: 8,
-	Data.SP_PROTECTION_FROM_EVIL: 10,
-	Data.SP_SANCTUARY: 10
+	Data.SP_MAGIC_MISSILE: 8,
+	Data.SP_CONJURE_ANIMAL: 10,
+	Data.SP_DETECT_EVIL: 10
 }
 var schoolRanks = [0, 0, 0, 0, 0]
 var schoolSaves = [0, 0, 0, 0, 0]
@@ -25,6 +25,12 @@ func getSpellRank(school: int):
 
 func getSchoolRank(school: int):
 	return (int(schoolRanks[school]) / int(2))
+
+func learnSpell(idx: int):
+	spells.append(idx)
+	var school = Data.spells[idx][Data.SP_SCHOOL]
+	var rank = getSpellRank(school)
+	spellsUses[idx] = Data.spells[idx][Data.SP_USES][rank]
 
 func getSpellsRows():
 	var result = []

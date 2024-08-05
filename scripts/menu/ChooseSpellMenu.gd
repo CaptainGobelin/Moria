@@ -5,24 +5,40 @@ onready var rows = get_node("SpellList")
 
 var selected: int = 0
 var currentList: Array = []
+var source = null
 
-func open(school: int):
+func _ready():
+	set_process_input(false)
+
+func open(school: int, level: int, caller):
+	selected = 0
+	source = caller
 	visible = true
+	Ref.currentLevel.visible = false
+	Ref.game.set_process_input(false)
 	set_process_input(true)
-#	var level = Ref.character.spells.getSchoolRank(school)
-#	var rank = Ref.character.spells.getSpellRank(school)
-#	var list = Data.classes[Ref.character.charClass][Data.CL_LIST]
-	var level = 3
-	var rank = 3
-	var list = Data.SP_LIST_ARCANE
+	var rank = Ref.character.spells.getSpellRank(school)
+	var list = Data.classes[Ref.character.charClass][Data.CL_LIST]
 	currentList = []
 	for i in range(1, level+1):
 		if !Data.spellsPerSchool[list].has(school):
 			continue
 		if !Data.spellsPerSchool[list][school].has(i):
 			continue
-		currentList.append_array(Data.spellsPerSchool[list][school][i])
+		for s in Data.spellsPerSchool[list][school][i]:
+			if !Ref.character.spells.spells.has(s):
+				currentList.append(s)
+	if currentList.empty():
+		close()
 	loadSpellList(rank)
+
+func close():
+	visible = false
+	Ref.currentLevel.visible = true
+	Ref.game.set_process_input(true)
+	set_process_input(false)
+	if source != null:
+		source.open()
 
 func loadSpellList(rank: int):
 	var count = 0
@@ -45,10 +61,6 @@ func refreshSelection():
 			row.selected.visible = false
 		count += 1
 
-func _ready():
-	set_process_input(false)
-#	open(Data.SC_EVOCATION)
-
 func _input(event):
 	if event.is_action_released("ui_down"):
 		selected = Utils.modulo(selected+1, currentList.size())
@@ -56,12 +68,14 @@ func _input(event):
 	elif event.is_action_released("ui_up"):
 		selected = Utils.modulo(selected-1, currentList.size())
 		refreshSelection()
+	elif event.is_action_released("ui_accept"):
+		var spell = rows.get_child(selected).spell
+		Ref.character.spells.learnSpell(spell)
+		close()
 	return
 
 func selectSpell(idx: int):
-#	var school = Data.spells[idx][Data.SP_SCHOOL]
-#	var saveCap = Ref.character.spells.getSavingThrow(school)
-#	var rank = Ref.character.spells.getSpellRank(school)
-	var saveCap = 5
-	var rank = 1
+	var school = Data.spells[idx][Data.SP_SCHOOL]
+	var saveCap = Ref.character.spells.getSavingThrow(school)
+	var rank = Ref.character.spells.getSpellRank(school)
 	descriptor.selectSpell(idx, rank, saveCap)

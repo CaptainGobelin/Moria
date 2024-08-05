@@ -8,6 +8,7 @@ onready var inventoryMenu = get_node("InventoryMenu")
 onready var characterMenu = get_node("CharacterMenu")
 onready var spellMenu = get_node("SpellMenu")
 onready var chestMenu = get_node("ChestMenu")
+onready var chooseSpellMenu = get_node("ChooseSpellMenu")
 onready var dungeonGenerator = get_node("Utils/DungeonGenerator_v2")
 onready var pathfinder = get_node("Utils/Pathfinder")
 onready var itemGenerator = get_node("Utils/ItemGenerator") as ItemGenerator
