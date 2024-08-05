@@ -10,7 +10,7 @@ onready var icon = get_node("Icon")
 var spellId: int
 
 func selectSpell(idx: int, rank: int = 0, saveCap: int = 0):
-	generateDescription(idx, 2)
+	generateDescription(idx, rank)
 	spellName.text = Data.spells[idx][Data.SP_NAME]
 	spellUses.text = spellUses(Data.spells[idx][Data.SP_USES][rank])
 	spellSave.text = spellSave(Data.spells[idx][Data.SP_SAVE], saveCap)
@@ -58,6 +58,14 @@ func generateDescription(idx: int, rank: int = 0, saveCap: int = 0):
 	d = d.replace("%%SAVE_HALF", saveHalf())
 	d = d.replace("%%SAVE_NO", saveNegates())
 	description.bbcode_text = d
+
+func blank():
+	spellName.text = ""
+	spellUses.text = ""
+	spellSave.text = ""
+	spellSchool.text = ""
+	icon.frame = 29
+	description.bbcode_text = ""
 
 func replace(description: String, from: String, to: String):
 	if description.find(from) > 0:

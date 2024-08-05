@@ -11,6 +11,9 @@ func init(charClass: int):
 func improve(idx: int):
 	skills[idx] += 1
 	skp -= 1
+	var school = skillToSchool(idx)
+	if school == null:
+		return null
 	var spLevel = 0
 	if skills[idx] == 1:
 		spLevel = 1
@@ -18,15 +21,18 @@ func improve(idx: int):
 		spLevel = 2
 	if skills[idx] == 5:
 		spLevel = 3
-	match idx:
+	return ["chooseSpell", school, spLevel]
+
+func skillToSchool(skill: int):
+	match skill:
 		Data.SK_EVOC:
-			return ["chooseSpell", Data.SC_EVOCATION, spLevel]
+			return Data.SC_EVOCATION
 		Data.SK_ENCH:
-			return ["chooseSpell", Data.SC_ENCHANTMENT, spLevel]
+			return Data.SC_ENCHANTMENT
 		Data.SK_ABJ:
-			return ["chooseSpell", Data.SC_ABJURATION, spLevel]
+			return Data.SC_ABJURATION
 		Data.SK_DIV:
-			return ["chooseSpell", Data.SC_DIVINATION, spLevel]
+			return Data.SC_DIVINATION
 		Data.SK_CONJ:
-			return ["chooseSpell", Data.SC_CONJURATION, spLevel]
+			return Data.SC_CONJURATION
 	return null

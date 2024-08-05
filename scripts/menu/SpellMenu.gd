@@ -68,6 +68,7 @@ func setRow(row: int):
 func selectSpell():
 	var idx = spellList.getSelected()
 	if idx == null:
+		descriptor.blank()
 		return
 	var school = Data.spells[idx][Data.SP_SCHOOL]
 	var saveCap = Ref.character.spells.getSavingThrow(school)
