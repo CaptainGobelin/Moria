@@ -3,6 +3,7 @@ extends Node2D
 onready var spellName = get_node("TextContainer/Name")
 onready var spellSave = get_node("TextContainer/Saving")
 onready var spellUses = get_node("TextContainer/Uses")
+onready var spellSchool = get_node("TextContainer/School")
 onready var description = get_node("TextContainer/Description")
 onready var icon = get_node("Icon")
 
@@ -13,6 +14,7 @@ func selectSpell(idx: int, rank: int = 0, saveCap: int = 0):
 	spellName.text = Data.spells[idx][Data.SP_NAME]
 	spellUses.text = spellUses(Data.spells[idx][Data.SP_USES][rank])
 	spellSave.text = spellSave(Data.spells[idx][Data.SP_SAVE], saveCap)
+	spellSchool.text = spellSchool(idx)
 	icon.frame = Data.spells[idx][Data.SP_ICON]
 
 func generateDescription(idx: int, rank: int = 0, saveCap: int = 0):
@@ -122,3 +124,17 @@ func spellSave(type: int, saveCap: int):
 			return "PHY save DD " + String(saveCap)
 		Data.SAVE_WIL:
 			return "WIL save DD " + String(saveCap)
+
+func spellSchool(spell: int):
+	var level = Data.spells[spell][Data.SP_LVL]
+	match Data.spells[spell][Data.SP_SCHOOL]:
+		Data.SC_EVOCATION:
+			return "Evocation spell level " + String(level)
+		Data.SC_ENCHANTMENT:
+			return "Enchantment spell level " + String(level)
+		Data.SC_ABJURATION:
+			return "Abjuration spell level " + String(level)
+		Data.SC_DIVINATION:
+			return "Divination spell level " + String(level)
+		Data.SC_CONJURATION:
+			return "Conjuration spell level " + String(level)

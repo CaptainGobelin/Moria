@@ -46,7 +46,8 @@ func refreshSelection():
 		count += 1
 
 func _ready():
-	open(Data.SC_EVOCATION)
+	set_process_input(false)
+#	open(Data.SC_EVOCATION)
 
 func _input(event):
 	if event.is_action_released("ui_down"):

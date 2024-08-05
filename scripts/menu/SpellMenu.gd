@@ -1,6 +1,7 @@
 extends Node2D
 
 onready var spellList = get_node("TileMap/SpellList")
+onready var descriptor = get_node("TileMap/SpellDescription")
 
 var currentRow = -1
 
@@ -10,8 +11,10 @@ func _ready():
 func _input(event):
 	if (event.is_action_pressed("ui_up")):
 		spellList.selectPrevious()
+		selectSpell()
 	elif (event.is_action_pressed("ui_down")):
 		spellList.selectNext()
+		selectSpell()
 	elif (event.is_action_released("spellMenu")):
 		close()
 	elif (event.is_action_released("ui_cancel")):
@@ -41,6 +44,9 @@ func _input(event):
 func open():
 	spellList.init(Ref.character.spells.getSpellsRows())
 	visible = true
+	descriptor.spellUses.visible = false
+	descriptor.spellSchool.visible = true
+	selectSpell()
 	Ref.currentLevel.visible = false
 	GLOBAL.currentMode = GLOBAL.MODE_SPELL
 	Ref.game.set_process_input(false)
@@ -58,3 +64,12 @@ func fillList():
 
 func setRow(row: int):
 	currentRow = posmod(row, spellList.size())
+
+func selectSpell():
+	var idx = spellList.getSelected()
+	if idx == null:
+		return
+	var school = Data.spells[idx][Data.SP_SCHOOL]
+	var saveCap = Ref.character.spells.getSavingThrow(school)
+	var rank = Ref.character.spells.getSpellRank(school)
+	descriptor.selectSpell(idx, rank, saveCap)
