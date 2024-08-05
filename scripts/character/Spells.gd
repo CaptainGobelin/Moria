@@ -23,6 +23,9 @@ func getSavingThrow(school: int):
 func getSpellRank(school: int):
 	return 1 + (int(schoolRanks[school]) / int(2))
 
+func getSchoolRank(school: int):
+	return (int(schoolRanks[school]) / int(2))
+
 func getSpellsRows():
 	var result = []
 	for s in spells:

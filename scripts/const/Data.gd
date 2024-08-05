@@ -100,8 +100,15 @@ const CL_HP = 1
 const CL_HPLVL = 2
 const CL_SK = 3
 const CL_SKMAS = 4
+const CL_LIST = 5
+
+# Spell lists
+const SP_LIST_ARCANE = 0
+const SP_LIST_DIVINE = 1
+const SP_LIST_NATURE = 2
+
 const classes = {
-	CL_FIGHTER: ["Fighter", 10, 5, [1, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0], [2, 2, 0, 0, 0, 0, 0, 2, 1, 1, 1]],
+	CL_FIGHTER: ["Fighter", 10, 5, [1, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0], [2, 2, 0, 0, 0, 0, 0, 2, 1, 1, 1], SP_LIST_ARCANE],
 }
 
 # Monsters
@@ -422,11 +429,6 @@ const SC_DIVINATION = 2
 const SC_ABJURATION = 3
 const SC_CONJURATION = 4
 
-# Spell lists
-const SP_LIST_ARCANE = 0
-const SP_LIST_DIVINE = 1
-const SP_LIST_NATURE = 2
-
 const SP_NAME = 0
 const SP_LVL = 1
 const SP_SCHOOL = 2
@@ -453,7 +455,7 @@ const spells = {
 	SP_HEAL: 			["Heal", 1, SC_EVOCATION, [false, true, true], null, 2, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
 	SP_SMITE: 			["Sunscorch", 1, SC_EVOCATION, [false, false, true], null, 3, [10, 10, 10], SP_TARGET_DIRECT, 1, SAVE_PHY],
 	SP_FIREBOLT: 		["Fire bolt", 1, SC_EVOCATION, [true, false, false], PROJ_RED_L, 4, [15, 15, 15], SP_TARGET_TARGET, 0, SAVE_PHY],
-	SP_FIREBALL: 		["Fireball", 3, SC_EVOCATION, [true, false, false], PROJ_RED_R, 10, [10, 10, 10], SP_TARGET_TARGET, 3, SAVE_PHY],
+#	SP_FIREBALL: 		["Fireball", 3, SC_EVOCATION, [true, false, false], PROJ_RED_R, 10, [10, 10, 10], SP_TARGET_TARGET, 3, SAVE_PHY],
 	# Enchantment
 	SP_SLEEP:	 		["Sleep", 1, SC_ENCHANTMENT, [true, false, true], null, 15, [8, 8, 8], SP_TARGET_TARGET, 0, SAVE_WIL],
 	SP_UNLOCK:	 		["Unlock", 1, SC_ENCHANTMENT, [true, false, false], null, 16, [5, 10, 15], SP_TARGET_DIRECT, 1, SAVE_NO],
@@ -644,13 +646,6 @@ var spellDescriptions = {
 		"Improves object quality."
 	]
 }
-
-#	3000: [
-#		"",
-#		"",
-#		"",
-#		""
-#	],
 
 const spellsPerSchool: Dictionary = {}
 

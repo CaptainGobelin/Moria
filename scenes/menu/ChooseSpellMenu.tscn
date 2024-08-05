@@ -61,7 +61,7 @@ margin_left = 432.0
 margin_right = 504.0
 margin_bottom = 92.0
 theme = ExtResource( 6 )
-text = "Rank"
+text = "Level"
 align = 1
 valign = 1
 
@@ -71,7 +71,7 @@ margin_top = 540.0
 margin_right = 540.0
 margin_bottom = 576.0
 theme = ExtResource( 6 )
-text = "Choose spell: Enter    Validate: Esc"
+text = "Choose spell: Enter"
 align = 1
 valign = 1
 
@@ -99,10 +99,11 @@ position = Vector2( 0, 90 )
 position = Vector2( 155, 52 )
 length = 93
 
-[node name="Description" type="Node2D" parent="."]
+[node name="SpellDescription" type="Node2D" parent="."]
 position = Vector2( 180, 36 )
+script = ExtResource( 2 )
 
-[node name="Icon" type="Sprite" parent="Description"]
+[node name="Icon" type="Sprite" parent="SpellDescription"]
 position = Vector2( 99, 9 )
 scale = Vector2( 1.8, 1.8 )
 texture = ExtResource( 5 )
@@ -110,31 +111,31 @@ centered = false
 hframes = 5
 vframes = 15
 
-[node name="TextContainer" type="Node2D" parent="Description"]
+[node name="TextContainer" type="Node2D" parent="SpellDescription"]
 scale = Vector2( 0.25, 0.25 )
 
-[node name="Name" type="Label" parent="Description/TextContainer"]
+[node name="Name" type="Label" parent="SpellDescription/TextContainer"]
 margin_top = 37.0
 margin_right = 324.0
 margin_bottom = 72.0
 theme = ExtResource( 6 )
 text = "Magic Missiles"
 
-[node name="Uses" type="Label" parent="Description/TextContainer"]
+[node name="Uses" type="Label" parent="SpellDescription/TextContainer"]
 margin_top = 73.0
 margin_right = 324.0
 margin_bottom = 108.0
 theme = ExtResource( 6 )
 text = "15 uses per rest"
 
-[node name="Saving" type="Label" parent="Description/TextContainer"]
+[node name="Saving" type="Label" parent="SpellDescription/TextContainer"]
 margin_top = 109.0
 margin_right = 324.0
 margin_bottom = 144.0
 theme = ExtResource( 6 )
 text = "No saving throw"
 
-[node name="SpellDescription" type="RichTextLabel" parent="Description/TextContainer"]
+[node name="Description" type="RichTextLabel" parent="SpellDescription/TextContainer"]
 margin_top = 181.0
 margin_right = 504.0
 margin_bottom = 504.0
@@ -149,4 +150,3 @@ text = "Shoots two arcane projectiles. Each missile inflicts 1d2+1 damages to a 
 Rank 2: Three projectiles.
 Rank 3: Four projectiles."
 scroll_active = false
-script = ExtResource( 2 )

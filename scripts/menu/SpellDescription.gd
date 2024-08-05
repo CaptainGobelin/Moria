@@ -1,48 +1,61 @@
-extends RichTextLabel
+extends Node2D
+
+onready var spellName = get_node("TextContainer/Name")
+onready var spellSave = get_node("TextContainer/Saving")
+onready var spellUses = get_node("TextContainer/Uses")
+onready var description = get_node("TextContainer/Description")
+onready var icon = get_node("Icon")
 
 var spellId: int
 
+func selectSpell(idx: int, rank: int = 0, saveCap: int = 0):
+	generateDescription(idx, 2)
+	spellName.text = Data.spells[idx][Data.SP_NAME]
+	spellUses.text = spellUses(Data.spells[idx][Data.SP_USES][rank])
+	spellSave.text = spellSave(Data.spells[idx][Data.SP_SAVE], saveCap)
+	icon.frame = Data.spells[idx][Data.SP_ICON]
+
 func generateDescription(idx: int, rank: int = 0, saveCap: int = 0):
 	spellId = idx
-	var description: String = "[fill]" + Data.spellDescriptions[spellId][0] + "\n"
+	var d: String = "[fill]" + Data.spellDescriptions[spellId][0] + "\n"
 	for i in range(Data.spells[spellId][Data.SP_LVL], 4):
 		var color = Colors.white.to_html(false)
 		if i < rank:
 			color = Colors.shade3.to_html(false)
 		elif i == rank:
 			color = Colors.yellow.to_html(false)
-		description += "\n[color=#" + color + "]Rank " + String(i) + ": "
-		description += Data.spellDescriptions[spellId][i]
-		description += "[/color]"
-	description += "[/fill]"
+		d += "\n[color=#" + color + "]Rank " + String(i) + ": "
+		d += Data.spellDescriptions[spellId][i]
+		d += "[/color]"
+	d += "[/fill]"
 	if Data.spellDamages.has(spellId):
-		description = description.replace("%%DMG_1", dmgToStr(Data.spellDamages[spellId][0]))
-		description = description.replace("%%DMG_2", dmgToStr(Data.spellDamages[spellId][1]))
-		description = description.replace("%%DMG_3", dmgToStr(Data.spellDamages[spellId][2]))
-		description = description.replace("%%DMGN_1", dmgToStr(Data.spellDamages[spellId][0], false))
-		description = description.replace("%%DMGN_2", dmgToStr(Data.spellDamages[spellId][1], false))
-		description = description.replace("%%DMGN_3", dmgToStr(Data.spellDamages[spellId][2], false))
-		description = description.replace("%%D_DMG_1", dmgIncrease(Data.spellDamages[spellId][0]))
-		description = description.replace("%%D_DMG_2", dmgIncrease(Data.spellDamages[spellId][1]))
-		description = description.replace("%%D_DMG_3", dmgIncrease(Data.spellDamages[spellId][2]))
-		description = description.replace("%%INC_DMG_2", dmgIncrease(Data.spellDamages[spellId][1]))
-		description = description.replace("%%INC_DMG_3", dmgIncrease(Data.spellDamages[spellId][2]))
+		d = d.replace("%%DMG_1", dmgToStr(Data.spellDamages[spellId][0]))
+		d = d.replace("%%DMG_2", dmgToStr(Data.spellDamages[spellId][1]))
+		d = d.replace("%%DMG_3", dmgToStr(Data.spellDamages[spellId][2]))
+		d = d.replace("%%DMGN_1", dmgToStr(Data.spellDamages[spellId][0], false))
+		d = d.replace("%%DMGN_2", dmgToStr(Data.spellDamages[spellId][1], false))
+		d = d.replace("%%DMGN_3", dmgToStr(Data.spellDamages[spellId][2], false))
+		d = d.replace("%%D_DMG_1", dmgIncrease(Data.spellDamages[spellId][0]))
+		d = d.replace("%%D_DMG_2", dmgIncrease(Data.spellDamages[spellId][1]))
+		d = d.replace("%%D_DMG_3", dmgIncrease(Data.spellDamages[spellId][2]))
+		d = d.replace("%%INC_DMG_2", dmgIncrease(Data.spellDamages[spellId][1]))
+		d = d.replace("%%INC_DMG_3", dmgIncrease(Data.spellDamages[spellId][2]))
 	if Data.spellTurns.has(spellId):
-		description = description.replace("%%TURNS_1", turns(Data.spellTurns[spellId][0]))
-		description = description.replace("%%TURNS_2", turns(Data.spellTurns[spellId][1]))
-		description = description.replace("%%TURNS_3", turns(Data.spellTurns[spellId][2]))
-	description = description.replace("%%USES_1", uses(Data.spells[spellId][Data.SP_USES][0]))
-	description = description.replace("%%USES_2", uses(Data.spells[spellId][Data.SP_USES][1]))
-	description = description.replace("%%USES_3", uses(Data.spells[spellId][Data.SP_USES][2]))
-	description = description.replace("%%CONTACT", rangeContact())
-	description = description.replace("%%LINE", rangeLine())
-	description = description.replace("%%TARGET", rangeTarget())
-	description = description.replace("%%TARGET_AREA", rangeTargetArea(Data.spells[spellId][Data.SP_AREA]))
-	description = description.replace("%%AREA", rangeArea(Data.spells[spellId][Data.SP_AREA]))
-	description = description.replace("%%SELF", rangeSelf())
-	description = description.replace("%%SAVE_HALF", saveHalf())
-	description = description.replace("%%SAVE_NO", saveNegates())
-	bbcode_text = description
+		d = d.replace("%%TURNS_1", turns(Data.spellTurns[spellId][0]))
+		d = d.replace("%%TURNS_2", turns(Data.spellTurns[spellId][1]))
+		d = d.replace("%%TURNS_3", turns(Data.spellTurns[spellId][2]))
+	d = d.replace("%%USES_1", uses(Data.spells[spellId][Data.SP_USES][0]))
+	d = d.replace("%%USES_2", uses(Data.spells[spellId][Data.SP_USES][1]))
+	d = d.replace("%%USES_3", uses(Data.spells[spellId][Data.SP_USES][2]))
+	d = d.replace("%%CONTACT", rangeContact())
+	d = d.replace("%%LINE", rangeLine())
+	d = d.replace("%%TARGET", rangeTarget())
+	d = d.replace("%%TARGET_AREA", rangeTargetArea(Data.spells[spellId][Data.SP_AREA]))
+	d = d.replace("%%AREA", rangeArea(Data.spells[spellId][Data.SP_AREA]))
+	d = d.replace("%%SELF", rangeSelf())
+	d = d.replace("%%SAVE_HALF", saveHalf())
+	d = d.replace("%%SAVE_NO", saveNegates())
+	description.bbcode_text = d
 
 func replace(description: String, from: String, to: String):
 	if description.find(from) > 0:
@@ -97,3 +110,15 @@ func turns(turns: int):
 
 func uses(uses: int):
 	return String(uses) + " uses"
+
+func spellUses(uses: int):
+	return String(uses) + " uses per rest"
+
+func spellSave(type: int, saveCap: int):
+	match type:
+		Data.SAVE_NO:
+			return "No saving throw"
+		Data.SAVE_PHY:
+			return "PHY save DD " + String(saveCap)
+		Data.SAVE_WIL:
+			return "WIL save DD " + String(saveCap)
