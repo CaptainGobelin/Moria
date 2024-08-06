@@ -94,6 +94,13 @@ const skpGains = [0, 0, 2, 1, 2, 1, 2, 1, 2]
 
 # Classes
 const CL_FIGHTER = 0
+const CL_THIEF = 1
+const CL_MAGE = 2
+const CL_CLERIC = 3
+const CL_PALADIN = 4
+const CL_BARD = 5
+const CL_DRUID = 6
+const CL_RANGER = 7
 
 const CL_NAME = 0
 const CL_HP = 1
@@ -108,7 +115,14 @@ const SP_LIST_DIVINE = 1
 const SP_LIST_NATURE = 2
 
 const classes = {
-	CL_FIGHTER: ["Fighter", 10, 5, [1, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0], [2, 2, 0, 0, 0, 0, 0, 2, 1, 1, 1], SP_LIST_ARCANE],
+	CL_FIGHTER: ["Fighter", 10, 5, [2, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0], [2, 2, 0, 0, 0, 0, 0, 2, 1, 1, 1], SP_LIST_ARCANE],
+	CL_THIEF: 	["Thief", 	 8, 4, [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1], [2, 1, 0, 0, 0, 0, 0, 1, 1, 2, 2], SP_LIST_ARCANE],
+	CL_MAGE: 	["Mage", 	 6, 3, [0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0], [0, 0, 2,-1,-1,-1,-1, 0, 2, 1, 0], SP_LIST_ARCANE],
+	CL_CLERIC: 	["Cleric", 	 8, 4, [0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1, 2,-1,-1,-1,-1, 2, 1, 0, 0], SP_LIST_DIVINE],
+	CL_PALADIN: ["Paladin", 10, 5, [1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0], [2, 2, 1, 0, 0, 1, 0, 1, 2, 0, 0], SP_LIST_DIVINE],
+	CL_BARD:	["Bard", 	 8, 4, [1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0], [1, 1, 0, 2, 1, 0, 0, 0, 2, 0, 2], SP_LIST_ARCANE],
+	CL_DRUID:	["Druid", 	 8, 4, [0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0], [0, 1, 2, 0, 1, 0, 2, 1, 0, 2, 0], SP_LIST_NATURE],
+	CL_RANGER: 	["Ranger", 	10, 5, [1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1], [2, 1, 0, 0, 1, 0, 0, 2, 0, 2, 1], SP_LIST_NATURE],
 }
 
 # Monsters

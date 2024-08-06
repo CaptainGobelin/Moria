@@ -96,6 +96,7 @@ window/stretch/aspect="keep"
 
 font=false
 poli=false
+grid=true
 
 [gui]
 
