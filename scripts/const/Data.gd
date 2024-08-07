@@ -117,11 +117,11 @@ const SP_LIST_NATURE = 2
 const classes = {
 	CL_FIGHTER: ["Fighter", 10, 5, [2, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0], [2, 2, 0, 0, 0, 0, 0, 2, 1, 1, 1], SP_LIST_ARCANE],
 	CL_THIEF: 	["Thief", 	 8, 4, [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1], [2, 1, 0, 0, 0, 0, 0, 1, 1, 2, 2], SP_LIST_ARCANE],
-	CL_MAGE: 	["Mage", 	 6, 3, [0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0], [0, 0, 2,-1,-1,-1,-1, 0, 2, 1, 0], SP_LIST_ARCANE],
-	CL_CLERIC: 	["Cleric", 	 8, 4, [0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1, 2,-1,-1,-1,-1, 2, 1, 0, 0], SP_LIST_DIVINE],
+	CL_MAGE: 	["Mage", 	 6, 3, [0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0], [0, 0, 2,-1,-1,-1,-1, 0, 2, 1, 0], SP_LIST_ARCANE],
+	CL_CLERIC: 	["Cleric", 	 8, 4, [0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0], [0, 1, 2,-1,-1,-1,-1, 1, 2, 0, 0], SP_LIST_DIVINE],
 	CL_PALADIN: ["Paladin", 10, 5, [1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0], [2, 2, 1, 0, 0, 1, 0, 1, 2, 0, 0], SP_LIST_DIVINE],
-	CL_BARD:	["Bard", 	 8, 4, [1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0], [1, 1, 0, 2, 1, 0, 0, 0, 2, 0, 2], SP_LIST_ARCANE],
-	CL_DRUID:	["Druid", 	 8, 4, [0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0], [0, 1, 2, 0, 1, 0, 2, 1, 0, 2, 0], SP_LIST_NATURE],
+	CL_BARD:	["Bard", 	 8, 4, [1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0], [1, 1, 0, 0, 2, 1, 0, 0, 2, 0, 2], SP_LIST_ARCANE],
+	CL_DRUID:	["Druid", 	 8, 4, [0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0], [0, 1, 1, 0, 1, 2, 2, 1, 0, 2, 0], SP_LIST_NATURE],
 	CL_RANGER: 	["Ranger", 	10, 5, [1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1], [2, 1, 0, 0, 1, 0, 0, 2, 0, 2, 1], SP_LIST_NATURE],
 }
 
@@ -347,10 +347,21 @@ const KIT_LO = 7
 
 const KIT_UNDEF = [-1, -1, -1, [], [], [], 0, 0]
 const KIT_FIGHTER = [2, 0, 1, [0, 0], [], [0, 0, 0], 30, 2]
+const KIT_THIEF =	[1,-1, 1, [0, 0], [], [0, 0, 0], 45, 3]
+const KIT_MAGE = 	[8,-1, 0, [0, 0], [], [], 30, 2]
+const KIT_CLERIC = 	[0, 0, 1, [0, 0], [], [], 30, 2]
+const KIT_PALADIN = [9,-1, 1, [0, 0], [], [], 30, 2]
 
 const CLASS_KITS = {
 	-1: KIT_UNDEF,
 	CL_FIGHTER: KIT_FIGHTER,
+	CL_THIEF: KIT_THIEF,
+	CL_BARD: KIT_THIEF,
+	CL_MAGE: KIT_MAGE,
+	CL_DRUID: KIT_MAGE,
+	CL_CLERIC: KIT_CLERIC,
+	CL_RANGER: KIT_PALADIN,
+	CL_PALADIN: KIT_PALADIN,
 }
 
 # Weapon enchants
