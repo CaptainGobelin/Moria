@@ -3,6 +3,7 @@ extends Node2D
 onready var selected = get_node("Selected")
 onready var skills = get_node("TextContainer/Skills/Values")
 onready var gear = get_node("TextContainer/Gear")
+onready var feat = get_node("TextContainer/Feat")
 onready var spellList = get_node("TextContainer/SpellList")
 onready var hp = get_node("TextContainer/HP")
 
@@ -26,6 +27,7 @@ func setSelected():
 	setHp()
 	setSkills()
 	setGear()
+	setFeat()
 
 func setSpellList():
 	var msg = "Spell list: "
@@ -76,9 +78,29 @@ func setGear():
 		else:
 			potions[i] = 1
 	for p in potions.keys():
-		msg += "\n- " + Utils.addArticle(Data.potions[p][Data.PO_NAME], potions[p])
+		if potions[p] > 1:
+			msg += "\n- " + Utils.addArticle(Data.potions[p][Data.PO_NAME], potions[p])
+		else:
+			msg += "\n- " + Data.potions[p][Data.PO_NAME]
+	var scrolls = {}
+	for i in kit[Data.KIT_SC]:
+		if scrolls.has(i):
+			scrolls[i] += 1
+		else:
+			scrolls[i] = 1
+	for s in scrolls.keys():
+		if scrolls[s] > 1:
+			msg += "\n- " + Utils.addArticle(Data.scrolls[s][Data.SC_NAME], scrolls[s])
+		else:
+			msg += "\n- " + Data.scrolls[s][Data.SC_NAME]
 	if kit[Data.KIT_LO] > 0:
 		msg += "\n- " + String(kit[Data.KIT_LO]) + " lockpicks"
 	if kit[Data.KIT_GO] > 0:
 		msg += "\n- " + String(kit[Data.KIT_GO]) + " golds"
 	gear.text = msg
+
+func setFeat():
+	var msg = "Starting feat: "
+	msg += Data.feats[selectedClass][Data.FE_NAME] + "\n"
+	msg += Data.featDescriptions[selectedClass]
+	feat.text = msg

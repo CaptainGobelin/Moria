@@ -95,6 +95,5 @@ position = Vector2( 0, 90 )
 
 [node name="MenuScroller" parent="." instance=ExtResource( 4 )]
 position = Vector2( 155, 52 )
-length = 93
 
 [node name="SpellDescription" parent="." instance=ExtResource( 2 )]

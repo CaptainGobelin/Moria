@@ -51,7 +51,6 @@ func unselect():
 "
 
 [node name="CharacterMenu" type="Node2D"]
-visible = false
 script = ExtResource( 5 )
 
 [node name="Tabs" type="TileMap" parent="."]

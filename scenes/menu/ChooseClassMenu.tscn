@@ -204,6 +204,7 @@ text = "Starting kit:
 - 1 Potion of might
 - 2 Lockpicks
 - 35 Golds"
+autowrap = true
 __meta__ = {
 "_editor_description_": ""
 }

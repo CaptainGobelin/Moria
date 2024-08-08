@@ -41,6 +41,23 @@ const PROJ_WHITE_R = [Colors.white, 9]
 const PROJ_GREEN_M = [Colors.green, 6]
 const PROJ_GREEN_R = [Colors.green, 9]
 
+# Feats
+const FEAT_FIGHTER = 0
+const FEAT_THIEF = 1
+const FEAT_MAGE = 2
+const FEAT_CLERIC = 3
+const FEAT_PALADIN = 4
+const FEAT_BARD = 5
+const FEAT_DRUID = 6
+const FEAT_RANGER = 7
+const FEAT_ABJURER = 8
+const FEAT_CONJURER = 9
+const FEAT_DIVINER = 10
+const FEAT_ENCHANTER = 11
+const FEAT_WAR = 12
+const FEAT_ASTRAL = 13
+const FEAT_LAW = 14
+
 # Spells
 const SP_MAGIC_MISSILE = 0
 const SP_ELECTRIC_GRASP = 1
@@ -347,8 +364,8 @@ const KIT_LO = 7
 
 const KIT_UNDEF = [-1, -1, -1, [], [], [], 0, 0]
 const KIT_FIGHTER = [2, 0, 1, [0, 0], [], [0, 0, 0], 30, 2]
-const KIT_THIEF =	[1,-1, 1, [0, 0], [], [0, 0, 0], 45, 3]
-const KIT_MAGE = 	[8,-1, 0, [0, 0], [], [], 30, 2]
+const KIT_THIEF =	[1,-1, 1, [0, 0], [0], [0, 0, 0], 45, 3]
+const KIT_MAGE = 	[8,-1, 0, [0, 0], [0], [], 30, 2]
 const KIT_CLERIC = 	[0, 0, 1, [0, 0], [], [], 30, 2]
 const KIT_PALADIN = [9,-1, 1, [0, 0], [], [], 30, 2]
 
@@ -721,6 +738,12 @@ const STATUS_RADIANT_RESIST = 10000 + DMG_RADIANT
 const STATUS_MAGIC_RESIST = 10000 + DMG_MAGIC
 const STATUS_ICE_RESIST = 10000 + DMG_ICE
 const STATUS_LIGHTNING_RESIST = 10000 + DMG_LIGHTNING
+const STATUS_FEAT_FIGHTER = 20000 + FEAT_FIGHTER
+const STATUS_FEAT_THIEF = 20000 + FEAT_THIEF
+const STATUS_FEAT_PALADIN = 20000 + FEAT_PALADIN
+const STATUS_FEAT_BARD = 20000 + FEAT_BARD
+const STATUS_FEAT_DRUID = 20000 + FEAT_DRUID
+const STATUS_FEAT_RANGER = 20000 + FEAT_RANGER
 
 const statusPrefabs = {
 	STATUS_SLEEP: ["Sleep", 7, null, null, STATUS_SLEEP, null, null, false],
@@ -736,6 +759,44 @@ const statusPrefabs = {
 	STATUS_ARMOR_FAITH: ["Armor of faith", 5, null, null, STATUS_ARMOR_FAITH, null, null, false],
 	STATUS_PROTECT_EVIL: ["Protection from evil", 41, null, null, STATUS_PROTECT_EVIL, null, null, false],
 	STATUS_SANCTUARY: ["Sanctuary", 33, null, null, STATUS_SANCTUARY, null, null, false],
+}
+
+const FE_NAME = 0
+const FE_STATUS = 1
+const FE_CHOOSE = 2
+const FE_DISPLAY = 3
+const FE_SUBS = 4
+
+const feats = {
+	FEAT_FIGHTER: ["Trained soldier", STATUS_FEAT_FIGHTER, false, true, []],
+	FEAT_THIEF: ["Nimble fingers", STATUS_FEAT_THIEF, false, true, []],
+	FEAT_MAGE: ["Specialization", null, false, false, [FEAT_ABJURER, FEAT_CONJURER, FEAT_DIVINER, FEAT_ENCHANTER]],
+	FEAT_CLERIC: ["Sphere", null, false, false, [FEAT_WAR, FEAT_ASTRAL, FEAT_LAW]],
+	FEAT_PALADIN: ["Holy warrior", STATUS_FEAT_PALADIN, false,  true,[]],
+	FEAT_BARD: ["Ancient knowledge", STATUS_FEAT_BARD, false,  true,[]],
+	FEAT_DRUID: ["Force of nature", STATUS_FEAT_DRUID, false,  true,[]],
+	FEAT_RANGER: ["Woodman", STATUS_FEAT_RANGER, false,  true, []],
+	
+	FEAT_ABJURER: ["Abjurer", null, false,  true, []],
+	FEAT_ENCHANTER: ["Enchanter", null, false,  true, []],
+	FEAT_CONJURER: ["Conjurer", null, false,  true, []],
+	FEAT_DIVINER: ["Diviner", null, false,  true, []],
+}
+
+const featDescriptions = {
+	FEAT_FIGHTER: "Reduces combat fatigue cost from 5 per turn to 4. +2 to PHY saves against injuries.",
+	FEAT_THIEF: "Each skill point spent in Thievery or Perception awards 2 * instead of 1.",
+	FEAT_MAGE: "Choose a specialist school (and a forbidden one), choosen school have 20% more uses.",
+	FEAT_CLERIC: "Choose a sphere to increase your masteries and skills in magic shools.",
+	FEAT_PALADIN: "+1 to CA when wearing 2H wepon, +1 dmg per dice rolled when wearing 1H weapon.",
+	FEAT_BARD: "Scrolls have a 20% chance not to disaperear when readed.",
+	FEAT_DRUID: "+1 to all save rolls against spells.",
+	FEAT_RANGER: "You have no malus to rolls when under 100 fatigue.",
+	
+	FEAT_ABJURER: 	"Grants:\n- Abjuration  *....\n- Divination  ...\n- Conjuration  ...\n\nAbjuration spells have 30% more uses but you cannot cast Enchantment spells.",
+	FEAT_ENCHANTER: "Grants:\n- Enchantment *....\n- Conjuration ...\n- Abjuration  ...\n\nEnchantment spells have 30% more uses but you cannot cast Divination spells.",
+	FEAT_CONJURER: 	"Grants:\n- Conjuration *....\n- Enchantment ...\n- Divination  ...\n\nConjuration spells have 30% more uses but you cannot cast Abjuration spells.",
+	FEAT_DIVINER: 	"Grants:\n- Divination  *....\n- Abjuration  ...\n- Enchantment ...\n\nEnchantment spells have 30% more uses but you cannot cast Conjuration spells.",
 }
 
 # Traps
