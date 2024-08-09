@@ -54,9 +54,35 @@ const FEAT_ABJURER = 8
 const FEAT_CONJURER = 9
 const FEAT_DIVINER = 10
 const FEAT_ENCHANTER = 11
-const FEAT_WAR = 12
-const FEAT_ASTRAL = 13
-const FEAT_LAW = 14
+const FEAT_SPHERE_WAR = 12
+const FEAT_SPHERE_ASTRAL = 13
+const FEAT_SPHERE_LAW = 14
+const FEAT_ENDURANT = 100
+const FEAT_TRAP_SPECIALIST = 101
+const FEAT_PYROMANCER = 102
+const FEAT_ARCANE_INITIATE = 104
+const FEAT_DIVINE_SERVANT = 105
+const FEAT_GREAT_MEMORY = 106
+const FEAT_INVOKER = 107
+const FEAT_TOUGH = 108
+const FEAT_SHIELD_MASTER = 109
+const FEAT_SAVAGE_ATTACKER = 110
+const FEAT_THROWER = 111
+const FEAT_SCROLL_EXPERT = 112
+const FEAT_FIERCE = 113
+const FEAT_RIPOSTE = 114
+const FEAT_SKILLED = 200
+const FEAT_SKILLED_COMBAT = 201
+const FEAT_SKILLED_ARMOR = 202
+const FEAT_SKILLED_EVOCATION = 203
+const FEAT_SKILLED_ENCHANTMENT = 204
+const FEAT_SKILLED_DIVINATION = 205
+const FEAT_SKILLED_ABJURATION = 206
+const FEAT_SKILLED_CONJURATION = 207
+const FEAT_SKILLED_PHYSICS = 208
+const FEAT_SKILLED_WILLPOWER = 209
+const FEAT_SKILLED_PERCEPTION = 210
+const FEAT_SKILLED_THIEVERY = 211
 
 # Spells
 const SP_MAGIC_MISSILE = 0
@@ -738,12 +764,12 @@ const STATUS_RADIANT_RESIST = 10000 + DMG_RADIANT
 const STATUS_MAGIC_RESIST = 10000 + DMG_MAGIC
 const STATUS_ICE_RESIST = 10000 + DMG_ICE
 const STATUS_LIGHTNING_RESIST = 10000 + DMG_LIGHTNING
-const STATUS_FEAT_FIGHTER = 20000 + FEAT_FIGHTER
-const STATUS_FEAT_THIEF = 20000 + FEAT_THIEF
-const STATUS_FEAT_PALADIN = 20000 + FEAT_PALADIN
-const STATUS_FEAT_BARD = 20000 + FEAT_BARD
-const STATUS_FEAT_DRUID = 20000 + FEAT_DRUID
-const STATUS_FEAT_RANGER = 20000 + FEAT_RANGER
+#const STATUS_FEAT_FIGHTER = 20000 + FEAT_FIGHTER
+#const STATUS_FEAT_THIEF = 20000 + FEAT_THIEF
+#const STATUS_FEAT_PALADIN = 20000 + FEAT_PALADIN
+#const STATUS_FEAT_BARD = 20000 + FEAT_BARD
+#const STATUS_FEAT_DRUID = 20000 + FEAT_DRUID
+#const STATUS_FEAT_RANGER = 20000 + FEAT_RANGER
 
 const statusPrefabs = {
 	STATUS_SLEEP: ["Sleep", 7, null, null, STATUS_SLEEP, null, null, false],
@@ -762,25 +788,59 @@ const statusPrefabs = {
 }
 
 const FE_NAME = 0
-const FE_STATUS = 1
-const FE_CHOOSE = 2
-const FE_DISPLAY = 3
-const FE_SUBS = 4
+const FE_CHOOSE = 1
+const FE_SUBS = 2
 
 const feats = {
-	FEAT_FIGHTER: ["Trained soldier", STATUS_FEAT_FIGHTER, false, true, []],
-	FEAT_THIEF: ["Nimble fingers", STATUS_FEAT_THIEF, false, true, []],
-	FEAT_MAGE: ["Specialization", null, false, false, [FEAT_ABJURER, FEAT_CONJURER, FEAT_DIVINER, FEAT_ENCHANTER]],
-	FEAT_CLERIC: ["Sphere", null, false, false, [FEAT_WAR, FEAT_ASTRAL, FEAT_LAW]],
-	FEAT_PALADIN: ["Holy warrior", STATUS_FEAT_PALADIN, false,  true,[]],
-	FEAT_BARD: ["Ancient knowledge", STATUS_FEAT_BARD, false,  true,[]],
-	FEAT_DRUID: ["Force of nature", STATUS_FEAT_DRUID, false,  true,[]],
-	FEAT_RANGER: ["Woodman", STATUS_FEAT_RANGER, false,  true, []],
+	FEAT_FIGHTER: ["Trained soldier", false, []],
+	FEAT_THIEF: ["Nimble fingers", false, []],
+	FEAT_MAGE: ["Specialization", false, [FEAT_ABJURER, FEAT_CONJURER, FEAT_DIVINER, FEAT_ENCHANTER]],
+	FEAT_CLERIC: ["Sphere", false, [FEAT_SPHERE_WAR, FEAT_SPHERE_ASTRAL, FEAT_SPHERE_LAW]],
+	FEAT_PALADIN: ["Holy warrior", false, []],
+	FEAT_BARD: ["Ancient knowledge", false, []],
+	FEAT_DRUID: ["Force of nature", false, []],
+	FEAT_RANGER: ["Woodman", false, []],
 	
-	FEAT_ABJURER: ["Abjurer", null, false,  true, []],
-	FEAT_ENCHANTER: ["Enchanter", null, false,  true, []],
-	FEAT_CONJURER: ["Conjurer", null, false,  true, []],
-	FEAT_DIVINER: ["Diviner", null, false,  true, []],
+	FEAT_ABJURER: ["Abjurer", false, []],
+	FEAT_ENCHANTER: ["Enchanter", false, []],
+	FEAT_CONJURER: ["Conjurer", false, []],
+	FEAT_DIVINER: ["Diviner", false, []],
+	
+	FEAT_SPHERE_WAR: ["War sphere", false, []],
+	FEAT_SPHERE_ASTRAL: ["Astral sphere", false, []],
+	FEAT_SPHERE_LAW: ["Law sphere", false, []],
+	
+	FEAT_ENDURANT: ["Endurant", true, []],
+	FEAT_TRAP_SPECIALIST: ["Trap specialist", true, []],
+	FEAT_PYROMANCER: ["Pyromancer", true, []],
+	FEAT_ARCANE_INITIATE: ["Arcane initiate", true, []],
+	FEAT_DIVINE_SERVANT: ["Divine servant", true, []],
+	FEAT_GREAT_MEMORY: ["Great memory", true, []],
+	FEAT_INVOKER: ["Invoker", true, []],
+	FEAT_TOUGH: ["Tough", true, []],
+	FEAT_SHIELD_MASTER: ["Shield master", true, []],
+	FEAT_SAVAGE_ATTACKER: ["Savge attacker", true, []],
+	FEAT_THROWER: ["Thrower", true, []],
+	FEAT_SCROLL_EXPERT: ["Scroll expert", true, []],
+	FEAT_FIERCE: ["Fierce", true, []],
+	FEAT_RIPOSTE: ["Riposte", true, []],
+	
+	FEAT_SKILLED: ["Skilled", true, [
+		FEAT_SKILLED_COMBAT, FEAT_SKILLED_ARMOR, FEAT_SKILLED_EVOCATION,
+		FEAT_SKILLED_ENCHANTMENT, FEAT_SKILLED_DIVINATION, FEAT_SKILLED_ABJURATION,
+		FEAT_SKILLED_CONJURATION, FEAT_SKILLED_PHYSICS, FEAT_SKILLED_WILLPOWER,
+		FEAT_SKILLED_PERCEPTION, FEAT_SKILLED_THIEVERY]],
+	FEAT_SKILLED_COMBAT: ["Skilled: Combat", false, []],
+	FEAT_SKILLED_ARMOR: ["Skilled: Armor", false, []],
+	FEAT_SKILLED_EVOCATION: ["Skilled: Evocation", false, []],
+	FEAT_SKILLED_ENCHANTMENT: ["Skilled: Enchantment", false, []],
+	FEAT_SKILLED_DIVINATION: ["Skilled: Divination", false, []],
+	FEAT_SKILLED_ABJURATION: ["Skilled: Abjuration", false, []],
+	FEAT_SKILLED_CONJURATION: ["Skilled: Conjuration", false, []],
+	FEAT_SKILLED_PHYSICS: ["Skilled: Physics", false, []],
+	FEAT_SKILLED_WILLPOWER: ["Skilled: Willpower", false, []],
+	FEAT_SKILLED_PERCEPTION: ["Skilled: Perception", false, []],
+	FEAT_SKILLED_THIEVERY: ["Skilled: Thievery", false, []],
 }
 
 const featDescriptions = {
@@ -788,15 +848,47 @@ const featDescriptions = {
 	FEAT_THIEF: "Each skill point spent in Thievery or Perception awards 2 * instead of 1.",
 	FEAT_MAGE: "Choose a specialist school (and a forbidden one), choosen school have 20% more uses.",
 	FEAT_CLERIC: "Choose a sphere to increase your masteries and skills in magic shools.",
-	FEAT_PALADIN: "+1 to CA when wearing 2H wepon, +1 dmg per dice rolled when wearing 1H weapon.",
+	FEAT_PALADIN: "+1 to CA when wearing 2H wepon, +1 damage per dice rolled when wearing 1H weapon.",
 	FEAT_BARD: "Scrolls have a 20% chance not to disaperear when readed.",
 	FEAT_DRUID: "+1 to all save rolls against spells.",
 	FEAT_RANGER: "You have no malus to rolls when under 100 fatigue.",
 	
-	FEAT_ABJURER: 	"Grants:\n- Abjuration  *....\n- Divination  ...\n- Conjuration  ...\n\nAbjuration spells have 30% more uses but you cannot cast Enchantment spells.",
-	FEAT_ENCHANTER: "Grants:\n- Enchantment *....\n- Conjuration ...\n- Abjuration  ...\n\nEnchantment spells have 30% more uses but you cannot cast Divination spells.",
-	FEAT_CONJURER: 	"Grants:\n- Conjuration *....\n- Enchantment ...\n- Divination  ...\n\nConjuration spells have 30% more uses but you cannot cast Abjuration spells.",
-	FEAT_DIVINER: 	"Grants:\n- Divination  *....\n- Abjuration  ...\n- Enchantment ...\n\nEnchantment spells have 30% more uses but you cannot cast Conjuration spells.",
+	FEAT_ABJURER: 	"Grants:\n- Abjuration  *....\n- Divination  ...\n- Conjuration  ...\n\nAbjuration spells have 30% more uses but Enchantment spells have 30% less.",
+	FEAT_ENCHANTER: "Grants:\n- Enchantment *....\n- Conjuration ...\n- Abjuration  ...\n\nEnchantment spells have 30% more uses but Divination spells have 30% less.",
+	FEAT_CONJURER: 	"Grants:\n- Conjuration *....\n- Enchantment ...\n- Divination  ...\n\nConjuration spells have 30% more uses but Abjuration spells have 30% less.",
+	FEAT_DIVINER: 	"Grants:\n- Divination  *....\n- Abjuration  ...\n- Enchantment ...\n\nEnchantment spells have 30% more uses but Conjuration spells have 30% less.",
+	
+	FEAT_SPHERE_WAR: 	"Grants:\n- Abjuration   *....\n- Enchantment  ...",
+	FEAT_SPHERE_ASTRAL: 	"Grants:\n- Divination   *....\n- Conjuration  ...",
+	FEAT_SPHERE_LAW: 	"Grants:\n- Enchantment  *....\n- Divination   ...",
+	
+	FEAT_ENDURANT: "Increases maximum fatigue by 250.",
+	FEAT_TRAP_SPECIALIST: "Grants:\n- +3 to search rolls to detect traps\n- +2 to saves for trap effects.",
+	FEAT_PYROMANCER: "You ignore fire resistance and fire immunity when dealing damages with spells.",
+	FEAT_ARCANE_INITIATE: "You learn a single spell form the arcane spell list (restricted by school level).",
+	FEAT_DIVINE_SERVANT: "You learn a single spell form the divine spell list (restricted by school level).",
+	FEAT_GREAT_MEMORY: "All you spells have 20% more uses (rounded down).",
+	FEAT_INVOKER: "Conjured creatures attract much more enemies attention.",
+	FEAT_TOUGH: "Grants:\n- 2 HP per level (retroactive)\n- +3 for PHY save rolls against injuries",
+	FEAT_SHIELD_MASTER: "If you succeed a PHY save roll while using a shield you negate the effect instead of halving damages.",
+	FEAT_SAVAGE_ATTACKER: "You have -1 AC but add 1 dice to your weapon damage dices.",
+	FEAT_THROWER: "Throwing weapon always deal maximum damages.",
+	FEAT_SCROLL_EXPERT: "Reading a scroll does not consume your turn anymore.",
+	FEAT_FIERCE: "Reroll 1s on weapon damage dices when attacking.",
+	FEAT_RIPOSTE: "When a melee attack miss by at least 3, make a free automatic attack with your weapon against the attacker.",
+	
+	FEAT_SKILLED: "Choose a skill, you gain one level of mastery and one skill level for that skill.",
+	FEAT_SKILLED_COMBAT: "You gain one level of mastery and one skill level in Combat.",
+	FEAT_SKILLED_ARMOR: "You gain one level of mastery and one skill level in Armor.",
+	FEAT_SKILLED_EVOCATION: "You gain one level of mastery and one skill level in Evocation.",
+	FEAT_SKILLED_ENCHANTMENT:"You gain one level of mastery and one skill level in Enchantment.",
+	FEAT_SKILLED_DIVINATION: "You gain one level of mastery and one skill level in Divination.",
+	FEAT_SKILLED_ABJURATION: "You gain one level of mastery and one skill level in Abjuration.",
+	FEAT_SKILLED_CONJURATION: "You gain one level of mastery and one skill level in Conjuration.",
+	FEAT_SKILLED_PHYSICS: "You gain one level of mastery and one skill level in PHY saves.",
+	FEAT_SKILLED_WILLPOWER: "You gain one level of mastery and one skill level in WIL saves.",
+	FEAT_SKILLED_PERCEPTION: "You gain one level of mastery and one skill level in Perception.",
+	FEAT_SKILLED_THIEVERY: "You gain one level of mastery and one skill level in Thievery.",
 }
 
 # Traps
