@@ -1,9 +1,13 @@
 extends Node2D
 
 onready var tabs = get_node("Tabs").get_children()
+onready var descriptor = get_node("TextContainer/Description")
 onready var skillsScreen = get_node("SkillsScreen")
 onready var skills = get_node("SkillsScreen/SkillsList").get_children()
 onready var skp = get_node("SkillsScreen/TextContainer/RemainingPoints")
+onready var featsScreen = get_node("FeatsScreen")
+onready var featList = get_node("FeatsScreen/FeatsList")
+onready var chooseFeat = get_node("FeatsScreen/TextContainer/ChooseFeat")
 
 var currentTab = 0
 var currentRow = 0
@@ -35,10 +39,20 @@ func _input(event):
 		match currentTab:
 			GLOBAL.CHAR_SKILLS:
 				selectSkill(currentRow - 1)
+			GLOBAL.CHAR_FEATS:
+				if Ref.character.skills.feats.size() == 0:
+					return
+				currentRow = Utils.modulo(currentRow - 1, Ref.character.skills.feats.size())
+				setTab(currentTab, currentRow)
 	elif (event.is_action_pressed("ui_down")):
 		match currentTab:
 			GLOBAL.CHAR_SKILLS:
 				selectSkill(currentRow + 1)
+			GLOBAL.CHAR_FEATS:
+				if Ref.character.skills.feats.size() == 0:
+					return
+				currentRow = Utils.modulo(currentRow + 1, Ref.character.skills.feats.size())
+				setTab(currentTab, currentRow)
 	elif (event.is_action_released("characterMenu")):
 		close()
 	elif (event.is_action_released("ui_cancel")):
@@ -47,6 +61,9 @@ func _input(event):
 		match currentTab:
 			GLOBAL.CHAR_SKILLS:
 				buySkill(currentRow)
+			GLOBAL.CHAR_FEATS:
+				if Ref.character.skills.ftp > 0:
+					Ref.game.chooseFeatMenu.open([], null, true, self)
 
 func buySkill(row):
 	var charSkp = Ref.character.skills.skp
@@ -71,9 +88,11 @@ func setTab(tab, row = 0):
 	for t in tabs:
 		t.setInactive()
 	tabs[tab].setActive()
+	descriptor.text = ""
 	match tab:
 		GLOBAL.CHAR_SKILLS:
 			skillsScreen.visible = true
+			featsScreen.visible = false
 			var count = 0
 			for s in skills:
 				s.setValue(Ref.character.skills.skills[count], Ref.character.skills.masteries[count])
@@ -81,13 +100,32 @@ func setTab(tab, row = 0):
 			skp.text = String(Ref.character.skills.skp)
 			selectSkill(max(min(row, skills.size()-1), 0))
 		GLOBAL.CHAR_FEATS:
+			descriptor.text = "No feat selected"
 			skillsScreen.visible = false
+			featsScreen.visible = true
 			currentRow = row
+			var count = 0
+			for f in featList.get_children():
+				if count < Ref.character.skills.feats.size():
+					f.setSimpleContent(Ref.character.skills.feats[count])
+					f.visible = true
+					f.selected.visible = false
+					if count == currentRow:
+						f.selected.visible = true
+						descriptor.text = Data.featDescriptions[f.feat]
+				else:
+					f.visible = false
+				count += 1
+			chooseFeat.visible = Ref.character.skills.ftp > 0
 		GLOBAL.CHAR_STATUSES:
 			skillsScreen.visible = false
 			currentRow = row
 		_:
 			currentRow = row
+	if descriptor.text.find("\n") > 0:
+		descriptor.align = Label.ALIGN_LEFT
+	else:
+		descriptor.align = Label.ALIGN_CENTER
 
 func selectSkill(row: int):
 	currentRow = posmod(row, skills.size())

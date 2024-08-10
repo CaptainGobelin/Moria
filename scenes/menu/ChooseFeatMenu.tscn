@@ -7,7 +7,6 @@
 [ext_resource path="res://scripts/menu/ChooseFeatMenu.gd" type="Script" id=5]
 
 [node name="ChooseFeatMenu" type="Node2D"]
-scale = Vector2( 4, 4 )
 script = ExtResource( 5 )
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -76,23 +75,23 @@ autowrap = true
 [node name="Feats" type="Node2D" parent="."]
 
 [node name="FeatRow" parent="Feats" instance=ExtResource( 2 )]
-position = Vector2( 135, 46 )
+position = Vector2( 135, 45 )
 
 [node name="FeatRow2" parent="Feats" instance=ExtResource( 2 )]
-position = Vector2( 135, 64 )
+position = Vector2( 135, 63 )
 
 [node name="FeatRow3" parent="Feats" instance=ExtResource( 2 )]
-position = Vector2( 135, 82 )
+position = Vector2( 135, 81 )
 
 [node name="FeatRow4" parent="Feats" instance=ExtResource( 2 )]
-position = Vector2( 135, 100 )
+position = Vector2( 135, 99 )
 
 [node name="FeatRow5" parent="Feats" instance=ExtResource( 2 )]
-position = Vector2( 135, 118 )
+position = Vector2( 135, 117 )
 
 [node name="FeatRow6" parent="Feats" instance=ExtResource( 2 )]
-position = Vector2( 135, 136 )
+position = Vector2( 135, 135 )
 
 [node name="MenuScroller" parent="." instance=ExtResource( 3 )]
-position = Vector2( 218.25, 54 )
+position = Vector2( 218, 54 )
 length = 90

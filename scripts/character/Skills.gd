@@ -1,8 +1,10 @@
 extends Node
 
-onready var skills = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-onready var masteries = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-onready var skp: int = 5
+var feats: Array = []
+var ftp: int = 3
+var skills: Array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+var masteries: Array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+var skp: int = 5
 
 func init(charClass: int):
 	skills = Data.classes[charClass][Data.CL_SK].duplicate()

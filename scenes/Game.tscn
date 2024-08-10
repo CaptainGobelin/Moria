@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://scenes/engine/DungeonGenerator.tscn" type="PackedScene" id=1]
 [ext_resource path="res://tilesets/basic.tres" type="TileSet" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://scenes/menu/InventoryMenu.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scripts/utils/Pathfinder.gd" type="Script" id=11]
 [ext_resource path="res://scenes/menu/CharacterMenu.tscn" type="PackedScene" id=12]
+[ext_resource path="res://scenes/menu/ChooseFeatMenu.tscn" type="PackedScene" id=13]
 [ext_resource path="res://scripts/Game.gd" type="Script" id=15]
 [ext_resource path="res://scripts/CurrentLevel.gd" type="Script" id=16]
 [ext_resource path="res://scripts/ui/NumberHandler.gd" type="Script" id=17]
@@ -437,4 +438,7 @@ visible = false
 [node name="ChestMenu" parent="." instance=ExtResource( 26 )]
 
 [node name="ChooseSpellMenu" parent="." instance=ExtResource( 28 )]
+visible = false
+
+[node name="ChooseFeatMenu" parent="." instance=ExtResource( 13 )]
 visible = false

@@ -11,26 +11,47 @@ var featList: Array = []
 var selected: int = 0
 var startRow: int = 0
 var canCancel: bool = true
+var caller = null
+var masterFeat = null
 
 func _ready():
-	open(Data.feats.keys())
+	set_process_input(false)
 
-func open(feats: Array, masterFeat = null, canCancel: bool = true):
+func open(feats: Array = [], masterFeat = null, canCancel: bool = true, source = null):
+	caller = source
+	self.masterFeat = masterFeat
 	if feats.empty():
+		feats = Data.feats.keys()
+		featList = []
+		for f in feats:
+			if Data.feats[f][Data.FE_CHOOSE] and !Ref.character.skills.feats.has(f):
+				featList.append(f)
+	else:
+		featList = feats
+	if featList.empty():
 		close()
+		return
+	if caller == null:
+		Ref.game.set_process_input(false)
+	else:
+		caller.set_process_input(false)
+		caller.visible = false
 	visible = true
 	selected = 0
 	startRow = 0
-	featList = feats
 	self.canCancel = canCancel
 	cancelLabel.visible = canCancel
 	loadFeatList()
 	set_process_input(true)
 
-func close(selectedFeat = null):
+func close():
 	visible = false
+	Ref.currentLevel.visible = true
 	set_process_input(false)
-	emit_signal("selected", selectedFeat)
+	if caller == null:
+		Ref.game.set_process_input(true)
+	else:
+		caller.open()
 
 func loadFeatList():
 	var count = startRow
@@ -47,6 +68,10 @@ func loadFeatList():
 
 func selectFeat(feat: int):
 	description.text = Data.featDescriptions[feat]
+	if description.text.find("\n") > 0:
+		description.align = Label.ALIGN_LEFT
+	else:
+		description.align = Label.ALIGN_CENTER
 
 func _input(event):
 	if event.is_action_released("ui_down"):
@@ -66,6 +91,15 @@ func _input(event):
 			startRow = max(0, featList.size() - 6)
 		loadFeatList()
 	elif event.is_action_released("ui_accept"):
-		close()
+		var subFeats = Data.feats[featList[selected]][Data.FE_SUBS]
+		if subFeats.size() > 0:
+			open(subFeats, featList[selected], true, caller)
+		else:
+			Ref.character.skills.feats.append(featList[selected])
+			Ref.character.skills.ftp -= 1
+			close()
 	elif canCancel and event.is_action_released("ui_cancel"):
-		close()
+		if masterFeat == null:
+			close()
+		else:
+			open([], null, Data.feats[masterFeat][Data.FE_CHOOSE], caller)
