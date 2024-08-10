@@ -39,56 +39,51 @@ func _ready():
 func askForNumber(maxNb: int, inputer, msg = "How much?"):
 	previousMode = GLOBAL.currentMode
 	GLOBAL.currentMode = GLOBAL.MODE_NUMBER
-	inputer.set_process_input(false)
 	numberHandler.startCoroutine(maxNb, msg)
 	var result = yield(numberHandler, "end_coroutine")
 	GLOBAL.currentMode = previousMode
-	inputer.set_process_input(true)
+	MasterInput.setMaster(inputer)
 	emit_signal("coroutine_signal", result)
 
 func askForChoice(list: Array, inputer):
 	previousMode = GLOBAL.currentMode
 	GLOBAL.currentMode = GLOBAL.MODE_CHOICE
-	inputer.set_process_input(false)
 	choiceHandler.startCoroutine(list)
 	var result = yield(choiceHandler, "end_coroutine")
 	if result == -1:
 		writeOk()
 	GLOBAL.currentMode = previousMode
-	inputer.set_process_input(true)
+	MasterInput.setMaster(inputer)
 	emit_signal("coroutine_signal", result)
 
 func askForYesNo(inputer):
 	previousMode = GLOBAL.currentMode
 	GLOBAL.currentMode = GLOBAL.MODE_YESNO
-	inputer.set_process_input(false)
 	yesNoHandler.startCoroutine()
 	var result = yield(yesNoHandler, "end_coroutine")
 	if !result:
 		writeOk()
 	GLOBAL.currentMode = previousMode
-	inputer.set_process_input(true)
+	MasterInput.setMaster(inputer)
 	emit_signal("coroutine_signal", result)
 
 func askForDirection(inputer):
 	previousMode = GLOBAL.currentMode
-	inputer.set_process_input(false)
 	directionHandler.startCoroutine()
 	var result = yield(directionHandler, "end_coroutine")
 	GLOBAL.currentMode = previousMode
-	inputer.set_process_input(true)
+	MasterInput.setMaster(inputer)
 	emit_signal("coroutine_signal", result)
 
 func askForTarget(targets: Array, inputer):
 	previousMode = GLOBAL.currentMode
 	GLOBAL.currentMode = GLOBAL.MODE_TARGET
-	inputer.set_process_input(false)
 	targetHandler.startCoroutine(targets)
 	var result = yield(targetHandler, "end_coroutine")
 	if result == -1:
 		writeOk()
 	GLOBAL.currentMode = previousMode
-	inputer.set_process_input(true)
+	MasterInput.setMaster(inputer)
 	emit_signal("coroutine_signal", result)
 
 func write(text):

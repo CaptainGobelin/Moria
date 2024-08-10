@@ -26,7 +26,7 @@ func _ready():
 	else:
 		newFloor()
 	Ref.currentLevel.refresh_view()
-	set_process_input(true)
+	MasterInput.setMaster(self)
 	GLOBAL.currentMode = GLOBAL.MODE_NORMAL
 	if runTests:
 		Tests.runAll()

@@ -19,14 +19,12 @@ func open():
 	setTab(currentTab)
 	visible = true
 	Ref.currentLevel.visible = false
-	Ref.game.set_process_input(false)
-	set_process_input(true)
+	MasterInput.setMaster(self)
 
 func close():
 	visible = false
 	Ref.currentLevel.visible = true
-	Ref.game.set_process_input(true)
-	set_process_input(false)
+	MasterInput.setMaster(Ref.game)
 
 func _input(event):
 	if (event.is_action_pressed("ui_left")):

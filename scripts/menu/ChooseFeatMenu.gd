@@ -31,10 +31,7 @@ func open(feats: Array = [], masterFeat = null, canCancel: bool = true, source =
 	if featList.empty():
 		close()
 		return
-	if caller == null:
-		Ref.game.set_process_input(false)
-	else:
-		caller.set_process_input(false)
+	if caller != null:
 		caller.visible = false
 	visible = true
 	selected = 0
@@ -42,15 +39,13 @@ func open(feats: Array = [], masterFeat = null, canCancel: bool = true, source =
 	self.canCancel = canCancel
 	cancelLabel.visible = canCancel
 	loadFeatList()
-	set_process_input(true)
+	MasterInput.setMaster(self)
 
 func close():
 	visible = false
 	Ref.currentLevel.visible = true
-	set_process_input(false)
-	if caller == null:
-		Ref.game.set_process_input(true)
-	else:
+	MasterInput.setMaster(Ref.game)
+	if caller != null:
 		caller.open()
 
 func loadFeatList():

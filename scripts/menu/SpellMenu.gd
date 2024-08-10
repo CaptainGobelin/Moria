@@ -49,15 +49,13 @@ func open():
 	selectSpell()
 	Ref.currentLevel.visible = false
 	GLOBAL.currentMode = GLOBAL.MODE_SPELL
-	Ref.game.set_process_input(false)
-	set_process_input(true)
+	MasterInput.setMaster(self)
 
 func close():
 	visible = false
 	Ref.currentLevel.visible = true
 	GLOBAL.currentMode = GLOBAL.MODE_NORMAL
-	Ref.game.set_process_input(true)
-	set_process_input(false)
+	MasterInput.setMaster(Ref.game)
 
 func fillList():
 	spellList = Ref.character.spells.getSpellsRows()

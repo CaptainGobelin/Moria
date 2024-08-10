@@ -22,8 +22,7 @@ func _input(event):
 
 func startCoroutine(list: Array):
 	choiceList = list
-	set_process_input(true)
+	MasterInput.setMaster(self)
 
 func endCoroutine(result: int):
-	set_process_input(false)
 	emit_signal("end_coroutine", result)

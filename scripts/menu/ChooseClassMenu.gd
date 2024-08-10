@@ -10,7 +10,7 @@ onready var hp = get_node("TextContainer/HP")
 var selectedClass = 0
 
 func _ready():
-	set_process_input(true)
+	MasterInput.setMaster(self)
 	setSelected()
 
 func _input(event):

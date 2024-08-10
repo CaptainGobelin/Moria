@@ -31,10 +31,9 @@ func startCoroutine(targets: Array):
 	choices = targets
 	selectLastTarget()
 	Ref.currentLevel.target(instance_from_id(lastTarget).pos)
-	set_process_input(true)
+	MasterInput.setMaster(self)
 
 func endCoroutine(result: int):
-	set_process_input(false)
 	Ref.currentLevel.untarget()
 	choices = []
 	currentChoice = 0

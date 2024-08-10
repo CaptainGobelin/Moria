@@ -23,10 +23,9 @@ func _input(event):
 		return
 
 func startCoroutine():
-	set_process_input(true)
+	MasterInput.setMaster(self)
 
 func endCoroutine(result: Vector2):
-	set_process_input(false)
 	if result == Vector2(0, 0):
 		Ref.ui.writeOk()
 	emit_signal("end_coroutine", result)

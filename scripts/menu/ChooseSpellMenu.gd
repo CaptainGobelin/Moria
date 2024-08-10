@@ -18,8 +18,7 @@ func open(school: int, level: int, caller):
 	source = caller
 	visible = true
 	Ref.currentLevel.visible = false
-	Ref.game.set_process_input(false)
-	set_process_input(true)
+	MasterInput.setMaster(self)
 	var rank = Ref.character.spells.getSpellRank(school)
 	var list = Data.classes[Ref.character.charClass][Data.CL_LIST]
 	currentList = []
@@ -38,8 +37,7 @@ func open(school: int, level: int, caller):
 func close():
 	visible = false
 	Ref.currentLevel.visible = true
-	Ref.game.set_process_input(true)
-	set_process_input(false)
+	MasterInput.setMaster(Ref.game)
 	if source != null:
 		source.open()
 
