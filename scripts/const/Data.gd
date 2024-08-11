@@ -166,7 +166,7 @@ const classes = {
 	CL_PALADIN: ["Paladin", 10, 5, [1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0], [2, 2, 1, 0, 0, 1, 0, 1, 2, 0, 0], SP_LIST_DIVINE],
 	CL_BARD:	["Bard", 	 8, 4, [1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0], [1, 1, 0, 0, 2, 1, 0, 0, 2, 0, 2], SP_LIST_ARCANE],
 	CL_DRUID:	["Druid", 	 8, 4, [0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0], [0, 1, 1, 0, 1, 2, 2, 1, 0, 2, 0], SP_LIST_NATURE],
-	CL_RANGER: 	["Ranger", 	10, 5, [1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1], [2, 1, 0, 0, 1, 0, 0, 2, 0, 2, 1], SP_LIST_NATURE],
+	CL_RANGER: 	["Ranger", 	10, 5, [1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1], [2, 1, 0, 0, 1, 0, 0, 2, 0, 2, 1], SP_LIST_NATURE],
 }
 
 # Monsters
@@ -338,6 +338,7 @@ const SC_STACK = 3
 const SC_ICON_ALL = 57
 const scrolls = {
 	0: ["Scroll of magic missile", SP_MAGIC_MISSILE, 0, 100],
+	1: ["Scroll of firebolt", SP_FIREBOLT, 0, 101],
 }
  
 var scrollsByRarity = {}
@@ -733,7 +734,6 @@ func spellsReader():
 			if !spellsPerSchool[l][school].has(rank):
 				spellsPerSchool[l][school][rank] = []
 			spellsPerSchool[l][school][rank].append(idx)
-	Utils.printDict(spellsPerSchool)
 
 # Statuses
 const STATUS_SLEEP = 0

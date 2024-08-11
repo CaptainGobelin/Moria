@@ -37,8 +37,8 @@ func computeStats():
 	computeHit()
 	StatusEngine.applyEffect(get_parent())
 	computeReissts()
-	Utils.printDict(get_parent().enchants)
-	Utils.printDict(get_parent().statuses)
+#	Utils.printDict(get_parent().enchants)
+#	Utils.printDict(get_parent().statuses)
 
 func computeHpMax():
 	var value = classStats[Data.CL_HP]

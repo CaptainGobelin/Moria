@@ -158,7 +158,7 @@ const tests = {
 		"Read scroll",
 		Vector2(10, 10),
 		[
-			["spawn_scroll", 0, Vector2(11, 10)],
+			["spawn_scroll", 1, Vector2(11, 10)],
 			["spawn_monster", 1000, Vector2(11, 6)],
 		],
 		[

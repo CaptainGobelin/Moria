@@ -7,7 +7,8 @@ var masteries: Array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 var skp: int = 5
 
 func init(charClass: int):
-	masteries = Data.classes[charClass][Data.CL_SKMAS].duplicate()
+	if charClass != -1:
+		masteries = Data.classes[charClass][Data.CL_SKMAS].duplicate()
 
 func improve(idx: int):
 	skills[idx] += 1

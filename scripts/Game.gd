@@ -2,7 +2,7 @@ extends Node2D
 
 class_name Game
 
-export var runTests = false
+export (int, "Normal, Fast, Tests") var start = 0
 
 onready var inventoryMenu = get_node("InventoryMenu")
 onready var characterMenu = get_node("CharacterMenu")
@@ -22,17 +22,23 @@ func _ready():
 	randomize()
 	Ref.game = self
 	set_process_input(false)
-	chooseClassMenu.open()
+	match start:
+		0:
+			chooseClassMenu.open()
+		_:
+			Ref.character.init(Data.CL_FIGHTER)
+			startGame()
 
 func startGame():
-	if runTests:
-		testFloor()
-	else:
-		newFloor()
+	match start:
+		2:
+			testFloor()
+		_:
+			newFloor()
 	Ref.currentLevel.refresh_view()
 	MasterInput.setMaster(self)
 	GLOBAL.currentMode = GLOBAL.MODE_NORMAL
-	if runTests:
+	if start == 2:
 		Tests.runAll()
 
 func cleanFloor():
