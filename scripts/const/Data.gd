@@ -333,12 +333,13 @@ func potionsReader():
 # Scrolls
 const SC_NAME = 0
 const SC_SP = 1
-const SC_RAR = 2
-const SC_STACK = 3
+const SC_RANK = 2
+const SC_RAR = 3
+const SC_STACK = 4
 const SC_ICON_ALL = 57
 const scrolls = {
-	0: ["Scroll of magic missile", SP_MAGIC_MISSILE, 0, 100],
-	1: ["Scroll of firebolt", SP_FIREBOLT, 0, 101],
+	0: ["Scroll of magic missile", SP_MAGIC_MISSILE, 2, 0, 100],
+	1: ["Scroll of firebolt", SP_FIREBOLT, 1, 0, 101],
 }
  
 var scrollsByRarity = {}

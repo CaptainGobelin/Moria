@@ -37,16 +37,21 @@ func getValidTarget(cell: Vector2):
 	return null
 
 func rollsavingThrow(entity) -> bool:
+	if saveType == Data.SAVE_NO:
+		return false
 	var saved = GeneralEngine.dice(1, 6, entity.stats.saveBonus[saveType]).roll() >= saveCap
 	if saved:
 		Ref.ui.writeSavingThrowSuccess(entity.stats.entityName)
 	return saved
 
 func applyEffect(entity, spellId: int, fromCharacter: bool, rank: int, savingCap: int, direction: Vector2 = Vector2(0, 0)):
-	var spell = Data.spells[spellId]
-	saveCap = savingCap
-	if spell[Data.SP_SAVE] != Data.SAVE_NO:
-		saveType = spell[Data.SP_SAVE]
+	if spellId < 100:
+		var spell = Data.spells[spellId]
+		saveCap = savingCap
+		if spell[Data.SP_SAVE] != Data.SAVE_NO:
+			saveType = spell[Data.SP_SAVE]
+	else:
+		saveType = Data.SAVE_NO
 	fromChar = fromCharacter
 	match spellId:
 		Data.SP_MAGIC_MISSILE:
