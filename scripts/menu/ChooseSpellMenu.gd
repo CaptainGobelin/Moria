@@ -1,23 +1,23 @@
 extends Node2D
 
+signal selected
+
+onready var prompt = get_node("TextContainer/Prompt")
 onready var scroller = get_node("MenuScroller")
 onready var descriptor = get_node("SpellDescription")
 onready var rows = get_node("SpellList")
 
 var selected: int = 0
 var currentList: Array = []
-var source = null
 var startRow = 0
 
 func _ready():
 	set_process_input(false)
 
-func open(school: int, level: int, caller):
+func open(school: int, level: int):
 	selected = 0
 	startRow = 0
-	source = caller
 	visible = true
-	Ref.currentLevel.visible = false
 	MasterInput.setMaster(self)
 	var rank = Ref.character.spells.getSpellRank(school)
 	var list = Data.classes[Ref.character.charClass][Data.CL_LIST]
@@ -32,14 +32,25 @@ func open(school: int, level: int, caller):
 				currentList.append(s)
 	if currentList.empty():
 		close()
+		emit_signal("selected", null)
+	var promptText = "Choose a new "
+	match school:
+		Data.SC_EVOCATION:
+			promptText += "Evocation"
+		Data.SC_ENCHANTMENT:
+			promptText += "Enchantment"
+		Data.SC_ABJURATION:
+			promptText += "Abjuration"
+		Data.SC_DIVINATION:
+			promptText += "Divination"
+		Data.SC_CONJURATION:
+			promptText += "Conjuration"
+	promptText += " spell to add to your spellbook"
+	prompt.text = promptText
 	loadSpellList()
 
 func close():
 	visible = false
-	Ref.currentLevel.visible = true
-	MasterInput.setMaster(Ref.game)
-	if source != null:
-		source.open()
 
 func loadSpellList():
 	var count = startRow
@@ -78,6 +89,7 @@ func _input(event):
 		var spell = rows.get_child(selected).spell
 		Ref.character.spells.learnSpell(spell)
 		close()
+		emit_signal("selected", spell)
 	return
 
 func selectSpell(idx: int):

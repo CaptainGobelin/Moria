@@ -61,7 +61,12 @@ func _input(event):
 				buySkill(currentRow)
 			GLOBAL.CHAR_FEATS:
 				if Ref.character.skills.ftp > 0:
-					Ref.game.chooseFeatMenu.open([], null, true, self)
+					visible = false
+					Ref.game.chooseFeatMenu.open([], null, true)
+					yield(Ref.game.chooseFeatMenu, "selected")
+					setTab(currentTab, currentRow)
+					visible = true
+					MasterInput.setMaster(self)
 
 func buySkill(row):
 	var charSkp = Ref.character.skills.skp
@@ -79,8 +84,13 @@ func buySkill(row):
 		return
 	match event[0]:
 		"chooseSpell":
-			close()
-			Ref.game.chooseSpellMenu.open(event[1], event[2], self)
+			visible = false
+			Ref.game.chooseSpellMenu.open(event[1], event[2])
+			if Ref.game.chooseSpellMenu.visible:
+				yield(Ref.game.chooseSpellMenu, "selected")
+			setTab(currentTab, currentRow)
+			visible = true
+			MasterInput.setMaster(self)
 
 func setTab(tab, row = 0):
 	for t in tabs:

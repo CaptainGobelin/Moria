@@ -171,7 +171,8 @@ func updateXp(newValue):
 		xp = (newValue % Data.lvlCaps[level])
 		updateLevel(level + 1)
 		Ref.character.skills.skp += Data.skpGains[level]
-		Ref.ui.writeLevelUp(level, classStats[Data.CL_HPLVL], Data.skpGains[level], 0)
+		Ref.character.skills.ftp += Data.ftpGains[level]
+		Ref.ui.writeLevelUp(level, classStats[Data.CL_HPLVL], Data.skpGains[level], Data.ftpGains[level])
 		Ref.ui.updateStat(Data.CHAR_XP, xp)
 	else:
 		xp = newValue

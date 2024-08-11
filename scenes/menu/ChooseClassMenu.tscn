@@ -35,7 +35,7 @@ color = Color( 0.462745, 0.517647, 0.282353, 1 )
 [node name="TextContainer" type="Node2D" parent="."]
 scale = Vector2( 0.25, 0.25 )
 
-[node name="Classes" type="Node" parent="TextContainer"]
+[node name="Classes" type="Node2D" parent="TextContainer"]
 
 [node name="Fighter" type="Label" parent="TextContainer/Classes"]
 margin_left = 396.0

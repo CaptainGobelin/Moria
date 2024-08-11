@@ -32,7 +32,7 @@ __meta__ = {
 position = Vector2( 73, 4 )
 scale = Vector2( 0.25, 0.25 )
 
-[node name="Label" type="Label" parent="TextContainer"]
+[node name="Prompt" type="Label" parent="TextContainer"]
 margin_left = -40.0
 margin_top = -16.0
 margin_right = 824.0

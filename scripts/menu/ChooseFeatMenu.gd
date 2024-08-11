@@ -2,6 +2,7 @@ extends Node2D
 
 signal selected
 
+onready var prompt = get_node("TextContainer/Prompt")
 onready var rows = get_node("Feats")
 onready var scroller = get_node("MenuScroller")
 onready var cancelLabel = get_node("TextContainer/Cancel")
@@ -11,14 +12,12 @@ var featList: Array = []
 var selected: int = 0
 var startRow: int = 0
 var canCancel: bool = true
-var caller = null
 var masterFeat = null
 
 func _ready():
 	set_process_input(false)
 
-func open(feats: Array = [], masterFeat = null, canCancel: bool = true, source = null):
-	caller = source
+func open(feats: Array = [], masterFeat = null, canCancel: bool = true):
 	self.masterFeat = masterFeat
 	if feats.empty():
 		feats = Data.feats.keys()
@@ -31,22 +30,27 @@ func open(feats: Array = [], masterFeat = null, canCancel: bool = true, source =
 	if featList.empty():
 		close()
 		return
-	if caller != null:
-		caller.visible = false
+	if masterFeat == null:
+		prompt.text = "Choose a feat"
+	else:
+		match masterFeat:
+			Data.FEAT_MAGE:
+				prompt.text = "Choose a specialization"
+			Data.FEAT_CLERIC:
+				prompt.text = "Choose a sphere"
+			Data.FEAT_SKILLED:
+				prompt.text = "Choose a skill"
+			_:
+				prompt.text = "Choose a feat"
 	visible = true
 	selected = 0
 	startRow = 0
 	self.canCancel = canCancel
-	cancelLabel.visible = canCancel
 	loadFeatList()
 	MasterInput.setMaster(self)
 
 func close():
 	visible = false
-	Ref.currentLevel.visible = true
-	MasterInput.setMaster(Ref.game)
-	if caller != null:
-		caller.open()
 
 func loadFeatList():
 	var count = startRow
@@ -88,13 +92,31 @@ func _input(event):
 	elif event.is_action_released("ui_accept"):
 		var subFeats = Data.feats[featList[selected]][Data.FE_SUBS]
 		if subFeats.size() > 0:
-			open(subFeats, featList[selected], true, caller)
+			open(subFeats, featList[selected], true)
+			return
+		if is_instance_valid(Ref.game.chooseClassMenu):
+			close()
+			emit_signal("selected", featList[selected])
+			return
 		else:
-			Ref.character.skills.feats.append(featList[selected])
+			visible = false
+			var featResult = Ref.character.skills.addFeat(featList[selected])
+			if featResult != null:
+				match featResult[0]:
+					"chooseSpell":
+						Ref.game.chooseSpellMenu.open(featResult[1], featResult[2])
+						if Ref.game.chooseSpellMenu.visible:
+							yield(Ref.game.chooseSpellMenu, "selected")
 			Ref.character.skills.ftp -= 1
 			close()
-	elif canCancel and event.is_action_released("ui_cancel"):
-		if masterFeat == null:
-			close()
+			emit_signal("selected", featList[selected])
+	elif event.is_action_released("ui_cancel"):
+		if canCancel:
+			if masterFeat == null:
+				close()
+				emit_signal("selected", null)
+			else:
+				open([], null, Data.feats[masterFeat][Data.FE_CHOOSE])
 		else:
-			open([], null, Data.feats[masterFeat][Data.FE_CHOOSE], caller)
+			close()
+			emit_signal("selected", null)

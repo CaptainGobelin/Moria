@@ -10,8 +10,21 @@ onready var hp = get_node("TextContainer/HP")
 var selectedClass = 0
 
 func _ready():
+	set_process_input(false)
+
+func open():
 	MasterInput.setMaster(self)
+	visible = true
+	Ref.currentLevel.visible = false
+	Ref.ui.visible = false
 	setSelected()
+
+func close():
+	MasterInput.setMaster(Ref.game)
+	visible = false
+	Ref.currentLevel.visible = true
+	Ref.ui.visible = true
+	queue_free()
 
 func _input(event):
 	if event.is_action_released("ui_right"):
@@ -20,6 +33,46 @@ func _input(event):
 	elif event.is_action_released("ui_left"):
 		selectedClass = Utils.modulo(selectedClass - 1, 8)
 		setSelected()
+	elif event.is_action_released("ui_accept"):
+		var feat = selectedClass
+		if Data.feats[feat][Data.FE_SUBS].empty():
+			initCharacter(feat)
+		else:
+			visible = false
+			Ref.game.chooseFeatMenu.open(Data.feats[feat][Data.FE_SUBS], feat, false)
+			feat = yield(Ref.game.chooseFeatMenu, "selected")
+			if feat != null:
+				initCharacter(feat)
+			else:
+				visible = true
+				MasterInput.setMaster(self)
+
+func initCharacter(feat: int):
+	visible = false
+	Ref.character.init(selectedClass)
+	var count = -1
+	for skill in Ref.character.skills.skills:
+		count += 1
+		var classSkill = Data.classes[selectedClass][Data.CL_SK][count]
+		if classSkill == 0:
+			continue
+		var event = Ref.character.skills.improve(count)
+		if event == null:
+			continue
+		match event[0]:
+			"chooseSpell":
+				Ref.game.chooseSpellMenu.open(event[1], event[2])
+				if Ref.game.chooseSpellMenu.visible:
+					yield(Ref.game.chooseSpellMenu, "selected")
+	var featResult = Ref.character.skills.addFeat(feat)
+	if featResult != null:
+		match featResult[0]:
+			"chooseSpell":
+				Ref.game.chooseSpellMenu.open(featResult[1], featResult[2])
+				if Ref.game.chooseSpellMenu.visible:
+					yield(Ref.game.chooseSpellMenu, "selected")
+	close()
+	Ref.game.startGame()
 
 func setSelected():
 	selected.rect_position.x = 96 + selectedClass * 36

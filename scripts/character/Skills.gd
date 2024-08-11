@@ -7,7 +7,6 @@ var masteries: Array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 var skp: int = 5
 
 func init(charClass: int):
-	skills = Data.classes[charClass][Data.CL_SK].duplicate()
 	masteries = Data.classes[charClass][Data.CL_SKMAS].duplicate()
 
 func improve(idx: int):
@@ -37,4 +36,84 @@ func skillToSchool(skill: int):
 			return Data.SC_DIVINATION
 		Data.SK_CONJ:
 			return Data.SC_CONJURATION
+	return null
+
+func addFeat(feat: int):
+	Ref.character.skills.feats.append(feat)
+	match feat:
+		Data.FEAT_ABJURER:
+			masteries[Data.SK_ABJ] = 2
+			masteries[Data.SK_DIV] = 1
+			masteries[Data.SK_CONJ] = 1
+			masteries[Data.SK_ENCH] = 0
+			return improve(Data.SK_ABJ)
+		Data.FEAT_CONJURER:
+			masteries[Data.SK_ABJ] = 0
+			masteries[Data.SK_DIV] = 1
+			masteries[Data.SK_CONJ] = 2
+			masteries[Data.SK_ENCH] = 1
+			return improve(Data.SK_CONJ)
+		Data.FEAT_DIVINER:
+			masteries[Data.SK_ABJ] = 1
+			masteries[Data.SK_DIV] = 2
+			masteries[Data.SK_CONJ] = 0
+			masteries[Data.SK_ENCH] = 1
+			return improve(Data.SK_DIV)
+		Data.FEAT_ENCHANTER:
+			masteries[Data.SK_ABJ] = 1
+			masteries[Data.SK_DIV] = 0
+			masteries[Data.SK_CONJ] = 1
+			masteries[Data.SK_ENCH] = 2
+			return improve(Data.SK_ENCH)
+		Data.FEAT_SPHERE_WAR:
+			masteries[Data.SK_ABJ] = 2
+			masteries[Data.SK_DIV] = 0
+			masteries[Data.SK_CONJ] = 0
+			masteries[Data.SK_ENCH] = 1
+			return improve(Data.SK_ABJ)
+		Data.FEAT_SPHERE_ASTRAL:
+			masteries[Data.SK_ABJ] = 0
+			masteries[Data.SK_DIV] = 2
+			masteries[Data.SK_CONJ] = 1
+			masteries[Data.SK_ENCH] = 0
+			return improve(Data.SK_DIV)
+		Data.FEAT_SPHERE_LAW:
+			masteries[Data.SK_ABJ] = 0
+			masteries[Data.SK_DIV] = 1
+			masteries[Data.SK_CONJ] = 0
+			masteries[Data.SK_ENCH] = 2
+			return improve(Data.SK_ENCH)
+		Data.FEAT_SKILLED_COMBAT:
+			masteries[Data.SK_COMBAT] += 1
+			return improve(Data.SK_COMBAT)
+		Data.FEAT_SKILLED_ARMOR:
+			masteries[Data.SK_ARMOR] += 1
+			return improve(Data.SK_ARMOR)
+		Data.FEAT_SKILLED_EVOCATION:
+			masteries[Data.SK_EVOC] += 1
+			return improve(Data.SK_EVOC)
+		Data.FEAT_SKILLED_ENCHANTMENT:
+			masteries[Data.SK_ENCH] += 1
+			return improve(Data.SK_ENCH)
+		Data.FEAT_SKILLED_ABJURATION:
+			masteries[Data.SK_ABJ] += 1
+			return improve(Data.SK_ABJ)
+		Data.FEAT_SKILLED_DIVINATION:
+			masteries[Data.SK_DIV] += 1
+			return improve(Data.SK_DIV)
+		Data.FEAT_SKILLED_CONJURATION:
+			masteries[Data.SK_CONJ] += 1
+			return improve(Data.SK_CONJ)
+		Data.FEAT_SKILLED_PHYSICS:
+			masteries[Data.SK_PHY] += 1
+			return improve(Data.SK_PHY)
+		Data.FEAT_SKILLED_WILLPOWER:
+			masteries[Data.SK_WIL] += 1
+			return improve(Data.SK_WIL)
+		Data.FEAT_SKILLED_PERCEPTION:
+			masteries[Data.SK_PER] += 1
+			return improve(Data.SK_PER)
+		Data.FEAT_SKILLED_THIEVERY:
+			masteries[Data.SK_THI] += 1
+			return improve(Data.SK_THI)
 	return null

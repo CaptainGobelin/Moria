@@ -134,6 +134,7 @@ const SK_THI = 10
 # Level caps
 const lvlCaps = [0, 30, 50, 75, 110, 150, 200, 275]
 const skpGains = [0, 0, 2, 1, 2, 1, 2, 1, 2]
+const ftpGains = [0, 0, 0, 1, 0, 1, 0, 1, 0]
 
 # Classes
 const CL_FIGHTER = 0
@@ -521,7 +522,7 @@ const spells = {
 	SP_MAGIC_MISSILE: 	["Magic missile", 1, SC_EVOCATION, [true, false, false], PROJ_PURPLE_S, 0, [20, 20, 20], SP_TARGET_RANDOM, 0, SAVE_NO],
 	SP_ELECTRIC_GRASP: 	["Shocking grasp", 1, SC_EVOCATION, [true, false, true], null, 1, [10, 10, 10], SP_TARGET_DIRECT, 1, SAVE_PHY],
 	SP_HEAL: 			["Heal", 1, SC_EVOCATION, [false, true, true], null, 2, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
-	SP_SMITE: 			["Sunscorch", 1, SC_EVOCATION, [false, false, true], null, 3, [10, 10, 10], SP_TARGET_DIRECT, 1, SAVE_PHY],
+	SP_SMITE: 			["Sunscorch", 1, SC_EVOCATION, [false, true, false], null, 3, [10, 10, 10], SP_TARGET_DIRECT, 1, SAVE_PHY],
 	SP_FIREBOLT: 		["Fire bolt", 1, SC_EVOCATION, [true, false, false], PROJ_RED_L, 4, [15, 15, 15], SP_TARGET_TARGET, 0, SAVE_PHY],
 #	SP_FIREBALL: 		["Fireball", 3, SC_EVOCATION, [true, false, false], PROJ_RED_R, 10, [10, 10, 10], SP_TARGET_TARGET, 3, SAVE_PHY],
 	# Enchantment

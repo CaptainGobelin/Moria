@@ -114,12 +114,13 @@ func writeXpGain(xp: int):
 
 func writeLevelUp(level: int, hp: int, skp: int, feat: int):
 	write(color("You reach level " + String(level) + " !", "green"))
-	var msg = "You gain " + String(hp) + "HP"
+	var msg = "You gain " + String(hp) + " HP"
 	if feat == 1:
 		msg += ", " + String(skp) + " skill point and you can choose a feat."
 	else:
 		msg += " and " + String(skp) + " skill points."
 	write(color(msg, "green"))
+	write(color("Press [K] to spend your points.", "green"))
 	lastPrinted = "writeLevelUp"
 	
 

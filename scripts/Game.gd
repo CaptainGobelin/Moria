@@ -8,6 +8,7 @@ onready var inventoryMenu = get_node("InventoryMenu")
 onready var characterMenu = get_node("CharacterMenu")
 onready var spellMenu = get_node("SpellMenu")
 onready var chestMenu = get_node("ChestMenu")
+onready var chooseClassMenu = get_node("ChooseClassMenu")
 onready var chooseSpellMenu = get_node("ChooseSpellMenu")
 onready var chooseFeatMenu = get_node("ChooseFeatMenu")
 onready var dungeonGenerator = get_node("Utils/DungeonGenerator_v2")
@@ -20,7 +21,10 @@ onready var throwHandler = get_node("Utils/ThrowHandler")
 func _ready():
 	randomize()
 	Ref.game = self
-	Ref.character.init(Data.CL_FIGHTER)
+	set_process_input(false)
+	chooseClassMenu.open()
+
+func startGame():
 	if runTests:
 		testFloor()
 	else:
