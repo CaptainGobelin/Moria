@@ -11,6 +11,7 @@ func setLength(value):
 	length = value
 	get_node("Down").position.y = length - 1
 	get_node("Pan").margin_bottom = length
+	get_node("Elevator").margin_bottom = length
 
 func setArrows(startIndex: int, maxIndex: int):
 	if startIndex + 6 < maxIndex:

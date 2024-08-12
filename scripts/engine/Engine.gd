@@ -19,8 +19,8 @@ class Dice:
 		if (GeneralEngine.isFaking):
 			return GeneralEngine.fakedValue
 		var result = 0
-		for _d in range(int(self.n)):
-			result += (randi() % int(self.d)) + self.b
+		for _d in range(self.n):
+			result += (randi() % self.d) + self.b + 1
 		return result
 	
 	func toString():
@@ -52,6 +52,12 @@ func basicDice(v: Vector2):
 func dmgDice(n: int, d: int, b: int, t: int):
 	return GeneralEngine.DmgDice.new(n, d, b, t)
 
+func diceFromArray(array: Array):
+	return dice(array[0], array[1], array[2])
+
+func dmgDiceFromArray(array: Array):
+	return dmgDice(array[0], array[1], array[2], array[3])
+
 func dmgFromDice(dice: Dice, type: int):
 	return GeneralEngine.DmgDice.new(dice.n, dice.d, dice.b, type)
 
@@ -59,15 +65,19 @@ func newTurn():
 	turn += 1
 	for m in Ref.currentLevel.monsters.get_children():
 		m.takeTurn()
+	for m in Ref.currentLevel.allies.get_children():
+		m.takeTurn()
 	for m in Ref.currentLevel.monsters.get_children():
+		StatusEngine.decreaseStatusesTime(m)
+	for m in Ref.currentLevel.allies.get_children():
 		StatusEngine.decreaseStatusesTime(m)
 	StatusEngine.decreaseStatusesTime(Ref.character)
 
-func computeDamages(dmgDices: Array, resist: Array):
+func computeDamages(dmgDices: Array, resist: Array, byPassResists: bool = false):
 	var result = 0
 	for dice in dmgDices:
 		var dmg = dice.roll()
-		if resist[dice.type] > 0:
+		if !byPassResists and resist[dice.type] > 0:
 			dmg /= pow(2, resist[dice.type])
 		result += dmg
 	return result

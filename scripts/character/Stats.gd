@@ -12,9 +12,7 @@ onready var dmgDices: Array = [GeneralEngine.dmgDice(1, 1, 0, Data.DMG_BLUNT)] s
 onready var hitDices = GeneralEngine.dice(1, 6, 0) setget updateHit
 onready var resists: Array = [0, 0, 0, 0, 0, 0, 0, 0]
 onready var maxResists: Array = [1, 1, 1, 1, 1, 1, 1, 1]
-onready var skills = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-onready var masteries = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-onready var skp: int = 0
+onready var saveBonus: Array = [0, 0]
 
 func init(charClass: int):
 	if charClass == -1:
@@ -30,8 +28,6 @@ func init(charClass: int):
 	updateProt(0)
 	updateDmg([GeneralEngine.dmgDice(1, 1, 0, Data.DMG_BLUNT)])
 	updateHit(GeneralEngine.dice(1, 6, 0))
-	skills = classStats[Data.CL_SK]
-	masteries = classStats[Data.CL_SKMAS]
 
 func computeStats():
 	computeHpMax()
@@ -41,8 +37,8 @@ func computeStats():
 	computeHit()
 	StatusEngine.applyEffect(get_parent())
 	computeReissts()
-	Utils.printDict(get_parent().enchants)
-	Utils.printDict(get_parent().statuses)
+#	Utils.printDict(get_parent().enchants)
+#	Utils.printDict(get_parent().statuses)
 
 func computeHpMax():
 	var value = classStats[Data.CL_HP]
@@ -174,8 +170,9 @@ func updateXp(newValue):
 	if newValue >= Data.lvlCaps[level]:
 		xp = (newValue % Data.lvlCaps[level])
 		updateLevel(level + 1)
-		skp += Data.skpGains[level]
-		Ref.ui.writeLevelUp(level, classStats[Data.CL_HPLVL], Data.skpGains[level], 0)
+		Ref.character.skills.skp += Data.skpGains[level]
+		Ref.character.skills.ftp += Data.ftpGains[level]
+		Ref.ui.writeLevelUp(level, classStats[Data.CL_HPLVL], Data.skpGains[level], Data.ftpGains[level])
 		Ref.ui.updateStat(Data.CHAR_XP, xp)
 	else:
 		xp = newValue

@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://sprites/chars.png" type="Texture" id=1]
 [ext_resource path="res://scripts/Monster.gd" type="Script" id=2]
+[ext_resource path="res://sprites/masks.png" type="Texture" id=3]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node
@@ -16,6 +17,7 @@ onready var hitDices = GeneralEngine.dice(1, 6, 0)
 onready var dmgDices = [GeneralEngine.dmgDice(1, 1, 0, Data.DMG_BLUNT)]
 onready var resists: Array = [0, 0, 0, 0, 0, 0, 0, 0]
 onready var maxResists: Array = [1, 1, 1, 1, 1, 1, 1, 1]
+onready var saveBonus: Array = [0, 0]
 onready var xp = 0
 
 func init(type: int):
@@ -29,16 +31,28 @@ func init(type: int):
 	var dmg = Data.monsters[type][Data.MO_DMG]
 	dmgDices = [GeneralEngine.dmgDice(dmg.x, dmg.y, dmg.z, Data.DMG_SLASH)]
 	xp = Data.monsters[type][Data.MO_XP]
+
+func computeStats():
+	pass
 "
 
 [node name="Monster" type="Node2D" groups=["Monster"]]
 script = ExtResource( 2 )
 
+[node name="Mask" type="Sprite" parent="."]
+visible = false
+z_index = 1
+texture = ExtResource( 3 )
+centered = false
+hframes = 6
+vframes = 2
+frame = 6
+
 [node name="BodySprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 centered = false
 hframes = 4
-vframes = 4
+vframes = 16
 frame = 2
 
 [node name="Stats" type="Node" parent="."]

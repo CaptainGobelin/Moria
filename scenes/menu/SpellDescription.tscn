@@ -1,0 +1,65 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://themes/LabelTheme.tres" type="Theme" id=1]
+[ext_resource path="res://scripts/menu/SpellDescription.gd" type="Script" id=2]
+[ext_resource path="res://sprites/spells.png" type="Texture" id=3]
+
+[node name="SpellDescription" type="Node2D"]
+position = Vector2( 180, 36 )
+script = ExtResource( 2 )
+
+[node name="Icon" type="Sprite" parent="."]
+position = Vector2( 99, 9 )
+scale = Vector2( 1.8, 1.8 )
+texture = ExtResource( 3 )
+centered = false
+hframes = 5
+vframes = 15
+
+[node name="TextContainer" type="Node2D" parent="."]
+scale = Vector2( 0.25, 0.25 )
+
+[node name="Name" type="Label" parent="TextContainer"]
+margin_top = 37.0
+margin_right = 324.0
+margin_bottom = 72.0
+theme = ExtResource( 1 )
+text = "Magic Missiles"
+
+[node name="Uses" type="Label" parent="TextContainer"]
+margin_top = 73.0
+margin_right = 324.0
+margin_bottom = 108.0
+theme = ExtResource( 1 )
+text = "15 uses per rest"
+
+[node name="School" type="Label" parent="TextContainer"]
+visible = false
+margin_top = 73.0
+margin_right = 396.0
+margin_bottom = 108.0
+theme = ExtResource( 1 )
+text = "Evocation spell level 1"
+
+[node name="Saving" type="Label" parent="TextContainer"]
+margin_top = 109.0
+margin_right = 324.0
+margin_bottom = 144.0
+theme = ExtResource( 1 )
+text = "No saving throw"
+
+[node name="Description" type="RichTextLabel" parent="TextContainer"]
+margin_top = 181.0
+margin_right = 504.0
+margin_bottom = 504.0
+theme = ExtResource( 1 )
+bbcode_enabled = true
+bbcode_text = "[fill]Shoots two arcane projectiles. Each missile inflicts 1d2+1 damages to a random target.
+
+Rank 2: Three projectiles.
+Rank 3: Four projectiles.[/fill]"
+text = "Shoots two arcane projectiles. Each missile inflicts 1d2+1 damages to a random target.
+
+Rank 2: Three projectiles.
+Rank 3: Four projectiles."
+scroll_active = false

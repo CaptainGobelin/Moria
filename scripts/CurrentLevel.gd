@@ -13,6 +13,7 @@ onready var shadows = get_node("Shadows")
 onready var underShadows = shadows.get_node("Under")
 onready var traps = get_node("Traps")
 onready var monsters = get_node("Monsters")
+onready var allies = get_node("Allies")
 onready var loots = get_node("Loots")
 onready var chests = get_node("Chests")
 onready var effects = get_node("Effects")
@@ -26,6 +27,7 @@ func _ready():
 func refresh_view():
 	clearFog()
 	GLOBAL.targets.clear()
+	Ref.character.currentVision.clear()
 	for i in range(-GLOBAL.VIEW_RANGE+1, GLOBAL.VIEW_RANGE):
 		for j in range(-GLOBAL.VIEW_RANGE+1, GLOBAL.VIEW_RANGE):
 			if pow(i, 2) + pow(j, 2) <= pow(GLOBAL.VIEW_RANGE, 2):
@@ -44,13 +46,38 @@ func refresh_view():
 							Ref.character.rollPerception(p)
 							searched[p.x][p.y] = true
 					for m in monsters.get_children():
-						if m.pos == p:
+						if m.pos == p and m.status != "dead":
 							m.awake()
 							if !GLOBAL.targets.has(m.get_instance_id()):
 								GLOBAL.targets[m.get_instance_id()] = currentPath.duplicate()
 					var vision = isCellFree(p)
 					if !vision[3]:
 						break
+					if vision[0] and not Ref.character.currentVision.has(p):
+						Ref.character.currentVision.append(p)
+	for m in monsters.get_children():
+		if fog.get_cellv(m.pos) == 0:
+			m.bodySprite.visible = true
+			m.mask.visible = false
+		else:
+			m.bodySprite.visible = false
+			m.mask.visible = false
+			if m.tags.has("evil"):
+				if Ref.character.statuses.has(Data.STATUS_DETECT_EVIL):
+					m.mask.visible = true
+	for a in allies.get_children():
+		if fog.get_cellv(a.pos) == 0:
+			a.bodySprite.visible = true
+		else:
+			a.bodySprite.visible = false
+	for t in traps.get_children():
+		t.mask.visible = false
+		if Ref.character.statuses.has(Data.STATUS_REVEAL_TRAPS):
+			if fog.get_cellv(t.pos) == 0:
+				TrapEngine.reveal(t.pos)
+			elif t.hidden:
+				t.mask.visible = true
+	Ref.character.currentVision.erase(Ref.character.pos)
 
 func initShadows():
 	for i in range(-1, GLOBAL.FLOOR_SIZE_X+1):
@@ -71,6 +98,9 @@ func isCellFree(cell):
 	if cell.y < 0 or cell.y >= GLOBAL.FLOOR_SIZE_Y:
 		return [false, "OOB", null, false, true]
 	for m in monsters.get_children():
+		if cell == m.pos:
+			return [false, "monster", m, true, false]
+	for m in allies.get_children():
 		if cell == m.pos:
 			return [false, "monster", m, true, false]
 	for cIdx in GLOBAL.chests.keys():
@@ -106,14 +136,17 @@ func placeCharacter(pos: Vector2 = Vector2(-1,-1)):
 		pos = getRandomFreeCell()
 	Ref.character.setPosition(pos)
 
-func spawnMonster(idx: int = 0, pos = null):
+func spawnMonster(idx: int = 0, pos = null, isAllied: bool = false):
 	var cell = pos
 	if cell == null:
 		cell = getRandomFreeCell()
 	var monster = monsterScene.instance()
-	monsters.add_child(monster)
-	monster.spawn(idx)
-	monster.setPosition(cell)
+	if isAllied:
+		allies.add_child(monster)
+		monster.status = "help"
+	else:
+		monsters.add_child(monster)
+	monster.spawn(idx, cell)
 
 func addLoot(cell: Vector2, rarityBonus: int):
 	var rarity = (randi() % 1) + rarityBonus
@@ -143,7 +176,7 @@ func createChest():
 	addChest(cell, 0)
 
 func placeTrap(pos: Vector2):
-	if GLOBAL.traps.has(pos):
+	if GLOBAL.trapsByPos.has(pos):
 		return
 	var trap = trapScene.instance()
 	traps.add_child(trap)

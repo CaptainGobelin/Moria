@@ -2,12 +2,15 @@ extends Node2D
 
 class_name Game
 
-export var runTests = false
+export (int, "Normal, Fast, Tests") var start = 0
 
 onready var inventoryMenu = get_node("InventoryMenu")
 onready var characterMenu = get_node("CharacterMenu")
 onready var spellMenu = get_node("SpellMenu")
 onready var chestMenu = get_node("ChestMenu")
+onready var chooseClassMenu = get_node("ChooseClassMenu")
+onready var chooseSpellMenu = get_node("ChooseSpellMenu")
+onready var chooseFeatMenu = get_node("ChooseFeatMenu")
 onready var dungeonGenerator = get_node("Utils/DungeonGenerator_v2")
 onready var pathfinder = get_node("Utils/Pathfinder")
 onready var itemGenerator = get_node("Utils/ItemGenerator") as ItemGenerator
@@ -18,18 +21,28 @@ onready var throwHandler = get_node("Utils/ThrowHandler")
 func _ready():
 	randomize()
 	Ref.game = self
-	Ref.character.init(Data.CL_FIGHTER)
-	if runTests:
-		testFloor()
-	else:
-		newFloor()
-	set_process_input(true)
+	set_process_input(false)
+	match start:
+		0:
+			chooseClassMenu.open()
+		_:
+			Ref.character.init(Data.CL_FIGHTER)
+			startGame()
+
+func startGame():
+	match start:
+		2:
+			testFloor()
+		_:
+			newFloor()
+	Ref.currentLevel.refresh_view()
+	MasterInput.setMaster(self)
 	GLOBAL.currentMode = GLOBAL.MODE_NORMAL
-	if runTests:
+	if start == 2:
 		Tests.runAll()
 
 func cleanFloor():
-	GLOBAL.traps.clear()
+	GLOBAL.trapsByPos.clear()
 	GLOBAL.hiddenDoors.clear()
 	GLOBAL.lockedDoors.clear()
 	for i in range(GLOBAL.FLOOR_SIZE_X):
@@ -43,7 +56,7 @@ func cleanFloor():
 	GLOBAL.chests.clear()
 	for t in Ref.currentLevel.traps.get_children():
 		t.free()
-	GLOBAL.traps.clear()
+	GLOBAL.trapsByPos.clear()
 	for l in Ref.currentLevel.loots.get_children():
 		l.free()
 	for i in GLOBAL.itemsOnFloor.keys():
@@ -60,7 +73,12 @@ func newFloor():
 	var spawnPos = dungeonGenerator.newFloor()
 	Ref.currentLevel.initShadows()
 	Ref.currentLevel.placeCharacter(spawnPos)
-	for _i in range(0):
+	for a in Ref.currentLevel.allies.get_children():
+		var cell = Ref.character.getRandomCloseCell()
+		if cell == null:
+			a.die()
+		a.setPosition(cell)
+	for _i in range(10):
 		Ref.currentLevel.spawnMonster()
 	for _i in range(randi() % 4):
 		Ref.currentLevel.createChest()

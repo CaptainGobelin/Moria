@@ -7,6 +7,7 @@ signal coroutine_signal
 onready var numberHandler = get_node("Utils/NumberHandler")
 onready var choiceHandler = get_node("Utils/ChoiceHandler")
 onready var yesNoHandler = get_node("Utils/YesNoHandler")
+onready var directionHandler = get_node("Utils/DirectionHandler")
 onready var targetHandler = get_node("Utils/TargetHandler")
 
 onready var diary = get_node("TextBox/TextContainer/DiaryPanel")
@@ -38,47 +39,51 @@ func _ready():
 func askForNumber(maxNb: int, inputer, msg = "How much?"):
 	previousMode = GLOBAL.currentMode
 	GLOBAL.currentMode = GLOBAL.MODE_NUMBER
-	inputer.set_process_input(false)
 	numberHandler.startCoroutine(maxNb, msg)
 	var result = yield(numberHandler, "end_coroutine")
 	GLOBAL.currentMode = previousMode
-	inputer.set_process_input(true)
+	MasterInput.setMaster(inputer)
 	emit_signal("coroutine_signal", result)
 
 func askForChoice(list: Array, inputer):
 	previousMode = GLOBAL.currentMode
 	GLOBAL.currentMode = GLOBAL.MODE_CHOICE
-	inputer.set_process_input(false)
 	choiceHandler.startCoroutine(list)
 	var result = yield(choiceHandler, "end_coroutine")
 	if result == -1:
 		writeOk()
 	GLOBAL.currentMode = previousMode
-	inputer.set_process_input(true)
+	MasterInput.setMaster(inputer)
 	emit_signal("coroutine_signal", result)
 
 func askForYesNo(inputer):
 	previousMode = GLOBAL.currentMode
 	GLOBAL.currentMode = GLOBAL.MODE_YESNO
-	inputer.set_process_input(false)
 	yesNoHandler.startCoroutine()
 	var result = yield(yesNoHandler, "end_coroutine")
 	if !result:
 		writeOk()
 	GLOBAL.currentMode = previousMode
-	inputer.set_process_input(true)
+	MasterInput.setMaster(inputer)
+	emit_signal("coroutine_signal", result)
+
+func askForDirection(inputer):
+	previousMode = GLOBAL.currentMode
+	directionHandler.startCoroutine()
+	var result = yield(directionHandler, "end_coroutine")
+	GLOBAL.currentMode = previousMode
+	MasterInput.setMaster(inputer)
 	emit_signal("coroutine_signal", result)
 
 func askForTarget(targets: Array, inputer):
 	previousMode = GLOBAL.currentMode
 	GLOBAL.currentMode = GLOBAL.MODE_TARGET
-	inputer.set_process_input(false)
 	targetHandler.startCoroutine(targets)
 	var result = yield(targetHandler, "end_coroutine")
 	if result == -1:
 		writeOk()
 	GLOBAL.currentMode = previousMode
-	inputer.set_process_input(true)
+	MasterInput.setMaster(inputer)
 	emit_signal("coroutine_signal", result)
 
 func write(text):
@@ -109,12 +114,13 @@ func writeXpGain(xp: int):
 
 func writeLevelUp(level: int, hp: int, skp: int, feat: int):
 	write(color("You reach level " + String(level) + " !", "green"))
-	var msg = "You gain " + String(hp) + "HP"
+	var msg = "You gain " + String(hp) + " HP"
 	if feat == 1:
 		msg += ", " + String(skp) + " skill point and you can choose a feat."
 	else:
 		msg += " and " + String(skp) + " skill points."
 	write(color(msg, "green"))
+	write(color("Press [K] to spend your points.", "green"))
 	lastPrinted = "writeLevelUp"
 	
 
@@ -157,6 +163,10 @@ func writeNoSpellAssigned():
 	write("You don't have any spell assigned.")
 	lastPrinted = "writeNoSpellAssigned"
 
+func writeSpellDirection():
+	write("Cast spell in which direction?")
+	lastPrinted = "writeSpellDirection"
+
 func writeWhichSpell(choices: Array):
 	var msg = "Cast which spell?"
 	msg += listToChoices(choices)
@@ -170,6 +180,10 @@ func writeCastSpell(spell: String):
 func writeNoSpell(spell: String):
 	write("You cannot cast " + spell + " anymore until you rest.")
 	lastPrinted = "writeNoSpell"
+
+func writeSavingThrowSuccess(entityName: String):
+	write(entityName + " succeded its saving throw.")
+	lastPrinted = "writeSavingThrowSuccess"
 
 func writeNoGoingBack():
 	write("A shadow force blocks the way. There is no going back...")
@@ -195,6 +209,14 @@ func askToPickDoor(dd: int):
 	write(color(msg, "yellow"))
 	lastPrinted = "askToPickDoor"
 
+func writeDoorUnlocked():
+	write("The door is unlocked.")
+	lastPrinted = "writeDoorUnlocked"
+
+func writeChestUnlocked():
+	write("The chest is unlocked.")
+	lastPrinted = "writeChestUnlocked"
+
 func writeLockpickSuccess(rolled: int):
 	var msg = "You successfully picked the lock ! (rolled "
 	msg +=  String(rolled) + ")"
@@ -214,6 +236,10 @@ func noLockpicksChest():
 func noLockpicksDoor():
 	write("The door is locked and you don't have any lockpicks to pick it.")
 	lastPrinted = "noLockpicksDoor"
+
+func writeNoLockedDoor():
+	write("There is no locked door or chest to unlock there.")
+	lastPrinted = "writeNoLockedDoor"
 
 func writeSearch():
 	write("You look for hidden secrets around you...")
@@ -263,14 +289,14 @@ func writeCharacterTakeHit(dmg: int):
 	write(color("You suffer " + String(dmg) + " damages.", "red"))
 	lastPrinted = "writeCharacterTakeHit"
 
-func writeMonsterStrike(name: String, hit: int, ca: int):
-	var msg = "The " + name + " strikes you "
+func writeMonsterStrike(name: String, target: String, hit: int, ca: int):
+	var msg = "The " + name + " strikes " + target + " "
 	msg += "(rolled " + String(hit) + " vs " + String(ca) + ")."
 	write(color(msg, "red"))
 	lastPrinted = "writeMonsterStrike"
 
-func writeMonsterMiss(name: String, hit: int, ca: int):
-	var msg = "The " + name + " misses you"
+func writeMonsterMiss(name: String, target: String, hit: int, ca: int):
+	var msg = "The " + name + " misses " + target + " "
 	msg += " (rolled " + String(hit) + " vs " + String(ca) + ")."
 	write(msg)
 	lastPrinted = "writeMonsterMiss"
@@ -291,6 +317,27 @@ func writeQuaffedPotion(potion: String):
 func noTarget():
 	write("There is no targets at range for this.")
 	lastPrinted = "noTarget"
+
+func writeWishChoice():
+	var msg = "Ask for what?"
+	msg += listToChoices(["Weapon", "Armor", "Scrolls", "Potions", "Gold"])
+	write(msg)
+	lastPrinted = "writeWishChoice"
+
+func writeWishResult(items: Array):
+	var msg = ""
+	var list = []
+	if items.empty():
+		msg = "Nothing"
+	else:
+		var item = GLOBAL.items[items[0]]
+		if item[GLOBAL.IT_TYPE] == GLOBAL.LO_TYPE or item[GLOBAL.IT_TYPE] == GLOBAL.GO_TYPE:
+			list.append(Utils.addArticle(item[GLOBAL.IT_NAME], item[GLOBAL.IT_SPEC]))
+		else:
+			list.append(Utils.addArticle(item[GLOBAL.IT_NAME], items.size()))
+	msg += Utils.makeList(list) + " appeared at your feet."
+	write(msg)
+	lastPrinted = "writeWishResult"
 
 func listToChoices(list: Array) -> String:
 	var msg = ""
@@ -338,7 +385,7 @@ func updateStat(stat: int, value):
 				rFire.text[i] = "*"
 		Data.CHAR_R_POISON:
 			rPois.text = ""
-			for i in range(value[1]):
+			for _i in range(value[1]):
 				rPois.text += "-"
 			for i in range(value[0]):
 				rPois.text[i] = "*"

@@ -20,8 +20,7 @@ func open(id: int):
 	visible = true
 	Ref.currentLevel.visible = false
 	GLOBAL.currentMode = GLOBAL.MODE_CHEST
-	Ref.game.set_process_input(false)
-	set_process_input(true)
+	MasterInput.setMaster(self)
 
 func close():
 	if GLOBAL.chests[chestId][GLOBAL.CH_CONTENT].size() == 0:
@@ -30,8 +29,7 @@ func close():
 	visible = false
 	Ref.currentLevel.visible = true
 	GLOBAL.currentMode = GLOBAL.MODE_NORMAL
-	Ref.game.set_process_input(true)
-	set_process_input(false)
+	MasterInput.setMaster(Ref.game)
 
 func _input(event):
 	if (event.is_action_pressed("ui_up")):

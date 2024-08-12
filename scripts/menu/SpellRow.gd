@@ -10,11 +10,11 @@ onready var uses = get_node("TextContainer/Uses")
 
 var spell: int
 
-func setSimpleContent(spellId: int, spellIcon: int, spellName: String, rank: int):
+func setSimpleContent(spellId: int):
 	spell = spellId
-	self.spellName.text = spellName
-	icon.frame = spellIcon
-	remaining.text = Utils.toRoman(rank)
+	self.spellName.text = Data.spells[spell][Data.SP_NAME]
+	icon.frame = Data.spells[spell][Data.SP_ICON]
+	remaining.text = Utils.toRoman(Data.spells[spell][Data.SP_LVL])
 	remaining.align = Label.ALIGN_CENTER
 	uses.text = ""
 	shortcut.text = ""

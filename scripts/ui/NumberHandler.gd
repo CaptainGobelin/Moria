@@ -47,11 +47,10 @@ func rewriteLastLine():
 func startCoroutine(maxNb: int, msg: String):
 	currentMax = maxNb
 	msgToPrint = msg
-	get_parent().set_process_input(false)
 	currentChoice = ""
 	currentSuffix = "_"
 	Ref.ui.write(msgToPrint + " (1-" + String(maxNb) + ") _")
-	set_process_input(true)
+	MasterInput.setMaster(self)
 
 func returnNumber():
 	var result = 0
@@ -63,5 +62,4 @@ func returnNumber():
 	if result == 0:
 		Ref.ui.writeOk()
 		result = null
-	set_process_input(false)
 	emit_signal("end_coroutine", result)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scripts/Character.gd" type="Script" id=1]
 [ext_resource path="res://sprites/chars.png" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://scripts/character/Stats.gd" type="Script" id=4]
 [ext_resource path="res://scripts/character/Inventory.gd" type="Script" id=5]
 [ext_resource path="res://scripts/character/Shortcuts.gd" type="Script" id=6]
+[ext_resource path="res://scripts/character/Skills.gd" type="Script" id=7]
 
 [sub_resource type="Animation" id=3]
 length = 0.001
@@ -45,7 +46,7 @@ script = ExtResource( 1 )
 texture = ExtResource( 2 )
 centered = false
 hframes = 4
-vframes = 4
+vframes = 16
 
 [node name="Stats" type="Node" parent="."]
 script = ExtResource( 4 )
@@ -55,6 +56,9 @@ script = ExtResource( 5 )
 
 [node name="Spells" type="Node" parent="."]
 script = ExtResource( 3 )
+
+[node name="Skills" type="Node" parent="."]
+script = ExtResource( 7 )
 
 [node name="Shortcuts" type="Node" parent="."]
 script = ExtResource( 6 )

@@ -18,7 +18,7 @@ const SC_IDX = 4
 const PO_IDX = 5
 const LO_IDX = 6
 const GO_IDX = 7
-const TYPE_PROB = [0.019, 1.23, 0.07, 0.05, 0.1, 0.1, 0.1, 0.16]
+const TYPE_PROB = [0.019, 0.023, 0.007, 10.05, 0.01, 0.1, 0.1, 0.16]
 
 var id = -1
 
@@ -30,8 +30,10 @@ func getItemType():
 		result = (result + 1) % TYPE_PROB.size()
 	return result
 
-func generateItem(rarity: int):
-	match getItemType():
+func generateItem(rarity: int, type: int = -1):
+	if type == -1:
+		type = getItemType()
+	match type:
 		WP_IDX: return generateWeapon(rarity)
 		AR_IDX: return generateArmor(rarity)
 		TH_IDX: return generateThrowing(rarity)

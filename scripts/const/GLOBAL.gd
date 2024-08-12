@@ -126,6 +126,12 @@ const CH_OPENED = 2
 const CH_LOCKED = 3
 var chests: Dictionary = {}
 
+func getChestByPos(cell: Vector2):
+	for chest in chests.values():
+		if chest[CH_POS] == cell:
+			return chest
+	return null
+
 # Statuses
 const ST_NAME = 0
 const ST_ICON = 1
@@ -142,10 +148,10 @@ const ST_HIDDEN = 7
 var statuses: Dictionary = {}
 
 # Traps
-const TR_HIDDEN = 0
-const TR_TYPE = 1
-const TR_INSTANCE = 2
-var traps: Dictionary = {}
+var trapsByPos: Dictionary = {}
+
+func getTrapByPos(cell: Vector2) -> Trap:
+	return instance_from_id(trapsByPos[cell]) as Trap
 
 # Doors
 var hiddenDoors: Array = []

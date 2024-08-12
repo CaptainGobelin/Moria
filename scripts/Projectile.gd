@@ -1,6 +1,7 @@
 extends Sprite
 
 signal end_coroutine
+signal launched
 
 var pos: Vector2
 var startFrame = 0
@@ -10,6 +11,7 @@ func init(path: Array, type: int, color: Color):
 	self_modulate = color
 	pos = path[0] - (path[1] - path[0])
 	setOrientation(path[0], path[1])
+	var started = false
 	for p in path:
 		var speed = 0.04
 		if p.x != pos.x and p.y != pos.y:
@@ -17,6 +19,9 @@ func init(path: Array, type: int, color: Color):
 		pos = p
 		position = pos * 9
 		yield(get_tree().create_timer(speed), "timeout")
+		if not started:
+			started = true
+			emit_signal("launched")
 	emit_signal("end_coroutine", true)
 	queue_free()
 

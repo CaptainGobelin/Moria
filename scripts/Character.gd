@@ -5,8 +5,10 @@ onready var animator = get_node("AnimationPlayer")
 onready var stats = get_node("Stats")
 onready var inventory = get_node("Inventory")
 onready var spells = get_node("Spells")
+onready var skills = get_node("Skills")
 onready var shortcuts = get_node("Shortcuts")
 
+var currentVision: Array = []
 var charClass: int = 0
 var statuses: Dictionary = {}
 var enchants: Dictionary = {}
@@ -18,6 +20,7 @@ func _ready():
 func init(charClass: int):
 	self.charClass = charClass
 	stats.init(charClass)
+	skills.init(charClass)
 	inventory.init(charClass)
 
 func setPosition(newPos):
@@ -25,19 +28,22 @@ func setPosition(newPos):
 	Ref.currentLevel.refresh_view()
 	refreshMapPosition()
 
+func move(movement):
+	pos += movement
+	animator.play("walk")
+	GeneralEngine.newTurn()
+	Ref.currentLevel.refresh_view()
+	refreshMapPosition()
+	Ref.ui.write(Ref.currentLevel.getLootMessage(pos))
+	if GLOBAL.trapsByPos.has(pos):
+		var trap = GLOBAL.getTrapByPos(pos)
+		if trap.hidden:
+			TrapEngine.trigger(trap, self)
+
 func moveAsync(movement):
 	var cellState = Ref.currentLevel.isCellFree(pos + movement)
 	if cellState[0]:
-		pos += movement
-		animator.play("walk")
-		GeneralEngine.newTurn()
-		Ref.currentLevel.refresh_view()
-		refreshMapPosition()
-		Ref.ui.write(Ref.currentLevel.getLootMessage(pos))
-		if GLOBAL.traps.has(pos):
-			var trap = GLOBAL.traps[pos]
-			if trap[GLOBAL.TR_HIDDEN]:
-				TrapEngine.triggerTrap(trap[GLOBAL.TR_INSTANCE], self)
+		move(movement)
 		return
 	match cellState[1]:
 		"door": 
@@ -59,6 +65,11 @@ func moveAsync(movement):
 				GeneralEngine.newTurn()
 				Ref.currentLevel.refresh_view()
 		"monster":
+			if cellState[2].status == "help":
+				cellState[2].setPosition(pos)
+				cellState[2].skipNextTurn = true
+				move(movement)
+				return
 			hit(cellState[2])
 			GeneralEngine.newTurn()
 		"pass": 
@@ -98,12 +109,15 @@ func hit(entity):
 		var result = stats.hitDices.roll()
 		if result >= entity.stats.ca:
 			Ref.ui.writeCharacterStrike(entity.stats.entityName, result, entity.stats.ca)
-			entity.takeHit(GeneralEngine.computeDamages(stats.dmgDices, entity.stats.resists))
+			var dmg = GeneralEngine.computeDamages(stats.dmgDices, entity.stats.resists)
+			entity.takeHit(dmg)
 		else:
 			Ref.ui.writeCharacterMiss(entity.stats.entityName, result, entity.stats.ca)
 
-func takeHit(dmg):
+func takeHit(dmg: int, bypassProt: bool = false):
 	var totalDmg = dmg - stats.prot
+	if bypassProt:
+		totalDmg = dmg
 	stats.hp -= totalDmg
 	Ref.ui.writeCharacterTakeHit(totalDmg)
 	return totalDmg
@@ -196,18 +210,14 @@ func search():
 				continue
 			if pow(i, 2) + pow(j, 2) <= 16:
 				rollPerception(cell)
+	GeneralEngine.newTurn()
 
 func rollPerception(cell: Vector2):
 	var perceptionRoll = GeneralEngine.dice(1, 6, 0).roll()
 	if perceptionRoll > 3:
 		# Detect traps
-		if GLOBAL.traps.has(cell):
-			var trap = GLOBAL.traps[cell]
-			if trap[GLOBAL.TR_HIDDEN]:
-				trap[GLOBAL.TR_HIDDEN] = false
-				instance_from_id(trap[GLOBAL.TR_INSTANCE]).visible = true
-				var trapData = Data.traps[trap[GLOBAL.TR_TYPE]]
-				Ref.ui.writeHiddenTrapDetected(trapData[Data.TR_NAME])
+		if GLOBAL.trapsByPos.has(cell):
+			TrapEngine.reveal(cell)
 	if perceptionRoll > 5:
 		# Detect doors
 		if GLOBAL.hiddenDoors.has(cell):
@@ -217,3 +227,11 @@ func rollPerception(cell: Vector2):
 
 func refreshMapPosition():
 	position = 9 * pos
+
+func getRandomCloseCell():
+	if currentVision.empty():
+		return null
+	var result = Utils.chooseRandom(currentVision)
+	while randf() > (1.0 / float(Utils.dist(pos, result))):
+		result = Utils.chooseRandom(currentVision)
+	return result

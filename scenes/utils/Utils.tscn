@@ -3,6 +3,8 @@
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node
 
+const directons = [Vector2(-1, 0), Vector2(0, -1), Vector2(1, 0), Vector2(0, 1)]
+
 func addArticle(name: String, nb = 1):
 	if nb > 1:
 		name = name.replace(\"Potion\", \"Potions\")
@@ -38,6 +40,9 @@ func chooseRandom(array: Array):
 
 func modulo(a: int, b: int):
 	return (b + (a % b)) % b
+
+func dist(a: Vector2, b: Vector2) -> int:
+	return int(abs(a.x - b.x) + abs(a.y - b.y))
 
 func printDict(dict: Dictionary):
 	if dict.empty():

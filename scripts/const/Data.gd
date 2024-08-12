@@ -19,6 +19,13 @@ const DMG_COLORS = [
 	Colors.cyan,
 	Colors.yellow
 ]
+const DMG_NAMES = [
+	"slashing", "bludgeoning", "fire", "poison",
+	 "radiant", "magic", "cold", "shock"
+]
+
+# Saving throw
+const SAVING_BASE = 4
 
 # Projectiles
 const PROJ_COLOR = 0
@@ -31,7 +38,51 @@ const PROJ_WHITE_S = [Colors.white, 0]
 const PROJ_WHITE_M = [Colors.white, 6]
 const PROJ_WHITE_LONG = [Colors.white, 3]
 const PROJ_WHITE_R = [Colors.white, 9]
+const PROJ_GREEN_M = [Colors.green, 6]
 const PROJ_GREEN_R = [Colors.green, 9]
+
+# Feats
+const FEAT_FIGHTER = 0
+const FEAT_THIEF = 1
+const FEAT_MAGE = 2
+const FEAT_CLERIC = 3
+const FEAT_PALADIN = 4
+const FEAT_BARD = 5
+const FEAT_DRUID = 6
+const FEAT_RANGER = 7
+const FEAT_ABJURER = 8
+const FEAT_CONJURER = 9
+const FEAT_DIVINER = 10
+const FEAT_ENCHANTER = 11
+const FEAT_SPHERE_WAR = 12
+const FEAT_SPHERE_ASTRAL = 13
+const FEAT_SPHERE_LAW = 14
+const FEAT_ENDURANT = 100
+const FEAT_TRAP_SPECIALIST = 101
+const FEAT_PYROMANCER = 102
+const FEAT_ARCANE_INITIATE = 104
+const FEAT_DIVINE_SERVANT = 105
+const FEAT_GREAT_MEMORY = 106
+const FEAT_INVOKER = 107
+const FEAT_TOUGH = 108
+const FEAT_SHIELD_MASTER = 109
+const FEAT_SAVAGE_ATTACKER = 110
+const FEAT_THROWER = 111
+const FEAT_SCROLL_EXPERT = 112
+const FEAT_FIERCE = 113
+const FEAT_RIPOSTE = 114
+const FEAT_SKILLED = 200
+const FEAT_SKILLED_COMBAT = 201
+const FEAT_SKILLED_ARMOR = 202
+const FEAT_SKILLED_EVOCATION = 203
+const FEAT_SKILLED_ENCHANTMENT = 204
+const FEAT_SKILLED_DIVINATION = 205
+const FEAT_SKILLED_ABJURATION = 206
+const FEAT_SKILLED_CONJURATION = 207
+const FEAT_SKILLED_PHYSICS = 208
+const FEAT_SKILLED_WILLPOWER = 209
+const FEAT_SKILLED_PERCEPTION = 210
+const FEAT_SKILLED_THIEVERY = 211
 
 # Spells
 const SP_MAGIC_MISSILE = 0
@@ -83,20 +134,47 @@ const SK_THI = 10
 # Level caps
 const lvlCaps = [0, 30, 50, 75, 110, 150, 200, 275]
 const skpGains = [0, 0, 2, 1, 2, 1, 2, 1, 2]
+const ftpGains = [0, 0, 0, 1, 0, 1, 0, 1, 0]
 
 # Classes
 const CL_FIGHTER = 0
+const CL_THIEF = 1
+const CL_MAGE = 2
+const CL_CLERIC = 3
+const CL_PALADIN = 4
+const CL_BARD = 5
+const CL_DRUID = 6
+const CL_RANGER = 7
 
 const CL_NAME = 0
 const CL_HP = 1
 const CL_HPLVL = 2
 const CL_SK = 3
 const CL_SKMAS = 4
+const CL_LIST = 5
+
+# Spell lists
+const SP_LIST_ARCANE = 0
+const SP_LIST_DIVINE = 1
+const SP_LIST_NATURE = 2
+
 const classes = {
-	CL_FIGHTER: ["Fighter", 10, 5, [1, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0], [2, 2, 0, 0, 0, 0, 0, 2, 1, 1, 1]],
+	CL_FIGHTER: ["Fighter", 10, 5, [2, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0], [2, 2, 0, 0, 0, 0, 0, 2, 1, 1, 1], SP_LIST_ARCANE],
+	CL_THIEF: 	["Thief", 	 8, 4, [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1], [2, 1, 0, 0, 0, 0, 0, 1, 1, 2, 2], SP_LIST_ARCANE],
+	CL_MAGE: 	["Mage", 	 6, 3, [0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0], [0, 0, 2,-1,-1,-1,-1, 0, 2, 1, 0], SP_LIST_ARCANE],
+	CL_CLERIC: 	["Cleric", 	 8, 4, [0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0], [0, 1, 2,-1,-1,-1,-1, 1, 2, 0, 0], SP_LIST_DIVINE],
+	CL_PALADIN: ["Paladin", 10, 5, [1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0], [2, 2, 1, 0, 0, 1, 0, 1, 2, 0, 0], SP_LIST_DIVINE],
+	CL_BARD:	["Bard", 	 8, 4, [1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0], [1, 1, 0, 0, 2, 1, 0, 0, 2, 0, 2], SP_LIST_ARCANE],
+	CL_DRUID:	["Druid", 	 8, 4, [0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0], [0, 1, 1, 0, 1, 2, 2, 1, 0, 2, 0], SP_LIST_NATURE],
+	CL_RANGER: 	["Ranger", 	10, 5, [1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1], [2, 1, 0, 0, 1, 0, 0, 2, 0, 2, 1], SP_LIST_NATURE],
 }
 
 # Monsters
+const MO_SKELETON = 0
+const MO_SUM_WOLF = 900
+const MO_SUM_HAMMER = 901
+const MO_DUMMY = 1000
+
 const MO_NAME = 0
 const MO_HP = 1
 const MO_HIT = 2
@@ -107,8 +185,16 @@ const MO_SPRITE = 6
 const MO_XP = 7
 const MO_MOVE = 8
 const monsters = {
-	0: ["Skeleton", 6, Vector3(1, 6, 0), Vector3(1, 4, 0), 5, 1, 0, 4, true],
-	1000: ["Dummy target", 100, Vector3(1, 6, 0), Vector3(1, 1, 0), 2, 1, 1, 10, false],
+	MO_SKELETON: ["Skeleton", 6, Vector3(1, 6, 0), Vector3(1, 4, 0), 3, 1, 2, 4, false],
+	MO_SUM_WOLF: ["Conjured wolf", 10, Vector3(1, 6, 0), Vector3(1, 6, 0), 2, 0, 24, 0, true],
+	MO_SUM_HAMMER: ["Spiritual hammer", 4, Vector3(1, 6, 0), Vector3(1, 4, 0), 4, 2, 28, 0, true],
+	MO_DUMMY: ["Dummy target", 100, Vector3(1, 6, 0), Vector3(1, 1, 0), 2, 1, 1, 10, false],
+}
+
+const monsterTags = {
+	MO_SKELETON: ["evil", "undead"],
+	MO_SUM_WOLF: ["animal", "summoned"],
+	MO_SUM_HAMMER: ["animated", "summoned"]
 }
 
 # Stats
@@ -247,11 +333,13 @@ func potionsReader():
 # Scrolls
 const SC_NAME = 0
 const SC_SP = 1
-const SC_RAR = 2
-const SC_STACK = 3
+const SC_RANK = 2
+const SC_RAR = 3
+const SC_STACK = 4
 const SC_ICON_ALL = 57
 const scrolls = {
-	0: ["Scroll of magic missile", SP_MAGIC_MISSILE, 0, 100],
+	0: ["Scroll of magic missile", SP_MAGIC_MISSILE, 2, 0, 100],
+	1: ["Scroll of firebolt", SP_FIREBOLT, 1, 0, 101],
 }
  
 var scrollsByRarity = {}
@@ -305,10 +393,21 @@ const KIT_LO = 7
 
 const KIT_UNDEF = [-1, -1, -1, [], [], [], 0, 0]
 const KIT_FIGHTER = [2, 0, 1, [0, 0], [], [0, 0, 0], 30, 2]
+const KIT_THIEF =	[1,-1, 1, [0, 0], [0], [0, 0, 0], 45, 3]
+const KIT_MAGE = 	[8,-1, 0, [0, 0], [0], [], 30, 2]
+const KIT_CLERIC = 	[0, 0, 1, [0, 0], [], [], 30, 2]
+const KIT_PALADIN = [9,-1, 1, [0, 0], [], [], 30, 2]
 
 const CLASS_KITS = {
 	-1: KIT_UNDEF,
 	CL_FIGHTER: KIT_FIGHTER,
+	CL_THIEF: KIT_THIEF,
+	CL_BARD: KIT_THIEF,
+	CL_MAGE: KIT_MAGE,
+	CL_DRUID: KIT_MAGE,
+	CL_CLERIC: KIT_CLERIC,
+	CL_RANGER: KIT_PALADIN,
+	CL_PALADIN: KIT_PALADIN,
 }
 
 # Weapon enchants
@@ -395,19 +494,11 @@ const LOCKPICK_NAME = "Lockpick"
 const LOCKPICK_ICON = 58
 
 # Spell schools
-const SC_ENCHANTEMENT = 0
+const SC_ENCHANTMENT = 0
 const SC_EVOCATION = 1
 const SC_DIVINATION = 2
 const SC_ABJURATION = 3
 const SC_CONJURATION = 4
-
-# Spell lists
-const SP_LIST_ARCANE = 0
-const SP_LIST_DIVINE = 1
-const SP_LIST_NATURE = 2
-
-const SP_TARGET_SELF = 0
-const SP_TARGET_TARGET = 1
 
 const SP_NAME = 0
 const SP_LVL = 1
@@ -417,6 +508,11 @@ const SP_PROJ = 4
 const SP_ICON = 5
 const SP_USES = 6
 const SP_TARGET = 7
+const SP_TARGET_SELF = 0
+const SP_TARGET_TARGET = 1
+const SP_TARGET_DIRECT = 2
+const SP_TARGET_ITEM_CHOICE = 3
+const SP_TARGET_RANDOM = 4
 const SP_AREA = 8
 const SP_SAVE = 9
 const SAVE_WIL = 0
@@ -424,17 +520,201 @@ const SAVE_PHY = 1
 const SAVE_NO = 2
 
 const spells = {
-	SP_MAGIC_MISSILE: 	["Magic Missile", 1, SC_EVOCATION, [true, false, false], PROJ_PURPLE_S, 0, [15, 15, 15], SP_TARGET_TARGET, 0, SAVE_NO],
+	# Evocation
+	SP_MAGIC_MISSILE: 	["Magic missile", 1, SC_EVOCATION, [true, false, false], PROJ_PURPLE_S, 0, [20, 20, 20], SP_TARGET_RANDOM, 0, SAVE_NO],
+	SP_ELECTRIC_GRASP: 	["Shocking grasp", 1, SC_EVOCATION, [true, false, true], null, 1, [10, 10, 10], SP_TARGET_DIRECT, 1, SAVE_PHY],
 	SP_HEAL: 			["Heal", 1, SC_EVOCATION, [false, true, true], null, 2, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
-	SP_FIREBALL: 		["Fireball", 3, SC_EVOCATION, [true, false, false], PROJ_RED_L, 10, [10, 10, 10], SP_TARGET_TARGET, 3, SAVE_PHY],
-	SP_BLESS: 			["Bless", 1, SC_ENCHANTEMENT, [false, true, true], null, 17, [15, 15, 15], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_SMITE: 			["Sunscorch", 1, SC_EVOCATION, [false, true, false], null, 3, [10, 10, 10], SP_TARGET_DIRECT, 1, SAVE_PHY],
+	SP_FIREBOLT: 		["Fire bolt", 1, SC_EVOCATION, [true, false, false], PROJ_RED_L, 4, [15, 15, 15], SP_TARGET_TARGET, 0, SAVE_PHY],
+#	SP_FIREBALL: 		["Fireball", 3, SC_EVOCATION, [true, false, false], PROJ_RED_R, 10, [10, 10, 10], SP_TARGET_TARGET, 3, SAVE_PHY],
+	# Enchantment
+	SP_SLEEP:	 		["Sleep", 1, SC_ENCHANTMENT, [true, false, true], null, 15, [8, 8, 8], SP_TARGET_TARGET, 0, SAVE_WIL],
+	SP_UNLOCK:	 		["Unlock", 1, SC_ENCHANTMENT, [true, false, false], null, 16, [5, 10, 15], SP_TARGET_DIRECT, 1, SAVE_NO],
+	SP_BLESS: 			["Bless", 1, SC_ENCHANTMENT, [false, true, true], null, 17, [15, 15, 15], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_COMMAND:	 		["Command", 1, SC_ENCHANTMENT, [false, true, false], null, 18, [5, 5, 5], SP_TARGET_TARGET, 0, SAVE_WIL],
+	SP_LIGHT:	 		["Light", 1, SC_ENCHANTMENT, [true, true, true], null, 19, [20, 20, 20], SP_TARGET_SELF, 0, SAVE_NO],
+	# Divination
+	SP_BLIND: 			["Blind", 1, SC_DIVINATION, [true, false, true], null, 30, [15, 15, 15], SP_TARGET_TARGET, 0, SAVE_PHY],
+	SP_MIND_SPIKE: 		["Mind spike", 1, SC_DIVINATION, [false, true, false], null, 31, [10, 10, 10], SP_TARGET_TARGET, 0, SAVE_WIL],
+	SP_DETECT_EVIL:		["Detect evil", 1, SC_DIVINATION, [false, true, true], null, 32, [10, 10, 10], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_REVEAL_TRAPS:	["Find traps", 1, SC_DIVINATION, [true, true, true], null, 33, [5, 10, 15], SP_TARGET_SELF, 0, SAVE_NO],
+	# Abjuration
+	SP_SHIELD:			["Shield", 1, SC_ABJURATION, [true, false, false], null, 45, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_MAGE_ARMOR:		["Mage armor", 1, SC_ABJURATION, [true, false, false], null, 46, [15, 15, 15], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_ARMOR_OF_FAITH:	["Armor of faith", 1, SC_ABJURATION, [false, true, false], null, 47, [10, 10, 10], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_PROTECTION_FROM_EVIL:["Protection from evil", 1, SC_ABJURATION, [false, true, true], null, 49, [10, 10, 10], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_SANCTUARY:		["Sanctuary", 1, SC_ABJURATION, [false, true, true], null, 48, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
+	# Conjuration
+	SP_ACID_SPLASH: 	["Acid arrow", 1, SC_CONJURATION, [true, false, true], PROJ_GREEN_M, 60, [15, 15, 15], SP_TARGET_TARGET, 0, SAVE_PHY],
+	SP_CONJURE_ANIMAL:	["Conjure animals", 1, SC_CONJURATION, [true, false, true], null, 61, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_SPIRITUAL_HAMMER:["Spiritual hammer", 1, SC_CONJURATION, [false, true, false], null, 62, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_LESSER_AQUIREMENT:["Lesser acquirement", 1, SC_CONJURATION, [true, true, false], null, 63, [5, 5, 5], SP_TARGET_ITEM_CHOICE, 0, SAVE_NO],
 }
 
-const spellDescriptions = {
+const spellDamages = {
+	SP_MAGIC_MISSILE: [[1, 4, 1, DMG_MAGIC], [1, 4, 1, DMG_MAGIC], [1, 4, 1, DMG_MAGIC]],
+	SP_ELECTRIC_GRASP: [[1, 12, 0, DMG_LIGHTNING], [1, 12, 0, DMG_LIGHTNING], [2, 12, 0, DMG_LIGHTNING]],
+	SP_HEAL: [[1, 6, 0, DMG_MAGIC], [1, 8, 0, DMG_MAGIC], [1, 10, 0, DMG_MAGIC]],
+	SP_SMITE: [[1, 8, 1, DMG_RADIANT], [1, 10, 2, DMG_RADIANT], [1, 12, 3, DMG_RADIANT]],
+	SP_FIREBOLT: [[1, 10, 0, DMG_FIRE], [1, 10, 2, DMG_FIRE], [1, 10, 4, DMG_FIRE]],
+	SP_FIREBALL: [[], [], [3, 6, 0, DMG_FIRE]],
+	SP_MIND_SPIKE: [[1, 8, 0, DMG_MAGIC], [1, 8, 2, DMG_MAGIC], [1, 8, 4, DMG_MAGIC]],
+	SP_ACID_SPLASH: [[2, 4, 0, DMG_SLASH], [3, 4, 0, DMG_SLASH], [4, 4, 0, DMG_SLASH]],
+}
+
+const spellTurns = {
+	SP_SLEEP: [15, 15, 15],
+	SP_BLESS: [15, 15, 15],
+	SP_COMMAND: [5, 5, 5],
+	SP_LIGHT: [40, 40, 40],
+	SP_BLIND: [15, 15, 15],
+	SP_DETECT_EVIL: [40, 40, 40],
+	SP_REVEAL_TRAPS: [40, 40, 40],
+	SP_SHIELD: [25, 25, 25],
+	SP_ARMOR_OF_FAITH: [100, 100, 100],
+	SP_PROTECTION_FROM_EVIL: [25, 25, 25],
+	SP_SANCTUARY: [15, 15, 15],
+	SP_SPIRITUAL_HAMMER: [40, 40, 40],
+}
+
+var spellDescriptions = {
 	SP_MAGIC_MISSILE: [
-		"Fires two arcane projectiles, each dealing 1d2+1 damages to random targets.",
+		"Fires arcane projectiles to random targets, each dealing %%DMG_1 damages. No saving throw.",
+		"Fires two projectiles.",
 		"Fires three projectiles.",
 		"Fires four projectiles."
+	],
+	SP_ELECTRIC_GRASP: [
+		"Gives a powerful electrical jolt to %%CONTACT.",
+		"%%D_DMG_1",
+		"Also inflicts [PARALYZE] the target for two turns.",
+		"%%INC_DMG_3"
+	],
+	SP_HEAL: [
+		"Conjures healing energies to cure your wounds.",
+		"Heals you for %%DMGN_1 damages.",
+		"Increases healing to %%DMGN_2.",
+		"Increases healing to %%DMGN_3."
+	],
+	SP_SMITE: [
+		"Conjures a beam of sunlight to damage %%LINE.",
+		"%%D_DMG_1",
+		"%%INC_DMG_2",
+		"%%INC_DMG_3"
+	],
+	SP_FIREBOLT: [
+		"Fires a bolt of flame to %%TARGET.",
+		"%%D_DMG_1",
+		"%%INC_DMG_2",
+		"%%INC_DMG_3"
+	],
+	SP_SLEEP: [
+		"Forces a creature to fall asleep. Any damage will break the spell.",
+		"Inflicts [SLEEP] for %%TURNS_1 to a creature at range.",
+		"Also targets all creatures at range 1.",
+		"Also targets all creatures at range 3."
+	],
+	SP_UNLOCK: [
+		"Magically opens a locked door or chest.",
+		"%%USES_1.",
+		"%%USES_2.",
+		"%%USES_3."
+	],
+	SP_BLESS: [
+		"Bless you with divine energy to improve all your save rolls.",
+		"Gives [BLESS] (+1 to all save rolls) for %%TURNS_1.",
+		"Lasts for %%TURNS_2.",
+		"Lasts for %%TURNS_3.",
+	],
+	SP_COMMAND: [
+		"Enables you to command another creature with a single word. Applies [TERROR].",
+		"Lasts %%TURNS_1.",
+		"Lasts %%TURNS_2.",
+		"Lasts %%TURNS_3.",
+	],
+	SP_LIGHT: [
+		"Surrounds you with a floating light that follows you for %%TURNS_1.",
+		"Gives you [LIGHT] (+1 range).",
+		"Gives you [LIGHT II] (+1 perception rolls).",
+		"Lasts until rest.",
+	],
+	SP_BLIND: [
+		"Causes the target to become blind for %%TURNS_1.",
+		"Inflicts [BLIND] (-1 to hit rolls) to %%TARGET.",
+		"Also targets all creatures at range 1.",
+		"Also targets all creatures at range 3.",
+	],
+	SP_MIND_SPIKE: [
+		"Reaches another creature's mind to damage it.",
+		"%%D_DMG_1",
+		"%%INC_DMG_2",
+		"%%INC_DMG_3"
+	],
+	SP_DETECT_EVIL: [
+		"Detects all evil creatures (undeads and demons) on the current floor. No saving throw.",
+		"Gives [DETECT EVIL] for %%TURNS_1.",
+		"Inflicts [VULNERABLE] (-1 AC) to revealed creatures.",
+		"%%USES_3."
+	],
+	SP_REVEAL_TRAPS: [
+		"Reveals all traps on the current floor. Lasts %%TURNS_1.",
+		"%%USES_1.",
+		"%%USES_2.",
+		"%%USES_3."
+	],
+	SP_SHIELD: [
+		"Protects you with an invisible barrier that absorbs incoming damages.",
+		"Gives you [SHIELD] (absorb 10 damages) for %%TURNS_1.",
+		"Absorbs 15 damages.",
+		"Absorbs 20 damages."
+	],
+	SP_MAGE_ARMOR: [
+		"Creates a magical field of force that replaces your armor. Lasts until rest.",
+		"Gives you [MAGE ARMOR] (set your AC to 4).",
+		"Set your AC to 5.",
+		"Set your AC to 6."
+	],
+	SP_ARMOR_OF_FAITH: [
+		"Invokes divine forces to protect you during %%TURNS_1.",
+		"Gives you [PROTECTION] (+1 CA).",
+		"Gives you [PROTECTION II] (+1 CA +1 protection).",
+		"Lasts until rest."
+	],
+	SP_PROTECTION_FROM_EVIL: [
+		"Protects you from spells casted by evil creatures (undeads and demons). Lasts %%TURNS_1.",
+		"Gives you [PROTECTION FROM EVIL] (+1 to all saves).",
+		"Lasts %%TURNS_2.",
+		"Increases bonus to +2."
+	],
+	SP_SANCTUARY: [
+		"Prevent any creatures to harm you until you attack, drink a potion or cast a spell.",
+		"Gives you [SANCTUARY] for %%TURNS_1.",
+		"You can drink potions.",
+		"You can cast spells on yourself."
+	],
+	SP_ACID_SPLASH: [
+		"Creates a magic arrow that inflicts acid damages to %%TARGET. It bypass protection and resistances.",
+		"%%D_DMG_1",
+		"%%INC_DMG_2",
+		"%%INC_DMG_3"
+	],
+	SP_CONJURE_ANIMAL: [
+		"Conjures a wolf to fight by your side.",
+		"Conures 1d2 wolves.",
+		"Conures 1d2+1 wolves.",
+		"Conures 1d2+2 wolves.",
+	],
+	SP_SPIRITUAL_HAMMER: [
+		"Conjures an animated hammer that will fight your enemies.",
+		"Convokes a hamer for %%TURNS_1.",
+		"Improves the hammer.",
+		"Improves the hammer."
+	],
+	SP_LESSER_AQUIREMENT: [
+		"Creates a small object from nothing.",
+		"Creates a weapon, an armor, a scroll, a potion or golds.",
+		"Improves object quality.",
+		"Improves object quality."
 	]
 }
 
@@ -455,10 +735,22 @@ func spellsReader():
 			if !spellsPerSchool[l][school].has(rank):
 				spellsPerSchool[l][school][rank] = []
 			spellsPerSchool[l][school][rank].append(idx)
-	Utils.printDict(spellsPerSchool)
 
 # Statuses
-const STATUS_BLESSED = 6
+const STATUS_SLEEP = 0
+const STATUS_TERROR = 1
+const STATUS_BLIND = 2
+
+const STATUS_LIGHT = 100
+const STATUS_DETECT_EVIL = 101
+const STATUS_REVEAL_TRAPS = 102
+const STATUS_BLESSED = 103
+const STATUS_SHIELD = 104
+const STATUS_MAGE_ARMOR = 105
+const STATUS_ARMOR_FAITH = 106
+const STATUS_PROTECT_EVIL = 107
+const STATUS_SANCTUARY = 108
+
 const STATUS_FIRE_WEAPON = 1000 + ENCH_FIRE_DMG
 const STATUS_FROST_WEAPON = 1000 + ENCH_FROST_DMG
 const STATUS_POISON_WEAPON = 1000 + ENCH_POISON_DMG
@@ -474,9 +766,131 @@ const STATUS_RADIANT_RESIST = 10000 + DMG_RADIANT
 const STATUS_MAGIC_RESIST = 10000 + DMG_MAGIC
 const STATUS_ICE_RESIST = 10000 + DMG_ICE
 const STATUS_LIGHTNING_RESIST = 10000 + DMG_LIGHTNING
+#const STATUS_FEAT_FIGHTER = 20000 + FEAT_FIGHTER
+#const STATUS_FEAT_THIEF = 20000 + FEAT_THIEF
+#const STATUS_FEAT_PALADIN = 20000 + FEAT_PALADIN
+#const STATUS_FEAT_BARD = 20000 + FEAT_BARD
+#const STATUS_FEAT_DRUID = 20000 + FEAT_DRUID
+#const STATUS_FEAT_RANGER = 20000 + FEAT_RANGER
 
 const statusPrefabs = {
-	STATUS_BLESSED: ["Blessed", 6, null, null, STATUS_BLESSED, null, null, false],
+	STATUS_SLEEP: ["Sleep", 7, null, null, STATUS_SLEEP, null, null, false],
+	STATUS_TERROR: ["Terror", 2, null, null, STATUS_TERROR, null, null, false],
+	STATUS_BLIND: ["Blind", 3, null, null, STATUS_BLIND, null, null, false],
+	
+	STATUS_LIGHT: ["Light", 23, null, null, STATUS_LIGHT, null, null, false],
+	STATUS_DETECT_EVIL: ["Detect evil", 9, null, null, STATUS_DETECT_EVIL, null, null, false],
+	STATUS_REVEAL_TRAPS: ["Find traps", 15, null, null, STATUS_REVEAL_TRAPS, null, null, false],
+	STATUS_BLESSED: ["Blessed", 11, null, null, STATUS_BLESSED, null, null, false],
+	STATUS_SHIELD: ["Shield", 39, null, null, STATUS_SHIELD, null, null, false],
+	STATUS_MAGE_ARMOR: ["Mage armor", 27, null, null, STATUS_MAGE_ARMOR, null, null, false],
+	STATUS_ARMOR_FAITH: ["Armor of faith", 5, null, null, STATUS_ARMOR_FAITH, null, null, false],
+	STATUS_PROTECT_EVIL: ["Protection from evil", 41, null, null, STATUS_PROTECT_EVIL, null, null, false],
+	STATUS_SANCTUARY: ["Sanctuary", 33, null, null, STATUS_SANCTUARY, null, null, false],
+}
+
+const FE_NAME = 0
+const FE_CHOOSE = 1
+const FE_SUBS = 2
+
+const feats = {
+	FEAT_FIGHTER: ["Trained soldier", false, []],
+	FEAT_THIEF: ["Nimble fingers", false, []],
+	FEAT_MAGE: ["Specialization", false, [FEAT_ABJURER, FEAT_CONJURER, FEAT_DIVINER, FEAT_ENCHANTER]],
+	FEAT_CLERIC: ["Sphere", false, [FEAT_SPHERE_WAR, FEAT_SPHERE_ASTRAL, FEAT_SPHERE_LAW]],
+	FEAT_PALADIN: ["Holy warrior", false, []],
+	FEAT_BARD: ["Ancient knowledge", false, []],
+	FEAT_DRUID: ["Force of nature", false, []],
+	FEAT_RANGER: ["Woodman", false, []],
+	
+	FEAT_ABJURER: ["Abjurer", false, []],
+	FEAT_ENCHANTER: ["Enchanter", false, []],
+	FEAT_CONJURER: ["Conjurer", false, []],
+	FEAT_DIVINER: ["Diviner", false, []],
+	
+	FEAT_SPHERE_WAR: ["War sphere", false, []],
+	FEAT_SPHERE_ASTRAL: ["Astral sphere", false, []],
+	FEAT_SPHERE_LAW: ["Law sphere", false, []],
+	
+	FEAT_ENDURANT: ["Endurant", true, []],
+	FEAT_TRAP_SPECIALIST: ["Trap specialist", true, []],
+	FEAT_PYROMANCER: ["Pyromancer", true, []],
+	FEAT_ARCANE_INITIATE: ["Arcane initiate", true, []],
+	FEAT_DIVINE_SERVANT: ["Divine servant", true, []],
+	FEAT_GREAT_MEMORY: ["Great memory", true, []],
+	FEAT_INVOKER: ["Invoker", true, []],
+	FEAT_TOUGH: ["Tough", true, []],
+	FEAT_SHIELD_MASTER: ["Shield master", true, []],
+	FEAT_SAVAGE_ATTACKER: ["Savge attacker", true, []],
+	FEAT_THROWER: ["Thrower", true, []],
+	FEAT_SCROLL_EXPERT: ["Scroll expert", true, []],
+	FEAT_FIERCE: ["Fierce", true, []],
+	FEAT_RIPOSTE: ["Riposte", true, []],
+	
+	FEAT_SKILLED: ["Skilled", true, [
+		FEAT_SKILLED_COMBAT, FEAT_SKILLED_ARMOR, FEAT_SKILLED_EVOCATION,
+		FEAT_SKILLED_ENCHANTMENT, FEAT_SKILLED_DIVINATION, FEAT_SKILLED_ABJURATION,
+		FEAT_SKILLED_CONJURATION, FEAT_SKILLED_PHYSICS, FEAT_SKILLED_WILLPOWER,
+		FEAT_SKILLED_PERCEPTION, FEAT_SKILLED_THIEVERY]],
+	FEAT_SKILLED_COMBAT: ["Skilled: Combat", false, []],
+	FEAT_SKILLED_ARMOR: ["Skilled: Armor", false, []],
+	FEAT_SKILLED_EVOCATION: ["Skilled: Evocation", false, []],
+	FEAT_SKILLED_ENCHANTMENT: ["Skilled: Enchantment", false, []],
+	FEAT_SKILLED_DIVINATION: ["Skilled: Divination", false, []],
+	FEAT_SKILLED_ABJURATION: ["Skilled: Abjuration", false, []],
+	FEAT_SKILLED_CONJURATION: ["Skilled: Conjuration", false, []],
+	FEAT_SKILLED_PHYSICS: ["Skilled: Physics", false, []],
+	FEAT_SKILLED_WILLPOWER: ["Skilled: Willpower", false, []],
+	FEAT_SKILLED_PERCEPTION: ["Skilled: Perception", false, []],
+	FEAT_SKILLED_THIEVERY: ["Skilled: Thievery", false, []],
+}
+
+const featDescriptions = {
+	FEAT_FIGHTER: "Reduces combat fatigue cost from 5 per turn to 4. +2 to PHY saves against injuries.",
+	FEAT_THIEF: "Each skill point spent in Thievery or Perception awards 2 * instead of 1.",
+	FEAT_MAGE: "Choose a specialist school (and a forbidden one), choosen school have 20% more uses.",
+	FEAT_CLERIC: "Choose a sphere to increase your masteries and skills in magic shools.",
+	FEAT_PALADIN: "+1 to CA when wearing 2H wepon, +1 damage per dice rolled when wearing 1H weapon.",
+	FEAT_BARD: "Scrolls have a 20% chance not to disaperear when readed.",
+	FEAT_DRUID: "+1 to all save rolls against spells.",
+	FEAT_RANGER: "You have no malus to rolls when under 100 fatigue.",
+	
+	FEAT_ABJURER: 	"Grants:\n- Abjuration  *....\n- Divination  ...\n- Conjuration  ...\n\nAbjuration spells have 30% more uses but Enchantment spells have 30% less.",
+	FEAT_ENCHANTER: "Grants:\n- Enchantment *....\n- Conjuration ...\n- Abjuration  ...\n\nEnchantment spells have 30% more uses but Divination spells have 30% less.",
+	FEAT_CONJURER: 	"Grants:\n- Conjuration *....\n- Enchantment ...\n- Divination  ...\n\nConjuration spells have 30% more uses but Abjuration spells have 30% less.",
+	FEAT_DIVINER: 	"Grants:\n- Divination  *....\n- Abjuration  ...\n- Enchantment ...\n\nEnchantment spells have 30% more uses but Conjuration spells have 30% less.",
+	
+	FEAT_SPHERE_WAR: 	"Grants:\n- Abjuration   *....\n- Enchantment  ...",
+	FEAT_SPHERE_ASTRAL: 	"Grants:\n- Divination   *....\n- Conjuration  ...",
+	FEAT_SPHERE_LAW: 	"Grants:\n- Enchantment  *....\n- Divination   ...",
+	
+	FEAT_ENDURANT: "Increases maximum fatigue by 250.",
+	FEAT_TRAP_SPECIALIST: "Grants:\n- +3 to search rolls to detect traps\n- +2 to saves for trap effects.",
+	FEAT_PYROMANCER: "You ignore fire resistance and fire immunity when dealing damages with spells.",
+	FEAT_ARCANE_INITIATE: "You learn a single spell form the arcane spell list (restricted by school level).",
+	FEAT_DIVINE_SERVANT: "You learn a single spell form the divine spell list (restricted by school level).",
+	FEAT_GREAT_MEMORY: "All you spells have 20% more uses (rounded down).",
+	FEAT_INVOKER: "Conjured creatures attract much more enemies attention.",
+	FEAT_TOUGH: "Grants:\n- 2 HP per level (retroactive)\n- +3 for PHY save rolls against injuries",
+	FEAT_SHIELD_MASTER: "If you succeed a PHY save roll while using a shield you negate the effect instead of halving damages.",
+	FEAT_SAVAGE_ATTACKER: "You have -1 AC but add 1 dice to your weapon damage dices.",
+	FEAT_THROWER: "Throwing weapon always deal maximum damages.",
+	FEAT_SCROLL_EXPERT: "Reading a scroll does not consume your turn anymore.",
+	FEAT_FIERCE: "Reroll 1s on weapon damage dices when attacking.",
+	FEAT_RIPOSTE: "When a melee attack miss by at least 3, make a free automatic attack with your weapon against the attacker.",
+	
+	FEAT_SKILLED: "Choose a skill, you gain one level of mastery and one skill level for that skill.",
+	FEAT_SKILLED_COMBAT: "You gain one level of mastery and one skill level in Combat.",
+	FEAT_SKILLED_ARMOR: "You gain one level of mastery and one skill level in Armor.",
+	FEAT_SKILLED_EVOCATION: "You gain one level of mastery and one skill level in Evocation.",
+	FEAT_SKILLED_ENCHANTMENT:"You gain one level of mastery and one skill level in Enchantment.",
+	FEAT_SKILLED_DIVINATION: "You gain one level of mastery and one skill level in Divination.",
+	FEAT_SKILLED_ABJURATION: "You gain one level of mastery and one skill level in Abjuration.",
+	FEAT_SKILLED_CONJURATION: "You gain one level of mastery and one skill level in Conjuration.",
+	FEAT_SKILLED_PHYSICS: "You gain one level of mastery and one skill level in PHY saves.",
+	FEAT_SKILLED_WILLPOWER: "You gain one level of mastery and one skill level in WIL saves.",
+	FEAT_SKILLED_PERCEPTION: "You gain one level of mastery and one skill level in Perception.",
+	FEAT_SKILLED_THIEVERY: "You gain one level of mastery and one skill level in Thievery.",
 }
 
 # Traps

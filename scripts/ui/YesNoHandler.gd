@@ -20,8 +20,7 @@ func _input(event):
 		return
 
 func startCoroutine():
-	set_process_input(true)
+	MasterInput.setMaster(self)
 
 func endCoroutine(result: bool):
-	set_process_input(false)
 	emit_signal("end_coroutine", result)
