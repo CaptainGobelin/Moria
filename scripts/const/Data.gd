@@ -184,11 +184,23 @@ const MO_PROT = 5
 const MO_SPRITE = 6
 const MO_XP = 7
 const MO_MOVE = 8
+const MO_THROW = 9
+const MO_SPELLS = 10
 const monsters = {
-	MO_SKELETON: ["Skeleton", 6, Vector3(1, 6, 0), Vector3(1, 4, 0), 3, 1, 2, 4, false],
-	MO_SUM_WOLF: ["Conjured wolf", 10, Vector3(1, 6, 0), Vector3(1, 6, 0), 2, 0, 24, 0, true],
-	MO_SUM_HAMMER: ["Spiritual hammer", 4, Vector3(1, 6, 0), Vector3(1, 4, 0), 4, 2, 28, 0, true],
-	MO_DUMMY: ["Dummy target", 100, Vector3(1, 6, 0), Vector3(1, 1, 0), 2, 1, 1, 10, false],
+	MO_SKELETON: [
+		"Skeleton", 6, 0, Vector3(1, 4, 0),
+		3, 1, 2, 4, false, null,
+		[],
+	],
+	MO_SUM_WOLF: [
+		"Conjured wolf", 10, 0, Vector3(1, 6, 0), 2, 0, 24, 0, true
+	],
+	MO_SUM_HAMMER: [
+		"Spiritual hammer", 4, 1, Vector3(1, 4, 0), 4, 2, 28, 0, true
+	],
+	MO_DUMMY: [
+		"Dummy target", 100, 0, Vector3(1, 1, 0), 2, 1, 1, 10, false
+	],
 }
 
 const monsterTags = {
@@ -903,6 +915,32 @@ const traps = {
 	0: ["Dart trap", TR_DART, 6],
 }
 
+const BIOME_DUNGEON = 0
+const BIOME_CAVERN = 1
+const BIOME_MINE = 2
+const BIOME_CRYPT = 3
+const BIOME_VOLCANO = 4
+const BIOME_ABYSS = 5
+
+const ENC_MONSTERS = 0
+const ENC_PROB = 1
+const ENC_DIFF = 2
+const encounters = {
+	BIOME_DUNGEON: [
+		[[MO_SKELETON], 1, 0],
+		[[MO_SKELETON, MO_SKELETON], 1, 1],
+	]
+}
+
+var encountersCumultaiveProb: Dictionary = {}
+
+func encountersReader():
+	for biome in encounters.keys():
+		if !encountersCumultaiveProb.has(biome):
+			encountersCumultaiveProb[biome] = 0
+		for encounter in encounters[biome]:
+			encountersCumultaiveProb[biome] += encounter[ENC_PROB]
+
 func _ready():
 	weaponsReader()
 	shieldsReader()
@@ -910,3 +948,4 @@ func _ready():
 	potionsReader()
 	scrollsReader()
 	spellsReader()
+	encountersReader()
