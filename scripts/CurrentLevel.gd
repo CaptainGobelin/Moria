@@ -135,7 +135,6 @@ func placeCharacter(pos: Vector2 = Vector2(-1,-1)):
 	if pos == Vector2(-1, -1):
 		pos = getRandomFreeCell()
 	Ref.character.setPosition(pos)
-	Ref.game.pathfinder.dijkstraCompute()
 
 func spawnMonster(idx: int = 0, pos = null, isAllied: bool = false):
 	var cell = pos
@@ -217,6 +216,9 @@ func getLootChoice(lootList):
 func openDoor(pos):
 	if dungeon.get_cellv(pos) != GLOBAL.DOOR_ID:
 		return
+	if GLOBAL.testedDoors.has(pos):
+		GLOBAL.testedDoors.erase(pos)
+		Ref.game.pathfinder.dijkstraCompute()
 	dungeon.set_cellv(pos, GLOBAL.DOOR_ID, false, false, false, Vector2(0, 0))
 
 func target(pos):

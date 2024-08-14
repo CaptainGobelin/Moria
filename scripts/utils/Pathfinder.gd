@@ -11,6 +11,9 @@ func dijkstraCompute():
 	for cell in Ref.currentLevel.shadows.get_used_cells_by_id(0):
 		if cell.x < 0 or cell.y < 0:
 			continue
+		var value = Ref.currentLevel.dungeon.get_cellv(cell)
+		if value != GLOBAL.FLOOR_ID and value != GLOBAL.DOOR_ID:
+			continue
 		exploreMap[cell.x][cell.y] = 0
 	for itemCell in GLOBAL.itemsOnFloor.keys():
 		if !GLOBAL.itemsOnFloor[itemCell][GLOBAL.FLOOR_EXP]:
@@ -19,6 +22,8 @@ func dijkstraCompute():
 	cells.append_array(Ref.currentLevel.dungeon.get_used_cells_by_id(GLOBAL.DOOR_ID))
 	for chest in GLOBAL.chests.values():
 		cells.erase(chest[GLOBAL.CH_POS])
+	for door in GLOBAL.testedDoors:
+		cells.erase(door)
 	var stop = false
 	while !stop:
 		stop = true
@@ -37,7 +42,7 @@ func dijkstraCompute():
 				stop = false
 
 func findNextStep(map: Array, pos: Vector2):
-	var dist = 999
+	var dist = map[pos.x][pos.y] 
 	var result = null
 	for d in Utils.directons:
 		if map[pos.x+d.x][pos.y+d.y] < dist:

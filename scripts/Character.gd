@@ -48,6 +48,7 @@ func moveAsync(movement):
 	match cellState[1]:
 		"door": 
 			if GLOBAL.lockedDoors.has(pos + movement):
+				GLOBAL.testDoor(pos + movement)
 				if inventory.lockpicks == 0:
 					Ref.ui.noLockpicksDoor()
 					return

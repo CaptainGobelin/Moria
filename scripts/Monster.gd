@@ -69,7 +69,7 @@ func hit(entity):
 			Ref.ui.writeMonsterMiss(stats.entityName, targetName, result, entity.stats.ca)
 
 func moveTo(entity) -> bool:
-	var path = Ref.game.pathfinder.a_star(pos, entity.pos, 1000)
+	var path = Ref.game.pathfinder.a_star(pos, entity.pos, 20)
 	if path == null:
 		return false
 	setPosition(path[1])

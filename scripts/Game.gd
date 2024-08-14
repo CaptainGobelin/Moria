@@ -37,13 +37,18 @@ func _process(delta):
 		Ref.ui.write("You cannot explore there are enemies on sight.")
 	var dir = pathfinder.findNextStep(pathfinder.exploreMap, Ref.character.pos)
 	if dir == null:
-		Ref.ui.write("Nothing to explore.")
-	else:
-		Ref.character.moveAsync(dir)
+		pathfinder.dijkstraCompute()
+		dir = pathfinder.findNextStep(pathfinder.exploreMap, Ref.character.pos)
+		if dir == null:
+			Ref.ui.write("Nothing to explore.")
+			return
+	Ref.character.moveAsync(dir)
 
 func setAutoExplore(value: bool):
 	autoexplore = value
 	set_process(autoexplore)
+	if autoexplore:
+		pathfinder.dijkstraCompute()
 
 func startGame():
 	match start:
@@ -61,6 +66,7 @@ func cleanFloor():
 	GLOBAL.trapsByPos.clear()
 	GLOBAL.hiddenDoors.clear()
 	GLOBAL.lockedDoors.clear()
+	GLOBAL.testedDoors.clear()
 	for i in range(GLOBAL.FLOOR_SIZE_X):
 		Ref.currentLevel.searched.append([])
 		for _j in range(GLOBAL.FLOOR_SIZE_Y):
@@ -102,6 +108,10 @@ func newFloor():
 		Ref.currentLevel.dropItem()
 
 func _input(event):
+	if event.is_pressed() and autoexplore:
+		setAutoExplore(false)
+	elif (event.is_action_pressed("autoexplore")):
+		setAutoExplore(not autoexplore)
 	if (event.is_action_pressed("ui_up")):
 		Ref.character.moveAsync(Vector2(0,-1))
 	elif (event.is_action_pressed("ui_down")):
@@ -110,8 +120,6 @@ func _input(event):
 		Ref.character.moveAsync(Vector2(-1,0))
 	elif (event.is_action_pressed("ui_right")):
 		Ref.character.moveAsync(Vector2(1,0))
-	elif (event.is_action_pressed("autoexplore")):
-		setAutoExplore(not autoexplore)
 	elif (event.is_action_released("inventory")):
 		inventoryMenu.open()
 	elif (event.is_action_released("characterMenu")):

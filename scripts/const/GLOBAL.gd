@@ -157,6 +157,13 @@ func getTrapByPos(cell: Vector2) -> Trap:
 # Doors
 var hiddenDoors: Array = []
 var lockedDoors: Array = []
+var testedDoors: Array = []
+
+func testDoor(pos: Vector2):
+	if testedDoors.has(pos):
+		return
+	testedDoors.append(pos)
+	Ref.game.pathfinder.dijkstraCompute()
 
 # Monsters
 var targets: Dictionary = {}
