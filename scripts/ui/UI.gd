@@ -91,6 +91,7 @@ func write(text):
 		return
 	text = '\n' + '<' + String(GeneralEngine.turn) + '> ' + text
 	diary.append_bbcode(text)
+	Ref.game.autoexplore = false
 
 func simpleWrite(text):
 	if text == null:

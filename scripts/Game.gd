@@ -18,16 +18,32 @@ onready var pickupLootHandler = get_node("Utils/PickupLootHandler")
 onready var spellHandler = get_node("Utils/SpellHandler")
 onready var throwHandler = get_node("Utils/ThrowHandler")
 
+var autoexplore = false setget setAutoExplore
+
 func _ready():
 	randomize()
 	Ref.game = self
 	set_process_input(false)
+	set_process(false)
 	match start:
 		0:
 			chooseClassMenu.open()
 		_:
 			Ref.character.init(Data.CL_FIGHTER)
 			startGame()
+
+func _process(delta):
+	if !GLOBAL.targets.empty():
+		Ref.ui.write("You cannot explore there are enemies on sight.")
+	var dir = pathfinder.findNextStep(pathfinder.exploreMap, Ref.character.pos)
+	if dir == null:
+		Ref.ui.write("Nothing to explore.")
+	else:
+		Ref.character.moveAsync(dir)
+
+func setAutoExplore(value: bool):
+	autoexplore = value
+	set_process(autoexplore)
 
 func startGame():
 	match start:
@@ -78,7 +94,7 @@ func newFloor():
 		if cell == null:
 			a.die()
 		a.setPosition(cell)
-	for _i in range(10):
+	for _i in range(0):
 		Ref.currentLevel.spawnMonster()
 	for _i in range(randi() % 4):
 		Ref.currentLevel.createChest()
@@ -94,6 +110,8 @@ func _input(event):
 		Ref.character.moveAsync(Vector2(-1,0))
 	elif (event.is_action_pressed("ui_right")):
 		Ref.character.moveAsync(Vector2(1,0))
+	elif (event.is_action_pressed("autoexplore")):
+		setAutoExplore(not autoexplore)
 	elif (event.is_action_released("inventory")):
 		inventoryMenu.open()
 	elif (event.is_action_released("characterMenu")):

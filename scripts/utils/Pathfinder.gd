@@ -1,5 +1,50 @@
 extends Node
 
+var exploreMap: Array = []
+
+func dijkstraCompute():
+	exploreMap.clear()
+	for i in range(GLOBAL.FLOOR_SIZE_X+1):
+		exploreMap.append([])
+		for j in range(GLOBAL.FLOOR_SIZE_Y+1):
+			exploreMap[i].append(9999)
+	for cell in Ref.currentLevel.shadows.get_used_cells_by_id(0):
+		if cell.x < 0 or cell.y < 0:
+			continue
+		exploreMap[cell.x][cell.y] = 0
+	for itemCell in GLOBAL.itemsOnFloor.keys():
+		if !GLOBAL.itemsOnFloor[itemCell][GLOBAL.FLOOR_EXP]:
+			exploreMap[itemCell.x][itemCell.y] = 0
+	var cells = Ref.currentLevel.dungeon.get_used_cells_by_id(GLOBAL.FLOOR_ID)
+	cells.append_array(Ref.currentLevel.dungeon.get_used_cells_by_id(GLOBAL.DOOR_ID))
+	for chest in GLOBAL.chests.values():
+		cells.erase(chest[GLOBAL.CH_POS])
+	var stop = false
+	while !stop:
+		stop = true
+		for cell in cells:
+			if (exploreMap[cell.x][cell.y] - exploreMap[cell.x-1][cell.y]) > 1:
+				exploreMap[cell.x][cell.y] = exploreMap[cell.x-1][cell.y] + 1
+				stop = false
+			if (exploreMap[cell.x][cell.y] - exploreMap[cell.x+1][cell.y]) > 1:
+				exploreMap[cell.x][cell.y] = exploreMap[cell.x+1][cell.y] + 1
+				stop = false
+			if (exploreMap[cell.x][cell.y] - exploreMap[cell.x][cell.y-1]) > 1:
+				exploreMap[cell.x][cell.y] = exploreMap[cell.x][cell.y-1] + 1
+				stop = false
+			if (exploreMap[cell.x][cell.y] - exploreMap[cell.x][cell.y+1]) > 1:
+				exploreMap[cell.x][cell.y] = exploreMap[cell.x][cell.y+1] + 1
+				stop = false
+
+func findNextStep(map: Array, pos: Vector2):
+	var dist = 999
+	var result = null
+	for d in Utils.directons:
+		if map[pos.x+d.x][pos.y+d.y] < dist:
+			dist = map[pos.x+d.x][pos.y+d.y]
+			result = d
+	return result
+
 func checkRange(start: Vector2, end: Vector2):
 	return abs(start.x - end.x) + abs(start.y - end.y)
 

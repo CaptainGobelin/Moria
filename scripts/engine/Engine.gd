@@ -72,6 +72,7 @@ func newTurn():
 	for m in Ref.currentLevel.allies.get_children():
 		StatusEngine.decreaseStatusesTime(m)
 	StatusEngine.decreaseStatusesTime(Ref.character)
+	Ref.game.pathfinder.dijkstraCompute()
 
 func computeDamages(dmgDices: Array, resist: Array, byPassResists: bool = false):
 	var result = 0

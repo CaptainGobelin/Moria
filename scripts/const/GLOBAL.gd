@@ -79,6 +79,7 @@ var items: Dictionary = {}
 # Index is pos content is a list of item ID
 const FLOOR_IDS = 0
 const FLOOR_INST = 1
+const FLOOR_EXP = 2
 var itemsOnFloor: Dictionary = {}
 
 func getItemList(cell: Vector2) -> Dictionary:
@@ -107,7 +108,7 @@ func dropItemOnFloor(idx: int, cell: Vector2):
 		var loot = lootScene.instance()
 		Ref.currentLevel.loots.add_child(loot)
 		loot.init(idx, cell)
-		itemsOnFloor[cell] = [[idx], loot.get_instance_id()]
+		itemsOnFloor[cell] = [[idx], loot.get_instance_id(), false]
 
 func removeItemFromFloor(idx: int):
 	for cell in itemsOnFloor.keys():

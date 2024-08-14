@@ -135,6 +135,7 @@ func placeCharacter(pos: Vector2 = Vector2(-1,-1)):
 	if pos == Vector2(-1, -1):
 		pos = getRandomFreeCell()
 	Ref.character.setPosition(pos)
+	Ref.game.pathfinder.dijkstraCompute()
 
 func spawnMonster(idx: int = 0, pos = null, isAllied: bool = false):
 	var cell = pos
@@ -186,6 +187,7 @@ func getLootMessage(cell):
 	var lootList = GLOBAL.getItemList(cell)
 	if lootList.keys().size() == 0:
 		return null
+	GLOBAL.itemsOnFloor[cell][GLOBAL.FLOOR_EXP] = true
 	var msg = "You see "
 	var list = []
 	for l in lootList.keys():

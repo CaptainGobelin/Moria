@@ -33,6 +33,7 @@
 [node name="Game" type="Node2D"]
 scale = Vector2( 4, 4 )
 script = ExtResource( 15 )
+start = 1
 
 [node name="Utils" type="Node" parent="."]
 
@@ -92,10 +93,11 @@ cell_size = Vector2( 9, 9 )
 format = 1
 
 [node name="Shadows" type="TileMap" parent="CurrentLevel"]
+visible = false
 tile_set = ExtResource( 3 )
 cell_size = Vector2( 9, 9 )
 format = 1
-tile_data = PoolIntArray( -1966060, 1, 0, -65517, 0, 3, 65535, 2, 0, 131071, 2, 65537, 196607, 2, 65537, 262143, 2, 65537, 327679, 2, 65537, 327690, 1, 0, 327691, 1, 0, 458753, 1, 65540, 983042, 0, 65539, 983043, 0, 0, 983044, 0, 0, 983045, 0, 0, 983046, 0, 0, 983047, 0, 0, 983048, 0, 65541 )
+tile_data = PoolIntArray( -1966060, 1, 0, -65517, 0, 3, 65535, 2, 0, 131071, 2, 65537, 196607, 2, 65537, 262143, 2, 65537, 327679, 2, 65537, 327690, 1, 0, 327691, 1, 0, 327692, 1, 0, 327693, 1, 0, 393226, 1, 0, 393227, 1, 0, 458753, 1, 65540, 983042, 0, 65539, 983043, 0, 0, 983044, 0, 0, 983045, 0, 0, 983046, 0, 0, 983047, 0, 0, 983048, 0, 65541 )
 
 [node name="Under" type="TileMap" parent="CurrentLevel/Shadows"]
 show_behind_parent = true
