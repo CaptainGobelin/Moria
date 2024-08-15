@@ -54,16 +54,15 @@ func initCharacter(feat: int):
 	for skill in Ref.character.skills.skills:
 		count += 1
 		var classSkill = Data.classes[selectedClass][Data.CL_SK][count]
-		if classSkill == 0:
-			continue
-		var event = Ref.character.skills.improve(count)
-		if event == null:
-			continue
-		match event[0]:
-			"chooseSpell":
-				Ref.game.chooseSpellMenu.open(event[1], event[2])
-				if Ref.game.chooseSpellMenu.visible:
-					yield(Ref.game.chooseSpellMenu, "selected")
+		for i in range(classSkill):
+			var event = Ref.character.skills.improve(count)
+			if event == null:
+				continue
+			match event[0]:
+				"chooseSpell":
+					Ref.game.chooseSpellMenu.open(event[1], event[2])
+					if Ref.game.chooseSpellMenu.visible:
+						yield(Ref.game.chooseSpellMenu, "selected")
 	var featResult = Ref.character.skills.addFeat(feat)
 	if featResult != null:
 		match featResult[0]:
