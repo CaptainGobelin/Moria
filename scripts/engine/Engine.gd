@@ -72,6 +72,8 @@ func newTurn():
 	for m in Ref.currentLevel.allies.get_children():
 		StatusEngine.decreaseStatusesTime(m)
 	StatusEngine.decreaseStatusesTime(Ref.character)
+	Ref.currentLevel.refresh_view()
+	Ref.game.monsterPanelList.fillList()
 
 func computeDamages(dmgDices: Array, resist: Array, byPassResists: bool = false):
 	var result = 0

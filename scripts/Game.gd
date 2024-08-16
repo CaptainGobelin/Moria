@@ -17,6 +17,7 @@ onready var itemGenerator = get_node("Utils/ItemGenerator") as ItemGenerator
 onready var pickupLootHandler = get_node("Utils/PickupLootHandler")
 onready var spellHandler = get_node("Utils/SpellHandler")
 onready var throwHandler = get_node("Utils/ThrowHandler")
+onready var monsterPanelList = get_node("MonsterPanelList")
 
 var autoexplore = false setget setAutoExplore
 
@@ -100,7 +101,7 @@ func newFloor():
 		if cell == null:
 			a.die()
 		a.setPosition(cell)
-	for _i in range(0):
+	for _i in range(10):
 		Ref.currentLevel.spawnMonster()
 	for _i in range(randi() % 4):
 		Ref.currentLevel.createChest()

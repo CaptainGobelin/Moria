@@ -32,7 +32,6 @@ func move(movement):
 	pos += movement
 	animator.play("walk")
 	GeneralEngine.newTurn()
-	Ref.currentLevel.refresh_view()
 	refreshMapPosition()
 	Ref.ui.write(Ref.currentLevel.getLootMessage(pos))
 	if GLOBAL.trapsByPos.has(pos):
@@ -60,11 +59,9 @@ func moveAsync(movement):
 						GLOBAL.lockedDoors.erase(pos + movement)
 						Ref.currentLevel.openDoor(pos + movement)
 						GeneralEngine.newTurn()
-						Ref.currentLevel.refresh_view()
 			else:
 				Ref.currentLevel.openDoor(pos + movement)
 				GeneralEngine.newTurn()
-				Ref.currentLevel.refresh_view()
 		"monster":
 			if cellState[2].status == "help":
 				cellState[2].setPosition(pos)
