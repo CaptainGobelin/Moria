@@ -145,6 +145,17 @@ func setGear():
 			msg += "\n- " + Utils.addArticle(Data.scrolls[s][Data.SC_NAME], scrolls[s])
 		else:
 			msg += "\n- " + Data.scrolls[s][Data.SC_NAME]
+	var throwings = {}
+	for t in kit[Data.KIT_TH]:
+		if throwings.has(t):
+			throwings[t] += 1
+		else:
+			throwings[t] = 1
+	for t in throwings.keys():
+		if throwings[t] > 1:
+			msg += "\n- " + Utils.addArticle(Data.throwings[t][Data.TH_NAME], throwings[t])
+		else:
+			msg += "\n- " + Data.throwings[t][Data.TH_NAME]
 	if kit[Data.KIT_LO] > 0:
 		msg += "\n- " + String(kit[Data.KIT_LO]) + " lockpicks"
 	if kit[Data.KIT_GO] > 0:
