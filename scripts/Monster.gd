@@ -3,6 +3,7 @@ class_name Monster
 
 onready var type = -1
 onready var stats = get_node("Stats")
+onready var actions = get_node("Actions")
 onready var bodySprite = get_node("BodySprite")
 onready var mask = get_node("Mask")
 onready var status = "sleep"
@@ -11,12 +12,15 @@ var tags: Array = []
 var statuses: Dictionary = {}
 var pos = Vector2(0, 0)
 var skipNextTurn = false
+var allies: Array = []
+var buffCD = 0
 
 func spawn(monsterType: int, cell: Vector2):
 	type = monsterType
 	bodySprite.frame = Data.monsters[monsterType][Data.MO_SPRITE]
 	setPosition(cell)
 	stats.init(type)
+	actions.init(type)
 	if Data.monsterTags.has(monsterType):
 		tags = Data.monsterTags[monsterType]
 
@@ -28,14 +32,18 @@ func takeTurn():
 		"dead":
 			return
 		"sleep":
+			wander()
 			return
 		"awake":
-			if Ref.game.pathfinder.checkRange(pos, Ref.character.pos) <= stats.atkRange:
-				hit(Ref.character)
-			else:
-				if Data.monsters[type][Data.MO_MOVE]:
-					moveTo(Ref.character)
-			return
+			if randf() < 0.25:
+				if heal():
+					return
+			if buffCD <= 0 and randf() < 0.25:
+				if buff():
+					return
+			var rangeToChar = Utils.dist(pos, Ref.character.pos)
+			var losToChar = Ref.currentLevel.canTarget(pos, Ref.character.pos)
+			attack(Ref.character, losToChar)
 		"help": # Allies behavior
 			if Utils.dist(Ref.character.pos, pos) > 9:
 				moveTo(Ref.character)
@@ -52,6 +60,51 @@ func takeTurn():
 				return
 			wander()
 			return
+
+func heal():
+	var heal = actions.getAction(actions.heals, "heal")
+	if heal != null:
+		var ally = getTargetableAlly()
+		if ally != null:
+			#TODO cast heal on ally
+			return true
+	if stats.hpPercent() > 40:
+		return false
+	heal = actions.getSelfHeal()
+	if heal != null:
+		#TODO cast heal on self
+		return true
+	return false
+
+func buff():
+	var buff = actions.getAction(actions.buffs, "buff")
+	if buff != null:
+		var ally = getTargetableAlly()
+		if ally != null:
+			#TODO cast buff on ally
+			return true
+	buff = actions.getSelfBuff()
+	if buff != null:
+		#TODO cast buff on self
+		return true
+	return false
+
+func attack(entity, los: Array):
+	if !los.empty() and randf() < 0.5:
+		var action = actions.getAction(actions.spells, "spell")
+		if action != null:
+			#TODO cast spell
+			return
+	if Utils.dist(pos, entity.pos) == 1:
+		hit(entity)
+		return
+	if !los.empty():
+		var action = actions.getAction(actions.throwings, "throwing")
+		if action != null:
+			Ref.game.throwHandler.castThrowMonster(action[0], self, entity, los)
+			actions.consumeAction(action[0], action[1])
+			return
+	moveTo(Ref.character)
 
 func hit(entity):
 	if entity == null:
@@ -74,6 +127,12 @@ func moveTo(entity) -> bool:
 		return false
 	setPosition(path[1])
 	return true
+
+func moveStep(d: Vector2) -> bool:
+	if Ref.currentLevel.isCellFree(pos+d)[0]:
+		setPosition(pos+d)
+		return true
+	return false
 
 func setPosition(newPos: Vector2):
 	if GLOBAL.monstersByPosition.has(pos):
@@ -115,8 +174,8 @@ func wander():
 	var cells = Utils.directons.duplicate()
 	cells.shuffle()
 	for c in cells:
-		if Ref.currentLevel.isCellFree(c)[0]:
-			moveTo(c)
+		if moveStep(c):
+			return
 
 func getClosestTarget(targets):
 	if targets.empty():
@@ -130,3 +189,19 @@ func getClosestTarget(targets):
 			dist = newDist
 			result = target
 	return result
+
+func getTargetableAlly(toHeal: bool = false):
+	var result = {}
+	for a in allies:
+		if a.status == "dead":
+			continue
+		if toHeal and a.stats.hpPercent() > 40:
+			continue
+		var los = Ref.currentLevel.canTarget(pos, a.pos)
+		if los.empty():
+			continue
+		result[a.get_instance_id()] = los
+	if result.empty():
+		return null
+	var resultId = Utils.chooseRandom(result.keys())
+	return [resultId, result[resultId]]

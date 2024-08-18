@@ -88,3 +88,11 @@ func castProjectile(path: Array, projInfo, yieldFor: String = "end_coroutine"):
 	Ref.currentLevel.effects.add_child(p)
 	p.init(path, projInfo[Data.PROJ_TYPE], projInfo[Data.PROJ_COLOR])
 	yield(p, yieldFor)
+
+func castSpellMonster(spellId: int, caster, target, path: Array):
+	var spell = Data.spells[spellId]
+	if spell[Data.SP_PROJ] != null:
+		yield(castProjectile(target.get_instance_id(), spell[Data.SP_PROJ]), "completed")
+	var savingCap = caster.stats.spellcasterLevel + 3
+	var spellRank = max(1, min(caster.stats.spellcasterLevel, 3))
+	SpellEngine.applyEffect(target, spellId, true, spellRank, savingCap)

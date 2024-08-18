@@ -60,8 +60,8 @@ func refresh_view():
 			m.bodySprite.visible = true
 			m.mask.visible = false
 		else:
-			m.bodySprite.visible = false
-			m.mask.visible = false
+#			m.bodySprite.visible = false
+#			m.mask.visible = false
 			if m.tags.has("evil"):
 				if Ref.character.statuses.has(Data.STATUS_DETECT_EVIL):
 					m.mask.visible = true
@@ -90,6 +90,14 @@ func clearFog():
 	for i in range(GLOBAL.FLOOR_SIZE_X):
 		for j in range(GLOBAL.FLOOR_SIZE_Y):
 			fog.set_cell(i, j, 1)
+
+# Return empty array if you cannot see target, return path if you can
+func canTarget(source: Vector2, target: Vector2) -> Array:
+	var points = Ref.game.pathfinder.get_line(source, target)
+	for p in points:
+		if isCellFree(p)[4]:
+			return []
+	return points
 
 # [isFree, code, entity, isVisible, blockEffect]
 func isCellFree(cell):

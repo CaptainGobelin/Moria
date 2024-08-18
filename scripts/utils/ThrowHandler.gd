@@ -20,7 +20,7 @@ func throwAsync(itemId: int):
 		if result >= entity.stats.ca:
 			Ref.ui.writeCharacterStrike(entity.stats.entityName, result, entity.stats.ca)
 			var wpDmg = item[Data.TH_DMG]
-			entity.takeHit(GeneralEngine.dmgDice(wpDmg.x, wpDmg.y, 0, Data.DMG_SLASH))
+			entity.takeHit(GeneralEngine.dmgDice(wpDmg.x, wpDmg.y, 0, Data.DMG_SLASH).roll())
 		else:
 			Ref.ui.writeCharacterMiss(entity.stats.entityName, result, entity.stats.ca)
 	if item[Data.TH_EFFECT] != null:
@@ -35,3 +35,17 @@ func castProjectile(path: Array, projInfo):
 	Ref.currentLevel.effects.add_child(p)
 	p.init(path, projInfo[Data.PROJ_TYPE], projInfo[Data.PROJ_COLOR])
 	yield(p, "end_coroutine")
+
+func castThrowMonster(itemId: int, caster, target, path: Array):
+	var item = Data.throwings[itemId]
+	yield(castProjectile(path, item[Data.TH_PROJ]), "completed")
+	if item[Data.TH_DMG] != null:
+		var result = caster.stats.hitDices.roll()
+		if result >= target.stats.ca:
+			Ref.ui.writeMonsterStrike(caster.stats.entityName, target.stats.entityName, result, target.stats.ca)
+			var wpDmg = item[Data.TH_DMG]
+			target.takeHit(GeneralEngine.dmgDice(wpDmg.x, wpDmg.y, 0, Data.DMG_SLASH).roll())
+		else:
+			Ref.ui.writeMonsterMiss(caster.stats.entityName, target.stats.entityName, result, target.stats.ca)
+	if item[Data.TH_EFFECT] != null:
+		SpellEngine.applyEffect(target, item[Data.TH_EFFECT], true, 1, 99)

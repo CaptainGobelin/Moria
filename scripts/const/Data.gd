@@ -184,22 +184,41 @@ const MO_PROT = 5
 const MO_SPRITE = 6
 const MO_XP = 7
 const MO_MOVE = 8
-const MO_THROW = 9
-const MO_SPELLS = 10
+const MO_CASTER_LVL = 9
+const MO_ACTIONS = 10
+const ACT_THROW = 0
+const ACT_SPELL = 1
+const ACT_BUFF = 2
+const ACT_DEBUFF = 3
+const ACT_HEAL = 4
+const ACT_ID = 0
+const ACT_TYPE = 1
+const ACT_SUBTYPE = 2
+const ACT_COUNT = 3
+const ACT_SUBTYPE_POTION = 0
+const ACT_SUBTYPE_SPELL = 1
 const monsters = {
 	MO_SKELETON: [
 		"Skeleton", 6, 0, Vector3(1, 4, 0),
-		3, 1, 2, 4, false, null,
-		[],
+		3, 1, 2, 4, true, 1,
+		[
+			[0, ACT_THROW, null, 2],
+		]
 	],
 	MO_SUM_WOLF: [
-		"Conjured wolf", 10, 0, Vector3(1, 6, 0), 2, 0, 24, 0, true
+		"Conjured wolf", 10, 0, Vector3(1, 6, 0),
+		2, 0, 24, 0, true, 1,
+		[]
 	],
 	MO_SUM_HAMMER: [
-		"Spiritual hammer", 4, 1, Vector3(1, 4, 0), 4, 2, 28, 0, true
+		"Spiritual hammer", 4, 1, Vector3(1, 4, 0),
+		4, 2, 28, 0, true, 1,
+		[]
 	],
 	MO_DUMMY: [
-		"Dummy target", 100, 0, Vector3(1, 1, 0), 2, 1, 1, 10, false
+		"Dummy target", 100, 0, Vector3(1, 1, 0),
+		2, 1, 1, 10, false, 1,
+		[]
 	],
 }
 
@@ -405,7 +424,7 @@ const KIT_LO = 7
 
 const KIT_UNDEF = [-1, -1, -1, [], [], [], 0, 0]
 const KIT_FIGHTER = [3, 0, 1, [0, 0], [], [0, 0, 0], 30, 2]
-const KIT_THIEF =	[1,-1, 1, [0, 0], [0], [0, 0, 0], 45, 3]
+const KIT_THIEF =	[1,-1, 1, [0, 0], [], [0, 0, 0], 45, 3]
 const KIT_MAGE = 	[8,-1, 0, [0, 0], [0], [], 30, 2]
 const KIT_CLERIC = 	[0, 0, 1, [0, 0], [], [], 30, 2]
 const KIT_PALADIN = [9,-1, 1, [0, 0], [], [], 30, 2]
