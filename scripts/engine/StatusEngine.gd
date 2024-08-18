@@ -27,7 +27,7 @@ func addStatus(entity, status: Array):
 	else:
 		entity.statuses[idx] = [id]
 	if not status[GLOBAL.ST_HIDDEN] and entity is Character:
-		Ref.ui.statusBar.refreshStatuses()
+		Ref.ui.statusBar.refreshStatuses(Ref.character)
 	return id
 
 func removeStatus(entity, statusId: int):
@@ -56,7 +56,7 @@ func decreaseStatusesTime(entity):
 					if entity.statuses[type].empty():
 						entity.statuses.erase(type)
 	if entity is Character:
-		Ref.ui.statusBar.refreshStatuses()
+		Ref.ui.statusBar.refreshStatuses(Ref.character)
 	if toRefresh:
 		entity.stats.computeStats()
 

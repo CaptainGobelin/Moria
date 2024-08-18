@@ -28,8 +28,13 @@ func takeTurn():
 	if skipNextTurn:
 		skipNextTurn = false
 		return
-	match status:
+	var currentStatus = stats.state
+	if currentStatus == "":
+		currentStatus = status
+	match currentStatus:
 		"dead":
+			return
+		"disabled":
 			return
 		"sleep":
 			wander()

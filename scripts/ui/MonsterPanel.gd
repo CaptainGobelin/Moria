@@ -4,7 +4,7 @@ onready var nameLabel = get_node("TextContainer/Name")
 onready var hp = get_node("TextContainer/HP")
 onready var stats = get_node("TextContainer/Stats")
 onready var hpBar = get_node("LifeTotal/LifeBar")
-onready var statuses = get_node("Statuses")
+onready var statusBar = get_node("StatusBar")
 onready var selected = get_node("Selected")
 
 func _ready():
@@ -15,7 +15,7 @@ func setData(id: int):
 	setName(monster.stats.entityName)
 	setHp(monster.stats.currentHp, monster.stats.maxHp)
 	setStats(monster.stats.ca, monster.stats.prot, monster.stats.saveBonus[0], monster.stats.saveBonus[1])
-	setStatuses()
+	statusBar.refreshStatuses(monster)
 	visible = true
 
 func setName(value: String):
@@ -30,7 +30,3 @@ func setStats(ac: int, prot: int, phy: int, wil: int):
 	stats.text += " Pr:" + String(prot)
 	stats.text += " PH:" + String(phy)
 	stats.text += " WI:" + String(wil)
-
-func setStatuses():
-	for s in statuses.get_children():
-		s.visible = false

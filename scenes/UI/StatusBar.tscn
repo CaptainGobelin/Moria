@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/UI/StatusBar.gd" type="Script" id=1]
+
+[node name="StatusBar" type="Node2D"]
+position = Vector2( 351, 108 )
+script = ExtResource( 1 )

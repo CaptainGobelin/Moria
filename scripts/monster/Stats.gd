@@ -14,6 +14,7 @@ onready var maxResists: Array = [1, 1, 1, 1, 1, 1, 1, 1]
 onready var saveBonus: Array = [0, 0]
 onready var spellcasterLevel: int = 0
 onready var xp = 0
+onready var state: String = ""
 
 func init(type: int):
 	entityName = Data.monsters[type][Data.MO_NAME]
@@ -27,9 +28,15 @@ func init(type: int):
 	dmgDices = [GeneralEngine.dmgDice(dmg.x, dmg.y, dmg.z, Data.DMG_SLASH)]
 	spellcasterLevel = Data.monsters[type][Data.MO_CASTER_LVL]
 	xp = Data.monsters[type][Data.MO_XP]
+	computeStats()
 
 func computeStats():
-	pass
+	computeState()
+
+func computeState():
+	state = ""
+	if get_parent().statuses.has(Data.STATUS_SLEEP):
+		state = "disabled"
 
 func hpPercent() -> float:
 	return float(currentHp)/float(maxHp) * 100

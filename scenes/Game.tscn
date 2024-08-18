@@ -24,7 +24,7 @@
 [ext_resource path="res://sprites/ui.png" type="Texture" id=22]
 [ext_resource path="res://scripts/ui/TargetHandler.gd" type="Script" id=23]
 [ext_resource path="res://scenes/menu/SpellMenu.tscn" type="PackedScene" id=24]
-[ext_resource path="res://scenes/UI/StatusBar.gd" type="Script" id=25]
+[ext_resource path="res://scenes/UI/StatusBar.tscn" type="PackedScene" id=25]
 [ext_resource path="res://scenes/menu/ChestMenu.tscn" type="PackedScene" id=26]
 [ext_resource path="res://scripts/utils/ThrowHandler.gd" type="Script" id=27]
 [ext_resource path="res://scenes/menu/ChooseSpellMenu.tscn" type="PackedScene" id=28]
@@ -423,12 +423,7 @@ text = "-"
 align = 2
 valign = 1
 
-[node name="StatusBar" type="Node2D" parent="UI"]
-position = Vector2( 351, 108 )
-script = ExtResource( 25 )
-
-[node name="StatusIcons" type="Node2D" parent="UI/StatusBar"]
-position = Vector2( 0, 12 )
+[node name="StatusBar" parent="UI" instance=ExtResource( 25 )]
 
 [node name="InventoryMenu" parent="." instance=ExtResource( 10 )]
 visible = false

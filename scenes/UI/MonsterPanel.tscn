@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://themes/LabelTheme.tres" type="Theme" id=1]
 [ext_resource path="res://scripts/ui/MonsterPanel.gd" type="Script" id=2]
 [ext_resource path="res://scenes/Status.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/UI/StatusBar.tscn" type="PackedScene" id=4]
 
 [node name="MonsterPanel" type="Node2D"]
 script = ExtResource( 2 )
@@ -52,6 +53,7 @@ align = 1
 valign = 1
 
 [node name="Statuses" type="Node2D" parent="."]
+visible = false
 position = Vector2( 73, 4 )
 
 [node name="Status" parent="Statuses" instance=ExtResource( 3 )]
@@ -64,6 +66,11 @@ position = Vector2( 22, 0 )
 
 [node name="Status4" parent="Statuses" instance=ExtResource( 3 )]
 position = Vector2( 33, 0 )
+
+[node name="StatusBar" parent="." instance=ExtResource( 4 )]
+position = Vector2( 73, 4 )
+MAX_DISPLAYED = 4
+SPACING = 11
 
 [node name="Selected" type="ColorRect" parent="."]
 visible = false
