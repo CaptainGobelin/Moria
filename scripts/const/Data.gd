@@ -203,6 +203,8 @@ const monsters = {
 		3, 1, 2, 4, true, 1,
 		[
 			[0, ACT_THROW, null, 2],
+			[SP_BLESS, ACT_BUFF, ACT_SUBTYPE_SPELL, 1],
+			[SP_FIREBOLT, ACT_SPELL, ACT_SUBTYPE_SPELL, 5],
 		]
 	],
 	MO_SUM_WOLF: [

@@ -25,6 +25,7 @@ func spawn(monsterType: int, cell: Vector2):
 		tags = Data.monsterTags[monsterType]
 
 func takeTurn():
+	buffCD -= 1
 	if skipNextTurn:
 		skipNextTurn = false
 		return
@@ -45,6 +46,7 @@ func takeTurn():
 					return
 			if buffCD <= 0 and randf() < 0.25:
 				if buff():
+					buffCD = 10
 					return
 			var rangeToChar = Utils.dist(pos, Ref.character.pos)
 			var losToChar = Ref.currentLevel.canTarget(pos, Ref.character.pos)
@@ -71,13 +73,19 @@ func heal():
 	if heal != null:
 		var ally = getTargetableAlly()
 		if ally != null:
-			#TODO cast heal on ally
+			Ref.game.spellHandler.castSpellMonster(heal[0], self, ally, [])
+			actions.consumeAction(heal[0], heal[1])
 			return true
 	if stats.hpPercent() > 40:
 		return false
 	heal = actions.getSelfHeal()
 	if heal != null:
-		#TODO cast heal on self
+		if heal[1] == "heal":
+			Ref.game.spellHandler.castSpellMonster(heal[0], self, self, [])
+		else:
+			#TODO drink potion
+			pass
+		actions.consumeAction(heal[0], heal[1])
 		return true
 	return false
 
@@ -86,11 +94,17 @@ func buff():
 	if buff != null:
 		var ally = getTargetableAlly()
 		if ally != null:
-			#TODO cast buff on ally
+			Ref.game.spellHandler.castSpellMonster(buff[0], self, ally, [])
+			actions.consumeAction(buff[0], buff[1])
 			return true
 	buff = actions.getSelfBuff()
 	if buff != null:
-		#TODO cast buff on self
+		if buff[1] == "buff":
+			Ref.game.spellHandler.castSpellMonster(buff[0], self, self, [])
+		else:
+			#TODO drink potion
+			pass
+		actions.consumeAction(buff[0], buff[1])
 		return true
 	return false
 
@@ -98,7 +112,8 @@ func attack(entity, los: Array):
 	if !los.empty() and randf() < 0.5:
 		var action = actions.getAction(actions.spells, "spell")
 		if action != null:
-			#TODO cast spell
+			Ref.game.spellHandler.castSpellMonster(action[0], self, entity, los)
+			actions.consumeAction(action[0], action[1])
 			return
 	if Utils.dist(pos, entity.pos) == 1:
 		hit(entity)

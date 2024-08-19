@@ -178,6 +178,10 @@ func writeCastSpell(spell: String):
 	write("You casted " + color(spell, "yellow") + ".")
 	lastPrinted = "writeCastSpell"
 
+func writeMonsterCastSpell(entityName: String, spell: String):
+	write(entityName + " casted " + color(spell, "yellow") + ".")
+	lastPrinted = "writeMonsterCastSpell"
+
 func writeNoSpell(spell: String):
 	write("You cannot cast " + spell + " anymore until you rest.")
 	lastPrinted = "writeNoSpell"
