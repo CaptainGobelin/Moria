@@ -2,7 +2,7 @@ extends Node2D
 
 class_name Game
 
-export (int, "Normal, Fast, Tests") var start = 0
+export (int, "Normal, Fast, Tests, Dungeon") var start = 0
 
 onready var inventoryMenu = get_node("InventoryMenu")
 onready var characterMenu = get_node("CharacterMenu")
@@ -29,6 +29,12 @@ func _ready():
 	match start:
 		0:
 			chooseClassMenu.open()
+		3:
+			Ref.currentLevel.fog.visible = false
+			Ref.currentLevel.shadows.visible = false
+			Ref.character.visible = false
+			dungeonGenerator.newFloor()
+			dungeonGenerator.set_process_input(true)
 		_:
 			Ref.character.init(Data.CL_FIGHTER)
 			startGame()

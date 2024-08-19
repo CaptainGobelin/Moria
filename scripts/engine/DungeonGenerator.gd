@@ -12,6 +12,14 @@ var array:Array = []
 var arrayFullness = 0
 var trapList: Dictionary = {}
 
+func _ready():
+	set_process_input(false)
+
+func _input(event):
+	if event.is_action_released("ui_accept"):
+		Ref.game.cleanFloor()
+		newFloor()
+
 func simpleFloor():
 	dungeon = Ref.currentLevel.dungeon as TileMap
 	for i in range(GLOBAL.FLOOR_SIZE_X):
