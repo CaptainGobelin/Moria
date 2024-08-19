@@ -71,9 +71,9 @@ func takeTurn():
 func heal():
 	var heal = actions.getAction(actions.heals, "heal")
 	if heal != null:
-		var ally = getTargetableAlly()
+		var ally = getTargetableAlly(true)
 		if ally != null:
-			Ref.game.spellHandler.castSpellMonster(heal[0], self, ally, [])
+			Ref.game.spellHandler.castSpellMonster(heal[0], self, ally[0], ally[1])
 			actions.consumeAction(heal[0], heal[1])
 			return true
 	if stats.hpPercent() > 40:
@@ -82,10 +82,9 @@ func heal():
 	if heal != null:
 		if heal[1] == "heal":
 			Ref.game.spellHandler.castSpellMonster(heal[0], self, self, [])
+			actions.consumeAction(heal[0], heal[1])
 		else:
-			#TODO drink potion
-			pass
-		actions.consumeAction(heal[0], heal[1])
+			quaffPotion(heal[0], heal[1])
 		return true
 	return false
 
@@ -94,17 +93,16 @@ func buff():
 	if buff != null:
 		var ally = getTargetableAlly()
 		if ally != null:
-			Ref.game.spellHandler.castSpellMonster(buff[0], self, ally, [])
+			Ref.game.spellHandler.castSpellMonster(buff[0], self, ally[0], ally[1])
 			actions.consumeAction(buff[0], buff[1])
 			return true
 	buff = actions.getSelfBuff()
 	if buff != null:
 		if buff[1] == "buff":
 			Ref.game.spellHandler.castSpellMonster(buff[0], self, self, [])
+			actions.consumeAction(buff[0], buff[1])
 		else:
-			#TODO drink potion
-			pass
-		actions.consumeAction(buff[0], buff[1])
+			quaffPotion(buff[0], buff[1])
 		return true
 	return false
 
@@ -196,6 +194,12 @@ func wander():
 	for c in cells:
 		if moveStep(c):
 			return
+
+func quaffPotion(idx: int, actionType: String):
+	var potion = GLOBAL.items[idx]
+	PotionEngine.applyEffect(self, potion[GLOBAL.IT_SPEC])
+	Ref.ui.writeMonsterQuaffedPotion(stats.entityName, potion[GLOBAL.IT_NAME])
+	actions.consumeAction(idx, actionType)
 
 func getClosestTarget(targets):
 	if targets.empty():

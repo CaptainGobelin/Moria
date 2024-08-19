@@ -319,6 +319,10 @@ func writeQuaffedPotion(potion: String):
 	write("You quaffed the " + potion + ".")
 	lastPrinted = "writeQuaffedPotion"
 
+func writeMonsterQuaffedPotion(entityName: String, potion: String):
+	write(entityName + " quaffed the " + potion + ".")
+	lastPrinted = "writeMonsterQuaffedPotion"
+
 func noTarget():
 	write("There is no targets at range for this.")
 	lastPrinted = "noTarget"
