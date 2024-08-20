@@ -39,6 +39,7 @@ start = 3
 [node name="Utils" type="Node" parent="."]
 
 [node name="DungeonGenerator_v2" parent="Utils" instance=ExtResource( 1 )]
+biome = 1
 
 [node name="ItemGenerator" type="Node" parent="Utils"]
 script = ExtResource( 6 )
