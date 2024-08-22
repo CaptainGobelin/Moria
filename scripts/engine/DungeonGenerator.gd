@@ -25,11 +25,11 @@ func newFloor():
 	Ref.game.cleanFloor()
 	match biome:
 		0:
-			normalBiome.newFloor()
+			return normalBiome.newFloor()
 		1:
-			cavernBiome.newFloor()
+			return cavernBiome.newFloor()
 		2:
-			simpleFloor()
+			return simpleFloor()
 
 func simpleFloor():
 	for i in range(GLOBAL.FLOOR_SIZE_X):

@@ -54,10 +54,9 @@ func newFloor():
 			decorator.flags[cell.x][cell.y] = 0
 			cells.erase(cell)
 		for d in rooms[0][room][1]:
-			# In caverns all doors are hidden
-#			if randf() < (1 - 2 * GLOBAL.HIDDEN_DOORS_RATIO):
-#				GLOBAL.hiddenDoors.append(d)
-#				array[d.x][d.y] = GLOBAL.WALL_ID
+			if randf() < (1 - GLOBAL.HIDDEN_DOORS_RATIO):
+				GLOBAL.hiddenDoors.append(d)
+				array[d.x][d.y] = GLOBAL.WALL_ID
 			if randf() < (1 - 2 * GLOBAL.LOCKED_DOORS_RATIO):
 				GLOBAL.lockedDoors.append(d)
 #			if validatedDoors.has(d):
@@ -252,5 +251,6 @@ func hideAllDoors():
 	for i in range(GLOBAL.FLOOR_SIZE_X):
 		for j in range(GLOBAL.FLOOR_SIZE_Y):
 			if array[i][j] == GLOBAL.DOOR_ID:
-				GLOBAL.hiddenDoors.append(Vector2(i, j))
-				array[i][j] = GLOBAL.WALL_ID
+				if randf() < 3 * GLOBAL.HIDDEN_DOORS_RATIO:
+					GLOBAL.hiddenDoors.append(Vector2(i, j))
+					array[i][j] = GLOBAL.WALL_ID
