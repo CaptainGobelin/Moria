@@ -69,15 +69,15 @@ func flagMap():
 					flags[i][j] = 2
 
 # Set everw cell analyzed to true for all critical rooms
-func flagCriticalPath(path: Array):
+func flagCriticalPath(path: Array, removeDoors: bool = false):
 	for p in path:
 		if analyzed[p.x][p.y]:
 			continue
-		flood(p.x, p.y)
+		flood(p.x, p.y, removeDoors)
 
 # Detect possible treasure rooms return dict of [roomCells, doorCell]
 # First entry of the dict contains the keys of dead end rooms
-func getTreasuresCandidates():
+func getTreasuresCandidates(sizeThreshold: int = 25):
 	var rooms = {}
 	var roomId = 0
 	var deadends = []
@@ -90,7 +90,7 @@ func getTreasuresCandidates():
 				if floodResult[0].size() != 0:
 					rooms[roomId] = floodResult
 					# We don't want to add corridors
-					if floodResult[1].size() == 1 and floodResult[0].size() < 25:
+					if floodResult[1].size() == 1 and floodResult[0].size() < sizeThreshold:
 						for cell in floodResult[0]:
 							if floodResult[0][0].x != cell.x and floodResult[0][0].y != cell.y:
 								deadends.append(roomId)
@@ -99,11 +99,16 @@ func getTreasuresCandidates():
 	return [rooms, deadends]
 
 # Recursive function to return a room with [roomCells, doorsCell]
-func flood(i: int, j: int):
+func flood(i: int, j: int, removeDoors: bool = false):
 	if analyzed[i][j]:
 		return [[], []]
-	if array[i][j] == GLOBAL.DOOR_ID or array[i][j] == GLOBAL.PASS_ID:
-		return [[], [Vector2(i, j)]]
+	if array[i][j] == GLOBAL.PASS_ID:
+			return [[], [Vector2(i, j)]]
+	if array[i][j] == GLOBAL.DOOR_ID:
+		if removeDoors:
+			array[i][j] = GLOBAL.FLOOR_ID
+		else:
+			return [[], [Vector2(i, j)]]
 	analyzed[i][j] = true
 	if array[i][j] != GLOBAL.FLOOR_ID:
 		return [[], []]

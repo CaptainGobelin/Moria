@@ -12,29 +12,6 @@ var array:Array = []
 var arrayFullness = 0
 var trapList: Dictionary = {}
 
-func _ready():
-	set_process_input(false)
-
-func simpleFloor():
-	dungeon = Ref.currentLevel.dungeon as TileMap
-	for i in range(GLOBAL.FLOOR_SIZE_X):
-		array.append([])
-		for j in range(GLOBAL.FLOOR_SIZE_Y):
-			if i < 3 or i > GLOBAL.FLOOR_SIZE_X - 4:
-				array[i].append(GLOBAL.WALL_ID)
-			elif j < 3 or j > GLOBAL.FLOOR_SIZE_Y - 4:
-				array[i].append(GLOBAL.WALL_ID)
-			else:
-				array[i].append(GLOBAL.FLOOR_ID)
-	array[4][3] = GLOBAL.WALL_ID
-	array[4][4] = GLOBAL.WALL_ID
-	array[4][5] = GLOBAL.DOOR_ID
-	array[4][6] = GLOBAL.WALL_ID
-	array[3][4] = GLOBAL.WALL_ID
-	array[3][6] = GLOBAL.WALL_ID
-	get_parent().drawFloor(array)
-	return Vector2(int(GLOBAL.FLOOR_SIZE_X/2), int(GLOBAL.FLOOR_SIZE_Y/2))
-
 func newFloor():
 	dungeon = Ref.currentLevel.dungeon as TileMap
 	var retries = 0
