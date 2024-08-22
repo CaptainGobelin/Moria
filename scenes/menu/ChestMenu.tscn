@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://tilesets/int_tileset.tres" type="TileSet" id=1]
 [ext_resource path="res://sprites/chest.png" type="Texture" id=2]
 [ext_resource path="res://scripts/menu/ChestItems.gd" type="Script" id=3]
 [ext_resource path="res://scripts/menu/ChestMenu.gd" type="Script" id=4]
 [ext_resource path="res://scenes/menu/ItemRow.tscn" type="PackedScene" id=5]
+[ext_resource path="res://themes/LabelTheme.tres" type="Theme" id=6]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Open"
@@ -234,10 +235,23 @@ script = SubResource( 4 )
 position = Vector2( 0, 36 )
 script = SubResource( 4 )
 
+[node name="TextContainer" type="Node2D" parent="."]
+position = Vector2( 36, 36 )
+scale = Vector2( 0.25, 0.25 )
+
+[node name="Label" type="Label" parent="TextContainer"]
+margin_left = 396.0
+margin_top = 324.0
+margin_right = 1008.0
+margin_bottom = 360.0
+theme = ExtResource( 6 )
+text = "Enter: Loot          Esc: Close"
+align = 1
+
 [node name="Pan" type="ColorRect" parent="."]
 self_modulate = Color( 1, 1, 1, 0.501961 )
 margin_left = 135.0
 margin_top = 54.0
 margin_right = 288.0
-margin_bottom = 117.0
+margin_bottom = 126.0
 color = Color( 0.141176, 0.192157, 0.215686, 1 )
