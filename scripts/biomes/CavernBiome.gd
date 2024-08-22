@@ -43,7 +43,7 @@ func newFloor():
 		var room = Utils.chooseRandom(rooms[1])
 		rooms[1].erase(room)
 		var cells = decorator.getChestCells(rooms[0][room][0])
-		for _j in range(2 + (randi() % GLOBAL.LOOTS_PER_TREASURE)):
+		for _j in range(2 + (randi() % (GLOBAL.LOOTS_PER_TREASURE-2))):
 			if cells.size() == 0:
 				break
 			var cell = Utils.chooseRandom(cells)
@@ -61,7 +61,7 @@ func newFloor():
 				GLOBAL.lockedDoors.append(d)
 #			if validatedDoors.has(d):
 #				validatedDoors.erase(d)
-		nTreasures -= (2 * treasureThreshold)
+		nTreasures -= (0.5 * treasureThreshold)
 		treasureThreshold /= 2.0
 	hideAllDoors()
 	get_parent().drawFloor(array)
