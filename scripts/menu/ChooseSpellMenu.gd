@@ -19,7 +19,6 @@ func open(school: int, level: int):
 	startRow = 0
 	visible = true
 	MasterInput.setMaster(self)
-	var rank = Ref.character.spells.getSpellRank(school)
 	var list = Data.classes[Ref.character.charClass][Data.CL_LIST]
 	currentList = []
 	for i in range(1, level+1):

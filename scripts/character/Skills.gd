@@ -10,9 +10,10 @@ func init(charClass: int):
 	if charClass != -1:
 		masteries = Data.classes[charClass][Data.CL_SKMAS].duplicate()
 
-func improve(idx: int):
+func improve(idx: int, isFree: bool = false):
 	skills[idx] += 1
-	skp -= 1
+	if !isFree:
+		skp -= 1
 	var school = skillToSchool(idx)
 	if school == null:
 		return null

@@ -55,7 +55,7 @@ func applyEffect(entity, spellId: int, fromCharacter: bool, rank: int, savingCap
 	fromChar = fromCharacter
 	match spellId:
 		Data.SP_MAGIC_MISSILE:
-			magicMissile(entity)
+			magicMissile(entity, rank)
 		Data.SP_ELECTRIC_GRASP:
 			electricGrasp(entity, rank, direction)
 		Data.SP_HEAL:
@@ -109,9 +109,9 @@ func applyEffect(entity, spellId: int, fromCharacter: bool, rank: int, savingCap
 		Data.SP_TH_SLEEP:
 			throwings.sleepFlask(entity)
 
-func magicMissile(entity):
+func magicMissile(entity, rank: int):
 	playEffect(entity.pos, 8, 5, 0.6)
-	var dmgDice = [GeneralEngine.dmgDice(1, 4, 1, Data.DMG_MAGIC)]
+	var dmgDice = [GeneralEngine.dmgDiceFromArray(Data.spellDamages[Data.SP_MAGIC_MISSILE][rank])]
 	var dmg = GeneralEngine.computeDamages(dmgDice, entity.stats.resists)
 	entity.takeHit(dmg)
 

@@ -55,7 +55,7 @@ func initCharacter(feat: int):
 		count += 1
 		var classSkill = Data.classes[selectedClass][Data.CL_SK][count]
 		for i in range(classSkill):
-			var event = Ref.character.skills.improve(count)
+			var event = Ref.character.skills.improve(count, true)
 			if event == null:
 				continue
 			match event[0]:

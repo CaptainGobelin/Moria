@@ -9,13 +9,13 @@ func getSavingThrow(school: int):
 
 func getSpellRank(school: int):
 	var skill = get_parent().skills.skills[schoolToSkill(school)]
-	return int(ceil(skill/2.0))
+	return int(ceil(float(skill)/2.0))
 
 func learnSpell(idx: int):
 	spells.append(idx)
 	var school = Data.spells[idx][Data.SP_SCHOOL]
 	var rank = getSpellRank(school)
-	spellsUses[idx] = Data.spells[idx][Data.SP_USES][rank]
+	spellsUses[idx] = Data.spells[idx][Data.SP_USES][rank-1]
 
 func schoolToSkill(school: int):
 	match school:
