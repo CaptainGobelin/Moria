@@ -11,7 +11,7 @@ var fromChar = false
 func createSpellStatus(type: int, rank: int, time: int):
 	var status = Data.statusPrefabs[type]
 	if rank > 1:
-		status[GLOBAL.ST_NAME] += " " + Utils.toRoman(rank)
+		status[GLOBAL.ST_NAME] += " " + Utils.toRoman(rank+1)
 	status[GLOBAL.ST_TIMING] = GLOBAL.TIMING_TIMER
 	status[GLOBAL.ST_TURNS] = time
 	status[GLOBAL.ST_RANK] = rank
@@ -165,12 +165,12 @@ func firebolt(entity, rank: int):
 func sleep(entity, rank: int):
 	playEffect(entity.pos, 4, 5, 0.6)
 	var turns = getTurns(Data.SP_SLEEP, rank)
-	if rank == 1 or entity is Character:
+	if rank == 0 or entity is Character:
 		if not rollsavingThrow(entity):
 			applySpellStatus(entity, Data.STATUS_SLEEP, rank, turns)
 	else:
 		for m in Ref.currentLevel.monsters.get_children():
-			if Utils.dist(entity.pos, m.pos) <= rank:
+			if Utils.dist(entity.pos, m.pos) <= (rank+1):
 				if not rollsavingThrow(entity):
 					applySpellStatus(entity, Data.STATUS_SLEEP, rank, turns)
 
@@ -194,7 +194,7 @@ func command(entity, rank: int):
 	playEffect(entity.pos, 6, 5, 0.6)
 	var turns = getTurns(Data.SP_COMMAND, rank)
 	if not rollsavingThrow(entity):
-		applySpellStatus(entity, Data.STATUS_TERROR, 1, turns)
+		applySpellStatus(entity, Data.STATUS_TERROR, 0, turns)
 
 func light(entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)
@@ -205,14 +205,14 @@ func light(entity, rank: int):
 func blind(entity, rank: int):
 	playEffect(entity.pos, 4, 5, 0.6)
 	var turns = getTurns(Data.SP_BLIND, rank)
-	if rank == 1 or entity is Character:
+	if rank == 0 or entity is Character:
 		if not rollsavingThrow(entity):
-			applySpellStatus(entity, Data.STATUS_BLIND, rank, turns)
+			applySpellStatus(entity, Data.STATUS_BLIND, 0, turns)
 	else:
 		for m in Ref.currentLevel.monsters.get_children():
-			if Utils.dist(entity.pos, m.pos):
+			if Utils.dist(entity.pos, m.pos) <= (rank+1):
 				if not rollsavingThrow(entity):
-					applySpellStatus(m, Data.STATUS_SLEEP, rank, turns)
+					applySpellStatus(m, Data.STATUS_SLEEP, 0, turns)
 
 func mindSpike(entity, rank: int):
 	playEffect(entity.pos, 8, 5, 0.6)
@@ -230,7 +230,7 @@ func detectEvil(entity, rank: int):
 func revealTraps(entity):
 	playEffect(entity.pos, 7, 5, 0.6)
 	var turns = getTurns(Data.SP_REVEAL_TRAPS, 0)
-	applySpellStatus(entity, Data.STATUS_REVEAL_TRAPS, 1, turns)
+	applySpellStatus(entity, Data.STATUS_REVEAL_TRAPS, 0, turns)
 	Ref.currentLevel.refresh_view()
 
 func shield(entity, rank: int):
@@ -239,7 +239,7 @@ func shield(entity, rank: int):
 
 func mageArmor(entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)
-	var status = createSpellStatus(Data.STATUS_MAGE_ARMOR, 5 * (rank + 1), 40)
+	var status = createSpellStatus(Data.STATUS_MAGE_ARMOR, 5 * (rank + 2), 40)
 	status[GLOBAL.ST_TIMING] = GLOBAL.TIMING_REST
 	StatusEngine.addStatus(entity, status)
 	entity.stats.computeStats()
