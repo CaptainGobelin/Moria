@@ -36,6 +36,12 @@ func getValidTarget(cell: Vector2):
 			return Ref.character
 	return null
 
+func getDmgDice(spellId: int, rank: int) -> Array:
+	return [GeneralEngine.dmgDiceFromArray(Data.spellDamages[spellId][rank])]
+
+func getTurns(spellId: int, rank: int) -> int:
+	return Data.spellTurns[spellId][rank]
+
 func rollsavingThrow(entity) -> bool:
 	if saveType == Data.SAVE_NO:
 		return false
@@ -59,11 +65,11 @@ func applyEffect(entity, spellId: int, fromCharacter: bool, rank: int, savingCap
 		Data.SP_ELECTRIC_GRASP:
 			electricGrasp(entity, rank, direction)
 		Data.SP_HEAL:
-			heal(entity)
+			heal(entity, rank)
 		Data.SP_SMITE:
-			smite(entity, direction)
+			smite(entity, rank, direction)
 		Data.SP_FIREBOLT:
-			firebolt(entity)
+			firebolt(entity, rank)
 		Data.SP_SLEEP:
 			sleep(entity, rank)
 		Data.SP_UNLOCK:
@@ -71,9 +77,9 @@ func applyEffect(entity, spellId: int, fromCharacter: bool, rank: int, savingCap
 		Data.SP_BLESS:
 			bless(entity, rank)
 		Data.SP_COMMAND:
-			command(entity)
+			command(entity, rank)
 		Data.SP_LIGHT:
-			light(entity)
+			light(entity, rank)
 		Data.SP_BLIND:
 			blind(entity, rank)
 		Data.SP_MIND_SPIKE:
@@ -111,7 +117,7 @@ func applyEffect(entity, spellId: int, fromCharacter: bool, rank: int, savingCap
 
 func magicMissile(entity, rank: int):
 	playEffect(entity.pos, 8, 5, 0.6)
-	var dmgDice = [GeneralEngine.dmgDiceFromArray(Data.spellDamages[Data.SP_MAGIC_MISSILE][rank])]
+	var dmgDice = getDmgDice(Data.SP_MAGIC_MISSILE, rank)
 	var dmg = GeneralEngine.computeDamages(dmgDice, entity.stats.resists)
 	entity.takeHit(dmg)
 
@@ -127,12 +133,14 @@ func electricGrasp(entity, rank: int, direction: Vector2):
 			dmg = int(dmg) / int(2)
 		target.takeHit(dmg)
 
-func heal(entity):
+func heal(entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)
-	var result:float = entity.stats.hpMax * 0.5
-	entity.stats.hp += ceil(result)
+	var healData = Data.spellDamages[Data.SP_HEAL][rank]
+	healData.pop_back()
+	var dice = GeneralEngine.diceFromArray(healData)
+	entity.stats.hp += dice.roll()
 
-func smite(entity, direction):
+func smite(entity, rank: int, direction: Vector2):
 	var targetCell = entity.pos + direction
 	for _i in range(GLOBAL.VIEW_RANGE) :
 		if Ref.currentLevel.isCellFree(targetCell)[4]:
@@ -142,20 +150,29 @@ func smite(entity, direction):
 		playEffect(targetCell, 6, 5, 0.8)
 		var target = getValidTarget(targetCell)
 		if target != null:
-			var dmgDice = [GeneralEngine.dmgDice(1, 8, 0, Data.DMG_RADIANT)]
+			var dmgDice = getDmgDice(Data.DMG_RADIANT, rank)
 			var dmg = GeneralEngine.computeDamages(dmgDice, target.stats.resists)
 			target.takeHit(dmg)
 		targetCell += direction
 
-func firebolt(entity):
-	var dmgDice = [GeneralEngine.dmgDice(1, 10, 0, Data.DMG_FIRE)]
+func firebolt(entity, rank: int):
+	var dmgDice = getDmgDice(Data.DMG_FIRE, rank)
 	var dmg = GeneralEngine.computeDamages(dmgDice, entity.stats.resists)
+	if rollsavingThrow(entity):
+		dmg /= 2
 	entity.takeHit(dmg)
 
 func sleep(entity, rank: int):
 	playEffect(entity.pos, 4, 5, 0.6)
-	if not rollsavingThrow(entity):
-		applySpellStatus(entity, Data.STATUS_SLEEP, rank, 20)
+	var turns = getTurns(Data.SP_SLEEP, rank)
+	if rank == 1 or entity is Character:
+		if not rollsavingThrow(entity):
+			applySpellStatus(entity, Data.STATUS_SLEEP, rank, turns)
+	else:
+		for m in Ref.currentLevel.monsters.get_children():
+			if Utils.dist(entity.pos, m.pos) <= rank:
+				if not rollsavingThrow(entity):
+					applySpellStatus(entity, Data.STATUS_SLEEP, rank, turns)
 
 func unlock(entity, direction: Vector2):
 	var cell = entity.pos + direction
@@ -170,38 +187,50 @@ func unlock(entity, direction: Vector2):
 
 func bless(entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)
-	applySpellStatus(entity, Data.STATUS_BLESSED, rank, 20)
+	var turns = getTurns(Data.SP_BLESS, rank)
+	applySpellStatus(entity, Data.STATUS_BLESSED, rank, turns)
 
-func command(entity):
+func command(entity, rank: int):
 	playEffect(entity.pos, 6, 5, 0.6)
+	var turns = getTurns(Data.SP_COMMAND, rank)
 	if not rollsavingThrow(entity):
-		applySpellStatus(entity, Data.STATUS_TERROR, 1, 5)
+		applySpellStatus(entity, Data.STATUS_TERROR, 1, turns)
 
-func light(entity):
+func light(entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)
-	applySpellStatus(entity, Data.STATUS_LIGHT, 1, 40)
+	var turns = getTurns(Data.SP_COMMAND, rank)
+	applySpellStatus(entity, Data.STATUS_LIGHT, rank, turns)
 	Ref.currentLevel.refresh_view()
 
 func blind(entity, rank: int):
 	playEffect(entity.pos, 4, 5, 0.6)
-	if not rollsavingThrow(entity):
-		applySpellStatus(entity, Data.STATUS_BLIND, rank, 15)
+	var turns = getTurns(Data.SP_BLIND, rank)
+	if rank == 1 or entity is Character:
+		if not rollsavingThrow(entity):
+			applySpellStatus(entity, Data.STATUS_BLIND, rank, turns)
+	else:
+		for m in Ref.currentLevel.monsters.get_children():
+			if Utils.dist(entity.pos, m.pos):
+				if not rollsavingThrow(entity):
+					applySpellStatus(m, Data.STATUS_SLEEP, rank, turns)
 
 func mindSpike(entity, rank: int):
 	playEffect(entity.pos, 8, 5, 0.6)
 	if not rollsavingThrow(entity):
-		var dmgDice = [GeneralEngine.dmgDice(1, 6, 1, Data.DMG_MAGIC)]
+		var dmgDice = getDmgDice(Data.SP_MIND_SPIKE, rank)
 		var dmg = GeneralEngine.computeDamages(dmgDice, entity.stats.resists)
 		entity.takeHit(dmg)
 
 func detectEvil(entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)
-	applySpellStatus(entity, Data.STATUS_DETECT_EVIL, 1, 20)
+	var turns = getTurns(Data.SP_DETECT_EVIL, rank)
+	applySpellStatus(entity, Data.STATUS_DETECT_EVIL, rank, turns)
 	Ref.currentLevel.refresh_view()
 
 func revealTraps(entity):
 	playEffect(entity.pos, 7, 5, 0.6)
-	applySpellStatus(entity, Data.STATUS_REVEAL_TRAPS, 1, 40)
+	var turns = getTurns(Data.SP_REVEAL_TRAPS, 0)
+	applySpellStatus(entity, Data.STATUS_REVEAL_TRAPS, 1, turns)
 	Ref.currentLevel.refresh_view()
 
 func shield(entity, rank: int):
