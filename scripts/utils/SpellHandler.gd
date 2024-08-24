@@ -93,7 +93,7 @@ func castSpellMonster(spellId: int, caster, target, path: Array):
 	var spell = Data.spells[spellId]
 	Ref.ui.writeMonsterCastSpell(caster.stats.entityName, spell[Data.SP_NAME])
 	if spell[Data.SP_PROJ] != null:
-		yield(castProjectile(path, spell[Data.SP_PROJ]), "completed")
+		castProjectile(path, spell[Data.SP_PROJ])
 	var savingCap = caster.stats.spellcasterLevel + 3
 	var spellRank = max(1, min(caster.stats.spellcasterLevel, 3))
 	SpellEngine.applyEffect(target, spellId, true, spellRank, savingCap)
