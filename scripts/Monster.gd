@@ -48,7 +48,7 @@ func takeTurn():
 				if buff():
 					buffCD = 10
 					return
-			var rangeToChar = Utils.dist(pos, Ref.character.pos)
+			#var rangeToChar = Utils.dist(pos, Ref.character.pos)
 			var losToChar = Ref.currentLevel.canTarget(pos, Ref.character.pos)
 			attack(Ref.character, losToChar)
 		"help": # Allies behavior

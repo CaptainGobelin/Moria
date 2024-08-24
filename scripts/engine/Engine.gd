@@ -10,10 +10,10 @@ class Dice:
 	var d: int
 	var b: int
 	
-	func _init(n: int, d: int, b: int):
-		self.n = n
-		self.d = d
-		self.b = b
+	func _init(number: int, dice: int, bonus: int):
+		n = number
+		d = dice
+		b = bonus
 	
 	func roll():
 		if (GeneralEngine.isFaking):
@@ -33,9 +33,9 @@ class DmgDice:
 	var dice: Dice
 	var type: int
 	
-	func _init(n: int, d: int, b: int, type: int):
+	func _init(n: int, d: int, b: int, dmgType: int):
 		self.dice = Dice.new(n, d, b)
-		self.type = type
+		type = dmgType
 	
 	func roll():
 		return self.dice.roll()

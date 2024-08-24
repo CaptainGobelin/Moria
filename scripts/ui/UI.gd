@@ -388,7 +388,7 @@ func updateStat(stat: int, value):
 			maxXpLabel.text = String(value)
 		Data.CHAR_R_FIRE:
 			rFire.text = ""
-			for i in range(value[1]):
+			for _i in range(value[1]):
 				rFire.text += "-"
 			for i in range(value[0]):
 				rFire.text[i] = "*"

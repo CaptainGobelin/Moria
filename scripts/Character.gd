@@ -17,8 +17,8 @@ var pos = Vector2(0, 0)
 func _ready():
 	Ref.character = self
 
-func init(charClass: int):
-	self.charClass = charClass
+func init(newCharClass: int):
+	charClass = newCharClass
 	stats.init(charClass)
 	skills.init(charClass)
 	inventory.init(charClass)

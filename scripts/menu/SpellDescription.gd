@@ -67,10 +67,10 @@ func blank():
 	icon.frame = 29
 	description.bbcode_text = ""
 
-func replace(description: String, from: String, to: String):
-	if description.find(from) > 0:
-		description = description.replace(from, to)
-	return description
+func replace(string: String, from: String, to: String):
+	if string.find(from) > 0:
+		string = string.replace(from, to)
+	return string
 
 func dmgToStr(array: Array, showType: bool = true):
 	var bonus = ""

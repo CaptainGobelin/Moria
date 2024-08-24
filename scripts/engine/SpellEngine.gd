@@ -271,7 +271,7 @@ func acidSplash(entity, rank: int):
 
 func conjureAnimal(entity, rank: int):
 	if entity is Character:
-		for i in range(GeneralEngine.dice(1, 2, rank).roll()):
+		for _i in range(GeneralEngine.dice(1, 2, rank).roll()):
 			var cell = entity.getRandomCloseCell()
 			if cell == null:
 				return
