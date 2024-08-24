@@ -56,11 +56,8 @@ func takeTurn():
 				moveTo(Ref.character)
 				return
 			var target = getClosestTarget(GLOBAL.targets.keys())
-			if target != null and Utils.dist(pos, target.pos) < 7:
-				if Ref.game.pathfinder.checkRange(pos, target.pos) <= stats.atkRange:
-					hit(target)
-					return
-				if moveTo(target):
+			if target[0] != null and target[1].size() < (stats.atkRange + 4):
+					attack(target[0], target[1])
 					return
 			if Utils.dist(Ref.character.pos, pos) > (1 + randi() % 3):
 				moveTo(Ref.character)
@@ -122,7 +119,7 @@ func attack(entity, los: Array):
 			Ref.game.throwHandler.castThrowMonster(action[0], self, entity, los)
 			actions.consumeAction(action[0], action[1])
 			return
-	moveTo(Ref.character)
+	moveTo(entity)
 
 func hit(entity):
 	if entity == null:
@@ -147,6 +144,8 @@ func moveTo(entity) -> bool:
 	return true
 
 func moveStep(d: Vector2) -> bool:
+	if Ref.character.pos == pos + d:
+		return false
 	if Ref.currentLevel.isCellFree(pos+d)[0]:
 		setPosition(pos+d)
 		return true
@@ -202,17 +201,18 @@ func quaffPotion(idx: int, actionType: String):
 	actions.consumeAction(idx, actionType)
 
 func getClosestTarget(targets):
-	if targets.empty():
-		return null
 	var result = null
+	var currentLos = []
 	var dist = 99
 	for t in targets:
 		var target = instance_from_id(t)
-		var newDist = Utils.dist(pos, target.pos)
-		if newDist < dist:
-			dist = newDist
-			result = target
-	return result
+		var los = Ref.currentLevel.canTarget(pos, target.pos)
+		if los.empty() or los.size() > dist:
+			continue
+		dist = los.size()
+		result = target
+		currentLos = los.duplicate()
+	return [result, currentLos]
 
 func getTargetableAlly(toHeal: bool = false):
 	var result = {}
