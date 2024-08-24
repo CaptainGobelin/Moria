@@ -172,7 +172,7 @@ const classes = {
 # Monsters
 const MO_SKELETON = 0
 const MO_SUM_WOLF = 900
-const MO_SUM_HAMMER = 901
+const MO_SUM_HAMMER = 901 #902 903 reserved also
 const MO_DUMMY = 1000
 
 const MO_NAME = 0
@@ -214,6 +214,16 @@ const monsters = {
 	],
 	MO_SUM_HAMMER: [
 		"Spiritual hammer", 4, 1, Vector3(1, 4, 0),
+		4, 2, 28, 0, true, 1,
+		[]
+	],
+	MO_SUM_HAMMER+1: [
+		"Spiritual hammer II", 4, 1, Vector3(1, 4, 0),
+		4, 2, 28, 0, true, 1,
+		[]
+	],
+	MO_SUM_HAMMER+2: [
+		"Spiritual hammer III", 4, 1, Vector3(1, 4, 0),
 		4, 2, 28, 0, true, 1,
 		[]
 	],
@@ -773,6 +783,7 @@ func spellsReader():
 const STATUS_SLEEP = 0
 const STATUS_TERROR = 1
 const STATUS_BLIND = 2
+const STATUS_PARALYZED = 3
 
 const STATUS_LIGHT = 100
 const STATUS_DETECT_EVIL = 101
@@ -810,6 +821,7 @@ const statusPrefabs = {
 	STATUS_SLEEP: ["Sleep", 7, null, null, STATUS_SLEEP, null, null, false],
 	STATUS_TERROR: ["Terror", 2, null, null, STATUS_TERROR, null, null, false],
 	STATUS_BLIND: ["Blind", 3, null, null, STATUS_BLIND, null, null, false],
+	STATUS_PARALYZED: ["Paralyzed", 14, null, null, STATUS_PARALYZED, null, null, false],
 	
 	STATUS_LIGHT: ["Light", 23, null, null, STATUS_LIGHT, null, null, false],
 	STATUS_DETECT_EVIL: ["Detect evil", 9, null, null, STATUS_DETECT_EVIL, null, null, false],
