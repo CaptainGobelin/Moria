@@ -185,7 +185,9 @@ const MO_SPRITE = 6
 const MO_XP = 7
 const MO_MOVE = 8
 const MO_CASTER_LVL = 9
-const MO_ACTIONS = 10
+const MO_WIL = 10
+const MO_PHY = 11
+const MO_ACTIONS = 12
 const ACT_THROW = 0
 const ACT_SPELL = 1
 const ACT_BUFF = 2
@@ -200,7 +202,7 @@ const ACT_SUBTYPE_SPELL = 1
 const monsters = {
 	MO_SKELETON: [
 		"Skeleton", 6, 0, Vector3(1, 4, 0),
-		3, 1, 2, 4, true, 1,
+		3, 1, 2, 4, true, 1, 0, 0,
 		[
 			[0, ACT_THROW, null, 2],
 			[SP_BLESS, ACT_BUFF, ACT_SUBTYPE_SPELL, 1],
@@ -209,27 +211,27 @@ const monsters = {
 	],
 	MO_SUM_WOLF: [
 		"Conjured wolf", 10, 0, Vector3(1, 6, 0),
-		2, 0, 24, 0, true, 1,
+		2, 0, 24, 0, true, 1, 0, 0,
 		[]
 	],
 	MO_SUM_HAMMER: [
 		"Spiritual hammer", 4, 1, Vector3(1, 4, 0),
-		4, 2, 28, 0, true, 1,
+		4, 2, 28, 0, true, 1, 0, 0,
 		[]
 	],
 	MO_SUM_HAMMER+1: [
 		"Spiritual hammer II", 4, 1, Vector3(1, 4, 0),
-		4, 2, 28, 0, true, 1,
+		4, 2, 28, 0, true, 1, 0, 0,
 		[]
 	],
 	MO_SUM_HAMMER+2: [
 		"Spiritual hammer III", 4, 1, Vector3(1, 4, 0),
-		4, 2, 28, 0, true, 1,
+		4, 2, 28, 0, true, 1, 0, 0,
 		[]
 	],
 	MO_DUMMY: [
 		"Dummy target", 100, 0, Vector3(1, 1, 0),
-		2, 1, 1, 10, false, 1,
+		2, 1, 1, 10, false, 1, 0, 0,
 		[]
 	],
 }
@@ -630,7 +632,7 @@ var spellDescriptions = {
 	SP_ELECTRIC_GRASP: [
 		"Gives a powerful electrical jolt to %%CONTACT.",
 		"%%D_DMG_1",
-		"Also inflicts [PARALYZE] the target for two turns.",
+		"Also inflicts [PARALYZED] the target for two turns.",
 		"%%INC_DMG_3"
 	],
 	SP_HEAL: [
@@ -683,7 +685,7 @@ var spellDescriptions = {
 	],
 	SP_BLIND: [
 		"Causes the target to become blind for %%TURNS_1.",
-		"Inflicts [BLIND] (-1 to hit rolls) to %%TARGET.",
+		"Inflicts [BLIND] (-1 to hit rolls -3 to range) to %%TARGET.",
 		"Also targets all creatures at range 1.",
 		"Also targets all creatures at range 3.",
 	],
@@ -696,7 +698,7 @@ var spellDescriptions = {
 	SP_DETECT_EVIL: [
 		"Detects all evil creatures (undeads and demons) on the current floor. No saving throw.",
 		"Gives [DETECT EVIL] for %%TURNS_1.",
-		"Inflicts [VULNERABLE] (-1 AC) to revealed creatures.",
+		"Inflicts [VULNERABLE] (ignore prot) to revealed creatures.",
 		"%%USES_3."
 	],
 	SP_REVEAL_TRAPS: [
@@ -784,6 +786,7 @@ const STATUS_SLEEP = 0
 const STATUS_TERROR = 1
 const STATUS_BLIND = 2
 const STATUS_PARALYZED = 3
+const STATUS_VULNERABLE = 4
 
 const STATUS_LIGHT = 100
 const STATUS_DETECT_EVIL = 101

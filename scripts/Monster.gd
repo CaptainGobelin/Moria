@@ -165,12 +165,14 @@ func takeHit(dmg: int, bypassProt: bool = false):
 	if status == "dead":
 		return
 	var realDmg = (dmg - stats.prot)
-	if bypassProt:
+	if bypassProt or stats.hasStatus(Data.STATUS_VULNERABLE):
 		realDmg = dmg
 	stats.currentHp -= realDmg
 	Ref.ui.writeMonsterTakeHit(stats.entityName, realDmg)
 	if stats.currentHp <= 0:
 		die()
+	elif StatusEngine.removeStatusType(self, Data.STATUS_SLEEP):
+		Ref.ui.writeMonsterRemoveSleep(stats.entityName)
 
 func die():
 	status = "dead"

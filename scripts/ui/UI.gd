@@ -323,6 +323,14 @@ func writeMonsterQuaffedPotion(entityName: String, potion: String):
 	write(entityName + " quaffed the " + potion + ".")
 	lastPrinted = "writeMonsterQuaffedPotion"
 
+func writeRemoveSleep():
+	write("You are woken up by the attack.")
+	lastPrinted = "writeRemoveSleep"
+
+func writeMonsterRemoveSleep(entityName: String):
+	write(entityName + " is woken up by the attack.")
+	lastPrinted = "writeMonsterRemoveSleep"
+
 func noTarget():
 	write("There is no targets at range for this.")
 	lastPrinted = "noTarget"

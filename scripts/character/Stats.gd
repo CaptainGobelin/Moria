@@ -177,3 +177,9 @@ func updateXp(newValue):
 	else:
 		xp = newValue
 		Ref.ui.updateStat(Data.CHAR_XP, newValue)
+
+func hasStatus(status: int) -> bool:
+	return get_parent().statuses.has(status)
+
+func getStatusRank(status: int) -> int:
+	return StatusEngine.getStatusRank(get_parent(), status)

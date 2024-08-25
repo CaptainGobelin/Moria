@@ -40,16 +40,19 @@ func _ready():
 			startGame()
 
 func _process(delta):
-	if !GLOBAL.targets.empty():
-		Ref.ui.write("You cannot explore there are enemies on sight.")
-	var dir = pathfinder.findNextStep(pathfinder.exploreMap, Ref.character.pos)
-	if dir == null:
-		pathfinder.dijkstraCompute()
-		dir = pathfinder.findNextStep(pathfinder.exploreMap, Ref.character.pos)
+	if autoexplore:
+		if !GLOBAL.targets.empty():
+			Ref.ui.write("You cannot explore there are enemies on sight.")
+		var dir = pathfinder.findNextStep(pathfinder.exploreMap, Ref.character.pos)
 		if dir == null:
-			Ref.ui.write("Nothing to explore.")
-			return
-	Ref.character.moveAsync(dir)
+			pathfinder.dijkstraCompute()
+			dir = pathfinder.findNextStep(pathfinder.exploreMap, Ref.character.pos)
+			if dir == null:
+				Ref.ui.write("Nothing to explore.")
+				return
+		Ref.character.moveAsync(dir)
+	else:
+		GeneralEngine.newTurn()
 
 func setAutoExplore(value: bool):
 	autoexplore = value

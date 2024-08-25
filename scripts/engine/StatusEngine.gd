@@ -30,6 +30,11 @@ func addStatus(entity, status: Array):
 		Ref.ui.statusBar.refreshStatuses(Ref.character)
 	return id
 
+func removeStatusType(entity, type: int):
+	if not entity.statuses.has(type):
+		return
+	entity.statuses.erase(type)
+
 func removeStatus(entity, statusId: int):
 	var type = GLOBAL.statuses[statusId][GLOBAL.ST_TYPE]
 	if not entity.statuses.has(type):
@@ -41,6 +46,11 @@ func removeStatus(entity, statusId: int):
 			if entity.statuses[type].empty():
 				entity.statuses.erase(type)
 			return
+
+func getStatusRank(entity, type: int) -> int:
+	if not entity.statuses.has(type):
+		return -1
+	return entity.statuses[type][0][GLOBAL.ST_RANK]
 
 func decreaseStatusesTime(entity):
 	var toRefresh = false
@@ -65,8 +75,6 @@ func applyEffect(entity):
 		var status = type[0]
 		var rank = GLOBAL.statuses[status][GLOBAL.ST_RANK]
 		match GLOBAL.statuses[status][GLOBAL.ST_TYPE]:
-			Data.STATUS_BLESSED:
-				blessed(entity, rank)
 			Data.STATUS_FIRE_WEAPON:
 				dmgWeapon(entity, rank, 6, Data.DMG_FIRE)
 			Data.STATUS_FROST_WEAPON:
@@ -81,9 +89,6 @@ func applyEffect(entity):
 				addToHit(entity, rank)
 			Data.STATUS_VORPAL_WEAPON:
 				increaseDmgDices(entity, rank)
-
-func blessed(entity, rank: int):
-	entity.stats.hitDices.b += 1
 
 func dmgWeapon(entity, rank: int, dice: int, type: int):
 	entity.stats.addDmg(GeneralEngine.dmgDice(rank, dice, 0, type))
