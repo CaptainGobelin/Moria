@@ -29,6 +29,10 @@ func _ready():
 	match start:
 		0:
 			chooseClassMenu.open()
+		1:
+			chooseClassMenu.queue_free()
+			Ref.character.init(Data.CL_FIGHTER)
+			startGame()
 		3:
 			Ref.currentLevel.fog.visible = false
 			Ref.currentLevel.shadows.visible = false

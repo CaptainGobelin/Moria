@@ -1,7 +1,7 @@
 extends Node
 
 var feats: Array = []
-var ftp: int = 3
+var ftp: int = 2
 var skills: Array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 var masteries: Array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 var skp: int = 5
