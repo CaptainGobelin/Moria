@@ -233,3 +233,11 @@ func getRandomCloseCell():
 	while randf() > (1.0 / float(Utils.dist(pos, result))):
 		result = Utils.chooseRandom(currentVision)
 	return result
+
+func getDisplaYStatusList() -> Array:
+	var result = []
+	for type in statuses.keys():
+		var statusId = statuses[type][0]
+		if not GLOBAL.statuses[statusId][GLOBAL.ST_HIDDEN]:
+			result.append(statusId)
+	return result

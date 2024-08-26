@@ -153,13 +153,13 @@ func setTab(tab, row = 0):
 			featsScreen.visible = false
 			statusesScreen.visible = true
 			currentRow = row
-			var statuses = Ref.character.statuses.keys()
+			var statuses = Ref.character.getDisplaYStatusList()
 			startRow = min(currentRow, max(currentRow-6, startRow))
 			scroller.setArrows(startRow, statuses.size())
 			var count = 0
 			for s in statusesList.get_children():
 				if count < statuses.size():
-					s.setSimpleContent(Ref.character.statuses[statuses[count+startRow]][0])
+					s.setSimpleContent(statuses[count+startRow])
 					s.visible = true
 					s.selected.visible = false
 					if (count+startRow) == currentRow:
