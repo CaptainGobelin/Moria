@@ -164,6 +164,7 @@ func setTab(tab, row = 0):
 					s.selected.visible = false
 					if (count+startRow) == currentRow:
 						s.selected.visible = true
+						descriptor.text = getStatusDescription(statuses[count+startRow])
 				else:
 					s.visible = false
 				count += 1
@@ -179,3 +180,21 @@ func selectSkill(row: int):
 	for s in skills:
 		s.unselect()
 	skills[currentRow].select()
+
+func getStatusDescription(statusId: int) -> String:
+	var result = ""
+	var statusType = GLOBAL.statuses[statusId][GLOBAL.ST_TYPE]
+	var statusRank = GLOBAL.statuses[statusId][GLOBAL.ST_RANK]
+	if GLOBAL.statuses[statusId][GLOBAL.ST_TYPE] == Data.STATUS_SHIELD:
+		statusRank = 0
+	result += Data.statusesDescriptions[statusType][statusRank] + "\n\n"
+	var statusTiming = GLOBAL.statuses[statusId][GLOBAL.ST_TIMING]
+	var statusTurns = GLOBAL.statuses[statusId][GLOBAL.ST_TURNS]
+	match statusTiming:
+		GLOBAL.TIMING_FLOOR:
+			result += "Will remain for the whole floor."
+		GLOBAL.TIMING_REST:
+			result += "Will remain until you rest."
+		GLOBAL.TIMING_TIMER:
+			result += "Will remain for " + String(statusTurns) + " turns."
+	return result

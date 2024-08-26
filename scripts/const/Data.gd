@@ -820,6 +820,60 @@ const STATUS_LIGHTNING_RESIST = 10000 + DMG_LIGHTNING
 #const STATUS_FEAT_DRUID = 20000 + FEAT_DRUID
 #const STATUS_FEAT_RANGER = 20000 + FEAT_RANGER
 
+const statusesDescriptions = {
+	STATUS_SLEEP: [
+		"You fell into a magical slumber. You cannot act but any damage will wake you up."
+	],
+	STATUS_TERROR: [
+		"A deep fear and distress prevent you to move. You cannot act."
+	],
+	STATUS_BLIND: [
+		"Your vision is dimished drastically. You have a -1 penalty to your HIT dice rolls and your range is reduced to 3."
+	],
+	STATUS_PARALYZED: [
+		"Your muscles don't respond to your commands. You cannot act."
+	],
+	STATUS_VULNERABLE: [
+		"Your defences are breached. Any attack will bypass your PROT."
+	],
+	
+	STATUS_LIGHT: [
+		"A floating glow follows you, enlighting your surroundings. It grants you +1 range.",
+		"A floating glow follows you, enlighting your surroundings. It grants you +1 range and +1 to perception rolls.",
+	],
+	STATUS_DETECT_EVIL: [
+		"You detect the negative aura of evil enemies (undeads and demons). They appear on you map.",
+		"You detect the negative aura of evil enemies (undeads and demons). They appear on you ma and they are vulnerables to your attacks.",
+	],
+	STATUS_REVEAL_TRAPS: [
+		"All traps appear on your map, and you reveal them when they are in sight."
+	],
+	STATUS_BLESSED: [
+		"A sacred blessing stands upoon your, protecting yourself against spells. It grants you +1 to all save rolls."
+	],
+	STATUS_SHIELD: [
+		"A magical shield protects you against attacks. I will absorb as much incoming damages as its rank."
+	],
+	STATUS_MAGE_ARMOR: [
+		"A protective force surrounds you and replace your armor. Set your AC to 4 if it's lower.",
+		"A protective force surrounds you and replace your armor. Set your AC to 5 if it's lower.",
+		"A protective force surrounds you and replace your armor. Set your AC to 6 if it's lower.",
+	],
+	STATUS_ARMOR_FAITH: [
+		"A shimmering field srurrounds you and protect you. It grants +1 AC.",
+		"A shimmering field srurrounds you and protect you. It grants +1 AC and +1 PROT.",
+	],
+	STATUS_PROTECT_EVIL: [
+		"You are  protected aginst spells casted evil creatures (undeads and demons). You gains +1 to save rolls against such spells.",
+		"You are  protected aginst spells casted evil creatures (undeads and demons). You gains +2 to save rolls against such spells.",
+	],
+	STATUS_SANCTUARY: [
+		"You are protected by a divine barrier preventing any attack against you. The shield disappears if you attack, drink a potion or cast a spell.",
+		"You are protected by a divine barrier preventing any attack against you. The shield disappears if you attack or cast a spell.",
+		"You are protected by a divine barrier preventing any attack against you. The shield disappears if you attack or cast a spell on omebody else.",
+	],
+}
+
 const statusPrefabs = {
 	STATUS_SLEEP: ["Sleep", 7, null, null, STATUS_SLEEP, null, null, false],
 	STATUS_TERROR: ["Terror", 2, null, null, STATUS_TERROR, null, null, false],
