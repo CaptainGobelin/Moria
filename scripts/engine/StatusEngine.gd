@@ -70,6 +70,19 @@ func decreaseStatusesTime(entity):
 	if toRefresh:
 		entity.stats.computeStats()
 
+func decreaseStatusRank(entity, type: int, ranks: int) -> int:
+	while ranks > 0:
+		if not entity.statuses.has(type):
+			return ranks
+		var currentRank = entity.statuses[type][0][GLOBAL.ST_RANK]
+		if ranks > currentRank:
+			ranks -= currentRank
+			removeStatus(entity, entity.statuses[type][0][GLOBAL.ST_ID])
+		else:
+			entity.statuses[type][0][GLOBAL.ST_RANK] -= ranks
+			return 0
+	return 0
+
 func applyEffect(entity):
 	for type in entity.statuses.values():
 		var status = type[0]

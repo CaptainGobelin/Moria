@@ -242,6 +242,11 @@ func shield(entity, rank: int):
 
 func mageArmor(entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)
+	#DEBUG remove todo
+#	for i in range(100, Data.STATUS_SANCTUARY+1):
+#		var status = createSpellStatus(i, rank, 99)
+#		status[GLOBAL.ST_TIMING] = GLOBAL.TIMING_REST
+#		StatusEngine.addStatus(entity, status)
 	var status = createSpellStatus(Data.STATUS_MAGE_ARMOR, rank, 99)
 	status[GLOBAL.ST_TIMING] = GLOBAL.TIMING_REST
 	StatusEngine.addStatus(entity, status)

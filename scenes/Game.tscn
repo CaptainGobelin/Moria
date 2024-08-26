@@ -425,6 +425,7 @@ align = 2
 valign = 1
 
 [node name="StatusBar" parent="UI" instance=ExtResource( 25 )]
+position = Vector2( 351, 126 )
 
 [node name="InventoryMenu" parent="." instance=ExtResource( 10 )]
 visible = false
