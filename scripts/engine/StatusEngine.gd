@@ -76,7 +76,7 @@ func decreaseStatusRank(entity, type: int, ranks: int) -> int:
 			return ranks
 		var currentRank = entity.statuses[type][0][GLOBAL.ST_RANK]
 		if ranks > currentRank:
-			ranks -= currentRank
+			ranks -= (currentRank + 1)
 			removeStatus(entity, entity.statuses[type][0][GLOBAL.ST_ID])
 		else:
 			entity.statuses[type][0][GLOBAL.ST_RANK] -= ranks

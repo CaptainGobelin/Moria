@@ -238,7 +238,7 @@ func revealTraps(entity):
 func shield(entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)
 	var turns = getTurns(Data.SP_SHIELD, rank)
-	applySpellStatus(entity, Data.STATUS_SHIELD, 5 * (rank + 2), turns)
+	applySpellStatus(entity, Data.STATUS_SHIELD, 5 * (rank + 2) - 1, turns)
 
 func mageArmor(entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)
