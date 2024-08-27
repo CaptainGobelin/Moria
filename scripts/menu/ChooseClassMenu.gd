@@ -20,10 +20,6 @@ func open():
 	setSelected()
 
 func close():
-	MasterInput.setMaster(Ref.game)
-	visible = false
-	Ref.currentLevel.visible = true
-	Ref.ui.visible = true
 	queue_free()
 
 func _input(event):
@@ -71,7 +67,7 @@ func initCharacter(feat: int):
 				if Ref.game.chooseSpellMenu.visible:
 					yield(Ref.game.chooseSpellMenu, "selected")
 	close()
-	Ref.game.startGame()
+	Ref.game.chooseNameMenu.open()
 
 func setSelected():
 	selected.rect_position.x = 96 + selectedClass * 36

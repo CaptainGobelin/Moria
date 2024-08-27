@@ -1,6 +1,7 @@
 extends Node
 
 onready var classStats: Array
+onready var charName: String = "Fridolin"
 onready var entityName: String = "Mendiant"
 onready var level: int = 1 setget updateLevel
 onready var xp: int = 0 setget updateXp
@@ -19,7 +20,7 @@ func init(charClass: int):
 		charClass = 0
 	classStats = Data.classes[charClass]
 	entityName = classStats[Data.CL_NAME]
-	Ref.ui.updateStat(Data.CHAR_NAME, ["Fridolin", entityName])
+	Ref.ui.updateStat(Data.CHAR_NAME, [charName, entityName])
 	updateLevel(1)
 	updateXp(0)
 	updateHpMax(classStats[Data.CL_HP])
@@ -28,6 +29,10 @@ func init(charClass: int):
 	updateProt(0)
 	updateDmg([GeneralEngine.dmgDice(1, 1, 0, Data.DMG_BLUNT)])
 	updateHit(GeneralEngine.dice(1, 6, 0))
+
+func setName(newName: String):
+	charName = newName
+	Ref.ui.updateStat(Data.CHAR_NAME, [charName, entityName])
 
 func computeStats():
 	computeHpMax()

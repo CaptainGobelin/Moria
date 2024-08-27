@@ -1,0 +1,66 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://tilesets/int_tileset.tres" type="TileSet" id=1]
+[ext_resource path="res://themes/LabelTheme.tres" type="Theme" id=2]
+[ext_resource path="res://scripts/menu/ChooseNameMenu.gd" type="Script" id=3]
+
+[node name="ChooseNameMenu" type="Node2D"]
+position = Vector2( 0, -27 )
+script = ExtResource( 3 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 9, 9 )
+format = 1
+tile_data = PoolIntArray( 786451, 1, 0, 786452, 1, 1, 786453, 1, 1, 786454, 1, 1, 786455, 1, 1, 786456, 1, 1, 786457, 1, 1, 786458, 1, 1, 786459, 1, 1, 786460, 1, 1, 786461, 1, 1, 786462, 1, 1, 786463, 1, 1, 786464, 1, 1, 786465, 1, 1, 786466, 1, 1, 786467, 1, 2, 851987, 1, 65536, 851988, 1, 65537, 851989, 1, 65537, 851990, 1, 65537, 851991, 1, 65537, 851992, 1, 65537, 851993, 1, 65537, 851994, 1, 65537, 851995, 1, 65537, 851996, 1, 65537, 851997, 1, 65537, 851998, 1, 65537, 851999, 1, 65537, 852000, 1, 65537, 852001, 1, 65537, 852002, 1, 65537, 852003, 1, 65538, 917523, 1, 131072, 917524, 1, 131073, 917525, 1, 131073, 917526, 1, 131073, 917527, 1, 131073, 917528, 1, 131073, 917529, 1, 131073, 917530, 1, 131073, 917531, 1, 131073, 917532, 1, 131073, 917533, 1, 131073, 917534, 1, 131073, 917535, 1, 131073, 917536, 1, 131073, 917537, 1, 131073, 917538, 1, 131073, 917539, 1, 131074, 983061, 3, 0, 983062, 3, 1, 983063, 3, 1, 983064, 3, 1, 983065, 3, 1, 983066, 3, 1, 983067, 3, 1, 983068, 3, 1, 983069, 3, 1, 983070, 3, 1, 983071, 3, 1, 983072, 3, 1, 983073, 3, 2, 1048597, 3, 65536, 1048598, 3, 65537, 1048599, 3, 65537, 1048600, 3, 65537, 1048601, 3, 65537, 1048602, 3, 65537, 1048603, 3, 65537, 1048604, 3, 65537, 1048605, 3, 65537, 1048606, 3, 65537, 1048607, 3, 65537, 1048608, 3, 65537, 1048609, 3, 65538, 1114133, 3, 131072, 1114134, 3, 131073, 1114135, 3, 131073, 1114136, 3, 131073, 1114137, 3, 131073, 1114138, 3, 131073, 1114139, 3, 131073, 1114140, 3, 131073, 1114141, 3, 131073, 1114142, 3, 131073, 1114143, 3, 131073, 1114144, 3, 131073, 1114145, 3, 131074 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="TextContainer" type="Node2D" parent="."]
+position = Vector2( 180, 117 )
+scale = Vector2( 0.25, 0.25 )
+
+[node name="Label" type="Label" parent="TextContainer"]
+margin_right = 540.0
+margin_bottom = 36.0
+theme = ExtResource( 2 )
+text = "Choose a name"
+align = 1
+valign = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TextContainer"]
+margin_left = 36.0
+margin_top = 72.0
+margin_right = 504.0
+margin_bottom = 180.0
+grow_horizontal = 2
+grow_vertical = 2
+custom_constants/separation = -8
+alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="TextContainer/HBoxContainer"]
+margin_left = 224.0
+margin_right = 238.0
+margin_bottom = 108.0
+theme = ExtResource( 2 )
+custom_constants/minimum_spaces = 0
+align = 1
+max_length = 12
+expand_to_text_length = true
+context_menu_enabled = false
+deselect_on_focus_loss_enabled = false
+
+[node name="Caret" type="Label" parent="TextContainer/HBoxContainer"]
+margin_left = 230.0
+margin_top = 37.0
+margin_right = 244.0
+margin_bottom = 70.0
+theme = ExtResource( 2 )
+text = "_"
+valign = 1
+
+[connection signal="text_entered" from="TextContainer/HBoxContainer/LineEdit" to="." method="_on_LineEdit_text_entered"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://scenes/engine/DungeonGenerator.tscn" type="PackedScene" id=1]
 [ext_resource path="res://tilesets/basic.tres" type="TileSet" id=2]
@@ -30,11 +30,11 @@
 [ext_resource path="res://scenes/menu/ChooseSpellMenu.tscn" type="PackedScene" id=28]
 [ext_resource path="res://scripts/ui/DirectionHandler.gd" type="Script" id=29]
 [ext_resource path="res://scenes/UI/MonsterPanelList.tscn" type="PackedScene" id=30]
+[ext_resource path="res://scenes/menu/ChooseNameMenu.tscn" type="PackedScene" id=31]
 
 [node name="Game" type="Node2D"]
 scale = Vector2( 4, 4 )
 script = ExtResource( 15 )
-start = 1
 
 [node name="Utils" type="Node" parent="."]
 
@@ -447,6 +447,9 @@ visible = false
 [node name="ChooseClassMenu" parent="." instance=ExtResource( 14 )]
 visible = false
 scale = Vector2( 1, 1 )
+
+[node name="ChooseNameMenu" parent="." instance=ExtResource( 31 )]
+visible = false
 
 [node name="MonsterPanelList" parent="." instance=ExtResource( 30 )]
 position = Vector2( 351, 144 )
