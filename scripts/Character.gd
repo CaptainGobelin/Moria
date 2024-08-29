@@ -223,6 +223,17 @@ func rollPerception(cell: Vector2):
 			Ref.currentLevel.dungeon.set_cellv(cell, GLOBAL.DOOR_ID, false, false, false, Vector2(0,1))
 			Ref.ui.writeHiddenDoorDetected()
 
+func rest():
+	inventory.rests -= 1
+	for a in Ref.currentLevel.allies.get_children():
+		a.queue_free()
+	StatusEngine.clearStatuses(self)
+	stats.updateHp(stats.hpMax)
+	for s in spells.spellsUses.keys():
+		var school = Data.spells[s][Data.SP_SCHOOL]
+		var rank = spells.getSpellRank(school)
+		spells.spellsUses[s] = Data.spells[s][Data.SP_USES][rank]
+
 func refreshMapPosition():
 	position = 9 * pos
 

@@ -26,6 +26,9 @@ onready var goldLabel = get_node("SideMenu/GoldContainer/Label/Current")
 onready var rFire = get_node("SideMenu/rFire/Label/Current")
 onready var rPois = get_node("SideMenu/rPoison/Label/Current")
 onready var statusBar = get_node("StatusBar")
+onready var fadePanel = get_node("FadePanel")
+onready var fadeLabel = get_node("FadePanel/TextContainer/Label")
+onready var monsterPanelList = get_node("MonsterPanelList")
 
 var currentChoice = ""
 var currentSuffix = ""
@@ -340,6 +343,28 @@ func writeWishChoice():
 	msg += listToChoices(["Weapon", "Armor", "Scrolls", "Potions", "Gold"])
 	write(msg)
 	lastPrinted = "writeWishChoice"
+
+func askForRest(rests: int):
+	var msg = "You can rest " + String(rests)
+	if rests == 1:
+		msg += " time."
+	else:
+		msg += " times."
+	msg += " Do you want to rest here? (Y/n)"
+	write(msg)
+	lastPrinted = "askForRest"
+
+func noMoreRest():
+	write("You cannot rest anymore.")
+	lastPrinted = "noMoreRest"
+
+func writeNoSafeRest():
+	write("Some hostile creatures lurk in the shadows. You cannot rest here.")
+	lastPrinted = "writeNoSafeRest"
+
+func writeRested():
+	write("You wake up, fully rested.")
+	lastPrinted = "writeRested"
 
 func writeWishResult(items: Array):
 	var msg = ""

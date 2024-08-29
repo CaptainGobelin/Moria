@@ -47,6 +47,19 @@ func removeStatus(entity, statusId: int):
 				entity.statuses.erase(type)
 			return
 
+func clearStatuses(entity):
+	var statusToRemove = []
+	for type in entity.statuses:
+		for s in entity.statuses[type]:
+			var status = GLOBAL.statuses[s]
+			if status[GLOBAL.ST_TIMING] != GLOBAL.TIMING_UNDEF:
+				statusToRemove.append(s)
+	for s in statusToRemove:
+		StatusEngine.removeStatus(entity, s)
+	entity.stats.computeStats()
+	if entity is Character:
+		Ref.ui.statusBar.refreshStatuses(entity)
+
 func getStatusRank(entity, type: int) -> int:
 	if not entity.statuses.has(type):
 		return -1

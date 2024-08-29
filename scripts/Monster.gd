@@ -177,6 +177,7 @@ func takeHit(dmg: int, bypassProt: bool = false):
 func die():
 	status = "dead"
 	Ref.ui.writeMonsterDie(stats.entityName)
+	#TODO no xp for summons
 	Ref.character.stats.xp += stats.xp
 	if GLOBAL.monstersByPosition.has(pos):
 		GLOBAL.monstersByPosition.erase(pos)

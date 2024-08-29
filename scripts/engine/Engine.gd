@@ -73,7 +73,7 @@ func newTurn():
 		StatusEngine.decreaseStatusesTime(m)
 	StatusEngine.decreaseStatusesTime(Ref.character)
 	Ref.currentLevel.refresh_view()
-	Ref.game.monsterPanelList.fillList()
+	Ref.ui.monsterPanelList.fillList()
 
 func computeDamages(dmgDices: Array, resist: Array, byPassResists: bool = false):
 	var result = 0

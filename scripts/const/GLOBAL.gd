@@ -39,6 +39,7 @@ const VIEW_RANGE = 8
 const CHAR_SKILLS = 0
 const CHAR_FEATS = 1
 const CHAR_STATUSES = 2
+const CHAR_RESTS = 2
 
 # Inventory
 const INV_WEAPONS = 0
