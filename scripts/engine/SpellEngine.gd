@@ -189,6 +189,8 @@ func unlock(entity, direction: Vector2):
 
 func bless(entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)
+	for i in range(100, 109):
+		applySpellStatus(entity, i, 0, 10)
 	var turns = getTurns(Data.SP_BLESS, rank)
 	applySpellStatus(entity, Data.STATUS_BLESSED, 0, turns)
 

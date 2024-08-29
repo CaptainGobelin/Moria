@@ -50,7 +50,7 @@ func removeStatus(entity, statusId: int):
 func getStatusRank(entity, type: int) -> int:
 	if not entity.statuses.has(type):
 		return -1
-	return entity.statuses[type][0][GLOBAL.ST_RANK]
+	return GLOBAL.statuses[entity.statuses[type][0]][GLOBAL.ST_RANK]
 
 func decreaseStatusesTime(entity):
 	var toRefresh = false
@@ -74,12 +74,12 @@ func decreaseStatusRank(entity, type: int, ranks: int) -> int:
 	while ranks > 0:
 		if not entity.statuses.has(type):
 			return ranks
-		var currentRank = entity.statuses[type][0][GLOBAL.ST_RANK]
+		var currentRank = getStatusRank(entity, type)
 		if ranks > currentRank:
 			ranks -= (currentRank + 1)
-			removeStatus(entity, entity.statuses[type][0][GLOBAL.ST_ID])
+			removeStatus(entity, GLOBAL.statuses[entity.statuses[type][0]][GLOBAL.ST_ID])
 		else:
-			entity.statuses[type][0][GLOBAL.ST_RANK] -= ranks
+			GLOBAL.statuses[entity.statuses[type][0]][GLOBAL.ST_RANK] -= ranks
 			return 0
 	return 0
 
@@ -88,6 +88,39 @@ func applyEffect(entity):
 		var status = type[0]
 		var rank = GLOBAL.statuses[status][GLOBAL.ST_RANK]
 		match GLOBAL.statuses[status][GLOBAL.ST_TYPE]:
+			Data.STATUS_SLEEP:
+				pass
+			Data.STATUS_TERROR:
+				pass
+			Data.STATUS_BLIND:
+				addToHit(entity, -1)
+				addToRange(entity, -3)
+			Data.STATUS_PARALYZED:
+				pass
+			Data.STATUS_VULNERABLE:
+				pass
+			Data.STATUS_LIGHT:
+				addToRange(entity, 1)
+				if rank > 0:
+					addToPerception(entity, 1)
+			Data.STATUS_DETECT_EVIL:
+				pass
+			Data.STATUS_REVEAL_TRAPS:
+				pass
+			Data.STATUS_BLESSED:
+				addToSaves(entity, 1, 1)
+			Data.STATUS_SHIELD:
+				pass
+			Data.STATUS_MAGE_ARMOR:
+				pass
+			Data.STATUS_ARMOR_FAITH:
+				addToAC(entity, 1)
+				if rank > 0:
+					addToProt(entity, 1)
+			Data.STATUS_PROTECT_EVIL:
+				pass
+			Data.STATUS_SANCTUARY:
+				pass
 			Data.STATUS_FIRE_WEAPON:
 				dmgWeapon(entity, rank, 6, Data.DMG_FIRE)
 			Data.STATUS_FROST_WEAPON:
@@ -107,9 +140,34 @@ func dmgWeapon(entity, rank: int, dice: int, type: int):
 	entity.stats.addDmg(GeneralEngine.dmgDice(rank, dice, 0, type))
 
 func addToHit(entity, rank: int):
-	entity.stats.hitDices.b += 1
-	entity.stats.updateHit(entity.stats.hitDices)
+	entity.stats.hitDices.b += rank
+	if entity is Character:
+		entity.stats.updateHit(entity.stats.hitDices)
+
+func addToRange(entity, rank: int):
+	entity.stats.atkRange += rank
+	if entity is Character:
+		Ref.currentLevel.refresh_view()
+
+func addToPerception(entity, rank: int):
+	if entity is Character:
+		entity.stats.perception.b += rank
+
+func addToSaves(entity, wil: int, phy: int):
+	entity.stats.saveBonus[Data.SAVE_WIL] += wil
+	entity.stats.saveBonus[Data.SAVE_PHY] += phy
 
 func increaseDmgDices(entity, rank: int):
 	entity.stats.dmgDices[0].dice.d += 1
-	entity.stats.updateDmg(entity.stats.dmgDices)
+	if entity is Character:
+		entity.stats.updateDmg(entity.stats.dmgDices)
+
+func addToAC(entity, rank: int):
+	entity.stats.ca += rank
+	if entity is Character:
+		entity.stats.updateCA(entity.stats.ca)
+
+func addToProt(entity, rank: int):
+	entity.stats.prot += rank
+	if entity is Character:
+		entity.stats.updateProt(entity.stats.prot)

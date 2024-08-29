@@ -5,12 +5,14 @@ onready var charName: String = "Fridolin"
 onready var entityName: String = "Mendiant"
 onready var level: int = 1 setget updateLevel
 onready var xp: int = 0 setget updateXp
+onready var atkRange: int = GLOBAL.VIEW_RANGE
 onready var hpMax: int = 10 setget updateHpMax
 onready var hp: int = 10 setget updateHp
 onready var ca: int = 3 setget updateCA
 onready var prot: int = 0 setget updateProt
 onready var dmgDices: Array = [GeneralEngine.dmgDice(1, 1, 0, Data.DMG_BLUNT)] setget updateDmg
 onready var hitDices = GeneralEngine.dice(1, 6, 0) setget updateHit
+onready var perception = GeneralEngine.dice(1, 6, 0)
 onready var resists: Array = [0, 0, 0, 0, 0, 0, 0, 0]
 onready var maxResists: Array = [1, 1, 1, 1, 1, 1, 1, 1]
 onready var saveBonus: Array = [0, 0]
@@ -35,6 +37,7 @@ func setName(newName: String):
 	Ref.ui.updateStat(Data.CHAR_NAME, [charName, entityName])
 
 func computeStats():
+	computeRange()
 	computeHpMax()
 	computeCA()
 	computeProt()
@@ -42,8 +45,12 @@ func computeStats():
 	computeHit()
 	StatusEngine.applyEffect(get_parent())
 	computeReissts()
+	applyMageArmor()
 #	Utils.printDict(get_parent().enchants)
 #	Utils.printDict(get_parent().statuses)
+
+func computeRange():
+	atkRange = GLOBAL.VIEW_RANGE
 
 func computeHpMax():
 	var value = classStats[Data.CL_HP]
@@ -83,6 +90,13 @@ func computeCA():
 func updateCA(newValue: int):
 	ca = newValue
 	Ref.ui.updateStat(Data.CHAR_CA, newValue)
+
+func applyMageArmor():
+	if hasStatus(Data.STATUS_MAGE_ARMOR):
+		var rank = getStatusRank(Data.STATUS_MAGE_ARMOR)
+		if ca <= (4 + rank):
+			ca = 4 + rank
+			updateCA(ca)
 
 func computeProt():
 	var items = [
@@ -154,6 +168,9 @@ func computeHit():
 func updateHit(newValue):
 	hitDices = newValue
 	Ref.ui.updateStat(Data.CHAR_HIT, newValue)
+
+func computePerception():
+	perception = GeneralEngine.dice(1, 6, 0)
 
 func computeReissts():
 	for i in range(8):

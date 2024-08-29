@@ -31,42 +31,18 @@ func init(monsterType: int):
 	spellcasterLevel = Data.monsters[type][Data.MO_CASTER_LVL]
 	saveBonus = [Data.monsters[type][Data.MO_WIL], Data.monsters[type][Data.MO_PHY]]
 	xp = Data.monsters[type][Data.MO_XP]
-	computeStats()
 
 func computeStats():
 	computeState()
-	computeHit()
-	computeRange()
+	init(type)
+	StatusEngine.applyEffect(get_parent())
+	applyMageArmor()
 
-func computeHit():
-	var hitBonus = Data.monsters[type][Data.MO_HIT]
-	if hasStatus(Data.STATUS_BLIND):
-		hitBonus -= 1
-	hitDices = GeneralEngine.dice(1, 6, hitBonus)
-
-func computeRange():
-	atkRange = 6
-	if hasStatus(Data.STATUS_BLIND):
-		atkRange = 3
-
-func computeAC():
-	ca = Data.monsters[type][Data.MO_CA]
-	if hasStatus(Data.STATUS_ARMOR_FAITH):
-		ca += 1
+func applyMageArmor():
 	if hasStatus(Data.STATUS_MAGE_ARMOR):
-		ca = max(ca, getStatusRank(Data.STATUS_MAGE_ARMOR) + 4)
-
-func computeProt():
-	prot = Data.monsters[type][Data.MO_PROT]
-	if getStatusRank(Data.STATUS_ARMOR_FAITH) > 0:
-		prot += 1
-
-func computeSaves():
-	saveBonus = [Data.monsters[type][Data.MO_WIL], Data.monsters[type][Data.MO_PHY]]
-	if hasStatus(Data.STATUS_BLESSED):
-		var rank = getStatusRank(Data.SP_BLESS)
-		saveBonus[0] += (rank + 1)
-		saveBonus[1] += (rank + 1)
+		var rank = getStatusRank(Data.STATUS_MAGE_ARMOR)
+		if ca <= (4 + rank):
+			ca = 4 + rank
 
 func computeState():
 	state = ""
