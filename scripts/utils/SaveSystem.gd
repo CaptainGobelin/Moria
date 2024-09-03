@@ -22,6 +22,7 @@ func saveGame():
 	file.store_var(saveGlobals(), true)
 	file.store_var(savemap(), true)
 	file.store_var(saveMonsters(), true)
+	file.store_var(saveAllies(), true)
 	file.store_var(saveCharacter(), true)
 	file.store_var(saveTraps(), true)
 	file.store_var(saveEngine(), true)
@@ -30,6 +31,9 @@ func saveGame():
 
 func loadGame(charName: String):
 	Ref.game.cleanFloor()
+	for a in Ref.currentLevel.allies.get_children():
+		GLOBAL.monstersByPosition.erase(a.pos)
+		a.free()
 	var file = File.new()
 	if not file.file_exists(filePath + charName + ".sav"):
 		return
@@ -39,6 +43,7 @@ func loadGame(charName: String):
 	loadGlobals(file.get_var(true))
 	loadMap(file.get_var(true))
 	loadMonsters(file.get_var(true))
+	loadAllies(file.get_var(true))
 	loadCharacter(file.get_var(true))
 	loadTraps(file.get_var(true))
 	loadEngine(file.get_var(true))
@@ -214,12 +219,49 @@ func loadMonsters(dict: Dictionary):
 			monster.allies.append(reverseIds[allyId])
 
 func saveAllies() -> Dictionary:
+	var result = []
+	for m in Ref.currentLevel.allies.get_children():
+		result.append({
+			"id": m.get_instance_id(),
+			"type": m.type,
+			"status": m.status,
+			"statuses": m.statuses,
+			"pos": m.pos,
+			"skipNextTurn": m.skipNextTurn,
+			"buffCD": m.buffCD,
+			"actions": {
+				"throwings": m.actions.throwings,
+				"spells": m.actions.spells,
+				"buffs": m.actions.buffs,
+				"debuffs": m.actions.debuffs,
+				"heals": m.actions.heals,
+				"selfBuffs": m.actions.selfBuffs,
+				"selfHeals": m.actions.selfHeals,
+			}
+		})
 	return {
-		
+		"allies": result
 	}
 
 func loadAllies(dict: Dictionary):
-	pass
+	for m in dict["allies"]:
+		var monster = monsterScene.instance()
+		Ref.currentLevel.allies.add_child(monster)
+		monster.spawn(m["type"], m["pos"], true)
+		monster.stats.type = m["type"]
+		monster.allies = [Ref.character.get_instance_id()]
+		monster.status = m["status"]
+		monster.statuses = m["statuses"]
+		monster.skipNextTurn = m["skipNextTurn"]
+		monster.buffCD = m["buffCD"]
+		monster.actions.throwings = m["actions"]["throwings"]
+		monster.actions.spells = m["actions"]["spells"]
+		monster.actions.buffs = m["actions"]["buffs"]
+		monster.actions.debuffs = m["actions"]["debuffs"]
+		monster.actions.heals = m["actions"]["heals"]
+		monster.actions.selfBuffs = m["actions"]["selfBuffs"]
+		monster.actions.selfHeals = m["actions"]["selfHeals"]
+		monster.stats.computeStats()
 
 func saveTraps() -> Dictionary:
 	var result = []
@@ -239,6 +281,7 @@ func loadTraps(dict: Dictionary):
 			trap.reveal()
 		elif t[3]:
 			trap.disable()
+			GLOBAL.trapsByPos.erase(trap.pos)
 
 func saveGlobals() -> Dictionary:
 	var items: Dictionary = {}

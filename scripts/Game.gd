@@ -91,6 +91,7 @@ func cleanFloor():
 		for _j in range(GLOBAL.FLOOR_SIZE_Y):
 			Ref.currentLevel.searched[i].append(false)
 	for m in Ref.currentLevel.monsters.get_children():
+		GLOBAL.monstersByPosition.erase(m.pos)
 		m.free()
 	for c in Ref.currentLevel.chests.get_children():
 		c.free()
