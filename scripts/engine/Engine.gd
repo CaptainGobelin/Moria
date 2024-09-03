@@ -28,6 +28,12 @@ class Dice:
 		if b > 0:
 			result += "+" + String(b)
 		return result
+	
+	func toVec() -> Array:
+		return [n, d, b]
+	
+	static func fromVec(v: Array) -> Dice:
+		return Dice.new(v[0], v[1], v[2])
 
 class DmgDice:
 	var dice: Dice
@@ -42,6 +48,12 @@ class DmgDice:
 	
 	func toString():
 		return dice.toString()
+	
+	func toVec() -> Array:
+		return [dice.n, dice.d, dice.b, type]
+	
+	static func fromVec(v: Array) -> DmgDice:
+		return DmgDice.new(v[0], v[1], v[2], v[3])
 
 func dice(n: int, d: int, b: int):
 	return GeneralEngine.Dice.new(n, d, b)

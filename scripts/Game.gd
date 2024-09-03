@@ -19,11 +19,15 @@ onready var pickupLootHandler = get_node("Utils/PickupLootHandler")
 onready var spellHandler = get_node("Utils/SpellHandler")
 onready var throwHandler = get_node("Utils/ThrowHandler")
 onready var restHandler = get_node("Utils/RestHandler")
+onready var saveSystem = get_node("Utils/SaveSystem")
 
+var random_seed: int
 var autoexplore = false setget setAutoExplore
 
 func _ready():
 	randomize()
+	var randomSeed = randi()
+	seed(randomSeed)
 	Ref.game = self
 	set_process_input(false)
 	set_process(false)
@@ -192,4 +196,8 @@ func _input(event):
 	elif event.is_action_released("rest"):
 		restHandler.askrForRest()
 	elif (event.is_action_released("debug_new_floor")):
-		newFloor()
+		saveSystem.saveGame()
+	elif (event.is_action_released("save")):
+		saveSystem.saveGame()
+	elif (event.is_action_released("load")):
+		saveSystem.loadGame(Ref.character.stats.charName)

@@ -45,6 +45,7 @@ func refresh_view():
 						if !searched[p.x][p.y]:
 							Ref.character.rollPerception(p)
 							searched[p.x][p.y] = true
+					#todo use monsterbypos dict
 					for m in monsters.get_children():
 						if m.pos == p and m.status != "dead":
 							m.awake()
@@ -105,6 +106,7 @@ func isCellFree(cell):
 		return [false, "OOB", null, false, true]
 	if cell.y < 0 or cell.y >= GLOBAL.FLOOR_SIZE_Y:
 		return [false, "OOB", null, false, true]
+	#todo use monsterbypos dict
 	for m in monsters.get_children():
 		if cell == m.pos:
 			return [false, "monster", m, true, false]

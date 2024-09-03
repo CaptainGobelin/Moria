@@ -17,11 +17,12 @@ var pos = Vector2(0, 0)
 func _ready():
 	Ref.character = self
 
-func init(newCharClass: int):
+func init(newCharClass: int, isCreation: bool = true):
 	charClass = newCharClass
 	stats.init(charClass)
-	skills.init(charClass)
-	inventory.init(charClass)
+	if isCreation:
+		skills.init(charClass)
+		inventory.init(charClass)
 
 func setPosition(newPos):
 	pos = newPos
