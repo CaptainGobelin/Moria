@@ -147,7 +147,7 @@ func applyEffect(entity):
 			Data.STATUS_PRECISE_WEAPON:
 				addToHit(entity, rank)
 			Data.STATUS_VORPAL_WEAPON:
-				increaseDmgDices(entity, rank)
+				increaseDmgDices(entity, 2)
 
 func dmgWeapon(entity, rank: int, dice: int, type: int):
 	entity.stats.addDmg(GeneralEngine.dmgDice(rank, dice, 0, type))
@@ -171,7 +171,7 @@ func addToSaves(entity, wil: int, phy: int):
 	entity.stats.saveBonus[Data.SAVE_PHY] += phy
 
 func increaseDmgDices(entity, rank: int):
-	entity.stats.dmgDices[0].dice.d += 1
+	entity.stats.dmgDices[0].dice.d += rank
 	if entity is Character:
 		entity.stats.updateDmg(entity.stats.dmgDices)
 

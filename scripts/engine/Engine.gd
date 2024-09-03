@@ -29,6 +29,9 @@ class Dice:
 			result += "+" + String(b)
 		return result
 	
+	func duplicate() -> Dice:
+		return Dice.new(n, d, b)
+	
 	func toVec() -> Array:
 		return [n, d, b]
 	
@@ -49,9 +52,12 @@ class DmgDice:
 	func toString():
 		return dice.toString()
 	
+	func duplicate() -> DmgDice:
+		return DmgDice.new(dice.n, dice.d, dice.b, type)
+
 	func toVec() -> Array:
 		return [dice.n, dice.d, dice.b, type]
-	
+
 	static func fromVec(v: Array) -> DmgDice:
 		return DmgDice.new(v[0], v[1], v[2], v[3])
 

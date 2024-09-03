@@ -134,7 +134,7 @@ func computeDmg():
 			diceBonus = 1
 		elif GLOBAL.items[weapon][GLOBAL.IT_SPEC].has(Data.ENCH_3_WP):
 			diceBonus = 1
-		value = [GLOBAL.items[weapon][GLOBAL.IT_DMG]]
+		value = [GLOBAL.items[weapon][GLOBAL.IT_DMG].duplicate()]
 		value[0].dice.b = diceBonus
 	else:
 		value = [GeneralEngine.dmgDice(1, 1, 0, Data.DMG_BLUNT)]
@@ -159,7 +159,7 @@ func computeHit():
 			diceBonus = 1
 		elif GLOBAL.items[weapon][GLOBAL.IT_SPEC].has(Data.ENCH_3_WP):
 			diceBonus = 1
-		value = GLOBAL.items[weapon][GLOBAL.IT_HIT]
+		value = GLOBAL.items[weapon][GLOBAL.IT_HIT].duplicate()
 		value.b = diceBonus
 	else:
 		value = GeneralEngine.dice(1, 6, 0)
