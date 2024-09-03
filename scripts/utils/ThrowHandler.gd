@@ -38,7 +38,7 @@ func castProjectile(path: Array, projInfo):
 
 func castThrowMonster(itemId: int, caster, target, path: Array):
 	var item = Data.throwings[itemId]
-	yield(castProjectile(path, item[Data.TH_PROJ]), "completed")
+	castProjectile(path, item[Data.TH_PROJ])
 	if item[Data.TH_DMG] != null:
 		var result = caster.stats.hitDices.roll()
 		if result >= target.stats.ca:

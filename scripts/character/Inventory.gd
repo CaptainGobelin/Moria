@@ -1,5 +1,7 @@
 extends Node
 
+var rests: int = GLOBAL.CHAR_RESTS
+
 # X is Weapon Y is Shield
 var currentWeapon = Vector2(-1, -1)
 # X is Qrmor Y is Helemt

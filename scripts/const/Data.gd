@@ -172,7 +172,7 @@ const classes = {
 # Monsters
 const MO_SKELETON = 0
 const MO_SUM_WOLF = 900
-const MO_SUM_HAMMER = 901
+const MO_SUM_HAMMER = 901 #902 903 reserved also
 const MO_DUMMY = 1000
 
 const MO_NAME = 0
@@ -185,7 +185,9 @@ const MO_SPRITE = 6
 const MO_XP = 7
 const MO_MOVE = 8
 const MO_CASTER_LVL = 9
-const MO_ACTIONS = 10
+const MO_WIL = 10
+const MO_PHY = 11
+const MO_ACTIONS = 12
 const ACT_THROW = 0
 const ACT_SPELL = 1
 const ACT_BUFF = 2
@@ -200,7 +202,7 @@ const ACT_SUBTYPE_SPELL = 1
 const monsters = {
 	MO_SKELETON: [
 		"Skeleton", 6, 0, Vector3(1, 4, 0),
-		3, 1, 2, 4, true, 1,
+		3, 1, 2, 4, true, 1, 0, 0,
 		[
 			[0, ACT_THROW, null, 2],
 			[SP_BLESS, ACT_BUFF, ACT_SUBTYPE_SPELL, 1],
@@ -209,17 +211,27 @@ const monsters = {
 	],
 	MO_SUM_WOLF: [
 		"Conjured wolf", 10, 0, Vector3(1, 6, 0),
-		2, 0, 24, 0, true, 1,
+		2, 0, 24, 0, true, 1, 0, 0,
 		[]
 	],
 	MO_SUM_HAMMER: [
 		"Spiritual hammer", 4, 1, Vector3(1, 4, 0),
-		4, 2, 28, 0, true, 1,
+		4, 2, 28, 0, true, 1, 0, 0,
+		[]
+	],
+	MO_SUM_HAMMER+1: [
+		"Spiritual hammer II", 4, 1, Vector3(1, 4, 0),
+		4, 2, 28, 0, true, 1, 0, 0,
+		[]
+	],
+	MO_SUM_HAMMER+2: [
+		"Spiritual hammer III", 4, 1, Vector3(1, 4, 0),
+		4, 2, 28, 0, true, 1, 0, 0,
 		[]
 	],
 	MO_DUMMY: [
 		"Dummy target", 100, 0, Vector3(1, 1, 0),
-		2, 1, 1, 10, false, 1,
+		2, 1, 1, 10, false, 1, 0, 0,
 		[]
 	],
 }
@@ -620,7 +632,7 @@ var spellDescriptions = {
 	SP_ELECTRIC_GRASP: [
 		"Gives a powerful electrical jolt to %%CONTACT.",
 		"%%D_DMG_1",
-		"Also inflicts [PARALYZE] the target for two turns.",
+		"Also inflicts [PARALYZED] the target for two turns.",
 		"%%INC_DMG_3"
 	],
 	SP_HEAL: [
@@ -673,7 +685,7 @@ var spellDescriptions = {
 	],
 	SP_BLIND: [
 		"Causes the target to become blind for %%TURNS_1.",
-		"Inflicts [BLIND] (-1 to hit rolls) to %%TARGET.",
+		"Inflicts [BLIND] (-1 to hit rolls -3 to range) to %%TARGET.",
 		"Also targets all creatures at range 1.",
 		"Also targets all creatures at range 3.",
 	],
@@ -686,7 +698,7 @@ var spellDescriptions = {
 	SP_DETECT_EVIL: [
 		"Detects all evil creatures (undeads and demons) on the current floor. No saving throw.",
 		"Gives [DETECT EVIL] for %%TURNS_1.",
-		"Inflicts [VULNERABLE] (-1 AC) to revealed creatures.",
+		"Inflicts [VULNERABLE] (ignore prot) to revealed creatures.",
 		"%%USES_3."
 	],
 	SP_REVEAL_TRAPS: [
@@ -773,6 +785,8 @@ func spellsReader():
 const STATUS_SLEEP = 0
 const STATUS_TERROR = 1
 const STATUS_BLIND = 2
+const STATUS_PARALYZED = 3
+const STATUS_VULNERABLE = 4
 
 const STATUS_LIGHT = 100
 const STATUS_DETECT_EVIL = 101
@@ -806,10 +820,65 @@ const STATUS_LIGHTNING_RESIST = 10000 + DMG_LIGHTNING
 #const STATUS_FEAT_DRUID = 20000 + FEAT_DRUID
 #const STATUS_FEAT_RANGER = 20000 + FEAT_RANGER
 
+const statusesDescriptions = {
+	STATUS_SLEEP: [
+		"You fell into a magical slumber. You cannot act but any damage will wake you up."
+	],
+	STATUS_TERROR: [
+		"A deep fear and distress prevent you to move. You cannot act."
+	],
+	STATUS_BLIND: [
+		"Your vision is dimished drastically. You have a -1 penalty to your HIT dice rolls and your range is reduced to 3."
+	],
+	STATUS_PARALYZED: [
+		"Your muscles don't respond to your commands. You cannot act."
+	],
+	STATUS_VULNERABLE: [
+		"Your defences are breached. Any attack will bypass your PROT."
+	],
+	
+	STATUS_LIGHT: [
+		"A floating glow follows you, enlighting your surroundings. It grants you +1 range.",
+		"A floating glow follows you, enlighting your surroundings. It grants you +1 range and +1 to perception rolls.",
+	],
+	STATUS_DETECT_EVIL: [
+		"You detect the negative aura of evil enemies (undeads and demons). They appear on you map.",
+		"You detect the negative aura of evil enemies (undeads and demons). They appear on you ma and they are vulnerables to your attacks.",
+	],
+	STATUS_REVEAL_TRAPS: [
+		"All traps appear on your map, and you reveal them when they are in sight."
+	],
+	STATUS_BLESSED: [
+		"A sacred blessing stands upoon your, protecting yourself against spells. It grants you +1 to all save rolls."
+	],
+	STATUS_SHIELD: [
+		"A magical shield protects you against attacks. I will absorb as much incoming damages as its rank."
+	],
+	STATUS_MAGE_ARMOR: [
+		"A protective force surrounds you and replace your armor. Set your AC to 4 if it's lower.",
+		"A protective force surrounds you and replace your armor. Set your AC to 5 if it's lower.",
+		"A protective force surrounds you and replace your armor. Set your AC to 6 if it's lower.",
+	],
+	STATUS_ARMOR_FAITH: [
+		"A shimmering field srurrounds you and protect you. It grants +1 AC.",
+		"A shimmering field srurrounds you and protect you. It grants +1 AC and +1 PROT.",
+	],
+	STATUS_PROTECT_EVIL: [
+		"You are  protected aginst spells casted evil creatures (undeads and demons). You gains +1 to save rolls against such spells.",
+		"You are  protected aginst spells casted evil creatures (undeads and demons). You gains +2 to save rolls against such spells.",
+	],
+	STATUS_SANCTUARY: [
+		"You are protected by a divine barrier preventing any attack against you. The shield disappears if you attack, drink a potion or cast a spell.",
+		"You are protected by a divine barrier preventing any attack against you. The shield disappears if you attack or cast a spell.",
+		"You are protected by a divine barrier preventing any attack against you. The shield disappears if you attack or cast a spell on omebody else.",
+	],
+}
+
 const statusPrefabs = {
 	STATUS_SLEEP: ["Sleep", 7, null, null, STATUS_SLEEP, null, null, false],
 	STATUS_TERROR: ["Terror", 2, null, null, STATUS_TERROR, null, null, false],
 	STATUS_BLIND: ["Blind", 3, null, null, STATUS_BLIND, null, null, false],
+	STATUS_PARALYZED: ["Paralyzed", 14, null, null, STATUS_PARALYZED, null, null, false],
 	
 	STATUS_LIGHT: ["Light", 23, null, null, STATUS_LIGHT, null, null, false],
 	STATUS_DETECT_EVIL: ["Detect evil", 9, null, null, STATUS_DETECT_EVIL, null, null, false],

@@ -3,7 +3,7 @@ extends Node2D
 onready var selected = get_node("Selected")
 onready var skills = get_node("TextContainer/Skills/Values")
 onready var gear = get_node("TextContainer/Gear")
-onready var feat = get_node("TextContainer/Feat")
+onready var featLabel = get_node("TextContainer/Feat")
 onready var spellList = get_node("TextContainer/SpellList")
 onready var hp = get_node("TextContainer/HP")
 
@@ -20,10 +20,6 @@ func open():
 	setSelected()
 
 func close():
-	MasterInput.setMaster(Ref.game)
-	visible = false
-	Ref.currentLevel.visible = true
-	Ref.ui.visible = true
 	queue_free()
 
 func _input(event):
@@ -54,7 +50,7 @@ func initCharacter(feat: int):
 	for skill in Ref.character.skills.skills:
 		count += 1
 		var classSkill = Data.classes[selectedClass][Data.CL_SK][count]
-		for i in range(classSkill):
+		for _i in range(classSkill):
 			var event = Ref.character.skills.improve(count, true)
 			if event == null:
 				continue
@@ -71,7 +67,7 @@ func initCharacter(feat: int):
 				if Ref.game.chooseSpellMenu.visible:
 					yield(Ref.game.chooseSpellMenu, "selected")
 	close()
-	Ref.game.startGame()
+	Ref.game.chooseNameMenu.open()
 
 func setSelected():
 	selected.rect_position.x = 96 + selectedClass * 36
@@ -166,4 +162,4 @@ func setFeat():
 	var msg = "Starting feat: "
 	msg += Data.feats[selectedClass][Data.FE_NAME] + "\n"
 	msg += Data.featDescriptions[selectedClass]
-	feat.text = msg
+	featLabel.text = msg

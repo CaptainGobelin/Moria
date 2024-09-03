@@ -9,9 +9,9 @@ var saveCap = 99
 var fromChar = false
 
 func createSpellStatus(type: int, rank: int, time: int):
-	var status = Data.statusPrefabs[type]
+	var status = Data.statusPrefabs[type].duplicate(true)
 	if rank > 1:
-		status[GLOBAL.ST_NAME] += " " + Utils.toRoman(rank)
+		status[GLOBAL.ST_NAME] += " " + Utils.toRoman(rank+1)
 	status[GLOBAL.ST_TIMING] = GLOBAL.TIMING_TIMER
 	status[GLOBAL.ST_TURNS] = time
 	status[GLOBAL.ST_RANK] = rank
@@ -101,9 +101,9 @@ func applyEffect(entity, spellId: int, fromCharacter: bool, rank: int, savingCap
 		Data.SP_ACID_SPLASH:
 			acidSplash(entity, rank)
 		Data.SP_CONJURE_ANIMAL:
-			conjureAnimal(entity)
+			conjureAnimal(entity, rank)
 		Data.SP_SPIRITUAL_HAMMER:
-			spiritualHammer(entity)
+			spiritualHammer(entity, rank)
 		Data.SP_LESSER_AQUIREMENT:
 			lesserAcquirement(entity, rank, savingCap)
 		Data.SP_FIREBALL:
@@ -127,10 +127,12 @@ func electricGrasp(entity, rank: int, direction: Vector2):
 	var target = getValidTarget(targetCell)
 	if target != null:
 		var saved = rollsavingThrow(target)
-		var dmgDice = [GeneralEngine.dmgDice(1, 12, 0, Data.DMG_LIGHTNING)]
+		var dmgDice = getDmgDice(Data.SP_ELECTRIC_GRASP, rank)
 		var dmg = GeneralEngine.computeDamages(dmgDice, target.stats.resists)
 		if saved:
-			dmg = int(dmg) / int(2)
+			dmg = int(floor(dmg/2))
+		elif rank > 0:
+			applySpellStatus(entity, Data.STATUS_PARALYZED, 0, 2)
 		target.takeHit(dmg)
 
 func heal(entity, rank: int):
@@ -165,14 +167,14 @@ func firebolt(entity, rank: int):
 func sleep(entity, rank: int):
 	playEffect(entity.pos, 4, 5, 0.6)
 	var turns = getTurns(Data.SP_SLEEP, rank)
-	if rank == 1 or entity is Character:
+	if rank == 0 or entity is Character:
 		if not rollsavingThrow(entity):
-			applySpellStatus(entity, Data.STATUS_SLEEP, rank, turns)
+			applySpellStatus(entity, Data.STATUS_SLEEP, 0, turns)
 	else:
 		for m in Ref.currentLevel.monsters.get_children():
-			if Utils.dist(entity.pos, m.pos) <= rank:
+			if Utils.dist(entity.pos, m.pos) <= (rank+1):
 				if not rollsavingThrow(entity):
-					applySpellStatus(entity, Data.STATUS_SLEEP, rank, turns)
+					applySpellStatus(entity, Data.STATUS_SLEEP, 0, turns)
 
 func unlock(entity, direction: Vector2):
 	var cell = entity.pos + direction
@@ -187,32 +189,38 @@ func unlock(entity, direction: Vector2):
 
 func bless(entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)
+	for i in range(100, 109):
+		applySpellStatus(entity, i, 0, 10)
 	var turns = getTurns(Data.SP_BLESS, rank)
-	applySpellStatus(entity, Data.STATUS_BLESSED, rank, turns)
+	applySpellStatus(entity, Data.STATUS_BLESSED, 0, turns)
 
 func command(entity, rank: int):
 	playEffect(entity.pos, 6, 5, 0.6)
 	var turns = getTurns(Data.SP_COMMAND, rank)
 	if not rollsavingThrow(entity):
-		applySpellStatus(entity, Data.STATUS_TERROR, 1, turns)
+		applySpellStatus(entity, Data.STATUS_TERROR, 0, turns)
 
 func light(entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)
 	var turns = getTurns(Data.SP_COMMAND, rank)
-	applySpellStatus(entity, Data.STATUS_LIGHT, rank, turns)
+	var statusRank = 0
+	if rank == 0:
+		applySpellStatus(entity, Data.STATUS_LIGHT, 0, turns)
+	else:
+		applySpellStatus(entity, Data.STATUS_LIGHT, 1, turns)
 	Ref.currentLevel.refresh_view()
 
 func blind(entity, rank: int):
 	playEffect(entity.pos, 4, 5, 0.6)
 	var turns = getTurns(Data.SP_BLIND, rank)
-	if rank == 1 or entity is Character:
+	if rank == 0 or entity is Character:
 		if not rollsavingThrow(entity):
-			applySpellStatus(entity, Data.STATUS_BLIND, rank, turns)
+			applySpellStatus(entity, Data.STATUS_BLIND, 0, turns)
 	else:
 		for m in Ref.currentLevel.monsters.get_children():
-			if Utils.dist(entity.pos, m.pos):
+			if Utils.dist(entity.pos, m.pos) <= (rank+1):
 				if not rollsavingThrow(entity):
-					applySpellStatus(m, Data.STATUS_SLEEP, rank, turns)
+					applySpellStatus(m, Data.STATUS_SLEEP, 0, turns)
 
 func mindSpike(entity, rank: int):
 	playEffect(entity.pos, 8, 5, 0.6)
@@ -224,61 +232,72 @@ func mindSpike(entity, rank: int):
 func detectEvil(entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)
 	var turns = getTurns(Data.SP_DETECT_EVIL, rank)
-	applySpellStatus(entity, Data.STATUS_DETECT_EVIL, rank, turns)
+	if rank == 0:
+		applySpellStatus(entity, Data.STATUS_DETECT_EVIL, 0, turns)
+	else:
+		applySpellStatus(entity, Data.STATUS_DETECT_EVIL, 1, turns)
 	Ref.currentLevel.refresh_view()
 
 func revealTraps(entity):
 	playEffect(entity.pos, 7, 5, 0.6)
 	var turns = getTurns(Data.SP_REVEAL_TRAPS, 0)
-	applySpellStatus(entity, Data.STATUS_REVEAL_TRAPS, 1, turns)
+	applySpellStatus(entity, Data.STATUS_REVEAL_TRAPS, 0, turns)
 	Ref.currentLevel.refresh_view()
 
 func shield(entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)
-	applySpellStatus(entity, Data.STATUS_SHIELD, 5 * (rank + 1), 40)
+	var turns = getTurns(Data.SP_SHIELD, rank)
+	applySpellStatus(entity, Data.STATUS_SHIELD, 5 * (rank + 2) - 1, turns)
 
 func mageArmor(entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)
-	var status = createSpellStatus(Data.STATUS_MAGE_ARMOR, 5 * (rank + 1), 40)
+	var status = createSpellStatus(Data.STATUS_MAGE_ARMOR, rank, 99)
 	status[GLOBAL.ST_TIMING] = GLOBAL.TIMING_REST
 	StatusEngine.addStatus(entity, status)
 	entity.stats.computeStats()
 
 func armorFaith(entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)
-	applySpellStatus(entity, Data.STATUS_ARMOR_FAITH, rank, 50)
+	var turns = getTurns(Data.SP_ARMOR_OF_FAITH, rank)
+	if rank == 0:
+		applySpellStatus(entity, Data.STATUS_PROTECTION, 0, turns)
+	else:
+		applySpellStatus(entity, Data.STATUS_PROTECTION, 1, turns)
 
 func protectEvil(entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)
-	applySpellStatus(entity, Data.STATUS_PROTECT_EVIL, rank, 50)
+	var turns = getTurns(Data.SP_PROTECTION_FROM_EVIL, rank)
+	if rank <= 1:
+		applySpellStatus(entity, Data.STATUS_PROTECT_EVIL, 0, turns)
+	else:
+		applySpellStatus(entity, Data.STATUS_PROTECT_EVIL, 1, turns)
 
 func sanctuary(entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)
-	applySpellStatus(entity, Data.STATUS_SANCTUARY, rank, 10)
+	var turns = getTurns(Data.SP_SANCTUARY, rank)
+	applySpellStatus(entity, Data.STATUS_SANCTUARY, rank, turns)
 
 func acidSplash(entity, rank: int):
-	var saved = rollsavingThrow(entity)
-	var dmgDice = [GeneralEngine.dmgDice(1 + rank, 4, 0, Data.DMG_SLASH)]
+	var dmgDice = getDmgDice(Data.SP_ACID_SPLASH, rank)
 	var dmg = GeneralEngine.computeDamages(dmgDice, entity.stats.resists, true)
-	if saved:
-		dmg = int(dmg) / int(2)
+	if rollsavingThrow(entity):
+		dmg = int(floor(dmg/2))
 	entity.takeHit(dmg, true)
 
-func conjureAnimal(entity):
+func conjureAnimal(entity, rank: int):
+	if entity is Character:
+		for _i in range(GeneralEngine.dice(1, 2, rank).roll()):
+			var cell = entity.getRandomCloseCell()
+			if cell == null:
+				return
+			Ref.currentLevel.spawnMonster(Data.MO_SUM_WOLF, cell, true)
+
+func spiritualHammer(entity, rank: int):
 	if entity is Character:
 		var cell = entity.getRandomCloseCell()
 		if cell == null:
 			return
-		Ref.currentLevel.spawnMonster(900, cell, true)
-
-func spiritualHammer(entity):
-	if entity is Character:
-		var count = 1 + randi() % 2
-		for _i in range(count):
-			var cell = entity.getRandomCloseCell()
-			if cell == null:
-				return
-			Ref.currentLevel.spawnMonster(901, cell, true)
+		Ref.currentLevel.spawnMonster(Data.MO_SUM_HAMMER+rank, cell, true)
 
 func lesserAcquirement(entity, rank: int, itemType: int):
 	var items = Ref.game.itemGenerator.generateItem(rank * 2, itemType)

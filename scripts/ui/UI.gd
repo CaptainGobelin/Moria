@@ -26,6 +26,9 @@ onready var goldLabel = get_node("SideMenu/GoldContainer/Label/Current")
 onready var rFire = get_node("SideMenu/rFire/Label/Current")
 onready var rPois = get_node("SideMenu/rPoison/Label/Current")
 onready var statusBar = get_node("StatusBar")
+onready var fadePanel = get_node("FadePanel")
+onready var fadeLabel = get_node("FadePanel/TextContainer/Label")
+onready var monsterPanelList = get_node("MonsterPanelList")
 
 var currentChoice = ""
 var currentSuffix = ""
@@ -323,6 +326,14 @@ func writeMonsterQuaffedPotion(entityName: String, potion: String):
 	write(entityName + " quaffed the " + potion + ".")
 	lastPrinted = "writeMonsterQuaffedPotion"
 
+func writeRemoveSleep():
+	write("You are woken up by the attack.")
+	lastPrinted = "writeRemoveSleep"
+
+func writeMonsterRemoveSleep(entityName: String):
+	write(entityName + " is woken up by the attack.")
+	lastPrinted = "writeMonsterRemoveSleep"
+
 func noTarget():
 	write("There is no targets at range for this.")
 	lastPrinted = "noTarget"
@@ -332,6 +343,28 @@ func writeWishChoice():
 	msg += listToChoices(["Weapon", "Armor", "Scrolls", "Potions", "Gold"])
 	write(msg)
 	lastPrinted = "writeWishChoice"
+
+func askForRest(rests: int):
+	var msg = "You can rest " + String(rests)
+	if rests == 1:
+		msg += " time."
+	else:
+		msg += " times."
+	msg += " Do you want to rest here? (Y/n)"
+	write(msg)
+	lastPrinted = "askForRest"
+
+func noMoreRest():
+	write("You cannot rest anymore.")
+	lastPrinted = "noMoreRest"
+
+func writeNoSafeRest():
+	write("Some hostile creatures lurk in the shadows. You cannot rest here.")
+	lastPrinted = "writeNoSafeRest"
+
+func writeRested():
+	write("You wake up, fully rested.")
+	lastPrinted = "writeRested"
 
 func writeWishResult(items: Array):
 	var msg = ""
@@ -388,7 +421,7 @@ func updateStat(stat: int, value):
 			maxXpLabel.text = String(value)
 		Data.CHAR_R_FIRE:
 			rFire.text = ""
-			for i in range(value[1]):
+			for _i in range(value[1]):
 				rFire.text += "-"
 			for i in range(value[0]):
 				rFire.text[i] = "*"

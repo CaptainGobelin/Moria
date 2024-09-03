@@ -17,11 +17,12 @@ var pos = Vector2(0, 0)
 func _ready():
 	Ref.character = self
 
-func init(charClass: int):
-	self.charClass = charClass
+func init(newCharClass: int, isCreation: bool = true):
+	charClass = newCharClass
 	stats.init(charClass)
-	skills.init(charClass)
-	inventory.init(charClass)
+	if isCreation:
+		skills.init(charClass)
+		inventory.init(charClass)
 
 func setPosition(newPos):
 	pos = newPos
@@ -223,6 +224,17 @@ func rollPerception(cell: Vector2):
 			Ref.currentLevel.dungeon.set_cellv(cell, GLOBAL.DOOR_ID, false, false, false, Vector2(0,1))
 			Ref.ui.writeHiddenDoorDetected()
 
+func rest():
+	inventory.rests -= 1
+	for a in Ref.currentLevel.allies.get_children():
+		a.queue_free()
+	StatusEngine.clearStatuses(self)
+	stats.updateHp(stats.hpMax)
+	for s in spells.spellsUses.keys():
+		var school = Data.spells[s][Data.SP_SCHOOL]
+		var rank = spells.getSpellRank(school)
+		spells.spellsUses[s] = Data.spells[s][Data.SP_USES][rank]
+
 func refreshMapPosition():
 	position = 9 * pos
 
@@ -232,4 +244,12 @@ func getRandomCloseCell():
 	var result = Utils.chooseRandom(currentVision)
 	while randf() > (1.0 / float(Utils.dist(pos, result))):
 		result = Utils.chooseRandom(currentVision)
+	return result
+
+func getDisplaYStatusList() -> Array:
+	var result = []
+	for type in statuses.keys():
+		var statusId = statuses[type][0]
+		if not GLOBAL.statuses[statusId][GLOBAL.ST_HIDDEN]:
+			result.append(statusId)
 	return result

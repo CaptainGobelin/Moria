@@ -9,10 +9,10 @@ onready var icon = get_node("Icon")
 
 var spellId: int
 
-func selectSpell(idx: int, rank: int = 1, saveCap: int = 0):
-	generateDescription(idx, rank-1)
+func selectSpell(idx: int, rank: int = 0, saveCap: int = 0):
+	generateDescription(idx, rank)
 	spellName.text = Data.spells[idx][Data.SP_NAME]
-	spellUses.text = spellUses(Data.spells[idx][Data.SP_USES][rank-1])
+	spellUses.text = spellUses(Data.spells[idx][Data.SP_USES][rank])
 	spellSave.text = spellSave(Data.spells[idx][Data.SP_SAVE], saveCap)
 	spellSchool.text = spellSchool(idx)
 	icon.frame = Data.spells[idx][Data.SP_ICON]
@@ -67,10 +67,10 @@ func blank():
 	icon.frame = 29
 	description.bbcode_text = ""
 
-func replace(description: String, from: String, to: String):
-	if description.find(from) > 0:
-		description = description.replace(from, to)
-	return description
+func replace(string: String, from: String, to: String):
+	if string.find(from) > 0:
+		string = string.replace(from, to)
+	return string
 
 func dmgToStr(array: Array, showType: bool = true):
 	var bonus = ""

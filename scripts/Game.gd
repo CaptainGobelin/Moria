@@ -9,6 +9,7 @@ onready var characterMenu = get_node("CharacterMenu")
 onready var spellMenu = get_node("SpellMenu")
 onready var chestMenu = get_node("ChestMenu")
 onready var chooseClassMenu = get_node("ChooseClassMenu")
+onready var chooseNameMenu = get_node("ChooseNameMenu")
 onready var chooseSpellMenu = get_node("ChooseSpellMenu")
 onready var chooseFeatMenu = get_node("ChooseFeatMenu")
 onready var dungeonGenerator = get_node("Utils/DungeonGenerator_v2")
@@ -17,18 +18,26 @@ onready var itemGenerator = get_node("Utils/ItemGenerator") as ItemGenerator
 onready var pickupLootHandler = get_node("Utils/PickupLootHandler")
 onready var spellHandler = get_node("Utils/SpellHandler")
 onready var throwHandler = get_node("Utils/ThrowHandler")
-onready var monsterPanelList = get_node("MonsterPanelList")
+onready var restHandler = get_node("Utils/RestHandler")
+onready var saveSystem = get_node("Utils/SaveSystem")
 
+var random_seed: int
 var autoexplore = false setget setAutoExplore
 
 func _ready():
 	randomize()
+	var randomSeed = randi()
+	seed(randomSeed)
 	Ref.game = self
 	set_process_input(false)
 	set_process(false)
 	match start:
 		0:
 			chooseClassMenu.open()
+		1:
+			chooseClassMenu.queue_free()
+			Ref.character.init(Data.CL_FIGHTER)
+			startGame()
 		3:
 			Ref.currentLevel.fog.visible = false
 			Ref.currentLevel.shadows.visible = false
@@ -40,16 +49,19 @@ func _ready():
 			startGame()
 
 func _process(delta):
-	if !GLOBAL.targets.empty():
-		Ref.ui.write("You cannot explore there are enemies on sight.")
-	var dir = pathfinder.findNextStep(pathfinder.exploreMap, Ref.character.pos)
-	if dir == null:
-		pathfinder.dijkstraCompute()
-		dir = pathfinder.findNextStep(pathfinder.exploreMap, Ref.character.pos)
+	if autoexplore:
+		if !GLOBAL.targets.empty():
+			Ref.ui.write("You cannot explore there are enemies on sight.")
+		var dir = pathfinder.findNextStep(pathfinder.exploreMap, Ref.character.pos)
 		if dir == null:
-			Ref.ui.write("Nothing to explore.")
-			return
-	Ref.character.moveAsync(dir)
+			pathfinder.dijkstraCompute()
+			dir = pathfinder.findNextStep(pathfinder.exploreMap, Ref.character.pos)
+			if dir == null:
+				Ref.ui.write("Nothing to explore.")
+				return
+		Ref.character.moveAsync(dir)
+	else:
+		GeneralEngine.newTurn()
 
 func setAutoExplore(value: bool):
 	autoexplore = value
@@ -107,7 +119,7 @@ func newFloor():
 		if cell == null:
 			a.die()
 		a.setPosition(cell)
-	for _i in range(10):
+	for _i in range(0):
 		Ref.currentLevel.spawnMonster()
 	for _i in range(randi() % 4):
 		Ref.currentLevel.createChest()
@@ -181,5 +193,11 @@ func _input(event):
 				Ref.character.quaffPotion(item)
 	elif (event.is_action_released("search")):
 		Ref.character.search()
+	elif event.is_action_released("rest"):
+		restHandler.askrForRest()
 	elif (event.is_action_released("debug_new_floor")):
-		newFloor()
+		saveSystem.saveGame()
+	elif (event.is_action_released("save")):
+		saveSystem.saveGame()
+	elif (event.is_action_released("load")):
+		saveSystem.loadGame(Ref.character.stats.charName)

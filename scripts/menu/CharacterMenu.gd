@@ -8,9 +8,13 @@ onready var skp = get_node("SkillsScreen/TextContainer/RemainingPoints")
 onready var featsScreen = get_node("FeatsScreen")
 onready var featList = get_node("FeatsScreen/FeatsList")
 onready var chooseFeat = get_node("FeatsScreen/TextContainer/ChooseFeat")
+onready var statusesScreen = get_node("StatusesScreen")
+onready var statusesList = get_node("StatusesScreen/StatusesList")
+onready var scroller = get_node("StatusesScreen/MenuScroller")
 
 var currentTab = 0
 var currentRow = 0
+var startRow = 0
 
 func _ready():
 	set_process_input(false)
@@ -42,6 +46,13 @@ func _input(event):
 					return
 				currentRow = Utils.modulo(currentRow - 1, Ref.character.skills.feats.size())
 				setTab(currentTab, currentRow)
+			GLOBAL.CHAR_STATUSES:
+				var statusesSize = Ref.character.statuses.keys().size()
+				if statusesSize == 0:
+					currentRow = 0
+				else:
+					currentRow = Utils.modulo(currentRow - 1, Ref.character.statuses.keys().size())
+				setTab(currentTab, currentRow)
 	elif (event.is_action_pressed("ui_down")):
 		match currentTab:
 			GLOBAL.CHAR_SKILLS:
@@ -50,6 +61,13 @@ func _input(event):
 				if Ref.character.skills.feats.size() == 0:
 					return
 				currentRow = Utils.modulo(currentRow + 1, Ref.character.skills.feats.size())
+				setTab(currentTab, currentRow)
+			GLOBAL.CHAR_STATUSES:
+				var statusesSize = Ref.character.statuses.keys().size()
+				if statusesSize == 0:
+					currentRow = 0
+				else:
+					currentRow = Utils.modulo(currentRow + 1, Ref.character.statuses.keys().size())
 				setTab(currentTab, currentRow)
 	elif (event.is_action_released("characterMenu")):
 		close()
@@ -101,6 +119,7 @@ func setTab(tab, row = 0):
 		GLOBAL.CHAR_SKILLS:
 			skillsScreen.visible = true
 			featsScreen.visible = false
+			statusesScreen.visible = false
 			var count = 0
 			for s in skills:
 				s.setValue(Ref.character.skills.skills[count], Ref.character.skills.masteries[count])
@@ -111,6 +130,7 @@ func setTab(tab, row = 0):
 			descriptor.text = "No feat selected"
 			skillsScreen.visible = false
 			featsScreen.visible = true
+			statusesScreen.visible = false
 			currentRow = row
 			var count = 0
 			for f in featList.get_children():
@@ -126,8 +146,28 @@ func setTab(tab, row = 0):
 				count += 1
 			chooseFeat.visible = Ref.character.skills.ftp > 0
 		GLOBAL.CHAR_STATUSES:
+			descriptor.text = "No status selected"
+			if row == 0:
+				startRow = 0
 			skillsScreen.visible = false
+			featsScreen.visible = false
+			statusesScreen.visible = true
 			currentRow = row
+			var statuses = Ref.character.getDisplaYStatusList()
+			startRow = min(currentRow, max(currentRow-6, startRow))
+			scroller.setArrows(startRow, statuses.size())
+			var count = 0
+			for s in statusesList.get_children():
+				if count < statuses.size():
+					s.setSimpleContent(statuses[count+startRow])
+					s.visible = true
+					s.selected.visible = false
+					if (count+startRow) == currentRow:
+						s.selected.visible = true
+						descriptor.text = getStatusDescription(statuses[count+startRow])
+				else:
+					s.visible = false
+				count += 1
 		_:
 			currentRow = row
 	if descriptor.text.find("\n") > 0:
@@ -140,3 +180,21 @@ func selectSkill(row: int):
 	for s in skills:
 		s.unselect()
 	skills[currentRow].select()
+
+func getStatusDescription(statusId: int) -> String:
+	var result = ""
+	var statusType = GLOBAL.statuses[statusId][GLOBAL.ST_TYPE]
+	var statusRank = GLOBAL.statuses[statusId][GLOBAL.ST_RANK]
+	if GLOBAL.statuses[statusId][GLOBAL.ST_TYPE] == Data.STATUS_SHIELD:
+		statusRank = 0
+	result += Data.statusesDescriptions[statusType][statusRank] + "\n\n"
+	var statusTiming = GLOBAL.statuses[statusId][GLOBAL.ST_TIMING]
+	var statusTurns = GLOBAL.statuses[statusId][GLOBAL.ST_TURNS]
+	match statusTiming:
+		GLOBAL.TIMING_FLOOR:
+			result += "Will remain for the whole floor."
+		GLOBAL.TIMING_REST:
+			result += "Will remain until you rest."
+		GLOBAL.TIMING_TIMER:
+			result += "Will remain for " + String(statusTurns) + " turns."
+	return result

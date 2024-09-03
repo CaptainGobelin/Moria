@@ -50,15 +50,15 @@ func simpleFloor():
 	drawFloor(array)
 	return Vector2(int(GLOBAL.FLOOR_SIZE_X/2), int(GLOBAL.FLOOR_SIZE_Y/2))
 
-func drawFloor(array: Array):
+func drawFloor(floorArray: Array):
 	dungeon = Ref.currentLevel.dungeon as TileMap
 	dungeon.clear()
 	for i in range(GLOBAL.FLOOR_SIZE_X):
 		for j in range(GLOBAL.FLOOR_SIZE_Y):
-			if array[i][j] == -1:
+			if floorArray[i][j] == -1:
 				dungeon.set_cell(i, j, 1)
 			else:
-				dungeon.set_cell(i, j, array[i][j])
+				dungeon.set_cell(i, j, floorArray[i][j])
 	dungeon.update_bitmask_region()
 	for cell in dungeon.get_used_cells_by_id(GLOBAL.DOOR_ID):
 		dungeon.set_cellv(cell, GLOBAL.DOOR_ID, false, false, false, Vector2(0,1))

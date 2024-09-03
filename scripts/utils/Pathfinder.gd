@@ -6,7 +6,7 @@ func dijkstraCompute():
 	exploreMap.clear()
 	for i in range(GLOBAL.FLOOR_SIZE_X+1):
 		exploreMap.append([])
-		for j in range(GLOBAL.FLOOR_SIZE_Y+1):
+		for _j in range(GLOBAL.FLOOR_SIZE_Y+1):
 			exploreMap[i].append(9999)
 	for cell in Ref.currentLevel.shadows.get_used_cells_by_id(0):
 		if cell.x < 0 or cell.y < 0:

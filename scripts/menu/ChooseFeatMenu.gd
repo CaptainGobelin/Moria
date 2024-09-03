@@ -17,8 +17,8 @@ var masterFeat = null
 func _ready():
 	set_process_input(false)
 
-func open(feats: Array = [], masterFeat = null, canCancel: bool = true):
-	self.masterFeat = masterFeat
+func open(feats: Array = [], masterFeatId = null, canCancelChoice: bool = true):
+	masterFeat = masterFeatId
 	if feats.empty():
 		feats = Data.feats.keys()
 		featList = []
@@ -45,7 +45,7 @@ func open(feats: Array = [], masterFeat = null, canCancel: bool = true):
 	visible = true
 	selected = 0
 	startRow = 0
-	self.canCancel = canCancel
+	canCancel = canCancelChoice
 	loadFeatList()
 	MasterInput.setMaster(self)
 

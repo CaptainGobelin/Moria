@@ -10,10 +10,10 @@ class Dice:
 	var d: int
 	var b: int
 	
-	func _init(n: int, d: int, b: int):
-		self.n = n
-		self.d = d
-		self.b = b
+	func _init(number: int, dice: int, bonus: int):
+		n = number
+		d = dice
+		b = bonus
 	
 	func roll():
 		if (GeneralEngine.isFaking):
@@ -28,20 +28,32 @@ class Dice:
 		if b > 0:
 			result += "+" + String(b)
 		return result
+	
+	func toVec() -> Array:
+		return [n, d, b]
+	
+	static func fromVec(v: Array) -> Dice:
+		return Dice.new(v[0], v[1], v[2])
 
 class DmgDice:
 	var dice: Dice
 	var type: int
 	
-	func _init(n: int, d: int, b: int, type: int):
+	func _init(n: int, d: int, b: int, dmgType: int):
 		self.dice = Dice.new(n, d, b)
-		self.type = type
+		type = dmgType
 	
 	func roll():
 		return self.dice.roll()
 	
 	func toString():
 		return dice.toString()
+	
+	func toVec() -> Array:
+		return [dice.n, dice.d, dice.b, type]
+	
+	static func fromVec(v: Array) -> DmgDice:
+		return DmgDice.new(v[0], v[1], v[2], v[3])
 
 func dice(n: int, d: int, b: int):
 	return GeneralEngine.Dice.new(n, d, b)
@@ -73,7 +85,7 @@ func newTurn():
 		StatusEngine.decreaseStatusesTime(m)
 	StatusEngine.decreaseStatusesTime(Ref.character)
 	Ref.currentLevel.refresh_view()
-	Ref.game.monsterPanelList.fillList()
+	Ref.ui.monsterPanelList.fillList()
 
 func computeDamages(dmgDices: Array, resist: Array, byPassResists: bool = false):
 	var result = 0

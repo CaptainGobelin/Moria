@@ -45,6 +45,7 @@ func refresh_view():
 						if !searched[p.x][p.y]:
 							Ref.character.rollPerception(p)
 							searched[p.x][p.y] = true
+					#todo use monsterbypos dict
 					for m in monsters.get_children():
 						if m.pos == p and m.status != "dead":
 							m.awake()
@@ -105,6 +106,7 @@ func isCellFree(cell):
 		return [false, "OOB", null, false, true]
 	if cell.y < 0 or cell.y >= GLOBAL.FLOOR_SIZE_Y:
 		return [false, "OOB", null, false, true]
+	#todo use monsterbypos dict
 	for m in monsters.get_children():
 		if cell == m.pos:
 			return [false, "monster", m, true, false]
@@ -158,7 +160,7 @@ func spawnMonster(idx: int = 0, pos = null, isAllied: bool = false):
 
 func addLoot(cell: Vector2, rarityBonus: int):
 	var rarity = (randi() % 1) + rarityBonus
-	for item in Ref.game.itemGenerator.generateItem(6):
+	for item in Ref.game.itemGenerator.generateItem(rarity):
 		print(GLOBAL.items[item][GLOBAL.IT_NAME])
 		GLOBAL.dropItemOnFloor(item, cell)
 
@@ -176,7 +178,7 @@ func addChest(cell: Vector2, rarityBonus: int):
 	var quantity = randi() % 3 + 1
 	for _i in range(quantity):
 		var rarity = (randi() % 1) + rarityBonus
-		for item in Ref.game.itemGenerator.generateItem(6):
+		for item in Ref.game.itemGenerator.generateItem(rarity):
 			GLOBAL.chests[chest.get_instance_id()][GLOBAL.CH_CONTENT].append(item)
 
 func createChest():

@@ -1,33 +1,44 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://themes/LabelTheme.tres" type="Theme" id=1]
-[ext_resource path="res://scripts/menu/FeatRow.gd" type="Script" id=2]
+[ext_resource path="res://scripts/menu/StatusRow.gd" type="Script" id=2]
+[ext_resource path="res://sprites/status.png" type="Texture" id=3]
 
-[node name="FeatRow" type="Node2D"]
+[node name="StatusRow" type="Node2D"]
 script = ExtResource( 2 )
 
 [node name="Selected" type="ColorRect" parent="."]
-margin_right = 81.0
+margin_left = 18.0
+margin_right = 108.0
 margin_bottom = 17.0
 color = Color( 0.247059, 0.313726, 0.247059, 1 )
 
 [node name="Selected2" type="ColorRect" parent="Selected"]
 margin_left = 1.0
 margin_top = 1.0
-margin_right = 80.0
+margin_right = 89.0
 margin_bottom = 16.0
 color = Color( 0.172549, 0.227451, 0.219608, 1 )
 
 [node name="TextContainer" type="Node2D" parent="."]
+position = Vector2( 18, 0 )
 scale = Vector2( 0.25, 0.25 )
 
 [node name="Name" type="Label" parent="TextContainer"]
 margin_left = 20.0
-margin_right = 308.0
+margin_right = 356.0
 margin_bottom = 68.0
 theme = ExtResource( 1 )
-text = "Skilled: Enchantment"
+text = "Freedom of movement III"
 valign = 1
 __meta__ = {
 "_editor_description_": ""
 }
+
+[node name="Icon" type="Sprite" parent="."]
+position = Vector2( 2, 1 )
+scale = Vector2( 1.55556, 1.55556 )
+texture = ExtResource( 3 )
+centered = false
+hframes = 6
+vframes = 9
