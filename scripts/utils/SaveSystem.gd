@@ -7,7 +7,13 @@ onready var trapScene = preload("res://scenes/Trap.tscn")
 
 var filePath = "res://usr/"
 
+func createFolder():
+	var directory = Directory.new()
+	if not directory.dir_exists(filePath):
+		directory.make_dir(filePath)
+
 func saveGame():
+	createFolder()
 	var file = File.new()
 	file.open(filePath + Ref.character.stats.charName + ".sav", File.WRITE)
 	#todo if file already exists copy it before erasing content
@@ -15,8 +21,9 @@ func saveGame():
 	file.store_var(saveStatusEngine(), true)
 	file.store_var(saveGlobals(), true)
 	file.store_var(savemap(), true)
+	file.store_var(saveMonsters(), true)
 	file.store_var(saveCharacter(), true)
-	
+	file.store_var(saveTraps(), true)
 	file.store_var(saveEngine(), true)
 	file.store_var(saveUI(), true)
 	file.close()
@@ -31,8 +38,9 @@ func loadGame(charName: String):
 	loadStatusEngine(file.get_var(true))
 	loadGlobals(file.get_var(true))
 	loadMap(file.get_var(true))
+	loadMonsters(file.get_var(true))
 	loadCharacter(file.get_var(true))
-	
+	loadTraps(file.get_var(true))
 	loadEngine(file.get_var(true))
 	loadUI(file.get_var(true))
 	file.close()
@@ -153,27 +161,84 @@ func loadCharacter(dict: Dictionary):
 	Ref.character.setPosition(dict["pos"])
 
 func saveMonsters() -> Dictionary:
+	var result = []
+	for m in Ref.currentLevel.monsters.get_children():
+		result.append({
+			"id": m.get_instance_id(),
+			"type": m.type,
+			"status": m.status,
+			"statuses": m.statuses,
+			"pos": m.pos,
+			"skipNextTurn": m.skipNextTurn,
+			"allies": m.allies,
+			"buffCD": m.buffCD,
+			"actions": {
+				"throwings": m.actions.throwings,
+				"spells": m.actions.spells,
+				"buffs": m.actions.buffs,
+				"debuffs": m.actions.debuffs,
+				"heals": m.actions.heals,
+				"selfBuffs": m.actions.selfBuffs,
+				"selfHeals": m.actions.selfHeals,
+			}
+		})
 	return {
-		
+		"monsters": result
 	}
+
+func loadMonsters(dict: Dictionary):
+	var alliesOldIds: Dictionary = {}
+	var reverseIds: Dictionary = {}
+	for m in dict["monsters"]:
+		var monster = monsterScene.instance()
+		Ref.currentLevel.monsters.add_child(monster)
+		monster.spawn(m["type"], m["pos"], true)
+		monster.stats.type = m["type"]
+		monster.allies = []
+		monster.status = m["status"]
+		monster.statuses = m["statuses"]
+		monster.skipNextTurn = m["skipNextTurn"]
+		monster.buffCD = m["buffCD"]
+		monster.actions.throwings = m["actions"]["throwings"]
+		monster.actions.spells = m["actions"]["spells"]
+		monster.actions.buffs = m["actions"]["buffs"]
+		monster.actions.debuffs = m["actions"]["debuffs"]
+		monster.actions.heals = m["actions"]["heals"]
+		monster.actions.selfBuffs = m["actions"]["selfBuffs"]
+		monster.actions.selfHeals = m["actions"]["selfHeals"]
+		monster.stats.computeStats()
+		alliesOldIds[monster.get_instance_id()] = m["allies"]
+		reverseIds[m["id"]] = monster.get_instance_id()
+	for monster in Ref.currentLevel.monsters.get_children():
+		for allyId in alliesOldIds[monster.get_instance_id()]:
+			monster.allies.append(reverseIds[allyId])
 
 func saveAllies() -> Dictionary:
 	return {
 		
 	}
 
+func loadAllies(dict: Dictionary):
+	pass
+
 func saveTraps() -> Dictionary:
+	var result = []
+	for t in Ref.currentLevel.traps.get_children():
+		result.append([t.type, t.pos, t.hidden, t.disabled])
 	return {
-		
+		"traps": result
 	}
 
 func loadTraps(dict: Dictionary):
 	GLOBAL.trapsByPos.clear()
-
-func saveChests() -> Dictionary:
-	return {
-		
-	}
+	for t in dict["traps"]:
+		var trap = trapScene.instance()
+		Ref.currentLevel.traps.add_child(trap)
+		trap.init(t[0], t[1])
+		if not t[2]:
+			trap.reveal()
+		elif t[3]:
+			trap.disable()
 
 func saveGlobals() -> Dictionary:
 	var items: Dictionary = {}
@@ -218,7 +283,7 @@ func loadEngine(dict: Dictionary):
 
 func saveUI() -> Dictionary:
 	return {
-		"diary": Ref.ui.diary.get_bbcode() 
+		"diary": Ref.ui.diaryContent
 	}
 
 func loadUI(dict: Dictionary):

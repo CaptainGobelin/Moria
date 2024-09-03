@@ -5,6 +5,7 @@ onready var sprite = get_node("Sprite")
 onready var mask = get_node("Mask")
 
 var hidden: bool = true
+var disabled: bool = false
 var type: int
 var trapName: String
 var pos: Vector2
@@ -23,6 +24,8 @@ func disable():
 	sprite.frame += 1
 	sprite.visible = true
 	mask.visible = false
+	disabled = true
+	hidden = false
 
 func reveal():
 	hidden = false

@@ -119,7 +119,7 @@ func newFloor():
 		if cell == null:
 			a.die()
 		a.setPosition(cell)
-	for _i in range(0):
+	for _i in range(10):
 		Ref.currentLevel.spawnMonster()
 	for _i in range(randi() % 4):
 		Ref.currentLevel.createChest()

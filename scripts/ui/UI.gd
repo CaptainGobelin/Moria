@@ -35,6 +35,7 @@ var currentSuffix = ""
 var currentMax = 0
 var lastPrinted: String = ""
 var previousMode: int = GLOBAL.MODE_NONE
+var diaryContent: String = ""
 
 func _ready():
 	Ref.ui = self
@@ -94,12 +95,14 @@ func write(text):
 		return
 	text = '\n' + '<' + String(GeneralEngine.turn) + '> ' + text
 	diary.append_bbcode(text)
+	diaryContent += text
 	Ref.game.autoexplore = false
 
 func simpleWrite(text):
 	if text == null:
 		return
 	diary.append_bbcode(text)
+	diaryContent += text
 
 func color(text: String, color: String):
 	match color:

@@ -100,7 +100,6 @@ start = 1
 [node name="Utils" type="Node" parent="."]
 
 [node name="DungeonGenerator_v2" parent="Utils" instance=ExtResource( 1 )]
-biome = 1
 
 [node name="ItemGenerator" type="Node" parent="Utils"]
 script = ExtResource( 6 )
@@ -210,6 +209,7 @@ margin_right = 1296.0
 margin_bottom = 288.0
 custom_colors/default_color = Color( 0.807843, 0.858824, 0.882353, 1 )
 custom_fonts/normal_font = ExtResource( 8 )
+bbcode_enabled = true
 scroll_active = false
 scroll_following = true
 

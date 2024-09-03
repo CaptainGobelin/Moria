@@ -15,12 +15,13 @@ var skipNextTurn = false
 var allies: Array = []
 var buffCD = 0
 
-func spawn(monsterType: int, cell: Vector2):
+func spawn(monsterType: int, cell: Vector2, fromSave: bool = false):
 	type = monsterType
 	bodySprite.frame = Data.monsters[monsterType][Data.MO_SPRITE]
 	setPosition(cell)
-	stats.init(type)
-	actions.init(type)
+	if not fromSave:
+		stats.init(type)
+		actions.init(type)
 	if Data.monsterTags.has(monsterType):
 		tags = Data.monsterTags[monsterType]
 
