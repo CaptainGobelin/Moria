@@ -52,6 +52,8 @@ func _process(delta):
 	if autoexplore:
 		if !GLOBAL.targets.empty():
 			Ref.ui.write("You cannot explore there are enemies on sight.")
+			autoexplore = false
+			return
 		var dir = pathfinder.findNextStep(pathfinder.exploreMap, Ref.character.pos)
 		if dir == null:
 			pathfinder.dijkstraCompute()
