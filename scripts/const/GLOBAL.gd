@@ -105,11 +105,14 @@ func dropItemOnFloor(idx: int, cell: Vector2):
 					items[i][IT_SPEC] += items[idx][IT_SPEC]
 					return
 		itemsOnFloor[cell][FLOOR_IDS].append(idx)
+		var scene = instance_from_id(itemsOnFloor[cell][FLOOR_INST])
+		scene.refreshSprite(itemsOnFloor[cell][FLOOR_IDS])
 	else:
 		var loot = lootScene.instance()
 		Ref.currentLevel.loots.add_child(loot)
-		loot.init(idx, cell)
+		loot.init(cell)
 		itemsOnFloor[cell] = [[idx], loot.get_instance_id(), false]
+		loot.refreshSprite([idx])
 
 func removeItemFromFloor(idx: int):
 	for cell in itemsOnFloor.keys():
@@ -120,6 +123,9 @@ func removeItemFromFloor(idx: int):
 				scene.queue_free()
 				itemsOnFloor.erase(cell)
 				break
+			else:
+				var scene = instance_from_id(itemsOnFloor[cell][FLOOR_INST])
+				scene.refreshSprite(itemsOnFloor[cell][FLOOR_IDS])
 
 # Chests
 const CH_POS = 0

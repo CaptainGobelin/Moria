@@ -5,17 +5,42 @@
 [sub_resource type="GDScript" id=1]
 script/source = "extends Sprite
 
-var itemId
-
-func init(id, pos):
-	itemId = id
+func init(pos):
 	position = 9 * pos
+
+func refreshSprite(items: Array):
+	var type = GLOBAL.items[items[0]][GLOBAL.IT_TYPE]
+	for i in range(1, items.size()):
+		if GLOBAL.items[items[i]][GLOBAL.IT_TYPE] != type:
+			frame = 2
+			return
+	match type:
+		GLOBAL.WP_TYPE:
+			frame = 16
+			return
+		GLOBAL.AR_TYPE:
+			frame = 17
+			return
+		GLOBAL.PO_TYPE:
+			frame = 18
+			return
+		GLOBAL.SC_TYPE:
+			frame = 19
+			return
+		GLOBAL.TA_TYPE:
+			frame = 20
+			return
+		GLOBAL.TH_TYPE:
+			frame = 21
+			return
+		_:
+			frame = 2
 "
 
 [node name="Loot" type="Sprite"]
 texture = ExtResource( 1 )
 centered = false
 hframes = 4
-vframes = 4
+vframes = 6
 frame = 2
 script = SubResource( 1 )

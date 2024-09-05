@@ -6,5 +6,5 @@
 texture = ExtResource( 1 )
 centered = false
 hframes = 4
-vframes = 4
+vframes = 6
 frame = 1
