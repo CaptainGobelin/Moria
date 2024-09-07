@@ -3,9 +3,10 @@ extends Node
 onready var game = get_parent().get_parent()
 onready var normalBiome = get_node("NormalBiome")
 onready var cavernBiome = get_node("CavernBiome")
+onready var merchantRoom = get_node("MerchantRoom")
 onready var dungeon: TileMap
 
-export (int, "Normal, Cavern, Arena") var biome = 0
+export (int, "Normal, Cavern, Arena, Merchant") var biome = 0
 
 # Door: [position:Vector2, direction:String]
 var waitingDoors:Array = []
@@ -21,15 +22,17 @@ func _input(event):
 	if event.is_action_released("ui_accept"):
 		newFloor()
 
-func newFloor():
+func newFloor(specialBiome = biome):
 	Ref.game.cleanFloor()
-	match biome:
+	match specialBiome:
 		0:
 			return normalBiome.newFloor()
 		1:
 			return cavernBiome.newFloor()
 		2:
 			return simpleFloor()
+		3:
+			return merchantRoom.newFloor()
 
 func simpleFloor():
 	for i in range(GLOBAL.FLOOR_SIZE_X):

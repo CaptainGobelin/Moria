@@ -18,8 +18,10 @@ onready var loots = get_node("Loots")
 onready var chests = get_node("Chests")
 onready var effects = get_node("Effects")
 onready var targetArrow = get_node("TargetArrow")
+onready var levelBuffer = get_node("LevelBuffer")
 
 var searched: Array
+var specialEntries: Array = [null, null]
 
 func _ready():
 	Ref.currentLevel = self
@@ -81,6 +83,8 @@ func refresh_view():
 	Ref.character.currentVision.erase(Ref.character.pos)
 
 func initShadows():
+	shadows.clear()
+	underShadows.clear()
 	for i in range(-1, GLOBAL.FLOOR_SIZE_X+1):
 		for j in range(-1, GLOBAL.FLOOR_SIZE_Y+1):
 			shadows.set_cell(i, j, 0)
@@ -124,6 +128,8 @@ func isCellFree(cell):
 			return [false, "pass", null, false, true]
 		elif dungeon.get_cell_autotile_coord(cell.x, cell.y) == Vector2(2, 0):
 			return [false, "entry", null, false, true]
+		elif dungeon.get_cell_autotile_coord(cell.x, cell.y) == Vector2(1, 0):
+			return [false, "passage", null, false, true]
 	if dungeon.get_cellv(cell) == GLOBAL.DOOR_ID:
 		if dungeon.get_cell_autotile_coord(cell.x, cell.y) == Vector2(0, 0):
 			return [true, "floor", null, true, false]

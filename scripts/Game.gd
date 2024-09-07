@@ -108,11 +108,24 @@ func cleanFloor():
 	GLOBAL.itemsOnFloor.clear()
 
 func testFloor():
+	Ref.currentLevel.levelBuffer.flush()
 	cleanFloor()
 	dungeonGenerator.simpleFloor()
 	Ref.currentLevel.initShadows()
 
+func merchantFloor():
+	Ref.currentLevel.levelBuffer.saveLevel()
+	if Ref.currentLevel.levelBuffer.savedLevels.has("merchant"):
+		Ref.currentLevel.levelBuffer.loadLevel("merchant")
+	else:
+		cleanFloor()
+		var spawnPos = dungeonGenerator.newFloor(3)
+		Ref.currentLevel.initShadows()
+		Ref.currentLevel.placeCharacter(spawnPos)
+		Ref.currentLevel.levelBuffer.currentLevel = "merchant"
+
 func newFloor():
+	Ref.currentLevel.levelBuffer.flush()
 	cleanFloor()
 	var spawnPos = dungeonGenerator.newFloor()
 	Ref.currentLevel.initShadows()
@@ -122,7 +135,7 @@ func newFloor():
 		if cell == null:
 			a.die()
 		a.setPosition(cell)
-	for _i in range(10):
+	for _i in range(0):
 		Ref.currentLevel.spawnMonster()
 	for _i in range(randi() % 4):
 		Ref.currentLevel.createChest()

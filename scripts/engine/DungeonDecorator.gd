@@ -157,6 +157,32 @@ func placeExits():
 			array[n.x][n.y] = GLOBAL.FLOOR_ID
 			return [n, entry, exit]
 
+#Place the special room door (same rules as exits)
+func placeSpecialRoom(exits: Array) -> Array:
+	var candidates = []
+	for i in range(GLOBAL.FLOOR_SIZE_X):
+		for j in range(GLOBAL.FLOOR_SIZE_Y):
+			if array[i][j] == GLOBAL.WALL_ID:
+				var count = 0
+				for c in getNeighbours(i, j):
+					if isOutOfBounds(c.x, c.y):
+						continue
+					if array[c.x][c.y] == GLOBAL.FLOOR_ID:
+						count += 1
+				if count > 1 or count == 0:
+					continue
+				for c in getDiagonals(i, j):
+					if isOutOfBounds(c.x, c.y):
+						continue
+					if array[c.x][c.y] == GLOBAL.FLOOR_ID:
+						count += 1
+				if count > 2:
+					continue
+				candidates.append(Vector2(i, j))
+	for e in exits:
+		candidates.erase(e)
+	return Utils.chooseRandom(candidates)
+
 func isOutOfBounds(x, y):
 	if x <= 0: return true
 	if y <= 0: return true

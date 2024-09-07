@@ -22,6 +22,8 @@ func newFloor():
 	fuseDoorsAndWalls()
 	decorator.init(array)
 	var exits = decorator.placeExits()
+	#Place special room door
+	var specialDoor = decorator.placeSpecialRoom(exits)
 	get_parent().drawFloor(array)
 	var criticalPath = Ref.game.pathfinder.a_star(exits[0], exits[2], 9999, true)
 	decorator.flagCriticalPath(criticalPath)
@@ -86,8 +88,9 @@ func newFloor():
 						t.erase(trapPos)
 	deleteCorridorDoors()
 	get_parent().drawFloor(array)
-	# Draw entry
+	# Draw entries
 	dungeon.set_cellv(exits[1], GLOBAL.PASS_ID, false, false, false, Vector2(2, 0))
+	dungeon.set_cellv(specialDoor, GLOBAL.PASS_ID, false, false, false, Vector2(1, 0))
 	print("Generated after ", retries, " retires.")
 	return exits[0]
 

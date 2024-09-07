@@ -19,6 +19,8 @@ func saveGame():
 	#todo if file already exists copy it before erasing content
 	file.store_var(saveItemGenerator(), true)
 	file.store_var(saveStatusEngine(), true)
+	file.store_var(saveItems(), true)
+	file.store_var(saveStatuses(), true)
 	file.store_var(saveGlobals(), true)
 	file.store_var(saveMap(), true)
 	file.store_var(saveMonsters(), true)
@@ -40,6 +42,8 @@ func loadGame(charName: String):
 	file.open(filePath + Ref.character.stats.charName + ".sav", File.READ)
 	loadItemGenerator(file.get_var(true))
 	loadStatusEngine(file.get_var(true))
+	loadItems(file.get_var(true))
+	loadStatuses(file.get_var(true))
 	loadGlobals(file.get_var(true))
 	loadMap(file.get_var(true))
 	loadMonsters(file.get_var(true))
@@ -282,23 +286,36 @@ func loadTraps(dict: Dictionary):
 			trap.disable()
 			GLOBAL.trapsByPos.erase(trap.pos)
 
-func saveGlobals() -> Dictionary:
+func saveItems() -> Dictionary:
 	var items: Dictionary = {}
 	for i in GLOBAL.items.keys():
 		items[i] = itemToVar(GLOBAL.items[i])
 	return {
-		"items": items,
+		"items": items
+	}
+
+func loadItems(dict: Dictionary):
+	for i in dict["items"].keys():
+		GLOBAL.items[i] = varToItem(dict["items"][i])
+
+func saveStatuses() -> Dictionary:
+	return {
+		"statuses": GLOBAL.statuses
+	}
+
+func loadStatuses(dict: Dictionary):
+	GLOBAL.statuses = dict["statuses"]
+
+func saveGlobals() -> Dictionary:
+	return {
 		"itemsOnFloor": GLOBAL.itemsOnFloor,
 		"chests": GLOBAL.chests,
-		"statuses": GLOBAL.statuses,
 		"hiddenDoors": GLOBAL.hiddenDoors,
 		"lockedDoors": GLOBAL.lockedDoors,
 		"testedDoors": GLOBAL.testedDoors,
 	}
 
 func loadGlobals(dict: Dictionary):
-	for i in dict["items"].keys():
-		GLOBAL.items[i] = varToItem(dict["items"][i])
 	for pilePos in dict["itemsOnFloor"].keys():
 		for itemId in dict["itemsOnFloor"][pilePos][GLOBAL.FLOOR_IDS]:
 			GLOBAL.dropItemOnFloor(itemId, pilePos)
@@ -309,7 +326,6 @@ func loadGlobals(dict: Dictionary):
 		Ref.currentLevel.chests.add_child(chest)
 		chest.position = c[0] * 9
 		GLOBAL.chests[chest.get_instance_id()] = c
-	GLOBAL.statuses = dict["statuses"]
 	GLOBAL.hiddenDoors = dict["hiddenDoors"]
 	GLOBAL.lockedDoors = dict["lockedDoors"]
 	GLOBAL.testedDoors = dict["testedDoors"]

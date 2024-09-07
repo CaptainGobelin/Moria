@@ -99,7 +99,11 @@ func moveAsync(movement):
 						Ref.game.chestMenu.open(cellState[2])
 		"entry":
 			Ref.ui.writeNoGoingBack()
-			GeneralEngine.newTurn()
+		"passage":
+			if Ref.currentLevel.levelBuffer.currentLevel == "main":
+				Ref.game.merchantFloor()
+			else:
+				Ref.currentLevel.levelBuffer.loadLevel("main")
 
 func hit(entity):
 	if entity == null:
