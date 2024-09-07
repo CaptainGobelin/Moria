@@ -79,9 +79,10 @@ func saveMap() -> Dictionary:
 	}
 
 func loadMap(dict: Dictionary):
+	Ref.currentLevel.initShadows()
 	arrayToTilemap(dict["dungeon"], Ref.currentLevel.dungeon)
-	arrayToTilemap(dict["shadows"], Ref.currentLevel.shadows)
-	arrayToTilemap(dict["under"], Ref.currentLevel.underShadows)
+	arrayToTilemap(dict["shadows"], Ref.currentLevel.shadows, false)
+	arrayToTilemap(dict["under"], Ref.currentLevel.underShadows, false)
 	Ref.currentLevel.searched = dict["searched"]
 
 func saveCharacter() -> Dictionary:
@@ -334,15 +335,25 @@ func loadUI(dict: Dictionary):
 
 func tileMapToArray(tilemap: TileMap) -> Array:
 	var result = []
+	for i in range(GLOBAL.FLOOR_SIZE_X):
+		result.append([])
+		for _j in range(GLOBAL.FLOOR_SIZE_Y):
+			result[i].append([-1, -1])
 	var cells = tilemap.get_used_cells()
 	for c in cells:
-		result.append([vecToJson(c), tilemap.get_cellv(c), vecToJson(tilemap.get_cell_autotile_coord(c.x, c.y))])
+		if c.x < 0 or c.y < 0:
+			continue
+		if c.x >= GLOBAL.FLOOR_SIZE_X or c.y >= GLOBAL.FLOOR_SIZE_Y:
+			continue
+		result[c.x][c.y] = [tilemap.get_cellv(c), tilemap.get_cell_autotile_coord(c.x, c.y)]
 	return result
 
-func arrayToTilemap(array: Array, tilemap: TileMap):
-	tilemap.clear()
-	for a in array:
-		tilemap.set_cellv(jsonToVec(a[0]), a[1], false, false, false, jsonToVec(a[2]))
+func arrayToTilemap(array: Array, tilemap: TileMap, clear:bool = true):
+	if clear:
+		tilemap.clear()
+	for i in range(GLOBAL.FLOOR_SIZE_X):
+		for j in range(GLOBAL.FLOOR_SIZE_Y):
+			tilemap.set_cellv(Vector2(i, j), array[i][j][0], false, false, false, array[i][j][1])
 
 func vecToJson(v: Vector2) -> Array:
 	return [v.x, v.y]
