@@ -20,7 +20,7 @@ func saveGame():
 	file.store_var(saveItemGenerator(), true)
 	file.store_var(saveStatusEngine(), true)
 	file.store_var(saveGlobals(), true)
-	file.store_var(savemap(), true)
+	file.store_var(saveMap(), true)
 	file.store_var(saveMonsters(), true)
 	file.store_var(saveAllies(), true)
 	file.store_var(saveCharacter(), true)
@@ -66,14 +66,13 @@ func saveStatusEngine() -> Dictionary:
 func loadStatusEngine(dict: Dictionary):
 	StatusEngine.id = dict["id"]
 
-func savemap() -> Dictionary:
+func saveMap() -> Dictionary:
 	var dungeonInfo = []
 	var cells = Ref.currentLevel.dungeon.get_used_cells()
 	for c in cells:
 		dungeonInfo.append([c, Ref.currentLevel.dungeon.get_cellv(c), Ref.currentLevel.dungeon.get_cell_autotile_coord(c.x, c.y)])
 	return {
 		"dungeon": tileMapToArray(Ref.currentLevel.dungeon),
-		"fog": tileMapToArray(Ref.currentLevel.fog),
 		"shadows": tileMapToArray(Ref.currentLevel.shadows),
 		"under": tileMapToArray(Ref.currentLevel.underShadows),
 		"searched": Ref.currentLevel.searched
@@ -81,7 +80,6 @@ func savemap() -> Dictionary:
 
 func loadMap(dict: Dictionary):
 	arrayToTilemap(dict["dungeon"], Ref.currentLevel.dungeon)
-	arrayToTilemap(dict["fog"], Ref.currentLevel.fog)
 	arrayToTilemap(dict["shadows"], Ref.currentLevel.shadows)
 	arrayToTilemap(dict["under"], Ref.currentLevel.underShadows)
 	Ref.currentLevel.searched = dict["searched"]
@@ -298,7 +296,6 @@ func saveGlobals() -> Dictionary:
 	}
 
 func loadGlobals(dict: Dictionary):
-	var items: Dictionary = {}
 	for i in dict["items"].keys():
 		GLOBAL.items[i] = varToItem(dict["items"][i])
 	for pilePos in dict["itemsOnFloor"].keys():
