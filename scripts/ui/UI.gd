@@ -181,11 +181,11 @@ func writeWhichSpell(choices: Array):
 	lastPrinted = "writeWhichSpell"
 
 func writeCastSpell(spell: String):
-	write("You casted " + color(spell, "yellow") + ".")
+	write("You cast " + color(spell, "yellow") + ".")
 	lastPrinted = "writeCastSpell"
 
 func writeMonsterCastSpell(entityName: String, spell: String):
-	write(entityName + " casted " + color(spell, "yellow") + ".")
+	write(entityName + " casts " + color(spell, "yellow") + ".")
 	lastPrinted = "writeMonsterCastSpell"
 
 func writeNoSpell(spell: String):
@@ -193,7 +193,7 @@ func writeNoSpell(spell: String):
 	lastPrinted = "writeNoSpell"
 
 func writeSavingThrowSuccess(entityName: String):
-	write(entityName + " succeded its saving throw.")
+	write(entityName + " succeed its saving throw.")
 	lastPrinted = "writeSavingThrowSuccess"
 
 func writeNoGoingBack():
@@ -229,13 +229,13 @@ func writeChestUnlocked():
 	lastPrinted = "writeChestUnlocked"
 
 func writeLockpickSuccess(rolled: int):
-	var msg = "You successfully picked the lock ! (rolled "
+	var msg = "You successfully pick the lock ! (rolled "
 	msg +=  String(rolled) + ")"
 	write(color(msg, "green"))
 	lastPrinted = "writeLockpickSuccess"
 
 func writeLockpickFailure(rolled: int):
-	var msg = "You failed your atempt and the lockpick broke ! (rolled "
+	var msg = "You fail your atempt and the lockpick broke ! (rolled "
 	msg +=  String(rolled) + ")"
 	write(color(msg, "red"))
 	lastPrinted = "writeLockpickFailure"
@@ -257,11 +257,11 @@ func writeSearch():
 	lastPrinted = "writeSearch"
 
 func writeHiddenDoorDetected():
-	write(color("You detected a hidden door !", "yellow"))
+	write(color("You detect a hidden door !", "yellow"))
 	lastPrinted = "writeHiddenDoorDetected"
 
 func writeHiddenTrapDetected(name: String):
-	write(color("You detected " + Utils.addArticle(name) + " !", "yellow"))
+	write(color("You detect " + Utils.addArticle(name) + " !", "yellow"))
 	lastPrinted = "writeHiddenTrapDetected"
 
 func writeNoLoot():
@@ -269,8 +269,20 @@ func writeNoLoot():
 	lastPrinted = "writeNoLoot"
 
 func writePickupLoot(item: String, count: int):
-	write("You picked " + Utils.addArticle(item, count) + ".")
+	write("You pick " + Utils.addArticle(item, count) + ".")
 	lastPrinted = "writePickupLoot"
+
+func writeBuyLoot(item: String, count: int, price: int):
+	write(color("You buy " + Utils.addArticle(item, count) + " for " + String(price) + " golds.", "yellow"))
+	lastPrinted = "writeBuyLoot"
+
+func writeNoMoney():
+	write("You don't have enough golds for that.")
+	lastPrinted = "writeNoMoney"
+
+func writeAskToBuy(price: int):
+	write("Do you want to buy that? (Y/n)")
+	lastPrinted = "writeAskToBuy"
 
 func writeNoSkp():
 	write("You don't have any remaining skill point.")
@@ -322,11 +334,11 @@ func writeMonsterDie(name: String):
 	lastPrinted = "writeMonsterDie"
 
 func writeQuaffedPotion(potion: String):
-	write("You quaffed the " + potion + ".")
+	write("You quaff the " + potion + ".")
 	lastPrinted = "writeQuaffedPotion"
 
 func writeMonsterQuaffedPotion(entityName: String, potion: String):
-	write(entityName + " quaffed the " + potion + ".")
+	write(entityName + " quaffes the " + potion + ".")
 	lastPrinted = "writeMonsterQuaffedPotion"
 
 func writeRemoveSleep():

@@ -171,7 +171,7 @@ func spawnMonster(idx: int = 0, pos = null, isAllied: bool = false):
 func addLoot(cell: Vector2, rarityBonus: int):
 	var rarity = (randi() % 1) + rarityBonus
 	for item in Ref.game.itemGenerator.generateItem(rarity):
-		print(GLOBAL.items[item][GLOBAL.IT_NAME])
+		#print(GLOBAL.items[item][GLOBAL.IT_NAME])
 		GLOBAL.dropItemOnFloor(item, cell)
 
 func dropItem():
@@ -204,10 +204,13 @@ func placeTrap(pos: Vector2):
 
 func getLootMessage(cell):
 	var lootList = GLOBAL.getItemList(cell)
+	var forSell = GLOBAL.isForSell(cell)
 	if lootList.keys().size() == 0:
 		return null
 	GLOBAL.itemsOnFloor[cell][GLOBAL.FLOOR_EXP] = true
 	var msg = "You see "
+	if forSell:
+		msg = "It's "
 	var list = []
 	for l in lootList.keys():
 		var items = lootList[l]
@@ -216,7 +219,12 @@ func getLootMessage(cell):
 			list.append(Utils.addArticle(item[GLOBAL.IT_NAME], item[GLOBAL.IT_SPEC]))
 		else:
 			list.append(Utils.addArticle(item[GLOBAL.IT_NAME], items.size()))
-	msg += Utils.makeList(list) + "."
+	msg += Utils.makeList(list)
+	if forSell:
+		msg += " for " + String(GLOBAL.itemsOnFloor[cell][GLOBAL.FLOOR_PRICE]) + " golds"
+		if lootList.values()[0].size() > 1:
+			msg += " each"
+	msg += "."
 	return msg
 
 func getLootChoice(lootList):

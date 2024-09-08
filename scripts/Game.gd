@@ -41,9 +41,8 @@ func _ready():
 		3:
 			Ref.currentLevel.fog.visible = false
 			Ref.currentLevel.shadows.visible = false
-			Ref.character.visible = false
-			dungeonGenerator.newFloor()
-			dungeonGenerator.set_process_input(true)
+			Ref.character.setPosition(dungeonGenerator.newFloor())
+			set_process_input(true)
 		_:
 			Ref.character.init(Data.CL_FIGHTER)
 			startGame()
@@ -214,7 +213,7 @@ func _input(event):
 	elif event.is_action_released("rest"):
 		restHandler.askrForRest()
 	elif (event.is_action_released("debug_new_floor")):
-		saveSystem.saveGame()
+		Ref.character.setPosition(dungeonGenerator.newFloor())
 	elif (event.is_action_released("save")):
 		saveSystem.saveGame()
 	elif (event.is_action_released("load")):

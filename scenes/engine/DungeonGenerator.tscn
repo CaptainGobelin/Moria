@@ -11,6 +11,7 @@
 
 [node name="DungeonGenerator" type="Node"]
 script = ExtResource( 3 )
+biome = 3
 
 [node name="DungeonDecorator" type="Node" parent="."]
 script = ExtResource( 2 )

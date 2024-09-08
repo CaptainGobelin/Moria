@@ -96,7 +96,7 @@ tracks/1/keys = {
 [node name="Game" type="Node2D"]
 scale = Vector2( 4, 4 )
 script = ExtResource( 15 )
-start = 1
+start = 3
 
 [node name="Utils" type="Node" parent="."]
 

@@ -81,6 +81,9 @@ var items: Dictionary = {}
 const FLOOR_IDS = 0
 const FLOOR_INST = 1
 const FLOOR_EXP = 2
+const FLOOR_TO_SELL = 3
+const FLOOR_PRICE = 4
+const FLOOR_RENEWABLE = 5
 var itemsOnFloor: Dictionary = {}
 
 func getItemList(cell: Vector2) -> Dictionary:
@@ -97,7 +100,12 @@ func getItemList(cell: Vector2) -> Dictionary:
 			result[stackId] = [idx]
 	return result
 
-func dropItemOnFloor(idx: int, cell: Vector2):
+func isForSell(cell: Vector2) -> bool:
+	if !itemsOnFloor.has(cell):
+		return false
+	return itemsOnFloor[cell][FLOOR_TO_SELL]
+
+func dropItemOnFloor(idx: int, cell: Vector2, toSell: bool = false, price: int = 1, renewable: bool = false):
 	if itemsOnFloor.has(cell):
 		if items[idx][IT_TYPE] == LO_TYPE or items[idx][IT_TYPE] == GO_TYPE:
 			for i in itemsOnFloor[cell][0]:
@@ -111,7 +119,7 @@ func dropItemOnFloor(idx: int, cell: Vector2):
 		var loot = lootScene.instance()
 		Ref.currentLevel.loots.add_child(loot)
 		loot.init(cell)
-		itemsOnFloor[cell] = [[idx], loot.get_instance_id(), false]
+		itemsOnFloor[cell] = [[idx], loot.get_instance_id(), false, toSell, price, renewable]
 		loot.refreshSprite([idx])
 
 func removeItemFromFloor(idx: int):

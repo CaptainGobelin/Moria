@@ -33,8 +33,18 @@ func newFloor():
 	Ref.currentLevel.npcs.add_child(merchant)
 	merchant.setPosition(masks.get_used_cells_by_id(MERCHANT+1)[0] + roomOffset)
 	merchant.welcome()
+	for c in masks.get_used_cells_by_id(SHOPS+1):
+		generateArticle(c + roomOffset)
 	#Todo generate shops
 	get_parent().drawFloor(array)
 	var entry = masks.get_used_cells_by_id(ENTRY+1)[0] + roomOffset
 	dungeon.set_cellv(entry, GLOBAL.PASS_ID, false, false, false, Vector2(1, 0))
 	return masks.get_used_cells_by_id(SPAWN+1)[0] + roomOffset
+
+func generateArticle(cell: Vector2):
+	var rarity = (randi() % 3) + 1
+	var items = Ref.game.itemGenerator.generateItem(rarity, -1, true)
+	var price = rarity * 5 + (randi() % 20)
+	price = int(ceil(price / items.size()))
+	for item in items:
+		GLOBAL.dropItemOnFloor(item, cell, true, price, false)

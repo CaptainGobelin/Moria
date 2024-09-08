@@ -10,6 +10,7 @@ func addArticle(name: String, nb = 1):
 		name = name.replace(\"Potion\", \"Potions\")
 		name = name.replace(\"Scroll\", \"Scrolls\")
 		name = name.replace(\"knife\", \"knives\")
+		name = name.replace(\"Lockpick\", \"Lockpicks\")
 		return String(nb) + \" \" + name
 	var firstLetter = name[0].to_lower()
 	var article = \"a\"

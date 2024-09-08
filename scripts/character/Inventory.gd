@@ -15,7 +15,7 @@ var scrolls = []
 var throwings = []
 var talismans = []
 var lockpicks = 0 setget updateLockpicks
-var golds = 0 setget updateGolds
+var golds = 100 setget updateGolds
 
 func init(charClass: int):
 	var classKit = Data.CLASS_KITS[charClass]
@@ -55,7 +55,7 @@ func init(charClass: int):
 		throwings = []
 	talismans = []
 	updateLockpicks(classKit[Data.KIT_LO])
-	updateGolds(classKit[Data.KIT_GO])
+	updateGolds(classKit[Data.KIT_GO] + 30)
 
 func getWeapon():
 	return int(currentWeapon.x)
@@ -82,6 +82,9 @@ func updateLockpicks(newValue: int):
 func updateGolds(newValue: int):
 	golds = newValue
 	Ref.ui.updateStat(Data.CHAR_GOLD, newValue)
+
+func pay(amount: int):
+	updateGolds(max(0, golds - amount))
 
 func getWeaponRows():
 	var result = []

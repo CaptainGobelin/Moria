@@ -22,17 +22,19 @@ const TYPE_PROB = [0.19, 0.23, 0.07, 0.05, 0.01, 0.1, 0.1, 0.16]
 
 var id = -1
 
-func getItemType():
+func getItemType(forSell: bool = false):
 	var rnd = randf()
 	var result = 0
 	while rnd >= TYPE_PROB[result]:
 		rnd -= TYPE_PROB[result]
 		result = (result + 1) % TYPE_PROB.size()
+	if forSell and result == GO_IDX:
+		return getItemType(forSell)
 	return result
 
-func generateItem(rarity: int, type: int = -1):
+func generateItem(rarity: int, type: int = -1, forSell: bool = false):
 	if type == -1:
-		type = getItemType()
+		type = getItemType(forSell)
 	match type:
 		WP_IDX: return generateWeapon(rarity)
 		AR_IDX: return generateArmor(rarity)
@@ -109,6 +111,7 @@ func generateShield(rarity: int):
 			break
 	var base = Data.shields[baseIdx].duplicate()
 	id += 1
+	base[Data.SH_NAME][0] = base[Data.SH_NAME][0].capitalize()
 	GLOBAL.items[id] = mapShieldToItem(base, baseIdx)
 	return [id]
 
@@ -134,8 +137,9 @@ func generateArmor(rarity: int):
 	var base = Data.armors[baseIdx].duplicate()
 	var enchants = generateArmorEnchant(rarity, 0)
 	for e in enchants:
-		base[Data.W_NAME] = base[Data.W_NAME] + " " + Data.arEnchants[e][Data.AR_EN_SUF]
+		base[Data.A_NAME] = base[Data.A_NAME] + " " + Data.arEnchants[e][Data.AR_EN_SUF]
 	id += 1
+	base[Data.A_NAME][0] = base[Data.A_NAME][0].capitalize()
 	GLOBAL.items[id] = mapArmorToItem(base, baseIdx)
 	GLOBAL.items[id][GLOBAL.IT_SPEC] = enchants.duplicate()
 	return [id]
