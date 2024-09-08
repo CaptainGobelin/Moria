@@ -4,6 +4,7 @@ onready var monsterScene = preload("res://scenes/Monster.tscn")
 onready var lootScene = preload("res://scenes/Loot.tscn")
 onready var chestScene = preload("res://scenes/Chest.tscn")
 onready var trapScene = preload("res://scenes/Trap.tscn")
+onready var npcScene = preload("res://scenes/Npc.tscn")
 
 var filePath = "res://usr/"
 
@@ -25,6 +26,7 @@ func saveGame():
 	file.store_var(saveMap(), true)
 	file.store_var(saveMonsters(), true)
 	file.store_var(saveAllies(), true)
+	file.store_var(saveNpcs(), true)
 	file.store_var(saveCharacter(), true)
 	file.store_var(saveTraps(), true)
 	file.store_var(saveEngine(), true)
@@ -48,6 +50,7 @@ func loadGame(charName: String):
 	loadMap(file.get_var(true))
 	loadMonsters(file.get_var(true))
 	loadAllies(file.get_var(true))
+	loadNpcs(file.get_var(true))
 	loadCharacter(file.get_var(true))
 	loadTraps(file.get_var(true))
 	loadEngine(file.get_var(true))
@@ -265,6 +268,28 @@ func loadAllies(dict: Dictionary):
 		monster.actions.selfBuffs = m["actions"]["selfBuffs"]
 		monster.actions.selfHeals = m["actions"]["selfHeals"]
 		monster.stats.computeStats()
+
+func saveNpcs() -> Dictionary:
+	var result = []
+	for n in Ref.currentLevel.npcs.get_children():
+		result.append({
+			"type": n.type,
+			"pos": n.pos,
+			"welcome": n.spokeWelcome,
+			"intro": n.spokeIntro
+		})
+	return {
+		"npcs": result
+	}
+
+func loadNpcs(dict: Dictionary):
+	for n in dict["npcs"]:
+		var npc = npcScene.instance()
+		Ref.currentLevel.npcs.add_child(npc)
+		npc.setPosition(n["pos"])
+		npc.type = n["type"]
+		npc.spokeIntro = n["spokeIntro"]
+		npc.spokewelcome = n["spokeWelcome"]
 
 func saveTraps() -> Dictionary:
 	var result = []

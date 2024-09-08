@@ -95,6 +95,8 @@ func cleanFloor():
 	for m in Ref.currentLevel.monsters.get_children():
 		GLOBAL.monstersByPosition.erase(m.pos)
 		m.free()
+	for n in Ref.currentLevel.npcs.get_children():
+		n.free()
 	for c in Ref.currentLevel.chests.get_children():
 		c.free()
 	GLOBAL.chests.clear()

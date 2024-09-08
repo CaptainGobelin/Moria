@@ -14,6 +14,7 @@ onready var underShadows = shadows.get_node("Under")
 onready var traps = get_node("Traps")
 onready var monsters = get_node("Monsters")
 onready var allies = get_node("Allies")
+onready var npcs = get_node("Npcs")
 onready var loots = get_node("Loots")
 onready var chests = get_node("Chests")
 onready var effects = get_node("Effects")
@@ -114,6 +115,9 @@ func isCellFree(cell):
 	for m in monsters.get_children():
 		if cell == m.pos:
 			return [false, "monster", m, true, false]
+	for n in npcs.get_children():
+		if cell == n.pos:
+			return [false, "npc", n, true, false]
 	for m in allies.get_children():
 		if cell == m.pos:
 			return [false, "monster", m, true, false]

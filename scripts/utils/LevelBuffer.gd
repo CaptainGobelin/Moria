@@ -11,6 +11,7 @@ func saveLevel():
 	result["map"] = Ref.game.saveSystem.saveMap()
 	result["traps"] = Ref.game.saveSystem.saveTraps()
 	result["monsters"] = Ref.game.saveSystem.saveMonsters()
+	result["npcs"] = Ref.game.saveSystem.saveNpcs()
 	result["globals"] = Ref.game.saveSystem.saveGlobals()
 	result["pos"] = Ref.character.pos
 	savedLevels[currentLevel] = result
@@ -21,6 +22,7 @@ func loadLevel(level: String):
 	Ref.game.saveSystem.loadMap(data["map"])
 	Ref.game.saveSystem.loadTraps(data["traps"])
 	Ref.game.saveSystem.loadMonsters(data["monsters"])
+	Ref.game.saveSystem.loadNpcs(data["npcs"])
 	Ref.game.saveSystem.loadGlobals(data["globals"])
 	Ref.character.setPosition(data["pos"])
 	savedLevels.erase(level)
@@ -37,6 +39,8 @@ func clearLevel():
 	for m in Ref.currentLevel.monsters.get_children():
 		GLOBAL.monstersByPosition.erase(m.pos)
 		m.free()
+	for n in Ref.currentLevel.npcs.get_children():
+		n.free()
 	for c in Ref.currentLevel.chests.get_children():
 		c.free()
 	GLOBAL.chests.clear()

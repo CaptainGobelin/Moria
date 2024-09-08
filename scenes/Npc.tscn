@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://sprites/chars.png" type="Texture" id=1]
+[ext_resource path="res://scripts/Npc.gd" type="Script" id=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Object
+
+const NAME = \"Merchant\"
+
+const WELCOME = \"Greetings traveler, welcome to my humble shop.\"
+const INTRO = \"To buy an item, just pick it up.\"
+const DIALOGUES = [
+	\"Adventurers are rare in there...\",
+	\"How can I help you?\"
+]
+"
+
+[node name="NPC" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="BodySprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+centered = false
+hframes = 4
+vframes = 16
+frame = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Merchant" type="Node" parent="."]
+script = SubResource( 1 )

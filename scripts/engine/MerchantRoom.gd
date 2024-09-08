@@ -1,5 +1,7 @@
 extends Node2D
 
+onready var npcScene = preload("res://scenes/Npc.tscn")
+
 onready var map = get_node("Walls")
 onready var masks = get_node("Masks")
 
@@ -25,6 +27,12 @@ func newFloor():
 			array[i].append(GLOBAL.WALL_ID)
 	for c in map.get_used_cells():
 		array[c.x+roomOffset.x][c.y+roomOffset.y] = map.get_cellv(c)
+		#Spawn shopkeeper
+	var merchant = npcScene.instance()
+	merchant.type = merchant.MERCHANT_TYPE
+	Ref.currentLevel.npcs.add_child(merchant)
+	merchant.setPosition(masks.get_used_cells_by_id(MERCHANT+1)[0] + roomOffset)
+	merchant.welcome()
 	#Todo generate shops
 	get_parent().drawFloor(array)
 	var entry = masks.get_used_cells_by_id(ENTRY+1)[0] + roomOffset

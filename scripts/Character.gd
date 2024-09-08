@@ -71,6 +71,9 @@ func moveAsync(movement):
 				return
 			hit(cellState[2])
 			GeneralEngine.newTurn()
+		"npc":
+			cellState[2].speak()
+			GeneralEngine.newTurn()
 		"pass": 
 			Ref.ui.askToChangeFloor()
 			Ref.ui.askForYesNo(Ref.game)
