@@ -8,6 +8,11 @@ onready var dungeon: TileMap
 
 export (int, "Normal, Cavern, Arena, Merchant") var biome = 0
 
+var texture = [
+	"res://sprites/walls.png",
+	"res://sprites/walls-cavern.png"
+]
+
 # Door: [position:Vector2, direction:String]
 var waitingDoors:Array = []
 var validatedDoors:Array = []
@@ -26,8 +31,10 @@ func newFloor(specialBiome = biome):
 	Ref.game.cleanFloor()
 	match specialBiome:
 		0:
+			changeTilesetTexture(0)
 			return normalBiome.newFloor()
 		1:
+			changeTilesetTexture(1)
 			return cavernBiome.newFloor()
 		2:
 			return simpleFloor()
@@ -65,3 +72,8 @@ func drawFloor(floorArray: Array):
 	dungeon.update_bitmask_region()
 	for cell in dungeon.get_used_cells_by_id(GLOBAL.DOOR_ID):
 		dungeon.set_cellv(cell, GLOBAL.DOOR_ID, false, false, false, Vector2(0,1))
+
+func changeTilesetTexture(index: int):
+	var texture = load(texture[index])
+	for id in Ref.currentLevel.dungeon.tile_set.get_tiles_ids():
+		Ref.currentLevel.dungeon.tile_set.tile_set_texture(id, texture)

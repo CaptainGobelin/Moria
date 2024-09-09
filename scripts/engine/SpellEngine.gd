@@ -203,7 +203,6 @@ func command(entity, rank: int):
 func light(entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)
 	var turns = getTurns(Data.SP_COMMAND, rank)
-	var statusRank = 0
 	if rank == 0:
 		applySpellStatus(entity, Data.STATUS_LIGHT, 0, turns)
 	else:

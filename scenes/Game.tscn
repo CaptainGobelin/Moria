@@ -96,7 +96,7 @@ tracks/1/keys = {
 [node name="Game" type="Node2D"]
 scale = Vector2( 4, 4 )
 script = ExtResource( 15 )
-start = 3
+start = 1
 
 [node name="Utils" type="Node" parent="."]
 
@@ -164,7 +164,6 @@ cell_size = Vector2( 9, 9 )
 format = 1
 
 [node name="Shadows" type="TileMap" parent="CurrentLevel"]
-visible = false
 tile_set = ExtResource( 3 )
 cell_size = Vector2( 9, 9 )
 format = 1
@@ -504,6 +503,7 @@ position = Vector2( 351, 144 )
 position = Vector2( 351, 126 )
 
 [node name="FadePanel" type="ColorRect" parent="UI"]
+visible = false
 margin_right = 477.0
 margin_bottom = 270.0
 color = Color( 0.141176, 0.192157, 0.215686, 1 )
