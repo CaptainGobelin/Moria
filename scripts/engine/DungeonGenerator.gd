@@ -8,7 +8,7 @@ onready var dungeon: TileMap
 
 export (int, "Normal, Cavern, Arena, Merchant") var biome = 0
 
-var texture = [
+var textures = [
 	"res://sprites/walls.png",
 	"res://sprites/walls-cavern.png"
 ]
@@ -34,6 +34,7 @@ func newFloor(specialBiome = biome):
 			changeTilesetTexture(0)
 			return normalBiome.newFloor()
 		1:
+			changeTilesetTexture(1)
 			changeTilesetTexture(1)
 			return cavernBiome.newFloor()
 		2:
@@ -74,6 +75,6 @@ func drawFloor(floorArray: Array):
 		dungeon.set_cellv(cell, GLOBAL.DOOR_ID, false, false, false, Vector2(0,1))
 
 func changeTilesetTexture(index: int):
-	var texture = load(texture[index])
+	var texture = load(textures[index])
 	for id in Ref.currentLevel.dungeon.tile_set.get_tiles_ids():
 		Ref.currentLevel.dungeon.tile_set.tile_set_texture(id, texture)

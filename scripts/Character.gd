@@ -227,7 +227,7 @@ func search():
 
 func rollPerception(cell: Vector2):
 	var perceptionRoll = GeneralEngine.dice(1, 6, 0).roll()
-	if perceptionRoll > 3:
+	if perceptionRoll > 4:
 		# Detect traps
 		if GLOBAL.trapsByPos.has(cell):
 			TrapEngine.reveal(cell)
