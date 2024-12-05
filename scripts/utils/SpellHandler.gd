@@ -71,7 +71,7 @@ func castSpellAsync(spellId: int, scrollId = null):
 			spellCasted = true
 		Data.SP_TARGET_ITEM_CHOICE:
 			Ref.ui.writeWishChoice()
-			Ref.ui.askForChoice(wishableItems, self)
+			Ref.ui.askForChoice(wishableItems, Ref.game)
 			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
 			if coroutineReturn > 0:
 				SpellEngine.applyEffect(Ref.character, spellId, true, spellRank, wishableItems[coroutineReturn-1])
