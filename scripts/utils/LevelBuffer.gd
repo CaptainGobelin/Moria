@@ -19,12 +19,12 @@ func saveLevel():
 func loadLevel(level: String):
 	clearLevel()
 	var data = savedLevels[level]
-	Ref.game.saveSystem.loadMap(data["map"])
-	Ref.game.saveSystem.loadTraps(data["traps"])
-	Ref.game.saveSystem.loadMonsters(data["monsters"])
-	Ref.game.saveSystem.loadNpcs(data["npcs"])
-	Ref.game.saveSystem.loadGlobals(data["globals"])
-	Ref.character.setPosition(data["pos"])
+	Ref.game.saveSystem.loadMap(savedLevels[level]["map"])
+	Ref.game.saveSystem.loadTraps(savedLevels[level]["traps"])
+	Ref.game.saveSystem.loadMonsters(savedLevels[level]["monsters"])
+	Ref.game.saveSystem.loadNpcs(savedLevels[level]["npcs"])
+	Ref.game.saveSystem.loadGlobals(savedLevels[level]["globals"])
+	Ref.character.setPosition(savedLevels[level]["pos"])
 	savedLevels.erase(level)
 	currentLevel = level
 

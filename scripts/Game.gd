@@ -124,6 +124,7 @@ func merchantFloor():
 		Ref.currentLevel.initShadows()
 		Ref.currentLevel.placeCharacter(spawnPos)
 		Ref.currentLevel.levelBuffer.currentLevel = "merchant"
+		Ref.currentLevel.levelBuffer.saveLevel()
 
 func newFloor():
 	Ref.currentLevel.levelBuffer.flush()
@@ -136,8 +137,8 @@ func newFloor():
 		if cell == null:
 			a.die()
 		a.setPosition(cell)
-	for _i in range(0):
-		Ref.currentLevel.spawnMonster()
+	for i in range(9):
+		Ref.currentLevel.spawnMonster(i)
 	for _i in range(randi() % 4):
 		Ref.currentLevel.createChest()
 	for _i in range(3 + (randi() % 4)):
