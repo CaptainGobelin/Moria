@@ -1,0 +1,9 @@
+ID,Name,CR,Hp,Hit,Damages,DamageType,AC,Prot,Save,PHY,WIL
+1,Giant bat,1,L,L,1d4,Slash,L,L,L,H,L
+2,Snake,1,N,N,1d4,Slash,L,N,L,H,L
+3,Giant leech,2,L,N,1d4,Slash,L,N,L,L,L
+4,Lesser skeleton,2,N,N,1d4,Slash,H,H,N,N,N
+5,Goblin,3,N,H,1d6,Blunt,N,L,N,N,N
+6,Spider,4,N,H,2d4,Slash,H,N,L,H,L
+7,Shaman goblin,5,N,L,1d6,Blunt,N,L,H,N,H
+8,Zombie,5,L,N,1d10,Blunt,L,H,L,L,L

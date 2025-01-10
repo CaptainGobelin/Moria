@@ -72,6 +72,25 @@ func toRoman(number: int) -> String:
 		9:
 			return \"IX\"
 	return String(number)
+
+func diceToVector(dice: String) -> Vector3:
+	var result = Vector3()
+	result.x = dice.get_slice(\"d\", 0).to_int()
+	result.y = dice.get_slice(\"d\", 1).to_int()
+	return result
+
+func csvToDict(filename: String) -> Dictionary:
+	var result = {}
+	var file = File.new()
+	file.open(\"res://data/\" + filename, File.READ)
+	var columns = file.get_csv_line()
+	while not file.eof_reached():
+		var line = file.get_csv_line()
+		result[line[0]] = {}
+		for i in range(1, line.size()):
+			result[line[0]][columns[i]] = line[i]
+	file.close()
+	return result
 "
 
 [node name="Utils" type="Node"]

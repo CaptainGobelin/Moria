@@ -171,6 +171,14 @@ const classes = {
 
 # Monsters
 const MO_SKELETON = 0
+const MO_GIANT_BAT = 1
+const MO_GIANT_SNAKE = 2
+const MO_GIANT_LEECH = 3
+const MO_LESSER_SKELETON = 4
+const MO_GOBLIN = 5
+const MO_SPIDER = 6
+const MO_SHAMAN_GOBLIN = 7
+const MO_ZOMBIE = 8
 const MO_SUM_WOLF = 900
 const MO_SUM_HAMMER = 901 #902 903 reserved also
 const MO_DUMMY = 1000
@@ -187,7 +195,8 @@ const MO_MOVE = 8
 const MO_CASTER_LVL = 9
 const MO_WIL = 10
 const MO_PHY = 11
-const MO_ACTIONS = 12
+const MO_CR = 12
+const MO_ACTIONS = 13
 const ACT_THROW = 0
 const ACT_SPELL = 1
 const ACT_BUFF = 2
@@ -201,37 +210,94 @@ const ACT_SUBTYPE_POTION = 0
 const ACT_SUBTYPE_SPELL = 1
 const monsters = {
 	MO_SKELETON: [
+		#Name HP Hit Dmg
 		"Skeleton", 6, 0, Vector3(1, 4, 0),
-		3, 1, 2, 4, true, 1, 0, 0,
+		#AC Prot Sprite XP MOVE
+		3, 1, 2, 4, true,
+		#CasterLvl WIL PHY CR
+		1, 0, 0, 1,
 		[
 			[0, ACT_THROW, null, 2],
 			[SP_BLESS, ACT_BUFF, ACT_SUBTYPE_SPELL, 1],
 			[SP_FIREBOLT, ACT_SPELL, ACT_SUBTYPE_SPELL, 5],
 		]
 	],
+	MO_GIANT_BAT: [
+		"Giant bat", 4, -1, Vector3(1, 1, 0),
+		3, 0, 8, 4, true,
+		1, 0, 0, 1,
+		[]
+	],
+	MO_GIANT_SNAKE: [
+		"Giant snake", 4, -1, Vector3(1, 1, 0),
+		3, 0, 29, 4, true,
+		1, 0, 0, 1,
+		[]
+	],
+	MO_GIANT_LEECH: [
+		"Giant leech", 4, -1, Vector3(1, 1, 0),
+		3, 0, 25, 4, true,
+		1, 0, 0, 2,
+		[]
+	],
+	MO_LESSER_SKELETON: [
+		"Lesser skeleton", 4, -1, Vector3(1, 1, 0),
+		3, 0, 30, 4, true,
+		1, 0, 0, 2,
+		[]
+	],
+	MO_GOBLIN: [
+		"Goblin", 4, -1, Vector3(1, 1, 0),
+		3, 0, 1, 4, true,
+		1, 0, 0, 3,
+		[]
+	],
+	MO_SPIDER: [
+		"Spider", 4, -1, Vector3(1, 1, 0),
+		3, 0, 3, 4, true,
+		1, 0, 0, 4,
+		[]
+	],
+	MO_SHAMAN_GOBLIN: [
+		"Shaman goblin", 4, -1, Vector3(1, 1, 0),
+		3, 0, 5, 4, true,
+		1, 0, 0, 5,
+		[]
+	],
+	MO_ZOMBIE: [
+		"Zombie", 4, -1, Vector3(1, 1, 0),
+		3, 0, 22, 4, true,
+		1, 0, 0, 5,
+		[]
+	],
 	MO_SUM_WOLF: [
 		"Conjured wolf", 10, 0, Vector3(1, 6, 0),
-		2, 0, 24, 0, true, 1, 0, 0,
+		2, 0, 24, 0, true,
+		1, 0, 0, 1,
 		[]
 	],
 	MO_SUM_HAMMER: [
 		"Spiritual hammer", 4, 1, Vector3(1, 4, 0),
-		4, 2, 28, 0, true, 1, 0, 0,
+		4, 2, 28, 0, true,
+		1, 0, 0, 1,
 		[]
 	],
 	MO_SUM_HAMMER+1: [
 		"Spiritual hammer II", 4, 1, Vector3(1, 4, 0),
-		4, 2, 28, 0, true, 1, 0, 0,
+		4, 2, 28, 0, true,
+		1, 0, 0, 1,
 		[]
 	],
 	MO_SUM_HAMMER+2: [
 		"Spiritual hammer III", 4, 1, Vector3(1, 4, 0),
-		4, 2, 28, 0, true, 1, 0, 0,
+		4, 2, 28, 0, true,
+		1, 0, 0, 1,
 		[]
 	],
 	MO_DUMMY: [
 		"Dummy target", 100, 0, Vector3(1, 1, 0),
-		2, 1, 1, 10, false, 1, 0, 0,
+		2, 1, 1, 10, false,
+		1, 0, 0, 1,
 		[]
 	],
 }
@@ -241,6 +307,24 @@ const monsterTags = {
 	MO_SUM_WOLF: ["animal", "summoned"],
 	MO_SUM_HAMMER: ["animated", "summoned"]
 }
+
+func monstersReader():
+	var statsCsv = Utils.csvToDict("MONSTER_STATS.csv")
+	var monstersCsv = Utils.csvToDict("MONSTERS.csv")
+	for idx in monstersCsv.keys():
+		if monsters.has(idx):
+			monsters[idx][MO_NAME] = monstersCsv[idx]["Name"]
+			monsters[idx][MO_CR] = monstersCsv[idx]["CR"]
+			monsters[idx][MO_HP] = statsCsv[monsters[idx][MO_CR]]["HP-" + monstersCsv[idx]["Hp"]]
+			monsters[idx][MO_HIT] = statsCsv[monsters[idx][MO_CR]]["Hit-" + monstersCsv[idx]["Hit"]]
+			monsters[idx][MO_DMG].x = Utils.diceToVector(monstersCsv[idx]["Damages"])
+			#Damage type
+			#monsters[idx][MO_HP] = statsCsv[monsters[idx][MO_CR]]["HP-" + monstersCsv[idx]["Hp"]]
+			monsters[idx][MO_CA] = statsCsv[monsters[idx][MO_CR]]["AC-" + monstersCsv[idx]["AC"]]
+			monsters[idx][MO_PROT] = statsCsv[monsters[idx][MO_CR]]["Prot-" + monstersCsv[idx]["Prot"]]
+			monsters[idx][MO_CASTER_LVL] = statsCsv[monsters[idx][MO_CR]]["Save-" + monstersCsv[idx]["Save"]]
+			monsters[idx][MO_PHY] = statsCsv[monsters[idx][MO_CR]]["PHY-" + monstersCsv[idx]["PHY"]]
+			monsters[idx][MO_WIL] = statsCsv[monsters[idx][MO_CR]]["PHY-" + monstersCsv[idx]["WIL"]]
 
 # Stats
 const CHAR_NAME = -1
@@ -1032,6 +1116,7 @@ func encountersReader():
 			encountersCumultaiveProb[biome] += encounter[ENC_PROB]
 
 func _ready():
+	monstersReader()
 	weaponsReader()
 	shieldsReader()
 	armorsReader()
