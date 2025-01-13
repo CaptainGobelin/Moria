@@ -219,3 +219,8 @@ func _input(event):
 		saveSystem.saveGame()
 	elif (event.is_action_released("load")):
 		saveSystem.loadGame(Ref.character.stats.charName)
+	elif (event.is_action_released("no")):
+		Ref.ui.askForContinue(self)
+		var coroutineReturn = yield(Ref.ui, "coroutine_signal")
+		if coroutineReturn:
+			pass

@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=2]
+[gd_scene load_steps=40 format=2]
 
 [ext_resource path="res://scenes/engine/DungeonGenerator.tscn" type="PackedScene" id=1]
 [ext_resource path="res://tilesets/basic.tres" type="TileSet" id=2]
@@ -36,6 +36,7 @@
 [ext_resource path="res://scripts/ui/FadePanel.gd" type="Script" id=34]
 [ext_resource path="res://scripts/utils/SaveSystem.gd" type="Script" id=35]
 [ext_resource path="res://scripts/utils/LevelBuffer.gd" type="Script" id=36]
+[ext_resource path="res://scripts/ui/ContinueHandler.gd" type="Script" id=37]
 
 [sub_resource type="Animation" id=1]
 resource_name = "FadeIn"
@@ -199,6 +200,9 @@ script = ExtResource( 23 )
 
 [node name="DirectionHandler" type="Node" parent="UI/Utils"]
 script = ExtResource( 29 )
+
+[node name="ContinueHandler" type="Node" parent="UI/Utils"]
+script = ExtResource( 37 )
 
 [node name="TextBox" type="TileMap" parent="UI"]
 position = Vector2( 9, 189 )

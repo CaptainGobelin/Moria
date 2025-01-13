@@ -9,6 +9,7 @@ onready var choiceHandler = get_node("Utils/ChoiceHandler")
 onready var yesNoHandler = get_node("Utils/YesNoHandler")
 onready var directionHandler = get_node("Utils/DirectionHandler")
 onready var targetHandler = get_node("Utils/TargetHandler")
+onready var continueHandler = get_node("Utils/ContinueHandler")
 
 onready var diary = get_node("TextBox/TextContainer/DiaryPanel")
 onready var nameLabel = get_node("SideMenu/Name/Label")
@@ -86,6 +87,14 @@ func askForTarget(targets: Array, inputer):
 	var result = yield(targetHandler, "end_coroutine")
 	if result == -1:
 		writeOk()
+	GLOBAL.currentMode = previousMode
+	MasterInput.setMaster(inputer)
+	emit_signal("coroutine_signal", result)
+
+func askForContinue(inputer):
+	previousMode = GLOBAL.currentMode
+	continueHandler.startCoroutine()
+	var result = yield(continueHandler, "end_coroutine")
 	GLOBAL.currentMode = previousMode
 	MasterInput.setMaster(inputer)
 	emit_signal("coroutine_signal", result)
