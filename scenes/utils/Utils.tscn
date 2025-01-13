@@ -79,6 +79,18 @@ func diceToVector(dice: String) -> Vector3:
 	result.y = dice.get_slice(\"d\", 1).to_int()
 	return result
 
+func damageTypeFromString(type: String) -> int:
+	match type:
+		\"Slash\": return Data.DMG_SLASH
+		\"Blunt\": return Data.DMG_BLUNT
+		\"Fire\": return Data.DMG_FIRE
+		\"Ice\": return Data.DMG_ICE
+		\"Poison\": return Data.DMG_POISON
+		\"Radiant\": return Data.DMG_RADIANT
+		\"Magic\": return Data.DMG_MAGIC
+		\"Shock\": return Data.DMG_LIGHTNING
+	return Data.DMG_SLASH
+
 func csvToDict(filename: String) -> Dictionary:
 	var result = {}
 	var file = File.new()
