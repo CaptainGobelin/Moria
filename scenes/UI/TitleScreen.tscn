@@ -1,0 +1,158 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://sprites/title2.png" type="Texture" id=1]
+[ext_resource path="res://sprites/title3.png" type="Texture" id=2]
+[ext_resource path="res://sprites/title1.png" type="Texture" id=3]
+[ext_resource path="res://sprites/title4.png" type="Texture" id=4]
+[ext_resource path="res://sprites/title_doors_open3.png" type="Texture" id=5]
+[ext_resource path="res://sprites/title_doors_open4.png" type="Texture" id=6]
+[ext_resource path="res://sprites/title_doors_open2.png" type="Texture" id=7]
+[ext_resource path="res://sprites/title_doors_closed.png" type="Texture" id=8]
+[ext_resource path="res://sprites/title_doors_open1.png" type="Texture" id=9]
+
+[sub_resource type="GDScript" id=5]
+script/source = "extends Node2D
+
+
+# Declare member variables here. Examples:
+# var a = 2
+# var b = \"text\"
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	set_process_input(true)
+
+
+func _input(event):
+	if event.is_action_released(\"no\"):
+		get_node(\"Animator\").play(\"EnterDoor\")
+"
+
+[sub_resource type="AnimatedTexture" id=3]
+frames = 4
+fps = 6.0
+frame_0/texture = ExtResource( 3 )
+frame_1/texture = ExtResource( 1 )
+frame_1/delay_sec = 0.0
+frame_2/texture = ExtResource( 2 )
+frame_2/delay_sec = 0.0
+frame_3/texture = ExtResource( 4 )
+frame_3/delay_sec = 0.0
+
+[sub_resource type="AnimatedTexture" id=4]
+frames = 5
+pause = true
+oneshot = true
+frame_0/texture = ExtResource( 8 )
+frame_1/texture = ExtResource( 9 )
+frame_1/delay_sec = 0.0
+frame_2/texture = ExtResource( 7 )
+frame_2/delay_sec = 0.0
+frame_3/texture = ExtResource( 5 )
+frame_3/delay_sec = 0.0
+frame_4/texture = ExtResource( 6 )
+frame_4/delay_sec = 0.0
+
+[sub_resource type="Animation" id=1]
+resource_name = "EnterDoor"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Background:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 4, 4 ), Vector2( 7, 7 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Background/Door:texture:pause")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("ColorRect:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Background:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 4, 4 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Background/Door:texture:pause")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("ColorRect:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+
+[node name="TitleScreen" type="Node2D"]
+script = SubResource( 5 )
+
+[node name="Background" type="Sprite" parent="."]
+position = Vector2( 1308, 520 )
+scale = Vector2( 4, 4 )
+texture = SubResource( 3 )
+centered = false
+offset = Vector2( -327, -130 )
+
+[node name="Door" type="Sprite" parent="Background"]
+show_behind_parent = true
+position = Vector2( -87, 5 )
+texture = SubResource( 4 )
+
+[node name="Animator" type="AnimationPlayer" parent="."]
+anims/EnterDoor = SubResource( 1 )
+anims/RESET = SubResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+self_modulate = Color( 1, 1, 1, 0 )
+margin_right = 1944.0
+margin_bottom = 1116.0
+color = Color( 0.141176, 0.192157, 0.215686, 1 )

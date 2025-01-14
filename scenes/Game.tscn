@@ -97,7 +97,6 @@ tracks/1/keys = {
 [node name="Game" type="Node2D"]
 scale = Vector2( 4, 4 )
 script = ExtResource( 15 )
-start = 1
 
 [node name="Utils" type="Node" parent="."]
 
@@ -510,6 +509,7 @@ position = Vector2( 351, 126 )
 
 [node name="FadePanel" type="ColorRect" parent="UI"]
 visible = false
+modulate = Color( 1, 1, 1, 0 )
 margin_right = 477.0
 margin_bottom = 270.0
 color = Color( 0.141176, 0.192157, 0.215686, 1 )
