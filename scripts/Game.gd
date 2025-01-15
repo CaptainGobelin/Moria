@@ -2,7 +2,7 @@ extends Node2D
 
 class_name Game
 
-export (int, "Normal, Fast, Tests, Dungeon") var start = 0
+export (int, "Normal, Fast, Tests, Dungeon, Menu") var start = 0
 
 onready var inventoryMenu = get_node("InventoryMenu")
 onready var characterMenu = get_node("CharacterMenu")
@@ -25,6 +25,10 @@ var random_seed: int
 var autoexplore = false setget setAutoExplore
 
 func _ready():
+	if GLOBAL.startingMode != null:
+		start = GLOBAL.startingMode
+	if start == 4:
+		get_tree().change_scene("res://scenes/UI/TitleScreen.tscn")
 	randomize()
 	var randomSeed = randi()
 	seed(randomSeed)

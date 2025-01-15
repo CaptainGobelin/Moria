@@ -2,6 +2,8 @@ extends Node
 
 onready var lootScene = preload("res://scenes/Loot.tscn")
 
+var startingMode = null
+
 # Game modes
 const MODE_NONE = 0
 const MODE_NORMAL = 1
