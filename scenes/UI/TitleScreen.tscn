@@ -44,7 +44,7 @@ func validateChoice():
 		0:
 			set_process_input(false)
 			animator.play(\"EnterDoor\")
-		5: 
+		5:
 			get_tree().notification(MainLoop.NOTIFICATION_WM_QUIT_REQUEST)
 
 
