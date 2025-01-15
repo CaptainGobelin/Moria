@@ -1,0 +1,9 @@
+Class,HP,Combat,Armor,Evocation,Enchantment,Divination,Abjuration,Conjuration,Physics,Willpower,Perception,Thievery
+Fighter,10,2,2,0,0,0,0,0,2,1,1,1
+Thief,8,2,1,0,0,0,0,0,1,1,2,2
+Mage,6,0,0,2,-1,-1,-1,-1,0,2,1,1
+Cleric,8,0,1,2,-1,-1,-1,-1,1,2,0,0
+Paladin,10,2,2,1,0,0,0,0,1,2,0,0
+Bard,8,1,1,0,2,1,0,0,0,2,0,2
+Druid,8,0,1,1,0,2,2,0,1,0,2,0
+Ranger,10,2,1,0,0,1,0,0,2,0,2,0

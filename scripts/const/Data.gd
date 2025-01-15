@@ -159,15 +159,34 @@ const SP_LIST_DIVINE = 1
 const SP_LIST_NATURE = 2
 
 const classes = {
-	CL_FIGHTER: ["Fighter", 10, 5, [2, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0], [2, 2, 0, 0, 0, 0, 0, 2, 1, 1, 1], SP_LIST_ARCANE],
+	#								C  A  E  E  D  A  C  P  W  P  T    C  A  E  E  D  A  C  P  W  P  T
+	CL_FIGHTER: ["Fighter", 10, 5, [1, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0], [2, 2, 0, 0, 0, 0, 0, 2, 1, 1, 1], SP_LIST_ARCANE],
 	CL_THIEF: 	["Thief", 	 8, 4, [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1], [2, 1, 0, 0, 0, 0, 0, 1, 1, 2, 2], SP_LIST_ARCANE],
 	CL_MAGE: 	["Mage", 	 6, 3, [0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0], [0, 0, 2,-1,-1,-1,-1, 0, 2, 1, 0], SP_LIST_ARCANE],
 	CL_CLERIC: 	["Cleric", 	 8, 4, [0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0], [0, 1, 2,-1,-1,-1,-1, 1, 2, 0, 0], SP_LIST_DIVINE],
 	CL_PALADIN: ["Paladin", 10, 5, [1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0], [2, 2, 1, 0, 0, 1, 0, 1, 2, 0, 0], SP_LIST_DIVINE],
-	CL_BARD:	["Bard", 	 8, 4, [1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1], [1, 1, 0, 2, 9, 1, 0, 0, 2, 0, 2], SP_LIST_ARCANE],
-	CL_DRUID:	["Druid", 	 8, 4, [0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0], [0, 1, 1, 0, 1, 2, 2, 1, 0, 2, 0], SP_LIST_NATURE],
-	CL_RANGER: 	["Ranger", 	10, 5, [1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1], [2, 1, 0, 0, 1, 0, 0, 2, 0, 2, 1], SP_LIST_NATURE],
+	CL_BARD:	["Bard", 	 8, 4, [1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2], [1, 1, 0, 2, 9, 1, 0, 0, 2, 0, 2], SP_LIST_ARCANE],
+	CL_DRUID:	["Druid", 	 8, 4, [0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0], [0, 1, 1, 0, 1, 2, 2, 1, 0, 2, 0], SP_LIST_NATURE],
+	CL_RANGER: 	["Ranger", 	10, 5, [1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0], [2, 1, 0, 0, 1, 0, 0, 2, 0, 2, 1], SP_LIST_NATURE],
 }
+
+func classesReader():
+	var classesCsv = Utils.csvToDict("CLASSES.csv")
+	for idx in classesCsv.keys():
+		if classes.has(idx):
+			classes[idx][CL_HP] = classesCsv[idx]["HP"]
+			classes[idx][CL_HPLVL] = int(classesCsv[idx]["HP"]/2)
+			classes[idx][CL_SKMAS][SK_COMBAT] = classesCsv[idx]["Combat"]
+			classes[idx][CL_SKMAS][SK_ARMOR] = classesCsv[idx]["Armor"]
+			classes[idx][CL_SKMAS][SK_PHY] = classesCsv[idx]["Physics"]
+			classes[idx][CL_SKMAS][SK_WIL] = classesCsv[idx]["Willpower"]
+			classes[idx][CL_SKMAS][SK_PER] = classesCsv[idx]["Perception"]
+			classes[idx][CL_SKMAS][SK_THI] = classesCsv[idx]["Thievery"]
+			classes[idx][CL_SKMAS][SK_ENCH] = classesCsv[idx]["Enchantment"]
+			classes[idx][CL_SKMAS][SK_EVOC] = classesCsv[idx]["Evocation"]
+			classes[idx][CL_SKMAS][SK_ABJ] = classesCsv[idx]["Abjuration"]
+			classes[idx][CL_SKMAS][SK_DIV] = classesCsv[idx]["Divination"]
+			classes[idx][CL_SKMAS][SK_CONJ] = classesCsv[idx]["Conjuration"]
 
 # Monsters
 const MO_SKELETON = 0
@@ -1116,6 +1135,7 @@ func encountersReader():
 			encountersCumultaiveProb[biome] += encounter[ENC_PROB]
 
 func _ready():
+	classesReader()
 	monstersReader()
 	weaponsReader()
 	shieldsReader()
