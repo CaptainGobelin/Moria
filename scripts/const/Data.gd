@@ -1115,6 +1115,14 @@ const BIOME_CRYPT = 3
 const BIOME_VOLCANO = 4
 const BIOME_ABYSS = 5
 
+const BI_CR = 0
+const BI_FLOORS = 1
+const BI_CONNECT = 2
+const biomes = {
+	BIOME_DUNGEON = [3, 5, [BIOME_CAVERN]],
+	BIOME_CAVERN = 	[6, 5, []],
+}
+
 const ENC_MONSTERS = 0
 const ENC_PROB = 1
 const ENC_DIFF = 2

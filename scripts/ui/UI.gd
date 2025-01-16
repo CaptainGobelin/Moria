@@ -14,6 +14,7 @@ onready var continueHandler = get_node("Utils/ContinueHandler")
 onready var diary = get_node("TextBox/TextContainer/DiaryPanel")
 onready var shortcuts = get_node("Shortcuts/TextContainer/Label")
 onready var nameLabel = get_node("SideMenu/Name/Label")
+onready var locationLabel = get_node("SideMenu/Location/Label")
 onready var levelLabel = get_node("SideMenu/Level/Label/Level")
 onready var xpLabel = get_node("SideMenu/Level/Label/CurrentXP")
 onready var maxXpLabel = get_node("SideMenu/Level/Label/MaxXP")
@@ -456,3 +457,11 @@ func updateStat(stat: int, value):
 				rPois.text += "-"
 			for i in range(value[0]):
 				rPois.text[i] = "*"
+
+func updateLocation(biome: int, currentFloor: int):
+	locationLabel = "in "
+	match biome:
+		Data.BIOME_DUNGEON:
+			locationLabel += "Dungeon " + Utils.toRoman(currentFloor)
+		Data.BIOME_CAVERN:
+			locationLabel += "Cavern " + Utils.toRoman(currentFloor)
