@@ -153,6 +153,22 @@ func _input(event):
 		setAutoExplore(false)
 	elif (event.is_action_pressed("autoexplore")):
 		setAutoExplore(not autoexplore)
+	for i in range(1, 10):
+		if (event.is_action_released("shortcut" + String(i))):
+			var item = Ref.character.shortcuts.getItem(i)
+			if item != null:
+				match Ref.character.shortcuts.shortcutsType[i]:
+					GLOBAL.WP_TYPE:
+						pass
+					GLOBAL.PO_TYPE:
+						Ref.character.quaffPotion(item)
+					GLOBAL.SC_TYPE:
+						Ref.game.spellHandler.castSpellAsync(GLOBAL.items[item][GLOBAL.IT_SPEC], item)
+					GLOBAL.TH_TYPE:
+						Ref.game.throwHandler.throwAsync(item)
+					GLOBAL.SP_TYPE:
+						Ref.game.spellHandler.castSpellAsync(GLOBAL.items[item][GLOBAL.IT_SPEC], item)
+				return
 	if (event.is_action_pressed("ui_up")):
 		Ref.character.moveAsync(Vector2(0,-1))
 	elif (event.is_action_pressed("ui_down")):
@@ -169,50 +185,6 @@ func _input(event):
 		spellMenu.open()
 	elif (event.is_action_released("pickLoot")):
 		pickupLootHandler.pickupLootAsync()
-	elif (event.is_action_released("castSpell")):
-		var choices = Ref.character.shortcuts.getShortcutList(GLOBAL.SP_TYPE)
-		if choices == null:
-			Ref.ui.writeNoSpellAssigned()
-		else:
-			Ref.ui.writeWhichSpell(choices)
-			Ref.ui.askForChoice(choices, self)
-			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
-			if coroutineReturn > 0:
-				var spell = Ref.character.shortcuts.getItem(coroutineReturn, GLOBAL.SP_TYPE)
-				spellHandler.castSpellAsync(spell)
-	elif (event.is_action_released("throw")):
-		var choices = Ref.character.shortcuts.getShortcutList(GLOBAL.TH_TYPE)
-		if choices == null:
-			Ref.ui.writeNoThrowingAssigned()
-		else:
-			Ref.ui.writeWhichThrowing(choices)
-			Ref.ui.askForChoice(choices, self)
-			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
-			if coroutineReturn > 0:
-				var item = Ref.character.shortcuts.getItem(coroutineReturn, GLOBAL.TH_TYPE)
-				Ref.game.throwHandler.throwAsync(item)
-	elif (event.is_action_released("readScroll")):
-		var choices = Ref.character.shortcuts.getShortcutList(GLOBAL.SC_TYPE)
-		if choices == null:
-			Ref.ui.writeNoScrollAssigned()
-		else:
-			Ref.ui.writeWhichScroll(choices)
-			Ref.ui.askForChoice(choices, self)
-			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
-			if coroutineReturn > 0:
-				var item = Ref.character.shortcuts.getItem(coroutineReturn, GLOBAL.SC_TYPE)
-				Ref.game.spellHandler.castSpellAsync(GLOBAL.items[item][GLOBAL.IT_SPEC], item)
-	elif (event.is_action_released("quaffPotion")):
-		var choices = Ref.character.shortcuts.getShortcutList(GLOBAL.PO_TYPE)
-		if choices == null:
-			Ref.ui.writeNoPotionAssigned()
-		else:
-			Ref.ui.writeWhichPotion(choices)
-			Ref.ui.askForChoice(choices, self)
-			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
-			if coroutineReturn > 0:
-				var item = Ref.character.shortcuts.getItem(coroutineReturn, GLOBAL.PO_TYPE)
-				Ref.character.quaffPotion(item)
 	elif (event.is_action_released("search")):
 		Ref.character.search()
 	elif event.is_action_released("rest"):

@@ -12,6 +12,7 @@ onready var targetHandler = get_node("Utils/TargetHandler")
 onready var continueHandler = get_node("Utils/ContinueHandler")
 
 onready var diary = get_node("TextBox/TextContainer/DiaryPanel")
+onready var shortcuts = get_node("Shortcuts/TextContainer/Label")
 onready var nameLabel = get_node("SideMenu/Name/Label")
 onready var levelLabel = get_node("SideMenu/Level/Label/Level")
 onready var xpLabel = get_node("SideMenu/Level/Label/CurrentXP")

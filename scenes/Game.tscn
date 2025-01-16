@@ -97,7 +97,7 @@ tracks/1/keys = {
 [node name="Game" type="Node2D"]
 scale = Vector2( 4, 4 )
 script = ExtResource( 15 )
-start = 1
+start = 2
 
 [node name="Utils" type="Node" parent="."]
 
@@ -214,9 +214,9 @@ tile_data = PoolIntArray( -1, 1, 0, -65536, 1, 1, -65535, 1, 1, -65534, 1, 1, -6
 scale = Vector2( 0.25, 0.25 )
 
 [node name="DiaryPanel" type="RichTextLabel" parent="UI/TextBox/TextContainer"]
-margin_top = -11.0
+margin_top = -10.0
 margin_right = 936.0
-margin_bottom = 295.0
+margin_bottom = 296.0
 theme = ExtResource( 33 )
 custom_colors/default_color = Color( 0.807843, 0.858824, 0.882353, 1 )
 bbcode_enabled = true
