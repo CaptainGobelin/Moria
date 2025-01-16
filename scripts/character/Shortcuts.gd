@@ -1,10 +1,5 @@
 extends Node
 
-var weapons: Dictionary
-var scrolls: Dictionary
-var potions: Dictionary
-var throwings: Dictionary
-var spells: Dictionary
 var shortcuts: Dictionary
 var shortcutsType: Dictionary
 

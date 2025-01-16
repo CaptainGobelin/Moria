@@ -129,11 +129,8 @@ func saveCharacter() -> Dictionary:
 			"skp": Ref.character.skills.skp,
 		},
 		"shortcuts": {
-			"weapons": Ref.character.shortcuts.weapons,
-			"scrolls": Ref.character.shortcuts.scrolls,
-			"potions": Ref.character.shortcuts.potions,
-			"throwings": Ref.character.shortcuts.throwings,
-			"spells": Ref.character.shortcuts.spells,
+			"shortcuts": Ref.character.shortcuts.shortcuts,
+			"shortcutsType": Ref.character.shortcuts.shortcutsType,
 		}
 	}
 
@@ -163,11 +160,8 @@ func loadCharacter(dict: Dictionary):
 	Ref.character.skills.skills = dict["skills"]["skills"]
 	Ref.character.skills.masteries = dict["skills"]["masteries"]
 	Ref.character.skills.skp = dict["skills"]["skp"]
-	Ref.character.shortcuts.weapons = dict["shortcuts"]["weapons"]
-	Ref.character.shortcuts.scrolls = dict["shortcuts"]["scrolls"]
-	Ref.character.shortcuts.potions = dict["shortcuts"]["potions"]
-	Ref.character.shortcuts.throwings = dict["shortcuts"]["throwings"]
-	Ref.character.shortcuts.spells = dict["shortcuts"]["spells"]
+	Ref.character.shortcuts.shortcuts = dict["shortcuts"]["shortcuts"]
+	Ref.character.shortcuts.shortcutsType = dict["shortcuts"]["shortcutsType"]
 	Ref.character.stats.computeStats()
 	Ref.character.setPosition(dict["pos"])
 
