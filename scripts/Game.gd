@@ -163,11 +163,11 @@ func _input(event):
 					GLOBAL.PO_TYPE:
 						Ref.character.quaffPotion(item)
 					GLOBAL.SC_TYPE:
-						Ref.game.spellHandler.castSpellAsync(GLOBAL.items[item][GLOBAL.IT_SPEC], item)
+						spellHandler.castSpellAsync(GLOBAL.items[item][GLOBAL.IT_SPEC], item)
 					GLOBAL.TH_TYPE:
-						Ref.game.throwHandler.throwAsync(item)
+						throwHandler.throwAsync(item)
 					GLOBAL.SP_TYPE:
-						Ref.game.spellHandler.castSpellAsync(GLOBAL.items[item][GLOBAL.IT_SPEC], item)
+						spellHandler.castSpellAsync(item)
 				return
 	if (event.is_action_pressed("ui_up")):
 		Ref.character.moveAsync(Vector2(0,-1))
