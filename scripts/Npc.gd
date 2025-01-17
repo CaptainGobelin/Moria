@@ -7,8 +7,8 @@ onready var bodySprite = get_node("BodySprite")
 export (int, "Merchant") var type = 0
 
 var pos = Vector2(0, 0)
-var spokeWelcome = false
-var spokeIntro = false
+var spokeWelcome: bool = false
+var spokeIntro: bool = false
 
 func welcome():
 	if spokeWelcome:

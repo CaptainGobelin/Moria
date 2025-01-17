@@ -94,7 +94,6 @@ func nextFloor():
 	newFloor()
 
 func cleanFloor():
-	GLOBAL.trapsByPos.clear()
 	GLOBAL.hiddenDoors.clear()
 	GLOBAL.lockedDoors.clear()
 	GLOBAL.testedDoors.clear()
@@ -135,7 +134,6 @@ func merchantFloor():
 		Ref.currentLevel.initShadows()
 		Ref.currentLevel.placeCharacter(spawnPos)
 		Ref.currentLevel.levelBuffer.currentLevel = "merchant"
-		Ref.currentLevel.levelBuffer.saveLevel()
 
 func newFloor():
 	Ref.currentLevel.levelBuffer.flush()

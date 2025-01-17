@@ -28,6 +28,7 @@ func saveGame():
 	file.store_var(saveAllies(), true)
 	file.store_var(saveNpcs(), true)
 	file.store_var(saveCharacter(), true)
+	file.store_var(saveLevelBuffer(), true)
 	file.store_var(saveTraps(), true)
 	file.store_var(saveEngine(), true)
 	file.store_var(saveUI(), true)
@@ -52,6 +53,7 @@ func loadGame(charName: String):
 	loadAllies(file.get_var(true))
 	loadNpcs(file.get_var(true))
 	loadCharacter(file.get_var(true))
+	loadLevelBuffer(file.get_var(true))
 	loadTraps(file.get_var(true))
 	loadEngine(file.get_var(true))
 	loadUI(file.get_var(true))
@@ -273,8 +275,8 @@ func saveNpcs() -> Dictionary:
 		result.append({
 			"type": n.type,
 			"pos": n.pos,
-			"welcome": n.spokeWelcome,
-			"intro": n.spokeIntro
+			"spokeWelcome": n.spokeWelcome,
+			"spokeIntro": n.spokeIntro
 		})
 	return {
 		"npcs": result
@@ -287,7 +289,7 @@ func loadNpcs(dict: Dictionary):
 		npc.setPosition(n["pos"])
 		npc.type = n["type"]
 		npc.spokeIntro = n["spokeIntro"]
-		npc.spokewelcome = n["spokeWelcome"]
+		npc.spokeWelcome = n["spokeWelcome"]
 
 func saveTraps() -> Dictionary:
 	var result = []
@@ -339,10 +341,12 @@ func saveGlobals() -> Dictionary:
 	}
 
 func loadGlobals(dict: Dictionary):
+	GLOBAL.itemsOnFloor.clear()
 	for pilePos in dict["itemsOnFloor"].keys():
-		for itemId in dict["itemsOnFloor"][pilePos][GLOBAL.FLOOR_IDS]:
-			GLOBAL.dropItemOnFloor(itemId, pilePos)
-		GLOBAL.itemsOnFloor[pilePos][GLOBAL.FLOOR_EXP] = dict["itemsOnFloor"][pilePos][GLOBAL.FLOOR_EXP]
+		var item = dict["itemsOnFloor"][pilePos]
+		for itemId in item[GLOBAL.FLOOR_IDS]:
+			GLOBAL.dropItemOnFloor(itemId, pilePos, item[GLOBAL.FLOOR_TO_SELL], item[GLOBAL.FLOOR_PRICE], item[GLOBAL.FLOOR_RENEWABLE])
+		GLOBAL.itemsOnFloor[pilePos][GLOBAL.FLOOR_EXP] = item[GLOBAL.FLOOR_EXP]
 	GLOBAL.chests.clear()
 	for c in dict["chests"].values():
 		var chest = chestScene.instance()
@@ -371,6 +375,16 @@ func loadUI(dict: Dictionary):
 	Ref.ui.diary.append_bbcode(dict["diary"])
 	Ref.ui.monsterPanelList.fillList()
 	Ref.ui.statusBar.refreshStatuses(Ref.character)
+
+func saveLevelBuffer() -> Dictionary:
+	return {
+		"currentLevel": Ref.currentLevel.levelBuffer.currentLevel,
+		"savedLevels": Ref.currentLevel.levelBuffer.savedLevels
+	}
+
+func loadLevelBuffer(dict: Dictionary):
+	Ref.currentLevel.levelBuffer.currentLevel = dict["currentLevel"]
+	Ref.currentLevel.levelBuffer.savedLevels = dict["savedLevels"]
 
 func tileMapToArray(tilemap: TileMap) -> Array:
 	var result = []

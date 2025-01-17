@@ -25,7 +25,6 @@ var currentBiome
 var currentFloor
 var searched: Array
 var specialEntries: Array = [null, null]
-var passes: Dictionary = {}
 
 func _ready():
 	Ref.currentLevel = self

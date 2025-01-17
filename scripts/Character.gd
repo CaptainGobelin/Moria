@@ -106,6 +106,7 @@ func moveAsync(movement):
 			if Ref.currentLevel.levelBuffer.currentLevel == "main":
 				Ref.game.merchantFloor()
 			else:
+				Ref.currentLevel.levelBuffer.saveLevel()
 				Ref.currentLevel.levelBuffer.loadLevel("main")
 
 func hit(entity):
