@@ -21,8 +21,11 @@ onready var effects = get_node("Effects")
 onready var targetArrow = get_node("TargetArrow")
 onready var levelBuffer = get_node("LevelBuffer")
 
+var currentBiome
+var currentFloor
 var searched: Array
 var specialEntries: Array = [null, null]
+var passes: Dictionary = {}
 
 func _ready():
 	Ref.currentLevel = self
@@ -255,3 +258,18 @@ func target(pos):
 
 func untarget():
 	targetArrow.visible = false
+
+func setLocation(newFloor: int, newBiome = currentBiome):
+	currentFloor = newFloor
+	currentBiome = newBiome
+	Ref.ui.updateLocation(currentBiome, currentFloor)
+
+func getNextLocation() -> bool:
+	if currentFloor < Data.biomes[currentBiome][Data.BI_FLOORS]:
+		setLocation(Ref.currentLevel.currentFloor + 1)
+	else:
+		if Data.biomes[currentBiome][Data.BI_CONNECT].empty():
+			return false
+		else:
+			setLocation(0, Data.biomes[currentBiome][Data.BI_CONNECT][0])
+	return true

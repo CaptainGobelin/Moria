@@ -82,7 +82,9 @@ func saveMap() -> Dictionary:
 		"dungeon": tileMapToArray(Ref.currentLevel.dungeon),
 		"shadows": tileMapToArray(Ref.currentLevel.shadows),
 		"under": tileMapToArray(Ref.currentLevel.underShadows),
-		"searched": Ref.currentLevel.searched
+		"searched": Ref.currentLevel.searched,
+		"currentBiome": Ref.currentLevel.currentBiome,
+		"currentFloor": Ref.currentLevel.currentFloor,
 	}
 
 func loadMap(dict: Dictionary):
@@ -91,6 +93,8 @@ func loadMap(dict: Dictionary):
 	arrayToTilemap(dict["shadows"], Ref.currentLevel.shadows, false)
 	arrayToTilemap(dict["under"], Ref.currentLevel.underShadows, false)
 	Ref.currentLevel.searched = dict["searched"]
+	Ref.currentLevel.currentBiome = dict["currentBiome"]
+	Ref.currentLevel.currentFloor = dict["currentFloor"]
 
 func saveCharacter() -> Dictionary:
 	return {

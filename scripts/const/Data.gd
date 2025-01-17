@@ -1119,8 +1119,8 @@ const BI_CR = 0
 const BI_FLOORS = 1
 const BI_CONNECT = 2
 const biomes = {
-	BIOME_DUNGEON = [3, 5, [BIOME_CAVERN]],
-	BIOME_CAVERN = 	[6, 5, []],
+	BIOME_DUNGEON: [3, 5, [BIOME_CAVERN]],
+	BIOME_CAVERN: 	[6, 5, []],
 }
 
 const ENC_MONSTERS = 0

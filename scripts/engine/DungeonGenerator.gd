@@ -27,6 +27,12 @@ func _input(event):
 	if event.is_action_released("ui_accept"):
 		newFloor()
 
+func dungeonFloor():
+	return newFloor(0)
+
+func cavernFloor():
+	return newFloor(1)
+
 func newFloor(specialBiome = biome):
 	Ref.game.cleanFloor()
 	match specialBiome:

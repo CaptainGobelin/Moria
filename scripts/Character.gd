@@ -79,7 +79,7 @@ func moveAsync(movement):
 			Ref.ui.askForYesNo(Ref.game)
 			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
 			if (coroutineReturn):
-				Ref.game.newFloor()
+				Ref.game.nextFloor()
 				GeneralEngine.newTurn()
 		"chest": 
 			var lock = GLOBAL.chests[cellState[2]][GLOBAL.CH_LOCKED]

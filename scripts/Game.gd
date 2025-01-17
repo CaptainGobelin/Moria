@@ -80,11 +80,18 @@ func startGame():
 			testFloor()
 		_:
 			newFloor()
+			Ref.currentLevel.setLocation(1, Data.BIOME_DUNGEON)
 	Ref.currentLevel.refresh_view()
 	MasterInput.setMaster(self)
 	GLOBAL.currentMode = GLOBAL.MODE_NORMAL
 	if start == 2:
 		Tests.runAll()
+
+func nextFloor():
+	if !Ref.currentLevel.getNextLocation():
+		#TODO add a final screen
+		pass
+	newFloor()
 
 func cleanFloor():
 	GLOBAL.trapsByPos.clear()
@@ -133,7 +140,14 @@ func merchantFloor():
 func newFloor():
 	Ref.currentLevel.levelBuffer.flush()
 	cleanFloor()
-	var spawnPos = dungeonGenerator.newFloor()
+	var spawnPos: Vector2
+	match Ref.currentLevel.currentBiome:
+		Data.BIOME_DUNGEON:
+			spawnPos = dungeonGenerator.dungeonFloor()
+		Data.BIOME_CAVERN:
+			spawnPos = dungeonGenerator.cavernFloor()
+		_:
+			spawnPos = dungeonGenerator.newFloor()
 	Ref.currentLevel.initShadows()
 	Ref.currentLevel.placeCharacter(spawnPos)
 	for a in Ref.currentLevel.allies.get_children():

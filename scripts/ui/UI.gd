@@ -459,9 +459,10 @@ func updateStat(stat: int, value):
 				rPois.text[i] = "*"
 
 func updateLocation(biome: int, currentFloor: int):
-	locationLabel = "in "
+	locationLabel.text = "Currently in "
 	match biome:
 		Data.BIOME_DUNGEON:
-			locationLabel += "Dungeon " + Utils.toRoman(currentFloor)
+			locationLabel.text += "Dungeon "
 		Data.BIOME_CAVERN:
-			locationLabel += "Cavern " + Utils.toRoman(currentFloor)
+			locationLabel.text += "Cavern "
+	locationLabel.text += Utils.toRoman(currentFloor)
