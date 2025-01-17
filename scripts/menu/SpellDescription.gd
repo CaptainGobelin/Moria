@@ -12,9 +12,9 @@ var spellId: int
 func selectSpell(idx: int, rank: int = 0, saveCap: int = 0):
 	generateDescription(idx, rank)
 	spellName.text = Data.spells[idx][Data.SP_NAME]
-	spellUses.text = spellUses(Data.spells[idx][Data.SP_USES][rank])
-	spellSave.text = spellSave(Data.spells[idx][Data.SP_SAVE], saveCap)
-	spellSchool.text = spellSchool(idx)
+	spellUses.text = getSpellUses(Data.spells[idx][Data.SP_USES][rank])
+	spellSave.text = getSpellSave(Data.spells[idx][Data.SP_SAVE], saveCap)
+	spellSchool.text = getSpellSchool(idx)
 	icon.frame = Data.spells[idx][Data.SP_ICON]
 
 func generateDescription(idx: int, rank: int = 0, saveCap: int = 0):
@@ -121,10 +121,10 @@ func turns(turns: int):
 func uses(uses: int):
 	return String(uses) + " uses"
 
-func spellUses(uses: int):
+func getSpellUses(uses: int):
 	return String(uses) + " uses per rest"
 
-func spellSave(type: int, saveCap: int):
+func getSpellSave(type: int, saveCap: int):
 	match type:
 		Data.SAVE_NO:
 			return "No saving throw"
@@ -133,7 +133,7 @@ func spellSave(type: int, saveCap: int):
 		Data.SAVE_WIL:
 			return "WIL save DD " + String(saveCap)
 
-func spellSchool(spell: int):
+func getSpellSchool(spell: int):
 	var level = Data.spells[spell][Data.SP_LVL]
 	match Data.spells[spell][Data.SP_SCHOOL]:
 		Data.SC_EVOCATION:

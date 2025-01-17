@@ -18,7 +18,6 @@ func saveLevel():
 
 func loadLevel(level: String):
 	Ref.game.cleanFloor()
-	var data = savedLevels[level]
 	Ref.game.saveSystem.loadMap(savedLevels[level]["map"].duplicate(true))
 	Ref.game.saveSystem.loadTraps(savedLevels[level]["traps"].duplicate(true))
 	Ref.game.saveSystem.loadMonsters(savedLevels[level]["monsters"].duplicate(true))
