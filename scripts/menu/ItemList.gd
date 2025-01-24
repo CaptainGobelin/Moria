@@ -1,5 +1,7 @@
 extends Node2D
 
+signal itemSelected
+
 var currentItems: Array = []
 var currentType: int = 0
 var maxIndex: int = 6
@@ -24,6 +26,7 @@ func init(items: Array, row: int, type: int, startRow = 0):
 		select(row, false)
 	else:
 		get_parent().scroller.setArrows(0, 0)
+		emit_signal("itemSelected", getSelected())
 
 func getSelected():
 	for i in get_children():
@@ -42,6 +45,7 @@ func select(index, erasePrevious = true):
 		currentIndex = posmod(index, maxIndex)
 		get_child(currentIndex).selected.visible = true
 		get_parent().scroller.setArrows(currentStartRow, maxIndex)
+		emit_signal("itemSelected", getSelected())
 
 func selectNext():
 	# Scroll down

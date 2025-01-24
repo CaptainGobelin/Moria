@@ -418,14 +418,10 @@ func itemToVar(item: Array) -> Array:
 	var result = item.duplicate(true)
 	if result[GLOBAL.IT_DMG] != null:
 		result[GLOBAL.IT_DMG] = result[GLOBAL.IT_DMG].toVec()
-	if result[GLOBAL.IT_HIT] != null:
-		result[GLOBAL.IT_HIT] = result[GLOBAL.IT_HIT].toVec()
 	return result
 
 func varToItem(item: Array) -> Array:
 	var result = item.duplicate(true)
 	if result[GLOBAL.IT_DMG] != null:
 		result[GLOBAL.IT_DMG] = GeneralEngine.DmgDice.fromVec(result[GLOBAL.IT_DMG])
-	if result[GLOBAL.IT_HIT] != null:
-		result[GLOBAL.IT_HIT] = GeneralEngine.Dice.fromVec(result[GLOBAL.IT_HIT])
 	return result

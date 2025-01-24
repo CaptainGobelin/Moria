@@ -18,7 +18,7 @@ const SC_IDX = 4
 const PO_IDX = 5
 const LO_IDX = 6
 const GO_IDX = 7
-const TYPE_PROB = [0.19, 0.23, 0.07, 0.05, 0.01, 0.1, 0.1, 0.16]
+const TYPE_PROB = [0.519, 0.523, 0.07, 0.05, 0.01, 0.1, 0.1, 0.16]
 
 var id = -1
 
@@ -33,6 +33,7 @@ func getItemType(forSell: bool = false):
 	return result
 
 func generateItem(rarity: int, type: int = -1, forSell: bool = false):
+	rarity = 4
 	if type == -1:
 		type = getItemType(forSell)
 	match type:
@@ -93,10 +94,9 @@ func mapWeaponToItem(weapon, baseIdx: int):
 	if weapon[Data.W_TYPE] == "B":
 		dmgType = Data.DMG_BLUNT
 	item[GLOBAL.IT_DMG] = GeneralEngine.dmgFromDice(dmgDice, dmgType)
-	var hitDice = GeneralEngine.basicDice(weapon[Data.W_HIT])
-	item[GLOBAL.IT_HIT] = hitDice
 	item[GLOBAL.IT_2H] = weapon[Data.W_2H]
 	item[GLOBAL.IT_TYPE] = GLOBAL.WP_TYPE
+	item[GLOBAL.IT_SUBTYPE] = GLOBAL.SUB_WP
 	item[GLOBAL.IT_BASE] = baseIdx
 	return item
 
@@ -124,6 +124,7 @@ func mapShieldToItem(shield, baseIdx: int):
 	item[GLOBAL.IT_PROT] = shield[Data.SH_PROT]
 	item[GLOBAL.IT_SKILL] = shield[Data.SH_MALUS]
 	item[GLOBAL.IT_TYPE] = GLOBAL.WP_TYPE
+	item[GLOBAL.IT_SUBTYPE] = GLOBAL.SUB_SH
 	item[GLOBAL.IT_BASE] = baseIdx
 	return item
 
@@ -153,6 +154,10 @@ func mapArmorToItem(armor, baseIdx: int):
 	item[GLOBAL.IT_PROT] = armor[Data.A_PROT]
 	item[GLOBAL.IT_TYPE] = GLOBAL.AR_TYPE
 	item[GLOBAL.IT_2H] = armor[Data.A_HELM]
+	if armor[Data.A_HELM]:
+		item[GLOBAL.IT_SUBTYPE] = GLOBAL.SUB_HE
+	else:
+		item[GLOBAL.IT_SUBTYPE] = GLOBAL.SUB_AR
 	item[GLOBAL.IT_BASE] = baseIdx
 	return item
 

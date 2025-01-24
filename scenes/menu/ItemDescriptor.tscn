@@ -1,0 +1,79 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://themes/LabelTheme.tres" type="Theme" id=1]
+[ext_resource path="res://sprites/items.png" type="Texture" id=2]
+[ext_resource path="res://scripts/menu/ItemDescriptor.gd" type="Script" id=3]
+
+[node name="ItemDescriptor" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+modulate = Color( 1, 1, 1, 0.0235294 )
+margin_right = 99.0
+margin_bottom = 63.0
+
+[node name="TitleContainer" type="Node2D" parent="."]
+scale = Vector2( 0.25, 0.25 )
+
+[node name="Name" type="Label" parent="TitleContainer"]
+margin_left = 81.0
+margin_right = 396.0
+margin_bottom = 72.0
+theme = ExtResource( 1 )
+text = "Venomous zweihander +2 of holy wrath"
+valign = 1
+autowrap = true
+clip_text = true
+
+[node name="Info" type="Label" parent="TitleContainer"]
+margin_top = 80.0
+margin_right = 396.0
+margin_bottom = 116.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.843137, 0.709804, 0.215686, 1 )
+text = "Damage: 3d10+1 Slashing"
+align = 1
+autowrap = true
+clip_text = true
+
+[node name="Effects" type="Label" parent="TitleContainer"]
+margin_top = 108.0
+margin_right = 396.0
+margin_bottom = 252.0
+theme = ExtResource( 1 )
+custom_constants/line_spacing = 22
+text = "- Vorpal
+- Holy wrath"
+valign = 1
+autowrap = true
+clip_text = true
+
+[node name="Icon" type="Sprite" parent="."]
+position = Vector2( 1, 2 )
+texture = ExtResource( 2 )
+centered = false
+hframes = 6
+vframes = 10
+frame = 15
+
+[node name="Frame" type="ColorRect" parent="Icon"]
+show_behind_parent = true
+margin_left = -1.0
+margin_top = -1.0
+margin_right = 16.0
+margin_bottom = 16.0
+color = Color( 0.329412, 0.388235, 0.254902, 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Back" type="ColorRect" parent="Icon/Frame"]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 16.0
+margin_bottom = 16.0
+color = Color( 0.141176, 0.192157, 0.215686, 1 )
+__meta__ = {
+"_edit_lock_": true
+}

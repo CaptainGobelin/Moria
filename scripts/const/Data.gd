@@ -368,33 +368,48 @@ const CHAR_R_ICE = 17
 const CHAR_R_LIGHTNING = 18
 
 # Weapons
+const W_CLUB = 0
+const W_DAGGER = 1
+const W_HATCHET = 2
+const W_MACE = 3
+const W_SHORTSWORD = 4
+const W_AXE = 5
+const W_STAFF = 100
+const W_GREATCLUB = 101
+const W_FELLING_AXE = 102
+const W_MAUL = 103
+const W_BROADSWORD = 104
+
 const W_NAME = 0
-const W_HIT = 1
+const W_HIT = 1 #Not used
 const W_DMG = 2
 const W_TYPE = 3
 const W_RAR = 4
-const W_ENCH = 5
-const W_2H = 6
-const W_ICON = 7
-const W_IS_SHIELD = 8
+const W_2H = 5
+const W_ICON = 6
+
 const weapons = {
-	0: ["club",			Vector2(1, 12), Vector2(1,  6), "B", 0, 0.4, false,  0],
-	1: ["dagger",		Vector2(1, 12), Vector2(1,  4), "S", 1, 1.5, false,  1],
-	2: ["hatchet",		Vector2(1,  8), Vector2(1,  8), "S", 1, 0.8, false,  2],
-	3: ["mace",			Vector2(1,  8), Vector2(2, 10), "B", 2, 1.0, false,  3],
-	4: ["shortsword",	Vector2(1,  8), Vector2(2,  6), "S", 3, 1.2, false,  4],
-	5: ["hand axe",		Vector2(1,  4), Vector2(2,  8), "S", 4, 1.6, false,  5],
-	6: ["longsword",	Vector2(1,  4), Vector2(2, 10), "S", 5, 2.0, false,  6],
-	7: ["morning star",	Vector2(1,  4), Vector2(3,  6), "-", 6, 2.0, false,  7],
+	W_CLUB: 		["club",		null, Vector2(1,  4), "B", 0, false,  0],
+	W_DAGGER:		["dagger",		null, Vector2(1,  4), "S", 1, false,  1],
+	W_HATCHET: 		["hatchet",		null, Vector2(1,  6), "S", 1, false,  2],
+	W_MACE: 		["mace",		null, Vector2(1,  8), "B", 2, false,  3],
+	W_SHORTSWORD: 	["shortsword",	null, Vector2(2,  4), "S", 3, false,  4],
+	W_AXE: 			["hand axe",	null, Vector2(1, 10), "S", 4, false,  5],
+	6: 				["longsword",	null, Vector2(2, 10), "S", 5, false,  6],
+	7: 				["morning star",null, Vector2(3,  6), "S", 6, false,  7],
 	
-	8: ["staff",		Vector2(1, 12), Vector2(1,  8), "B", 0, 2.0, true,  8],
-	9: ["greatclub",	Vector2(1, 12), Vector2(1, 10), "B", 1, 0.4, true,  9],
-	10:["felling axe",	Vector2(1,  8), Vector2(2,  6), "S", 2, 0.8, true, 10],
-	11:["maul",			Vector2(1,  8), Vector2(3,  6), "B", 3, 1.2, true, 11],
-	12:["broadsword",	Vector2(1,  8), Vector2(2, 12), "S", 4, 1.2, true, 12],
-	13:["halberd",		Vector2(1,  4), Vector2(3, 10), "S", 5, 1.5, true, 13],
-	14:["greataxe",		Vector2(1,  4), Vector2(3, 12), "S", 6, 1.8, true, 14],
-	15:["zweihander",	Vector2(1,  4), Vector2(4,  8), "S", 6, 2.0, true, 15],
+	W_STAFF: 		["staff",		null, Vector2(1,  8), "B", 0, true,  8],
+	W_GREATCLUB: 	["greatclub",	null, Vector2(1, 10), "B", 1, true,  9],
+	W_FELLING_AXE:	["felling axe",	null, Vector2(1, 12), "S", 2, true, 10],
+	W_MAUL: 		["maul",		null, Vector2(2,  6), "B", 3, true, 11],
+	W_BROADSWORD: 	["broadsword",	null, Vector2(3,  4), "S", 4, true, 12],
+	13:				["halberd",		null, Vector2(3, 10), "S", 5, true, 13],
+	14:				["greataxe",	null, Vector2(3, 12), "S", 6, true, 14],
+	15:				["zweihander",	null, Vector2(4,  8), "S", 6, true, 15],
+}
+
+const weaponDescriptions = {
+	W_CLUB: "A stick made of wood with a large knob on the end.",
 }
 
 var weaponsByRarity = {}
@@ -414,9 +429,9 @@ const SH_RAR = 4
 const SH_ENCH = 5
 const SH_ICON = 6
 const shields = {
-	0: ["buckler",       1, 1, 1, 0, 1.0, 33],
-	1: ["shield",        1, 2, 2, 2, 1.0, 34],
-	2: ["heater shield", 1, 3, 4, 4, 1.0, 35]
+	0: ["Buckler",       1, 1, 1, 0, 1.0, 33],
+	1: ["Round shield",  1, 2, 2, 2, 1.0, 34],
+	2: ["Heater shield", 1, 3, 4, 4, 1.0, 35]
 }
 
 var shieldsByRarity = {}
@@ -437,15 +452,15 @@ const A_ICON = 4
 const A_ENCH = 5
 const A_HELM = 6
 const armors = {
-	0: ["robe",				2, 0, 0, 18, 1.0, false],
-	1: ["padded armour",	3, 0, 0, 19, 1.0, false],
-	2: ["leather armour",	4, 1, 1, 20, 1.0, false],
-	3: ["brigandine",		4, 1, 2, 21, 1.0, false],
-	4: ["scalemail",		5, 2, 3, 22, 1.0, false],
-	5: ["full plate",		5, 3, 4, 23, 1.0, false],
+	0: ["Robe",				2, 0, 0, 18, 1.0, false],
+	1: ["Padded armour",	3, 0, 0, 19, 1.0, false],
+	2: ["Leather armour",	4, 1, 1, 20, 1.0, false],
+	3: ["Brigandine",		4, 1, 2, 21, 1.0, false],
+	4: ["Scalemail",		5, 2, 3, 22, 1.0, false],
+	5: ["Full plate",		5, 3, 4, 23, 1.0, false],
 	
-	10: ["leather cap",		0, 1, 0, 16, 1.0, true],
-	11: ["horned helm",		1, 1, 4, 17, 1.0, true],
+	10: ["Leather cap",		0, 1, 0, 16, 1.0, true],
+	11: ["Horned helm",		1, 1, 4, 17, 1.0, true],
 }
 
 var armorsByRarity = {}
@@ -504,12 +519,12 @@ const TA_NAMES = 0
 const TA_ICONS = 1
 const TA_PROB = 2
 const talismans = {
-	0: [["belt"], [42, 43], 0.125],
-	1: [["cloak", "cape", "mantle"], [44, 45], 0.25],
-	2: [["amulet", "necklace", "medallion"], [46, 47, 52, 53], 0.50],
-	3: [["ring"], [48, 49, 50, 51], 0.80],
-	4: [["boots", "greaves"], [54, 55], 0.925],
-	5: [["bracers"], [56], 1.0]
+	0: [["Belt"], [42, 43], 0.125],
+	1: [["Cloak", "Cape", "Mantle"], [44, 45], 0.25],
+	2: [["Amulet", "Necklace", "Medallion"], [46, 47, 52, 53], 0.50],
+	3: [["Ring"], [48, 49, 50, 51], 0.80],
+	4: [["Boots", "Greaves"], [54, 55], 0.925],
+	5: [["Bracers"], [56], 1.0]
 }
 
 # Throwings

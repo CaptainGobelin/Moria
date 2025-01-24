@@ -6,14 +6,23 @@ onready var currentItem = get_node("CurrentItem")
 onready var itemList = get_node("ItemList")
 onready var scroller = get_node("MenuScroller")
 onready var keyLabel = get_node("TextContainer/Key")
+onready var itemDescriptor = get_node("Description/ItemDescriptor")
+onready var currentDescriptor = get_node("CurrentItem/ItemDescriptor")
+onready var detailPanel = get_node("DetailPanel")
 onready var tabs = inventory.get_children()
 
+const INVENTORY_MODE = 0
+const DETAILS_MODE = 1
+
+var currentMode = INVENTORY_MODE
 var currentTab = 0
 
 func _ready():
 	set_process_input(false)
 
 func open():
+	currentMode = INVENTORY_MODE
+	detailPanel.visible = false
 	setTab(currentTab)
 	visible = true
 	Ref.currentLevel.visible = false
@@ -27,7 +36,19 @@ func close():
 	MasterInput.setMaster(Ref.game)
 
 func _input(event):
-	if (event.is_action_pressed("ui_left")):
+	if currentMode == DETAILS_MODE:
+		if (event.is_action_released("inventory")):
+			close()
+		elif (event.is_action_released("ui_cancel")):
+			detailPanel.visible = false
+			currentMode = INVENTORY_MODE
+		elif (event.is_action_released("ui_tab")):
+			detailPanel.visible = false
+			currentMode = INVENTORY_MODE
+	elif (event.is_action_released("ui_tab")):
+		detailPanel.visible = true
+		currentMode = DETAILS_MODE
+	elif (event.is_action_pressed("ui_left")):
 		currentTab = Utils.modulo(currentTab-1, tabs.size())
 		setTab(currentTab)
 	elif (event.is_action_pressed("ui_right")):
@@ -129,3 +150,19 @@ func setTab(tab, row = 0, startRow = 0):
 			itemList.init(Ref.character.inventory.getTalismanRows(), row, GLOBAL.TA_TYPE, startRow)
 		_:
 			itemList.init([], row, 0)
+
+func _on_ItemList_itemSelected(itemId):
+	if itemId != null:
+		var itemType = itemDescriptor.fillDescription(itemId)
+		match itemType:
+			GLOBAL.SUB_WP:
+				currentDescriptor.fillDescription(Ref.character.inventory.getWeapon())
+			GLOBAL.SUB_SH:
+				currentDescriptor.fillDescription(Ref.character.inventory.getShield())
+			GLOBAL.SUB_AR:
+				currentDescriptor.fillDescription(Ref.character.inventory.getArmor())
+			GLOBAL.SUB_HE:
+				currentDescriptor.fillDescription(Ref.character.inventory.getHelmet())
+	else:
+		itemDescriptor.clearDescription()
+		currentDescriptor.clearDescription()

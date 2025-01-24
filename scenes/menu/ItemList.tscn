@@ -5,6 +5,8 @@
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node2D
 
+signal itemSelected
+
 var currentItems: Array = []
 var currentType: int = 0
 var maxIndex: int = 6
@@ -47,6 +49,7 @@ func select(index, erasePrevious = true):
 		currentIndex = posmod(index, maxIndex)
 		get_child(currentIndex).selected.visible = true
 		get_parent().scroller.setArrows(currentStartRow, maxIndex)
+		emit_signal(\"itemSelected\", getSelected())
 
 func selectNext():
 	# Scroll down

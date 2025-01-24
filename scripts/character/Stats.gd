@@ -149,20 +149,17 @@ func addDmg(newValue):
 	updateDmg(dmgDices)
 
 func computeHit():
-	var value = []
+	var value = GeneralEngine.dice(1, 6, 0)
 	var weapon = Ref.character.inventory.getWeapon()
 	if weapon != -1:
 		var diceBonus = 0
 		if GLOBAL.items[weapon][GLOBAL.IT_SPEC].has(Data.ENCH_1_WP):
 			diceBonus = 1
 		elif GLOBAL.items[weapon][GLOBAL.IT_SPEC].has(Data.ENCH_2_WP):
-			diceBonus = 1
+			diceBonus = 2
 		elif GLOBAL.items[weapon][GLOBAL.IT_SPEC].has(Data.ENCH_3_WP):
-			diceBonus = 1
-		value = GLOBAL.items[weapon][GLOBAL.IT_HIT].duplicate()
+			diceBonus = 3
 		value.b = diceBonus
-	else:
-		value = GeneralEngine.dice(1, 6, 0)
 	updateHit(value)
 
 func updateHit(newValue):
