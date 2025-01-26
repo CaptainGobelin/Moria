@@ -1,4 +1,4 @@
-extends Node2D
+class_name SpellDescription extends Node2D
 
 onready var spellName = get_node("TextContainer/Name")
 onready var spellSave = get_node("TextContainer/Saving")
@@ -30,6 +30,18 @@ func generateDescription(idx: int, rank: int = 0, saveCap: int = 0):
 		d += Data.spellDescriptions[spellId][i]
 		d += "[/color]"
 	d += "[/fill]"
+	description.bbcode_text = replacePlaceholders(d, spellId)
+
+func blank():
+	spellName.text = ""
+	spellUses.text = ""
+	spellSave.text = ""
+	spellSchool.text = ""
+	icon.frame = 29
+	description.bbcode_text = ""
+
+static func replacePlaceholders(toReplace: String, spellId: int) -> String:
+	var d = toReplace
 	if Data.spellDamages.has(spellId):
 		d = d.replace("%%DMG_1", dmgToStr(Data.spellDamages[spellId][0]))
 		d = d.replace("%%DMG_2", dmgToStr(Data.spellDamages[spellId][1]))
@@ -57,22 +69,14 @@ func generateDescription(idx: int, rank: int = 0, saveCap: int = 0):
 	d = d.replace("%%SELF", rangeSelf())
 	d = d.replace("%%SAVE_HALF", saveHalf())
 	d = d.replace("%%SAVE_NO", saveNegates())
-	description.bbcode_text = d
+	return d
 
-func blank():
-	spellName.text = ""
-	spellUses.text = ""
-	spellSave.text = ""
-	spellSchool.text = ""
-	icon.frame = 29
-	description.bbcode_text = ""
-
-func replace(string: String, from: String, to: String):
+static func replace(string: String, from: String, to: String):
 	if string.find(from) > 0:
 		string = string.replace(from, to)
 	return string
 
-func dmgToStr(array: Array, showType: bool = true):
+static func dmgToStr(array: Array, showType: bool = true):
 	var bonus = ""
 	if array[2] > 0:
 		bonus = "+" + String(array[2])
@@ -83,48 +87,48 @@ func dmgToStr(array: Array, showType: bool = true):
 		type = " " + Data.DMG_NAMES[array[3]]
 	return String(array[0]) + "d" + String(array[1]) + bonus + type
 
-func rangeContact():
+static func rangeContact():
 	return "a creature at melee"
 
-func rangeLine():
+static func rangeLine():
 	return "all creatures on a line"
 
-func rangeTarget():
+static func rangeTarget():
 	return "to a creature at range"
 
-func rangeTargetArea(area: int):
+static func rangeTargetArea(area: int):
 	return "to a target and all creatures at range " + String(area)
 
-func rangeArea(area: int):
+static func rangeArea(area: int):
 	return "to all creatures at range " + String(area)
 
-func rangeSelf():
+static func rangeSelf():
 	return "to yourself"
 
-func dmgDescription(dmg: Array):
+static func dmgDescription(dmg: Array):
 	var dmgStr = dmgToStr(dmg)
 	return "Deals " + dmgStr + " damages."
 
-func dmgIncrease(dmg: Array):
+static func dmgIncrease(dmg: Array):
 	var dmgStr = dmgToStr(dmg, false)
 	return "Increases damages to " + dmgStr + "."
 
-func saveHalf():
+static func saveHalf():
 	return "A succeded saving throw halves the damages."
 
-func saveNegates():
+static func saveNegates():
 	return "A succeded saving throw negates all effects."
 
-func turns(turns: int):
+static func turns(turns: int):
 	return String(turns) + " turns"
 
-func uses(uses: int):
+static func uses(uses: int):
 	return String(uses) + " uses"
 
-func getSpellUses(uses: int):
+static func getSpellUses(uses: int):
 	return String(uses) + " uses per rest"
 
-func getSpellSave(type: int, saveCap: int):
+static func getSpellSave(type: int, saveCap: int):
 	match type:
 		Data.SAVE_NO:
 			return "No saving throw"
@@ -133,7 +137,7 @@ func getSpellSave(type: int, saveCap: int):
 		Data.SAVE_WIL:
 			return "WIL save DD " + String(saveCap)
 
-func getSpellSchool(spell: int):
+static func getSpellSchool(spell: int):
 	var level = Data.spells[spell][Data.SP_LVL]
 	match Data.spells[spell][Data.SP_SCHOOL]:
 		Data.SC_EVOCATION:

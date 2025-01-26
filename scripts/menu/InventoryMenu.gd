@@ -1,13 +1,18 @@
 extends Node2D
 
 onready var inventory = get_node("Tabs")
-onready var description = get_node("Description")
-onready var currentItem = get_node("CurrentItem")
 onready var itemList = get_node("ItemList")
 onready var scroller = get_node("MenuScroller")
 onready var keyLabel = get_node("TextContainer/Key")
-onready var itemDescriptor = get_node("Description/ItemDescriptor")
-onready var currentDescriptor = get_node("CurrentItem/ItemDescriptor")
+onready var simpleDescriptor = get_node("SimpleDescription")
+onready var simpleDescriptor1 = get_node("SimpleDescription/Description/ItemDescriptor")
+onready var doubleDescriptor = get_node("DoubleDescription")
+onready var doubleDescriptor1 = get_node("DoubleDescription/Description/ItemDescriptor")
+onready var doubleDescriptor2 = get_node("DoubleDescription/CurrentItem/ItemDescriptor")
+onready var tripleDescriptor = get_node("TripleDescription")
+onready var tripleDescriptor1 = get_node("TripleDescription/Description/ItemDescriptor")
+onready var tripleDescriptor2 = get_node("TripleDescription/CurrentItem/ItemDescriptor1")
+onready var tripleDescriptor3 = get_node("TripleDescription/CurrentItem/ItemDescriptor2")
 onready var detailPanel = get_node("DetailPanel")
 onready var tabs = inventory.get_children()
 
@@ -22,6 +27,9 @@ func _ready():
 
 func open():
 	currentMode = INVENTORY_MODE
+	simpleDescriptor.visible = false
+	doubleDescriptor.visible = false
+	tripleDescriptor.visible = false
 	detailPanel.visible = false
 	setTab(currentTab)
 	visible = true
@@ -152,17 +160,53 @@ func setTab(tab, row = 0, startRow = 0):
 			itemList.init([], row, 0)
 
 func _on_ItemList_itemSelected(itemId):
+	simpleDescriptor.visible = false
+	doubleDescriptor.visible = false
+	tripleDescriptor.visible = false
+	match currentTab:
+		GLOBAL.INV_WEAPONS:
+			doubleDescriptor.visible = true
+		GLOBAL.INV_ARMORS:
+			doubleDescriptor.visible = true
+		GLOBAL.INV_POTIONS:
+			simpleDescriptor.visible = true
+		GLOBAL.INV_SCROLLS:
+			simpleDescriptor.visible = true
+		GLOBAL.INV_THROWINGS:
+			simpleDescriptor.visible = true
+		GLOBAL.INV_TALSMANS:
+			tripleDescriptor.visible = true
 	if itemId != null:
-		var itemType = itemDescriptor.fillDescription(itemId)
+		var itemType = null
+		match GLOBAL.items[itemId][GLOBAL.IT_TYPE]:
+			GLOBAL.WP_TYPE:
+				itemType = doubleDescriptor1.fillDescription(itemId)
+			GLOBAL.AR_TYPE:
+				itemType = doubleDescriptor1.fillDescription(itemId)
+			GLOBAL.TA_TYPE:
+				itemType = tripleDescriptor1.fillDescription(itemId)
+			GLOBAL.SC_TYPE:
+				itemType = simpleDescriptor1.fillDescription(itemId)
+			GLOBAL.PO_TYPE:
+				itemType = simpleDescriptor1.fillDescription(itemId)
+			GLOBAL.TH_TYPE:
+				itemType = simpleDescriptor1.fillDescription(itemId)
 		match itemType:
 			GLOBAL.SUB_WP:
-				currentDescriptor.fillDescription(Ref.character.inventory.getWeapon())
+				doubleDescriptor2.fillDescription(Ref.character.inventory.getWeapon())
 			GLOBAL.SUB_SH:
-				currentDescriptor.fillDescription(Ref.character.inventory.getShield())
+				doubleDescriptor2.fillDescription(Ref.character.inventory.getShield())
 			GLOBAL.SUB_AR:
-				currentDescriptor.fillDescription(Ref.character.inventory.getArmor())
+				doubleDescriptor2.fillDescription(Ref.character.inventory.getArmor())
 			GLOBAL.SUB_HE:
-				currentDescriptor.fillDescription(Ref.character.inventory.getHelmet())
+				doubleDescriptor2.fillDescription(Ref.character.inventory.getHelmet())
+			GLOBAL.TA_TYPE:
+				tripleDescriptor2.fillDescription(Ref.character.inventory.getTalisman1())
+				tripleDescriptor3.fillDescription(Ref.character.inventory.getTalisman2())
 	else:
-		itemDescriptor.clearDescription()
-		currentDescriptor.clearDescription()
+		simpleDescriptor1.clearDescription()
+		doubleDescriptor1.clearDescription()
+		doubleDescriptor2.clearDescription()
+		tripleDescriptor1.clearDescription()
+		tripleDescriptor2.clearDescription()
+		tripleDescriptor3.clearDescription()

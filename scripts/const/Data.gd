@@ -481,7 +481,11 @@ const PO_RAR = 2
 const PO_ICON = 3
 const PO_STACK = 4
 const potions = {
-	0: ["Potion of healing", 0, 0, 24, 0],
+	PO_HEALING: ["Potion of healing", 0, 0, 24, 0],
+}
+
+const potionDescriptions = {
+	PO_HEALING: "Restores 50% of your HP (rounds down)."
 }
  
 var potionsByRarity = {}
@@ -500,9 +504,15 @@ const SC_RANK = 2
 const SC_RAR = 3
 const SC_STACK = 4
 const SC_ICON_ALL = 57
+
+const SC_MAGIC_MISSILE = 0
+
 const scrolls = {
-	0: ["Scroll of magic missile", SP_MAGIC_MISSILE, 2, 0, 100],
-	1: ["Scroll of firebolt", SP_FIREBOLT, 1, 0, 101],
+	SC_MAGIC_MISSILE: ["Scroll of magic missile", SP_MAGIC_MISSILE, 2, 0, 100],
+}
+
+const scrollDescriptions = {
+	SC_MAGIC_MISSILE: "Fires arcane projectiles to random targets, each dealing %%DMG_1 damages. No saving throw."
 }
  
 var scrollsByRarity = {}
