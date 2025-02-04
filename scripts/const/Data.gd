@@ -694,6 +694,9 @@ const EN_SLOT_TH = 1
 const EN_SLOT_AR = 2
 const EN_SLOT_TA = 3
 
+const EN_TYPE_MINOR = 0
+const EN_TYPE_MAJOR = 1
+
 const enchants = {
 	ENCH_PLUS_1: 		["", 					null, 			"+1", 					false, 1, true, true, [EN_SLOT_WP, EN_SLOT_AR]],
 	ENCH_FIRE_RESIST_1: ["Fire resistance I", 	null, 			"of fire resistance", 	false, 1, true, false, [EN_SLOT_TA, EN_SLOT_AR]],
@@ -744,6 +747,25 @@ const enchantDescriptions = {
 	ENCH_HOLY_1: "1d4 radiant damage against evil (%%_EVIL_TIP).",
 	ENCH_PRECISION: "+1 to Hit rolls.",
 }
+
+var enchantsByRarity = {
+	EN_TYPE_MINOR: {},
+	EN_TYPE_MAJOR: {}
+}
+
+func enchantsReader():
+	for idx in enchants.keys():
+		if !enchants[idx][EN_CAN_POP]:
+			continue
+		var type = EN_TYPE_MINOR
+		if enchants[idx][EN_MAJOR]:
+			type = EN_TYPE_MAJOR
+		for slot in enchants[idx][EN_SLOTS]:
+			if !enchantsByRarity[type].has(slot):
+				enchantsByRarity[type][slot] = {}
+			if !enchantsByRarity[type][slot].has(enchants[idx][EN_RARITY]):
+				enchantsByRarity[type][slot][enchants[idx][EN_RARITY]] = []
+			enchantsByRarity[type][slot][enchants[idx][EN_RARITY]].append(idx)
 
 const WP_EN_PRE = 0
 const WP_EN_SUF = 1
@@ -1310,4 +1332,5 @@ func _ready():
 	potionsReader()
 	scrollsReader()
 	spellsReader()
+	enchantsReader()
 	encountersReader()
