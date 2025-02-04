@@ -653,6 +653,98 @@ const ENCH_FIRE_RESIST = 1003
 const ENCH_POISON_RESIST = 1004
 # Talisman enchants
 
+# Enchantments
+const ENCH_PLUS_1 = 0
+const ENCH_PLUS_2 = 1
+const ENCH_PLUS_3 = 2
+const ENCH_FIRE_RESIST_1 = 3
+const ENCH_POIS_RESIST_1 = 4
+const ENCH_ARCANE_SHIELD = 5
+const ENCH_MIND = 6
+const ENCH_RESISTANCE = 7
+const ENCH_REJUVENATION = 8
+const ENCH_VISION = 9
+const ENCH_BLESSED = 10
+const ENCH_LIFE_DRAIN = 11
+const ENCH_IMP_MAGIC_MIS = 12
+const ENCH_EMP_ENCH = 13
+const ENCH_DESTRUCTION = 14
+const ENCH_PROTECTION = 15
+const ENCH_ESCAPE = 16
+const ENCH_PARALYZE = 17
+const ENCH_FLAMING_1 = 18
+const ENCH_VENOM_1 = 19
+const ENCH_PIERCING = 20
+const ENCH_SHOCK_1 = 21
+const ENCH_GOBLIN = 22
+const ENCH_HOLY_1 = 23
+const ENCH_PRECISION = 24
+
+const EN_NAME = 0
+const EN_PREFIX = 1
+const EN_SUFFIX = 2
+const EN_MAJOR = 3
+const EN_RARITY = 4
+const EN_CAN_POP = 5
+const EN_IS_PLUS = 6
+const EN_SLOTS = 7
+
+const EN_SLOT_WP = 0
+const EN_SLOT_TH = 1
+const EN_SLOT_AR = 2
+const EN_SLOT_TA = 3
+
+const enchants = {
+	ENCH_PLUS_1: 		["", 					null, 			"+1", 					false, 1, true, true, [EN_SLOT_WP, EN_SLOT_AR]],
+	ENCH_FIRE_RESIST_1: ["Fire resistance I", 	null, 			"of fire resistance", 	false, 1, true, false, [EN_SLOT_TA, EN_SLOT_AR]],
+	ENCH_POIS_RESIST_1: ["Poison resistance I",	null, 			"of poison resistance", false, 1, true, false, [EN_SLOT_TA, EN_SLOT_AR]],
+	ENCH_ARCANE_SHIELD: ["Arcane shield", 		null, 			"of arcane shield", 	true,  2, true, false, [EN_SLOT_TA, EN_SLOT_AR]],
+	ENCH_MIND: 			["Mind protection", 	null, 			"of willpower", 		false, 2, true, false, [EN_SLOT_TA, EN_SLOT_AR]],
+	ENCH_RESISTANCE: 	["Resistance", 			null, 			"of resistance", 		true,  3, true, false, [EN_SLOT_TA, EN_SLOT_AR]],
+	ENCH_REJUVENATION: 	["Rejuvenation", 		null, 			"of rejuvenation", 		true,  3, true, false, [EN_SLOT_TA, EN_SLOT_AR]],
+	ENCH_VISION: 		["Improved vision", 	null, 			"of improved vision", 	false, 2, true, false, [EN_SLOT_TA, EN_SLOT_AR]],
+	ENCH_BLESSED: 		["Blessed", 			"Blessed", 		null, 					true,  2, true, false, [EN_SLOT_AR]],
+	ENCH_LIFE_DRAIN: 	["Life drain", 			null, 			"of draining", 			false, 1, true, false, [EN_SLOT_TA]],
+	ENCH_IMP_MAGIC_MIS:	["Improved magic missiles", null, 		"of the arcanist", 		false, 1, true, false, [EN_SLOT_TA]],
+	ENCH_EMP_ENCH: 		["Empowered enchantments",null, 		"of enchantment", 		false, 2, true, false, [EN_SLOT_TA]],
+	ENCH_DESTRUCTION: 	["Destruction",			null, 			"of destruction", 		false, 3, true, false, [EN_SLOT_TA]],
+	ENCH_PROTECTION: 	["Protection", 			null, 			"of protection", 		false, 3, true, false, [EN_SLOT_TA]],
+	ENCH_ESCAPE: 		["Emergency escape",	null, 			"of escapism", 			false, 3, true, false, [EN_SLOT_TA]],
+	ENCH_PARALYZE: 		["Paralysis",			null, 			"of paralysis", 		false, 4, true, false, [EN_SLOT_TH]],
+	ENCH_FLAMING_1: 	["Flaming I",			"Flaming",		"of fire", 				false, 1, true, false, [EN_SLOT_WP, EN_SLOT_TH]],
+	ENCH_VENOM_1: 		["Venomous I",			"Venomous",		"of poison", 			false, 1, true, false, [EN_SLOT_WP, EN_SLOT_TH]],
+	ENCH_PIERCING: 		["Piercing",			"Piercing",		"of piercing", 			false, 1, true, false, [EN_SLOT_WP]],
+	ENCH_SHOCK_1: 		["Shocking I",			"Shocking",		"of shock", 			false, 2, true, false, [EN_SLOT_WP]],
+	ENCH_GOBLIN: 		["Goblin slayer",		null,			"of goblin slaying", 	false, 2, true, false, [EN_SLOT_WP]],
+	ENCH_HOLY_1: 		["Holy wrath I",		"Blessed",		"of holy wrath", 		false, 3, true, false, [EN_SLOT_WP]],
+	ENCH_PRECISION: 	["Precision",			"Precise",		"of accuracy", 			false, 3, true, false, [EN_SLOT_WP]],
+}
+
+const enchantDescriptions = {
+	ENCH_FIRE_RESIST_1: "+1 * of fire resistance (%%_RESIST_TIP).",
+	ENCH_POIS_RESIST_1: "+1 * of poison resistance (%%_RESIST_TIP).",
+	ENCH_ARCANE_SHIELD: "Immunity to magic missile.",
+	ENCH_MIND: "+1 to WIL save rolls.",
+	ENCH_RESISTANCE: "+1 to PHY save rolls.",
+	ENCH_REJUVENATION: "+3 HP when you cast an abjuration spell on yourself.",
+	ENCH_VISION: "+1 to perception rolls.",
+	ENCH_BLESSED: "+1 AC +1 to PHY save rolls against evil (%%_EVIL_TIP) attacks and spells.",
+	ENCH_LIFE_DRAIN: "Each kill grants you 2 HP.",
+	ENCH_IMP_MAGIC_MIS: "Each projectile of magic missile deals 1 more damage.",
+	ENCH_EMP_ENCH: "+1 to spellpower for enchantment spells (%%_EFFICIENCY_TIP).",
+	ENCH_DESTRUCTION: "+1 damage dice to spells but offensive spells cost two uses per cast.",
+	ENCH_PROTECTION: "+1 AC.",
+	ENCH_ESCAPE: "Grants [Invisible] for 5 turns when droping low life.",
+	ENCH_PARALYZE: "Inflicts [Paralyzed] for 3 turns on a failed PHY saving throw DC 3.",
+	ENCH_FLAMING_1: "Deals 1d4 fire damage.",
+	ENCH_VENOM_1: "Apply [Poison II] on hit for 10 turns, no saving throw (%%_POISON_TIP).",
+	ENCH_PIERCING: "Ignore 2 protection.",
+	ENCH_SHOCK_1: "Deals 1d4 lightning damage.",
+	ENCH_GOBLIN: "+1 to hit and +1 damages against goblins and hobgoblins.",
+	ENCH_HOLY_1: "1d4 radiant damage against evil (%%_EVIL_TIP).",
+	ENCH_PRECISION: "+1 to Hit rolls.",
+}
+
 const WP_EN_PRE = 0
 const WP_EN_SUF = 1
 const WP_EN_RAR = 2
