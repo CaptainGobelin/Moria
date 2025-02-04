@@ -21,7 +21,7 @@ const DMG_COLORS = [
 ]
 const DMG_NAMES = [
 	"slashing", "bludgeoning", "fire", "poison",
-	 "radiant", "magic", "cold", "shock"
+	"radiant", "magic", "cold", "shock"
 ]
 
 # Saving throw
@@ -398,8 +398,8 @@ const weapons = {
 	6: 				["longsword",	null, Vector2(2, 10), "S", 5, false,  6],
 	7: 				["morning star",null, Vector2(3,  6), "S", 6, false,  7],
 	
-	W_STAFF: 		["staff",		null, Vector2(1,  8), "B", 0, true,  8],
-	W_GREATCLUB: 	["greatclub",	null, Vector2(1, 10), "B", 1, true,  9],
+	W_STAFF: 		["staff",		null, Vector2(1,  6), "B", 0, true,  8],
+	W_GREATCLUB: 	["greatclub",	null, Vector2(1,  8), "B", 1, true,  9],
 	W_FELLING_AXE:	["felling axe",	null, Vector2(1, 12), "S", 2, true, 10],
 	W_MAUL: 		["maul",		null, Vector2(2,  6), "B", 3, true, 11],
 	W_BROADSWORD: 	["broadsword",	null, Vector2(3,  4), "S", 4, true, 12],
@@ -409,7 +409,19 @@ const weapons = {
 }
 
 const weaponDescriptions = {
+	-1: "A rusty weapon.",
 	W_CLUB: "A stick made of wood with a large knob on the end.",
+	W_DAGGER: "A short double-edged knife with a sharp point.",
+	W_HATCHET: "A small and light axe, it's a tool more than a weapon.",
+	W_MACE: "A metal club with a heavy head on the end.",
+	W_SHORTSWORD: "A slashing weapon with a short sharp blade.",
+	W_AXE: "A strong crescent-shaped battle axe.",
+	
+	W_STAFF: "A shaft made of hardwood, sometimes infused with magic.",
+	W_GREATCLUB: "A club but large enough to be used two-handed.",
+	W_FELLING_AXE: "An axe with a strong blade designed to chop wood.",
+	W_MAUL: "A long-handled hammer with a heavy head.",
+	W_BROADSWORD: "A heavy blade designed to be used two-handed.",
 }
 
 var weaponsByRarity = {}
@@ -428,10 +440,21 @@ const SH_MALUS = 3
 const SH_RAR = 4
 const SH_ENCH = 5
 const SH_ICON = 6
+
+const SH_BUCKLER = 0
+const SH_TARGE = 1
+const SH_SHIELD = 2
+
 const shields = {
-	0: ["Buckler",       1, 1, 1, 0, 1.0, 33],
-	1: ["Round shield",  1, 2, 2, 2, 1.0, 34],
-	2: ["Heater shield", 1, 3, 4, 4, 1.0, 35]
+	SH_BUCKLER: 	["Buckler",       1, 1, 1, 0, 1.0, 33],
+	SH_TARGE: 		["Round shield",  1, 2, 2, 2, 1.0, 34],
+	SH_SHIELD: 		["Heater shield", 1, 3, 4, 4, 1.0, 35]
+}
+
+const shieldDescriptions = {
+	-1: "A rusty shield.",
+	SH_BUCKLER: "Small round shield made of wood and leather.",
+	SH_TARGE: "A round wooden shield covered by a thin layer of bronze.",
 }
 
 var shieldsByRarity = {}
@@ -451,16 +474,34 @@ const A_RAR = 3
 const A_ICON = 4
 const A_ENCH = 5
 const A_HELM = 6
+
+const A_ROBE = 0
+const A_PADDED = 1
+const A_LEATHER = 2
+const A_BRIGANDINE = 3
+const A_CAP = 10
+const A_HELMET = 11
+
 const armors = {
-	0: ["Robe",				2, 0, 0, 18, 1.0, false],
-	1: ["Padded armour",	3, 0, 0, 19, 1.0, false],
-	2: ["Leather armour",	4, 1, 1, 20, 1.0, false],
-	3: ["Brigandine",		4, 1, 2, 21, 1.0, false],
+	A_ROBE: 		["Robe",				2, 0, 0, 18, 1.0, false],
+	A_PADDED: 		["Padded armour",	3, 0, 0, 19, 1.0, false],
+	A_LEATHER: 		["Leather armour",	4, 1, 1, 20, 1.0, false],
+	A_BRIGANDINE: 	["Brigandine",		4, 1, 2, 21, 1.0, false],
 	4: ["Scalemail",		5, 2, 3, 22, 1.0, false],
 	5: ["Full plate",		5, 3, 4, 23, 1.0, false],
 	
-	10: ["Leather cap",		0, 1, 0, 16, 1.0, true],
-	11: ["Horned helm",		1, 1, 4, 17, 1.0, true],
+	A_CAP: 			["Leather cap",		0, 1, 0, 16, 1.0, true],
+	A_HELMET: 		["Horned helm",		1, 1, 4, 17, 1.0, true],
+}
+
+const armorDescriptions = {
+	-1: "A rusty armor.",
+	A_ROBE: "A simple clothing made of fabric.",
+	A_PADDED: "A jacket made of whool, stuffed to offer minor protection.",
+	A_LEATHER: "A light armor covered with thin layers of animal hide.",
+	A_BRIGANDINE: "A sturdy armor made of cloth with riveted steel plates.",
+	
+	A_CAP: "A simple helmet made of hardened leather and fur.",
 }
 
 var armorsByRarity = {}
@@ -480,12 +521,13 @@ const PO_EF = 1
 const PO_RAR = 2
 const PO_ICON = 3
 const PO_STACK = 4
+
 const potions = {
 	PO_HEALING: ["Potion of healing", 0, 0, 24, 0],
 }
 
 const potionDescriptions = {
-	PO_HEALING: "Restores 50% of your HP (rounds down)."
+	PO_HEALING: "Restores 50% of your total HP (rounds down)."
 }
  
 var potionsByRarity = {}
