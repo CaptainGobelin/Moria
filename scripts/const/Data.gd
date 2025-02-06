@@ -386,26 +386,27 @@ const W_DMG = 2
 const W_TYPE = 3
 const W_RAR = 4
 const W_2H = 5
-const W_ICON = 6
+const W_SKILL = 6
+const W_ICON = 7
 
 const weapons = {
-	W_CLUB: 		["club",		null, Vector2(1,  4), "B", 0, false,  0],
-	W_DAGGER:		["dagger",		null, Vector2(1,  4), "S", 1, false,  1],
-	W_HATCHET: 		["hatchet",		null, Vector2(1,  6), "S", 1, false,  2],
-	W_MACE: 		["mace",		null, Vector2(1,  8), "B", 2, false,  3],
-	W_SHORTSWORD: 	["shortsword",	null, Vector2(2,  4), "S", 3, false,  4],
-	W_AXE: 			["hand axe",	null, Vector2(1, 10), "S", 4, false,  5],
-	6: 				["longsword",	null, Vector2(2, 10), "S", 5, false,  6],
-	7: 				["morning star",null, Vector2(3,  6), "S", 6, false,  7],
+	W_CLUB: 		["club",		null, Vector2(1,  4), "B", 0, false, 0, 0],
+	W_DAGGER:		["dagger",		null, Vector2(1,  4), "S", 1, false, 0,  1],
+	W_HATCHET: 		["hatchet",		null, Vector2(1,  6), "S", 1, false, 2,  2],
+	W_MACE: 		["mace",		null, Vector2(1,  8), "B", 2, false, 2,  3],
+	W_SHORTSWORD: 	["shortsword",	null, Vector2(2,  4), "S", 3, false, 2,  4],
+	W_AXE: 			["hand axe",	null, Vector2(1, 10), "S", 4, false, 4,  5],
+	6: 				["longsword",	null, Vector2(2, 10), "S", 5, false, 4,  6],
+	7: 				["morning star",null, Vector2(3,  6), "S", 6, false, 4,  7],
 	
-	W_STAFF: 		["staff",		null, Vector2(1,  6), "B", 0, true,  8],
-	W_GREATCLUB: 	["greatclub",	null, Vector2(1,  8), "B", 1, true,  9],
-	W_FELLING_AXE:	["felling axe",	null, Vector2(1, 12), "S", 2, true, 10],
-	W_MAUL: 		["maul",		null, Vector2(2,  6), "B", 3, true, 11],
-	W_BROADSWORD: 	["broadsword",	null, Vector2(3,  4), "S", 4, true, 12],
-	13:				["halberd",		null, Vector2(3, 10), "S", 5, true, 13],
-	14:				["greataxe",	null, Vector2(3, 12), "S", 6, true, 14],
-	15:				["zweihander",	null, Vector2(4,  8), "S", 6, true, 15],
+	W_STAFF: 		["staff",		null, Vector2(1,  6), "B", 0, true, 0,  8],
+	W_GREATCLUB: 	["greatclub",	null, Vector2(1,  8), "B", 1, true, 0,  9],
+	W_FELLING_AXE:	["felling axe",	null, Vector2(1, 12), "S", 2, true, 2, 10],
+	W_MAUL: 		["maul",		null, Vector2(2,  6), "B", 3, true, 2, 11],
+	W_BROADSWORD: 	["broadsword",	null, Vector2(3,  4), "S", 4, true, 2, 12],
+	13:				["halberd",		null, Vector2(3, 10), "S", 5, true, 4, 13],
+	14:				["greataxe",	null, Vector2(3, 12), "S", 6, true, 4, 14],
+	15:				["zweihander",	null, Vector2(4,  8), "S", 6, true, 4, 15],
 }
 
 const weaponDescriptions = {
@@ -515,25 +516,45 @@ func armorsReader():
 
 # Potions
 const PO_HEALING = 0
+const PO_ANTIDOTE = 1
+const PO_STONESKIN_1 = 2
+const PO_INVISIBILITY = 3
+const PO_WOUNDS = 4
+const PO_MIGHT = 5
+const PO_BRILLANCE_1 = 6
 
 const PO_NAME = 0
-const PO_EF = 1
+const PO_CAN_POP = 1
 const PO_RAR = 2
 const PO_ICON = 3
 const PO_STACK = 4
 
 const potions = {
-	PO_HEALING: ["Potion of healing", 0, 0, 24, 0],
+	PO_HEALING: 	["Potion of healing", 		true, 0, 0, 24, 0],
+	PO_ANTIDOTE: 	["Antidote", 				true, 0, 0, 25, 1],
+	PO_STONESKIN_1: ["Potion of stoneskin I", 	true, 0, 1, 26, 2],
+	PO_INVISIBILITY:["Potion of invisibility",	true, 0, 1, 27, 3],
+	PO_WOUNDS: 		["Potion of cure wounds", 	true, 0, 2, 28, 4],
+	PO_MIGHT: 		["Potion of might", 		true, 0, 2, 29, 5],
+	PO_BRILLANCE_1: ["Potion of brillance I", 	true, 0, 2, 30, 6],
 }
 
 const potionDescriptions = {
-	PO_HEALING: "Restores 50% of your total HP (rounds down)."
+	PO_HEALING: "Restores 50% of your total HP (rounds down).",
+	PO_ANTIDOTE : "Cures any [Poison] status and grants [Protect from poison] for 10 turns.",
+	PO_STONESKIN_1 : "Grants [Stoneskin III] (+3 to protection) for 15 turns.",
+	PO_INVISIBILITY : "Grants [Lesser invisible] for 25 turns or until you attack, throw or cast a spell.",
+	PO_WOUNDS : "Replenishes all you HP and cure a random injury.",
+	PO_MIGHT : "Grants [Might] (double your weapon damages) for 10 turns.",
+	PO_BRILLANCE_1 : "Grants [Brillance I] (level 1 spells costs no uses) for 3 turns.",
 }
  
 var potionsByRarity = {}
 
 func potionsReader():
 	for idx in potions.keys():
+		if !potions[idx][PO_CAN_POP]:
+			continue
 		var rarity = potions[idx][PO_RAR]
 		if !potionsByRarity.has(rarity):
 			potionsByRarity[rarity] = []
@@ -548,9 +569,21 @@ const SC_STACK = 4
 const SC_ICON_ALL = 57
 
 const SC_MAGIC_MISSILE = 0
+const SC_BLINK = 1
+const SC_REPEL_EVIL = 2
+const SC_REVEAL = 3
+const SC_ANIMALS = 4
+const SC_LESSER_ACQ = 5
+const SC_MIRROR_IMAGE = 6
 
 const scrolls = {
-	SC_MAGIC_MISSILE: ["Scroll of magic missile", SP_MAGIC_MISSILE, 2, 0, 100],
+	SC_MAGIC_MISSILE: 	["Scroll of magic missile", SP_MAGIC_MISSILE, 1, 0, 100],
+	SC_BLINK: 			["Scroll of blink", SP_MAGIC_MISSILE, 0, 0, 101],
+	SC_REPEL_EVIL: 		["Scroll of repel evil", SP_MAGIC_MISSILE, 0, 1, 102],
+	SC_REVEAL: 			["Scroll of reveal hidden", SP_MAGIC_MISSILE, 0, 1, 103],
+	SC_ANIMALS: 		["Scroll of conjure animals", SP_CONJURE_ANIMAL, 1, 2, 104],
+	SC_LESSER_ACQ: 		["Scroll of lesser acquirement", SP_LESSER_AQUIREMENT, 1, 3, 105],
+	SC_MIRROR_IMAGE: 	["Scroll of mirror image", SP_MAGIC_MISSILE, 0, 3, 106],
 }
 
 const scrollDescriptions = {
@@ -693,6 +726,7 @@ const EN_SLOT_WP = 0
 const EN_SLOT_TH = 1
 const EN_SLOT_AR = 2
 const EN_SLOT_TA = 3
+const EN_SLOT_ST = 4
 
 const EN_TYPE_MINOR = 0
 const EN_TYPE_MAJOR = 1
@@ -704,13 +738,13 @@ const enchants = {
 	ENCH_ARCANE_SHIELD: ["Arcane shield", 		null, 			"of arcane shield", 	true,  2, true, false, [EN_SLOT_TA, EN_SLOT_AR]],
 	ENCH_MIND: 			["Mind protection", 	null, 			"of willpower", 		false, 2, true, false, [EN_SLOT_TA, EN_SLOT_AR]],
 	ENCH_RESISTANCE: 	["Resistance", 			null, 			"of resistance", 		true,  3, true, false, [EN_SLOT_TA, EN_SLOT_AR]],
-	ENCH_REJUVENATION: 	["Rejuvenation", 		null, 			"of rejuvenation", 		true,  3, true, false, [EN_SLOT_TA, EN_SLOT_AR]],
+	ENCH_REJUVENATION: 	["Rejuvenation", 		null, 			"of rejuvenation", 		true,  3, true, false, [EN_SLOT_TA, EN_SLOT_AR, EN_SLOT_ST]],
 	ENCH_VISION: 		["Improved vision", 	null, 			"of improved vision", 	false, 2, true, false, [EN_SLOT_TA, EN_SLOT_AR]],
 	ENCH_BLESSED: 		["Blessed", 			"Blessed", 		null, 					true,  2, true, false, [EN_SLOT_AR]],
 	ENCH_LIFE_DRAIN: 	["Life drain", 			null, 			"of draining", 			false, 1, true, false, [EN_SLOT_TA]],
-	ENCH_IMP_MAGIC_MIS:	["Improved magic missiles", null, 		"of the arcanist", 		false, 1, true, false, [EN_SLOT_TA]],
-	ENCH_EMP_ENCH: 		["Empowered enchantments",null, 		"of enchantment", 		false, 2, true, false, [EN_SLOT_TA]],
-	ENCH_DESTRUCTION: 	["Destruction",			null, 			"of destruction", 		false, 3, true, false, [EN_SLOT_TA]],
+	ENCH_IMP_MAGIC_MIS:	["Improved magic missiles", null, 		"of the arcanist", 		false, 1, true, false, [EN_SLOT_TA, EN_SLOT_ST]],
+	ENCH_EMP_ENCH: 		["Empowered enchantments",null, 		"of enchantment", 		false, 2, true, false, [EN_SLOT_TA, EN_SLOT_ST]],
+	ENCH_DESTRUCTION: 	["Destruction",			null, 			"of destruction", 		false, 3, true, false, [EN_SLOT_TA, EN_SLOT_ST]],
 	ENCH_PROTECTION: 	["Protection", 			null, 			"of protection", 		false, 3, true, false, [EN_SLOT_TA]],
 	ENCH_ESCAPE: 		["Emergency escape",	null, 			"of escapism", 			false, 3, true, false, [EN_SLOT_TA]],
 	ENCH_PARALYZE: 		["Paralysis",			null, 			"of paralysis", 		false, 4, true, false, [EN_SLOT_TH]],
@@ -718,7 +752,7 @@ const enchants = {
 	ENCH_VENOM_1: 		["Venomous I",			"Venomous",		"of poison", 			false, 1, true, false, [EN_SLOT_WP, EN_SLOT_TH]],
 	ENCH_PIERCING: 		["Piercing",			"Piercing",		"of piercing", 			false, 1, true, false, [EN_SLOT_WP]],
 	ENCH_SHOCK_1: 		["Shocking I",			"Shocking",		"of shock", 			false, 2, true, false, [EN_SLOT_WP]],
-	ENCH_GOBLIN: 		["Goblin slayer",		null,			"of goblin slaying", 	false, 2, true, false, [EN_SLOT_WP]],
+	ENCH_GOBLIN: 		["Goblin slayer",		"Goblinslayer",	"of goblin slaying", 	false, 2, true, false, [EN_SLOT_WP]],
 	ENCH_HOLY_1: 		["Holy wrath I",		"Blessed",		"of holy wrath", 		false, 3, true, false, [EN_SLOT_WP]],
 	ENCH_PRECISION: 	["Precision",			"Precise",		"of accuracy", 			false, 3, true, false, [EN_SLOT_WP]],
 }
@@ -748,6 +782,7 @@ const enchantDescriptions = {
 	ENCH_PRECISION: "+1 to Hit rolls.",
 }
 
+# Type -> Slot -> Rarity
 var enchantsByRarity = {
 	EN_TYPE_MINOR: {},
 	EN_TYPE_MAJOR: {}
@@ -757,15 +792,19 @@ func enchantsReader():
 	for idx in enchants.keys():
 		if !enchants[idx][EN_CAN_POP]:
 			continue
-		var type = EN_TYPE_MINOR
+		var eType = EN_TYPE_MINOR
 		if enchants[idx][EN_MAJOR]:
-			type = EN_TYPE_MAJOR
+			eType = EN_TYPE_MAJOR
 		for slot in enchants[idx][EN_SLOTS]:
+			var type = eType
+			if slot == EN_SLOT_ST:
+				type = EN_TYPE_MINOR
 			if !enchantsByRarity[type].has(slot):
 				enchantsByRarity[type][slot] = {}
-			if !enchantsByRarity[type][slot].has(enchants[idx][EN_RARITY]):
-				enchantsByRarity[type][slot][enchants[idx][EN_RARITY]] = []
-			enchantsByRarity[type][slot][enchants[idx][EN_RARITY]].append(idx)
+			for rarity in range(enchants[idx][EN_RARITY], 9):
+				if !enchantsByRarity[type][slot].has(rarity):
+					enchantsByRarity[type][slot][rarity] = []
+				enchantsByRarity[type][slot][rarity].append(idx)
 
 const WP_EN_PRE = 0
 const WP_EN_SUF = 1

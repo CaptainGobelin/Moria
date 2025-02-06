@@ -171,7 +171,7 @@ func spawnMonster(idx: int = 0, pos = null, isAllied: bool = false):
 	monster.spawn(idx, cell)
 
 func addLoot(cell: Vector2, rarityBonus: int):
-	var rarity = (randi() % 1) + rarityBonus
+	var rarity = 1 + rarityBonus
 	for item in Ref.game.itemGenerator.generateItem(rarity):
 		#print(GLOBAL.items[item][GLOBAL.IT_NAME])
 		GLOBAL.dropItemOnFloor(item, cell)
@@ -189,7 +189,7 @@ func addChest(cell: Vector2, rarityBonus: int):
 		GLOBAL.chests[chest.get_instance_id()][GLOBAL.CH_LOCKED] = 3
 	var quantity = randi() % 3 + 1
 	for _i in range(quantity):
-		var rarity = (randi() % 1) + rarityBonus
+		var rarity = 1 + rarityBonus
 		for item in Ref.game.itemGenerator.generateItem(rarity):
 			GLOBAL.chests[chest.get_instance_id()][GLOBAL.CH_CONTENT].append(item)
 

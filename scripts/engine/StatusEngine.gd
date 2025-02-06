@@ -135,15 +135,15 @@ func applyEffect(entity):
 			Data.STATUS_SANCTUARY:
 				pass
 			Data.STATUS_FIRE_WEAPON:
-				dmgWeapon(entity, rank, 6, Data.DMG_FIRE)
+				dmgWeapon(entity, rank, 4, Data.DMG_FIRE)
 			Data.STATUS_FROST_WEAPON:
 				dmgWeapon(entity, rank, 4, Data.DMG_ICE)
 			Data.STATUS_POISON_WEAPON:
-				dmgWeapon(entity, rank, 4, Data.DMG_POISON)
+				pass
 			Data.STATUS_SHOCK_WEAPON:
 				dmgWeapon(entity, rank, 4, Data.DMG_LIGHTNING)
 			Data.STATUS_HOLY_WEAPON:
-				dmgWeapon(entity, rank, 8, Data.DMG_RADIANT)
+				pass
 			Data.STATUS_PRECISE_WEAPON:
 				addToHit(entity, rank)
 			Data.STATUS_VORPAL_WEAPON:
