@@ -797,7 +797,7 @@ func enchantsReader():
 			eType = EN_TYPE_MAJOR
 		for slot in enchants[idx][EN_SLOTS]:
 			var type = eType
-			if slot == EN_SLOT_ST:
+			if slot == EN_SLOT_ST or slot == EN_SLOT_TA:
 				type = EN_TYPE_MINOR
 			if !enchantsByRarity[type].has(slot):
 				enchantsByRarity[type][slot] = {}
