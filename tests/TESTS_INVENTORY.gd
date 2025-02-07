@@ -164,8 +164,10 @@ const tests = {
 		[
 			"inventory", "ui_right", "ui_right", "readScroll",
 			"assert_last_printed_null", "assert_inventory_mode", "ui_cancel",
-			"ui_right", "pickLoot", "inventory", "readScroll",
-			"assert_target_mode", "ui_cancel"
+			"ui_right", "pickLoot", "inventory",
+			#"readScroll", TODO re-enable when target scroll exist
+			#"assert_target_mode",
+			"ui_cancel"
 		]
 	],
 	14: [

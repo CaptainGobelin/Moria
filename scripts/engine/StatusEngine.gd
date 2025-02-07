@@ -99,7 +99,11 @@ func decreaseStatusRank(entity, type: int, ranks: int) -> int:
 func applyEffect(entity):
 	for type in entity.statuses.values():
 		var status = type[0]
-		var rank = GLOBAL.statuses[status][GLOBAL.ST_RANK]
+		var statusItem = GLOBAL.statuses[status]
+		var rank = statusItem[GLOBAL.ST_RANK]
+		if statusItem[GLOBAL.ST_TYPE] >= 1000:
+			applyEnchantEffect(entity, statusItem, rank)
+			return
 		match GLOBAL.statuses[status][GLOBAL.ST_TYPE]:
 			Data.STATUS_SLEEP:
 				pass
@@ -134,20 +138,21 @@ func applyEffect(entity):
 				pass
 			Data.STATUS_SANCTUARY:
 				pass
-			Data.STATUS_FIRE_WEAPON:
+			Data.STATUS_FIRE_WP:
 				dmgWeapon(entity, rank, 4, Data.DMG_FIRE)
-			Data.STATUS_FROST_WEAPON:
-				dmgWeapon(entity, rank, 4, Data.DMG_ICE)
-			Data.STATUS_POISON_WEAPON:
+			Data.STATUS_POISON_WP:
 				pass
-			Data.STATUS_SHOCK_WEAPON:
+			Data.STATUS_SHOCK_WP:
 				dmgWeapon(entity, rank, 4, Data.DMG_LIGHTNING)
-			Data.STATUS_HOLY_WEAPON:
+			Data.STATUS_HOLY_WP:
 				pass
-			Data.STATUS_PRECISE_WEAPON:
+			Data.STATUS_PRECISION:
 				addToHit(entity, rank)
-			Data.STATUS_VORPAL_WEAPON:
-				increaseDmgDices(entity, 2)
+
+func applyEnchantEffect(entity, status, rank: int):
+	match (status[GLOBAL.ST_TYPE] - 1000):
+		Data.ENCH_ARCANE_SHIELD:
+			pass
 
 func dmgWeapon(entity, rank: int, dice: int, type: int):
 	entity.stats.addDmg(GeneralEngine.dmgDice(rank, dice, 0, type))

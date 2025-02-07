@@ -683,34 +683,6 @@ const CLASS_KITS = {
 	CL_PALADIN: KIT_PALADIN,
 }
 
-# Weapon enchants
-const ENCH_1_WP = 0
-const ENCH_2_WP = 1
-const ENCH_3_WP = 2
-const ENCH_FIRE_DMG = 3
-const ENCH_FROST_DMG = 4
-const ENCH_SHOCK_DMG = 5
-const ENCH_HOLY_WP = 6
-const ENCH_ANTIMAGIC_WP = 7
-const ENCH_POISON_DMG = 8
-const ENCH_SLAY_WP = 9
-const ENCH_SPEED_WP = 50
-const ENCH_VORP_WP = 51
-const ENCH_ACID_DMG = 52
-const ENCH_VAMPIRIC_WP = 53
-const ENCH_PRECISE_WP = 54
-const ENCH_FIRE_RES = 100
-const ENCH_POISON_RES = 101
-const ENCH_PHY_SAVE = 200
-const ENCH_WIL_SAVE = 201
-# Armor enchants
-const ENCH_1_AR = 1000
-const ENCH_2_AR = 1001
-const ENCH_3_AR = 1002
-const ENCH_FIRE_RESIST = 1003
-const ENCH_POISON_RESIST = 1004
-# Talisman enchants
-
 # Enchantments
 const ENCH_PLUS_1 = 0
 const ENCH_PLUS_2 = 1
@@ -830,53 +802,6 @@ func enchantsReader():
 				if !enchantsByRarity[type][slot].has(rarity):
 					enchantsByRarity[type][slot][rarity] = []
 				enchantsByRarity[type][slot][rarity].append(idx)
-
-const WP_EN_PRE = 0
-const WP_EN_SUF = 1
-const WP_EN_RAR = 2
-const WP_EN_ID = 3
-const wpEnchants = {
-	ENCH_1_WP: [null, "+1", 3, 0],
-#	ENCH_2_WP: [null, "+2", 1],
-#	ENCH_3_WP: [null, "+3", 2],
-	
-	ENCH_FIRE_DMG: 	["flaming", "of fire", 1, 3],
-	ENCH_SHOCK_DMG: ["shocking", "of shock", 1, 5],
-	ENCH_HOLY_WP: 	["blessed", "of holy wrath", 2, 6],
-#	103: ["antimagic", "of dispel", 2, 7],
-	ENCH_POISON_DMG:["venomous", "of poison", 1, 8],
-#	105: ["sharp", "of slaying", 0, 9],
-	ENCH_FROST_DMG: ["freezing", "of frost", 1, 4],
-	
-#	200: ["acidic", "of acid", 1, 52],
-#	201: ["vampiric", "of draining", 4, 53],
-	ENCH_PRECISE_WP:["balanced", "of precision", 3, 54],
-#	203: [null, "of speed", 50],
-	ENCH_VORP_WP: 	["vorpal", null, 4, 51],
-}
-
-# Armor enchants
-const AR_EN_SUF = 0
-const AR_EN_RAR = 1
-const AR_EN_ID = 2
-const arEnchants = {
-	ENCH_1_AR: ["+1", 3, 1001],
-#	ENCH_2_AR: ["+2", 1, 1002],
-#	ENCH_3_AR: ["+3", 2, 1003],
-	
-	ENCH_FIRE_RES: 	["of fire resistance", 1, 1004],
-	ENCH_POISON_RES:["of poison resistance", 0, 1005],
-	ENCH_PHY_SAVE:	["of endurance", 2, 1005],
-	ENCH_WIL_SAVE: 	["of willpower", 3, 1005],
-}
-
-# Talisman enchants
-const TA_EN_SUF = 0
-const TA_EN_RAR = 1
-const TA_EN_ID = 2
-const taEnchants = {
-	0: ["of protection", 1, 2000],
-}
 
 # Gold
 const GOLD_NAME = "Gold coins"
@@ -1146,21 +1071,17 @@ const STATUS_ARMOR_FAITH = 106
 const STATUS_PROTECT_EVIL = 107
 const STATUS_SANCTUARY = 108
 
-const STATUS_FIRE_WEAPON = 1000 + ENCH_FIRE_DMG
-const STATUS_FROST_WEAPON = 1000 + ENCH_FROST_DMG
-const STATUS_POISON_WEAPON = 1000 + ENCH_POISON_DMG
-const STATUS_SHOCK_WEAPON = 1000 + ENCH_SHOCK_DMG
-const STATUS_HOLY_WEAPON = 1000 + ENCH_HOLY_WP
-const STATUS_PRECISE_WEAPON = 1000 + ENCH_PRECISE_WP
-const STATUS_VORPAL_WEAPON = 1000 + ENCH_VORP_WP
-const STATUS_SLASH_RESIST = 10000 + DMG_SLASH
-const STATUS_BLUNT_RESIST = 10000 + DMG_BLUNT
-const STATUS_FIRE_RESIST = 10000 + DMG_FIRE
-const STATUS_POISON_RESIST = 10000 + DMG_POISON
-const STATUS_RADIANT_RESIST = 10000 + DMG_RADIANT
-const STATUS_MAGIC_RESIST = 10000 + DMG_MAGIC
-const STATUS_ICE_RESIST = 10000 + DMG_ICE
-const STATUS_LIGHTNING_RESIST = 10000 + DMG_LIGHTNING
+const STATUS_FIRE_RESIST = 200
+const STATUS_POIS_RESIST = 201
+const STATUS_PRECISION = 202
+const STATUS_PROTECTION = 203
+const STATUS_VISION = 204
+const STATUS_INVISIBLE = 205
+const STATUS_FIRE_WP = 206
+const STATUS_POISON_WP = 207
+const STATUS_HOLY_WP = 208
+const STATUS_SHOCK_WP = 209
+
 #const STATUS_FEAT_FIGHTER = 20000 + FEAT_FIGHTER
 #const STATUS_FEAT_THIEF = 20000 + FEAT_THIEF
 #const STATUS_FEAT_PALADIN = 20000 + FEAT_PALADIN

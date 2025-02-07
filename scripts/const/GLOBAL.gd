@@ -71,17 +71,18 @@ const IT_TYPE = 0
 const IT_NAME = 1
 const IT_ICON = 2
 const IT_DMG = 3
-const IT_SUBTYPE = 4 #Not used
+const IT_HIT = 4
+const IT_SUBTYPE = 5
 # 2H is true for 2 handed weapon or helmets
-const IT_2H = 5
-const IT_CA = 6
-const IT_PROT = 7
+const IT_2H = 6
+const IT_CA = 7
+const IT_PROT = 8
 # Special is enchants, talisman effect, scroll spell, quantity or potion effect
-const IT_SPEC = 8
+const IT_SPEC = 9
 # Skill is for weapon and armor to see if you can use it
-const IT_SKILL = 9
-const IT_BASE = 10
-const IT_STACK = 11
+const IT_SKILL = 10
+const IT_BASE = 11
+const IT_STACK = 12
 var items: Dictionary = {}
 
 # Index is pos content is a list of item ID

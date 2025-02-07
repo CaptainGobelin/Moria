@@ -46,6 +46,9 @@ func clearDescription():
 	icon.visible = false
 
 func weaponDescription(item):
+	if item[GLOBAL.IT_SUBTYPE] == GLOBAL.SUB_SH:
+		shieldDescription(item)
+		return
 	icon.frame = item[GLOBAL.IT_ICON]
 	icon.visible = true
 	nameLabel.text = item[GLOBAL.IT_NAME]
@@ -54,6 +57,10 @@ func weaponDescription(item):
 	dmg += " " + Data.DMG_NAMES[item[GLOBAL.IT_DMG].type]
 	infoLabel.text = dmg
 	effectsLabel.text = "- No special effect."
+
+func shieldDescription(item):
+	#TODO
+	pass
 
 func armorDescription(item):
 	icon.frame = item[GLOBAL.IT_ICON]
@@ -80,7 +87,8 @@ func scrollDescription(item):
 	infoLabel.text = "Casts "
 	infoLabel.text += spell[Data.SP_NAME] + " " + Utils.toRoman(scroll[Data.SC_RANK])
 	infoLabel.text += "."
-	effectsLabel.text = SpellDescription.replacePlaceholders(Data.scrollDescriptions[item[GLOBAL.IT_BASE]], scroll[Data.SC_SP])
+	if Data.scrollDescriptions.has(item[GLOBAL.IT_BASE]):
+		effectsLabel.text = SpellDescription.replacePlaceholders(Data.scrollDescriptions[item[GLOBAL.IT_BASE]], scroll[Data.SC_SP])
 
 func potionDescription(item):
 	icon.frame = item[GLOBAL.IT_ICON]

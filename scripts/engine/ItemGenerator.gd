@@ -1,15 +1,6 @@
 extends Node
 class_name ItemGenerator
 
-const RARITY_ENCH = [0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1]
-
-const QU_NORM = 0
-const QU_FINE = 1
-const QU_HIGH = 2
-const QU_PERF = 3
-const QU_PROB = [1.0, 0.2, 0.08, 0.02]
-const QU_ENCH = [0.0, 0.12, 0.28, 0.5]
-
 const WP_IDX = 0
 const AR_IDX = 1
 const TA_IDX = 2
@@ -73,8 +64,7 @@ func generateWeapon(rarity: int):
 		enchants = generateStaffEnchant(rarity)
 	base[Data.W_NAME] = addEnchantsAffixes(enchants, base[Data.W_NAME])
 	base[Data.W_NAME][0] = base[Data.W_NAME][0].capitalize()
-	GLOBAL.items[id] = mapWeaponToItem(base, baseIdx)
-	GLOBAL.items[id][GLOBAL.IT_SPEC] = enchants.duplicate()
+	GLOBAL.items[id] = mapWeaponToItem(base, baseIdx, enchants)
 	return [id]
 
 func generateWeaponEnchant(rarity: int):
@@ -107,16 +97,28 @@ func generateStaffEnchant(rarity: int):
 			result.append(Data.ENCH_PLUS_1)
 	return result
 
-func mapWeaponToItem(weapon, baseIdx: int):
+func mapWeaponToItem(weapon, baseIdx: int, enchants: Array = []):
 	var item = []
 	item.resize(GLOBAL.IT_STACK + 1)
 	item[GLOBAL.IT_ICON] = weapon[Data.W_ICON]
 	item[GLOBAL.IT_NAME] = weapon[Data.W_NAME]
+	item[GLOBAL.IT_SPEC] = enchants.duplicate()
 	var dmgDice = GeneralEngine.basicDice(weapon[Data.W_DMG])
 	var dmgType = Data.DMG_SLASH
 	if weapon[Data.W_TYPE] == "B":
 		dmgType = Data.DMG_BLUNT
 	item[GLOBAL.IT_DMG] = GeneralEngine.dmgFromDice(dmgDice, dmgType)
+	if item[GLOBAL.IT_SPEC].has(Data.ENCH_PLUS_1):
+		item[GLOBAL.IT_HIT] = 1
+		item[GLOBAL.IT_DMG].dice.b += 1
+	elif item[GLOBAL.IT_SPEC].has(Data.ENCH_PLUS_2):
+		item[GLOBAL.IT_HIT] = 2
+		item[GLOBAL.IT_DMG].dice.b += 2
+	elif item[GLOBAL.IT_SPEC].has(Data.ENCH_PLUS_3):
+		item[GLOBAL.IT_HIT] = 3
+		item[GLOBAL.IT_DMG].dice.b += 3
+	else:
+		item[GLOBAL.IT_HIT] = 0
 	item[GLOBAL.IT_2H] = weapon[Data.W_2H]
 	item[GLOBAL.IT_TYPE] = GLOBAL.WP_TYPE
 	item[GLOBAL.IT_SUBTYPE] = GLOBAL.SUB_WP
@@ -137,8 +139,7 @@ func generateShield(rarity: int):
 	base[Data.W_NAME] = addEnchantsAffixes(enchants, base[Data.W_NAME])
 	id += 1
 	base[Data.SH_NAME][0] = base[Data.SH_NAME][0].capitalize()
-	GLOBAL.items[id] = mapShieldToItem(base, baseIdx)
-	GLOBAL.items[id][GLOBAL.IT_SPEC] = enchants.duplicate()
+	GLOBAL.items[id] = mapShieldToItem(base, baseIdx, enchants)
 	return [id]
 
 func generateShieldEnchant(rarity: int):
@@ -151,13 +152,20 @@ func generateShieldEnchant(rarity: int):
 				result.append(Data.ENCH_PLUS_1)
 	return result
 
-func mapShieldToItem(shield, baseIdx: int):
+func mapShieldToItem(shield, baseIdx: int, enchants: Array = []):
 	var item = []
 	item.resize(GLOBAL.IT_STACK + 1)
 	item[GLOBAL.IT_ICON] = shield[Data.SH_ICON]
 	item[GLOBAL.IT_NAME] = shield[Data.SH_NAME]
+	item[GLOBAL.IT_SPEC] = enchants.duplicate()
 	item[GLOBAL.IT_CA] = shield[Data.SH_AC]
 	item[GLOBAL.IT_PROT] = shield[Data.SH_PROT]
+	if item[GLOBAL.IT_SPEC].has(Data.ENCH_PLUS_1):
+		item[GLOBAL.IT_PROT] += 1
+	elif item[GLOBAL.IT_SPEC].has(Data.ENCH_PLUS_2):
+		item[GLOBAL.IT_PROT] += 2
+	elif item[GLOBAL.IT_SPEC].has(Data.ENCH_PLUS_3):
+		item[GLOBAL.IT_PROT] += 3
 	item[GLOBAL.IT_SKILL] = shield[Data.SH_SKILL]
 	item[GLOBAL.IT_TYPE] = GLOBAL.WP_TYPE
 	item[GLOBAL.IT_SUBTYPE] = GLOBAL.SUB_SH
@@ -177,8 +185,7 @@ func generateArmor(rarity: int):
 	base[Data.A_NAME] = addEnchantsAffixes(enchants, base[Data.A_NAME])
 	id += 1
 	base[Data.A_NAME][0] = base[Data.A_NAME][0].capitalize()
-	GLOBAL.items[id] = mapArmorToItem(base, baseIdx)
-	GLOBAL.items[id][GLOBAL.IT_SPEC] = enchants.duplicate()
+	GLOBAL.items[id] = mapArmorToItem(base, baseIdx, enchants)
 	return [id]
 
 func generateArmorEnchant(rarity: int, isHelmet: bool):
@@ -197,17 +204,28 @@ func generateArmorEnchant(rarity: int, isHelmet: bool):
 			result.append(Data.ENCH_PLUS_1)
 	return result
 
-func mapArmorToItem(armor, baseIdx: int):
+func mapArmorToItem(armor, baseIdx: int, enchants: Array = []):
 	var item = []
 	item.resize(GLOBAL.IT_STACK + 1)
 	item[GLOBAL.IT_ICON] = armor[Data.A_ICON]
 	item[GLOBAL.IT_NAME] = armor[Data.A_NAME]
+	item[GLOBAL.IT_SPEC] = enchants.duplicate()
 	item[GLOBAL.IT_CA] = armor[Data.A_CA]
 	item[GLOBAL.IT_PROT] = armor[Data.A_PROT]
+	if item[GLOBAL.IT_SPEC].has(Data.ENCH_PLUS_1):
+		item[GLOBAL.IT_CA] += 1
+		item[GLOBAL.IT_PROT] += 1
+	elif item[GLOBAL.IT_SPEC].has(Data.ENCH_PLUS_2):
+		item[GLOBAL.IT_CA] += 2
+		item[GLOBAL.IT_PROT] += 2
+	elif item[GLOBAL.IT_SPEC].has(Data.ENCH_PLUS_3):
+		item[GLOBAL.IT_CA] += 3
+		item[GLOBAL.IT_PROT] += 3
 	item[GLOBAL.IT_TYPE] = GLOBAL.AR_TYPE
 	item[GLOBAL.IT_2H] = armor[Data.A_HELM]
 	if armor[Data.A_HELM]:
 		item[GLOBAL.IT_SUBTYPE] = GLOBAL.SUB_HE
+		item[GLOBAL.IT_CA] = 0
 	else:
 		item[GLOBAL.IT_SUBTYPE] = GLOBAL.SUB_AR
 	item[GLOBAL.IT_BASE] = baseIdx
@@ -361,12 +379,6 @@ func generateGolds(rarity: int, count = null):
 	GLOBAL.items[id] = item
 	return [id]
 
-func rndArmorEnchant():
-	return [GLOBAL.AR_TYPE, Utils.chooseRandom(Data.arEnchants.keys())]
-
-func rndTalismanEnchant():
-	return [GLOBAL.TA_TYPE, Utils.chooseRandom(Data.taEnchants.keys())]
-
 func addEnchantsAffixes(enchants: Array, base: String) -> String:
 	var hasPrefix = false
 	for e in enchants:
@@ -425,10 +437,7 @@ func getTalisman(idx: int):
 	id += 1
 	GLOBAL.items[id] = mapTalismanToItem(base)
 	var enchant  = generateTalismanEnchant(0)
-	if enchant[0] == GLOBAL.AR_TYPE:
-		GLOBAL.items[id][GLOBAL.IT_NAME] += (" " + Data.arEnchants[enchant[1]][Data.AR_EN_SUF])
-	else:
-		GLOBAL.items[id][GLOBAL.IT_NAME] += (" " + Data.taEnchants[enchant[1]][Data.TA_EN_SUF])
+	GLOBAL.items[id][GLOBAL.IT_NAME] = addEnchantsAffixes(enchant, GLOBAL.items[id][GLOBAL.IT_NAME])
 	GLOBAL.items[id][GLOBAL.IT_NAME][0] = GLOBAL.items[id][GLOBAL.IT_NAME][0].capitalize()
 	GLOBAL.items[id][GLOBAL.IT_SPEC] = enchant
 	return [id]
