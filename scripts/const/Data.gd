@@ -437,9 +437,8 @@ func weaponsReader():
 const SH_NAME = 0
 const SH_AC = 1
 const SH_PROT = 2
-const SH_MALUS = 3
+const SH_SKILL = 3
 const SH_RAR = 4
-const SH_ENCH = 5
 const SH_ICON = 6
 
 const SH_BUCKLER = 0
@@ -447,9 +446,9 @@ const SH_TARGE = 1
 const SH_SHIELD = 2
 
 const shields = {
-	SH_BUCKLER: 	["Buckler",       1, 1, 1, 0, 1.0, 33],
-	SH_TARGE: 		["Round shield",  1, 2, 2, 2, 1.0, 34],
-	SH_SHIELD: 		["Heater shield", 1, 3, 4, 4, 1.0, 35]
+	SH_BUCKLER: 	["Buckler",       1, 0, 1, 2, 33],
+	SH_TARGE: 		["Targe",  		  1, 0, 3, 4, 34],
+	SH_SHIELD: 		["Heater shield", 1, 0, 4, 4, 35]
 }
 
 const shieldDescriptions = {
@@ -530,13 +529,13 @@ const PO_ICON = 3
 const PO_STACK = 4
 
 const potions = {
-	PO_HEALING: 	["Potion of healing", 		true, 0, 0, 24, 0],
-	PO_ANTIDOTE: 	["Antidote", 				true, 0, 0, 25, 1],
-	PO_STONESKIN_1: ["Potion of stoneskin I", 	true, 0, 1, 26, 2],
-	PO_INVISIBILITY:["Potion of invisibility",	true, 0, 1, 27, 3],
-	PO_WOUNDS: 		["Potion of cure wounds", 	true, 0, 2, 28, 4],
-	PO_MIGHT: 		["Potion of might", 		true, 0, 2, 29, 5],
-	PO_BRILLANCE_1: ["Potion of brillance I", 	true, 0, 2, 30, 6],
+	PO_HEALING: 	["Potion of healing", 		true, 0, 24, 0],
+	PO_ANTIDOTE: 	["Antidote", 				true, 0, 25, 1],
+	PO_STONESKIN_1: ["Potion of stoneskin I", 	true, 1, 26, 2],
+	PO_INVISIBILITY:["Potion of invisibility",	true, 1, 27, 3],
+	PO_WOUNDS: 		["Potion of cure wounds", 	true, 2, 28, 4],
+	PO_MIGHT: 		["Potion of might", 		true, 2, 29, 5],
+	PO_BRILLANCE_1: ["Potion of brillance I", 	true, 2, 30, 6],
 }
 
 const potionDescriptions = {

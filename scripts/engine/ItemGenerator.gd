@@ -18,17 +18,18 @@ const SC_IDX = 4
 const PO_IDX = 5
 const LO_IDX = 6
 const GO_IDX = 7
-const TYPE_PROB = [0.019, 0.023, 0.07, 0.05, 0.01, 0.1, 0.1, 0.16]
+const TYPE_PROB = [0.22, 0.14, 0.06, 0.08, 0.1, 0.13, 0.12, 0.15]
 
 var id = -1
 
 func _ready():
-	for i in range(0, 5):
-		print("-------------- " + String(i) + " --------------")
-		for _j in range(0, 20):
-			var item = generateItem(i)
-			if !item.empty():
-				print(GLOBAL.items[item[0]][GLOBAL.IT_NAME])
+#	randomize()
+#	for i in range(0, 5):
+#		print("-------------- " + String(i) + " --------------")
+#		for _j in range(0, 30):
+#			var item = generateItem(i)
+#			if !item.empty():
+#				print(GLOBAL.items[item[0]][GLOBAL.IT_NAME])
 	pass
 
 func getItemType(forSell: bool = false):
@@ -47,7 +48,7 @@ func generateItem(rarity: int, type: int = -1, forSell: bool = false):
 	match type:
 		WP_IDX: return generateWeapon(rarity)
 		AR_IDX: return generateArmor(rarity)
-		TH_IDX: return generateThrowing(rarity) #TODO
+		TH_IDX: return generateThrowing(rarity)
 		PO_IDX: return generatePotion(rarity)
 		SC_IDX: return generateScroll(rarity)
 		TA_IDX: return generateTalisman(rarity)
@@ -56,7 +57,7 @@ func generateItem(rarity: int, type: int = -1, forSell: bool = false):
 		_: return []
 
 func generateWeapon(rarity: int):
-	if rarity >= Data.shields[0][Data.SH_RAR] and randf() < 0.1:
+	if rarity >= Data.shields[0][Data.SH_RAR] and randf() < 0.125:
 		return generateShield(rarity)
 	var localRarity = randi() % (rarity + 1)
 	while !Data.weaponsByRarity.has(localRarity):
@@ -132,7 +133,7 @@ func generateShield(rarity: int):
 			baseIdx = k
 			break
 	var base = Data.shields[baseIdx].duplicate()
-	var enchants = generateWeaponEnchant(rarity, base[Data.W_SKILL] > 2)
+	var enchants = generateShieldEnchant(rarity)
 	base[Data.W_NAME] = addEnchantsAffixes(enchants, base[Data.W_NAME])
 	id += 1
 	base[Data.SH_NAME][0] = base[Data.SH_NAME][0].capitalize()
@@ -157,7 +158,7 @@ func mapShieldToItem(shield, baseIdx: int):
 	item[GLOBAL.IT_NAME] = shield[Data.SH_NAME]
 	item[GLOBAL.IT_CA] = shield[Data.SH_AC]
 	item[GLOBAL.IT_PROT] = shield[Data.SH_PROT]
-	item[GLOBAL.IT_SKILL] = shield[Data.SH_MALUS]
+	item[GLOBAL.IT_SKILL] = shield[Data.SH_SKILL]
 	item[GLOBAL.IT_TYPE] = GLOBAL.WP_TYPE
 	item[GLOBAL.IT_SUBTYPE] = GLOBAL.SUB_SH
 	item[GLOBAL.IT_BASE] = baseIdx
