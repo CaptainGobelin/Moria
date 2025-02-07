@@ -40,32 +40,32 @@ func blank():
 	icon.frame = 29
 	description.bbcode_text = ""
 
-static func replacePlaceholders(toReplace: String, spellId: int) -> String:
+static func replacePlaceholders(toReplace: String, id: int) -> String:
 	var d = toReplace
-	if Data.spellDamages.has(spellId):
-		d = d.replace("%%DMG_1", dmgToStr(Data.spellDamages[spellId][0]))
-		d = d.replace("%%DMG_2", dmgToStr(Data.spellDamages[spellId][1]))
-		d = d.replace("%%DMG_3", dmgToStr(Data.spellDamages[spellId][2]))
-		d = d.replace("%%DMGN_1", dmgToStr(Data.spellDamages[spellId][0], false))
-		d = d.replace("%%DMGN_2", dmgToStr(Data.spellDamages[spellId][1], false))
-		d = d.replace("%%DMGN_3", dmgToStr(Data.spellDamages[spellId][2], false))
-		d = d.replace("%%D_DMG_1", dmgDescription(Data.spellDamages[spellId][0]))
-		d = d.replace("%%D_DMG_2", dmgDescription(Data.spellDamages[spellId][1]))
-		d = d.replace("%%D_DMG_3", dmgDescription(Data.spellDamages[spellId][2]))
-		d = d.replace("%%INC_DMG_2", dmgIncrease(Data.spellDamages[spellId][1]))
-		d = d.replace("%%INC_DMG_3", dmgIncrease(Data.spellDamages[spellId][2]))
-	if Data.spellTurns.has(spellId):
-		d = d.replace("%%TURNS_1", turns(Data.spellTurns[spellId][0]))
-		d = d.replace("%%TURNS_2", turns(Data.spellTurns[spellId][1]))
-		d = d.replace("%%TURNS_3", turns(Data.spellTurns[spellId][2]))
-	d = d.replace("%%USES_1", uses(Data.spells[spellId][Data.SP_USES][0]))
-	d = d.replace("%%USES_2", uses(Data.spells[spellId][Data.SP_USES][1]))
-	d = d.replace("%%USES_3", uses(Data.spells[spellId][Data.SP_USES][2]))
+	if Data.spellDamages.has(id):
+		d = d.replace("%%DMG_1", dmgToStr(Data.spellDamages[id][0]))
+		d = d.replace("%%DMG_2", dmgToStr(Data.spellDamages[id][1]))
+		d = d.replace("%%DMG_3", dmgToStr(Data.spellDamages[id][2]))
+		d = d.replace("%%DMGN_1", dmgToStr(Data.spellDamages[id][0], false))
+		d = d.replace("%%DMGN_2", dmgToStr(Data.spellDamages[id][1], false))
+		d = d.replace("%%DMGN_3", dmgToStr(Data.spellDamages[id][2], false))
+		d = d.replace("%%D_DMG_1", dmgDescription(Data.spellDamages[id][0]))
+		d = d.replace("%%D_DMG_2", dmgDescription(Data.spellDamages[id][1]))
+		d = d.replace("%%D_DMG_3", dmgDescription(Data.spellDamages[id][2]))
+		d = d.replace("%%INC_DMG_2", dmgIncrease(Data.spellDamages[id][1]))
+		d = d.replace("%%INC_DMG_3", dmgIncrease(Data.spellDamages[id][2]))
+	if Data.spellTurns.has(id):
+		d = d.replace("%%TURNS_1", turns(Data.spellTurns[id][0]))
+		d = d.replace("%%TURNS_2", turns(Data.spellTurns[id][1]))
+		d = d.replace("%%TURNS_3", turns(Data.spellTurns[id][2]))
+	d = d.replace("%%USES_1", uses(Data.spells[id][Data.SP_USES][0]))
+	d = d.replace("%%USES_2", uses(Data.spells[id][Data.SP_USES][1]))
+	d = d.replace("%%USES_3", uses(Data.spells[id][Data.SP_USES][2]))
 	d = d.replace("%%CONTACT", rangeContact())
 	d = d.replace("%%LINE", rangeLine())
 	d = d.replace("%%TARGET", rangeTarget())
-	d = d.replace("%%TARGET_AREA", rangeTargetArea(Data.spells[spellId][Data.SP_AREA]))
-	d = d.replace("%%AREA", rangeArea(Data.spells[spellId][Data.SP_AREA]))
+	d = d.replace("%%TARGET_AREA", rangeTargetArea(Data.spells[id][Data.SP_AREA]))
+	d = d.replace("%%AREA", rangeArea(Data.spells[id][Data.SP_AREA]))
 	d = d.replace("%%SELF", rangeSelf())
 	d = d.replace("%%SAVE_HALF", saveHalf())
 	d = d.replace("%%SAVE_NO", saveNegates())
