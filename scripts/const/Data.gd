@@ -439,7 +439,7 @@ const SH_AC = 1
 const SH_PROT = 2
 const SH_SKILL = 3
 const SH_RAR = 4
-const SH_ICON = 6
+const SH_ICON = 5
 
 const SH_BUCKLER = 0
 const SH_TARGE = 1
@@ -612,21 +612,47 @@ const talismans = {
 }
 
 # Throwings
+const TH_KNIFE = 0
+const TH_AXE = 1
+const TH_JAVELIN = 2
+const TH_FIRE = 3
+
 const TH_NAME = 0
 const TH_ICON = 1
 const TH_DMG = 2
 const TH_SKILL = 3
-const TH_EFFECT = 4
-const TH_PROJ = 5
-const TH_STACK = 6
+const TH_RAR = 4
+const TH_EFFECT = 5
+const TH_PROJ = 6
+const TH_STACK = 7
+const TH_CAN_POP = 8
+const TH_UPGRADES = 9
 const throwings = {
-	0: ["Throwing knife", 	36, Vector2(1,  6), 0, null,           PROJ_WHITE_S,    200],
-	1: ["Throwing axe", 	37, Vector2(1, 10), 1, null,           PROJ_WHITE_M,    201],
-	2: ["Javelin", 			38, Vector2(2,  8), 2, null,           PROJ_WHITE_LONG, 202],
-	3: ["Roped firebomb", 	39, null,           0, SP_TH_FIREBOMB, PROJ_WHITE_R,    203],
-	4: ["Toxic flask", 		40, null,           0, SP_TH_POISON,   PROJ_WHITE_R,    204],
-	5: ["Sleep flask", 		41, null,           0, SP_TH_SLEEP,    PROJ_WHITE_R,    205],
+	TH_KNIFE: 		["Throwing knife", 	36, Vector2(1,  6), 0, 0, null,           PROJ_WHITE_S,    200, true, [TH_AXE, TH_JAVELIN]],
+	TH_AXE: 		["Throwing axe", 	37, Vector2(1, 10), 2, 2, null,           PROJ_WHITE_M,    201, false, []],
+	TH_JAVELIN: 	["Javelin", 		38, Vector2(2,  8), 4, 6, null,           PROJ_WHITE_LONG, 202, false, []],
+	TH_FIRE: 		["Roped firebomb", 	39, null,           0, 2, SP_TH_FIREBOMB, PROJ_WHITE_R,    203, true, []],
+	4: ["Toxic flask", 		40, null,           0, 6, SP_TH_POISON,   PROJ_WHITE_R,    204, true, []],
+	5: ["Sleep flask", 		41, null,           0, 6, SP_TH_SLEEP,    PROJ_WHITE_R,    205, true, []],
 }
+
+const throwingDescriptions = {
+	-1: "",
+	TH_KNIFE: "A light knife, designed to be thrown effectively.",
+	TH_AXE: "A light axe, designed to be thrown effectively.",
+	TH_FIRE: "A vial of explosive substance attached to a rope.",
+}
+ 
+var throwingsByRarity = {}
+
+func throwingsReader():
+	for idx in throwings.keys():
+		if !throwings[idx][TH_CAN_POP]:
+			continue
+		var rarity = throwings[idx][TH_RAR]
+		if !throwingsByRarity.has(rarity):
+			throwingsByRarity[rarity] = []
+		throwingsByRarity[rarity].append(idx)
 
 # Starting kits
 const KIT_WP = 0
@@ -1369,6 +1395,7 @@ func _ready():
 	armorsReader()
 	potionsReader()
 	scrollsReader()
+	throwingsReader()
 	spellsReader()
 	enchantsReader()
 	encountersReader()

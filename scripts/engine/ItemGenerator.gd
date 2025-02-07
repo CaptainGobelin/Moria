@@ -214,24 +214,23 @@ func mapArmorToItem(armor, baseIdx: int):
 	return item
 
 func generateThrowing(rarity: int):
-	var quality = rarity / 2
-	# Proba, item type, quantity
-	var typeChances = [[0.64, quality, 5], [0.12, 3, 3], [0.12, 4, 5], [0.12, 5, 3]]
-	var rnd = randf()
-	var idx = quality
-	var quantity = 1 + (randi() % 5)
-	for i in typeChances:
-		if rnd < i[0]:
-			idx = i[1]
-			quality = 1 + (randi() % i[2])
-			break
-		rnd -= i[0]
-	var base = Data.throwings[idx].duplicate()
+	var localRarity = randi() % (rarity + 1)
+	while !Data.throwingsByRarity.has(localRarity):
+		localRarity -= 1
+		if localRarity < 0:
+			return []
+	var rnd = randi() % Data.throwingsByRarity[localRarity].size()
+	var baseIdx = Data.throwingsByRarity[localRarity][rnd]
+	for upgrade in Data.throwings[Data.throwingsByRarity[localRarity][rnd]][Data.TH_UPGRADES]:
+		if Data.throwings[upgrade][Data.TH_RAR] <= rarity:
+			baseIdx = upgrade
+	var base = Data.throwings[baseIdx].duplicate()
 	var result = []
+	var quantity = 1 + (randi() % 5)
 	for _i in range(quantity):
 		id += 1
 		result.append(id)
-		GLOBAL.items[id] = mapThrowingToItem(base, idx)
+		GLOBAL.items[id] = mapThrowingToItem(base, baseIdx)
 	return result
 
 func mapThrowingToItem(throwing, baseIdx):
@@ -255,7 +254,7 @@ func generatePotion(rarity: int):
 		while !Data.potionsByRarity.has(rarity):
 			rarity -= 1
 			if rarity < 0:
-				return null
+				return []
 		var rnd = randi() % Data.potionsByRarity[rarity].size()
 		baseIdx = Data.potionsByRarity[rarity][rnd]
 	var base = Data.potions[baseIdx].duplicate()
@@ -282,7 +281,7 @@ func generateScroll(rarity: int):
 	while !Data.scrollsByRarity.has(rarity):
 		rarity -= 1
 		if rarity < 0:
-			return null
+			return []
 	var rnd = randi() % Data.scrollsByRarity[rarity].size()
 	var baseIdx = Data.scrollsByRarity[rarity][rnd]
 	var base = Data.scrolls[baseIdx].duplicate()
