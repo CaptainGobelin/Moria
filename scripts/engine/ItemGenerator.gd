@@ -68,7 +68,7 @@ func generateWeapon(rarity: int):
 	var baseIdx = Data.weaponsByRarity[localRarity][rnd]
 	var base = Data.weapons[baseIdx].duplicate()
 	id += 1
-	var enchants = generateWeaponEnchant(rarity, base[Data.W_SKILL] > 2)
+	var enchants = generateWeaponEnchant(rarity)
 	if baseIdx == Data.W_STAFF:
 		enchants = generateStaffEnchant(rarity)
 	base[Data.W_NAME] = addEnchantsAffixes(enchants, base[Data.W_NAME])
@@ -77,7 +77,7 @@ func generateWeapon(rarity: int):
 	GLOBAL.items[id][GLOBAL.IT_SPEC] = enchants.duplicate()
 	return [id]
 
-func generateWeaponEnchant(rarity: int, isAdvanced: bool):
+func generateWeaponEnchant(rarity: int):
 	var wpType = 0
 	if (rarity > 4) and (randf() < 0.25):
 		wpType = 1
@@ -85,10 +85,10 @@ func generateWeaponEnchant(rarity: int, isAdvanced: bool):
 	if rarity > 1:
 		if randf() < ((rarity-1) * 0.075):
 			result.append(Utils.chooseRandom(Data.enchantsByRarity[wpType][Data.EN_SLOT_WP][rarity]))
-			if isAdvanced and (randf() < 0.3125):
+			if (rarity > 4) and (randf() < 0.3125):
 				result.append(Utils.chooseRandom(Data.enchantsByRarity[0][Data.EN_SLOT_WP][rarity]))
 		if randf() < ((rarity) * 0.075):
-			if wpType == 1:
+			if (rarity > 4) and (randf() < 0.25):
 				result.append(Data.ENCH_PLUS_2)
 			else:
 				result.append(Data.ENCH_PLUS_1)
