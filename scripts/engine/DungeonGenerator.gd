@@ -6,7 +6,7 @@ onready var cavernBiome = get_node("CavernBiome")
 onready var merchantRoom = get_node("MerchantRoom")
 onready var dungeon: TileMap
 
-export (int, "Normal, Cavern, Arena, Merchant") var biome = 0
+export (int, "Normal, Cavern, Arena, Merchant, Debug") var biome = 0
 
 var textures = [
 	"res://sprites/walls.png",
@@ -47,6 +47,10 @@ func newFloor(specialBiome = biome):
 			return simpleFloor()
 		3:
 			return merchantRoom.newFloor()
+		4:
+			var result = simpleFloor()
+			loadAllItems()
+			return result
 
 func simpleFloor():
 	for i in range(GLOBAL.FLOOR_SIZE_X):
@@ -84,3 +88,21 @@ func changeTilesetTexture(index: int):
 	var texture = load(textures[index])
 	for id in Ref.currentLevel.dungeon.tile_set.get_tiles_ids():
 		Ref.currentLevel.dungeon.tile_set.tile_set_texture(id, texture)
+
+func loadAllItems():
+	var cells = dungeon.get_used_cells_by_id(GLOBAL.FLOOR_ID)
+	cells.invert()
+	var idx = 0
+	for e in Data.enchants.keys():
+		var slot = Data.enchants[e][Data.EN_SLOTS][0]
+		var item
+		match slot:
+			Data.EN_SLOT_WP:
+				item = Ref.game.itemGenerator.getWeapon(Data.W_CLUB, [e])
+			Data.EN_SLOT_AR:
+				item = Ref.game.itemGenerator.getArmor(Data.A_ROBE, [e])
+			Data.EN_SLOT_TA:
+				item = Ref.game.itemGenerator.getTalisman(0, [e])
+		if item != null:
+			GLOBAL.dropItemOnFloor(item[0], cells[idx])
+			idx = (idx + 1) % cells.size()

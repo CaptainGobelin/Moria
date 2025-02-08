@@ -43,8 +43,9 @@ func computeStats():
 	computeProt()
 	computeDmg()
 	computeHit()
+	computeSaves()
+	computeResists()
 	StatusEngine.applyEffect(get_parent())
-	computeReissts()
 	applyMageArmor()
 #	Utils.printDict(get_parent().enchants)
 #	Utils.printDict(get_parent().statuses)
@@ -129,7 +130,8 @@ func addDmg(newValue):
 func computeHit():
 	var value = GeneralEngine.dice(1, 6, 0)
 	var weapon = Ref.character.inventory.getWeapon()
-	value.b += GLOBAL.items[weapon][GLOBAL.IT_HIT]
+	if weapon != -1:
+		value.b += GLOBAL.items[weapon][GLOBAL.IT_HIT]
 	updateHit(value)
 
 func updateHit(newValue):
@@ -139,14 +141,17 @@ func updateHit(newValue):
 func computePerception():
 	perception = GeneralEngine.dice(1, 6, 0)
 
-func computeReissts():
+func computeResists():
 	for i in range(8):
-		var resist = 0
-		if get_parent().statuses.has(10000+i):
-			resist = get_parent().statuses[10000+i].size()
-		resists[i] = min(resist, maxResists[i])
+		resists[i] = 0
+	updateResists()
+
+func updateResists():
 	Ref.ui.updateStat(Data.CHAR_R_FIRE, [resists[Data.DMG_FIRE], maxResists[Data.DMG_FIRE]])
 	Ref.ui.updateStat(Data.CHAR_R_POISON, [resists[Data.DMG_POISON], maxResists[Data.DMG_POISON]])
+
+func computeSaves():
+	saveBonus = [0, 0]
 
 func updateLevel(newValue):
 	level = newValue

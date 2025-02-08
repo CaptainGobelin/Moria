@@ -101,9 +101,12 @@ func applyEffect(entity):
 		var status = type[0]
 		var statusItem = GLOBAL.statuses[status]
 		var rank = statusItem[GLOBAL.ST_RANK]
-		if statusItem[GLOBAL.ST_TYPE] >= 1000:
+		if statusItem[GLOBAL.ST_TYPE] >= Data.STATUS_ENCHANT:
 			applyEnchantEffect(entity, statusItem, rank)
-			return
+			continue
+		if statusItem[GLOBAL.ST_TYPE] >= Data.STATUS_RESIST:
+			addToResist(entity, statusItem[GLOBAL.ST_TYPE] - Data.STATUS_RESIST, rank)
+			continue
 		match GLOBAL.statuses[status][GLOBAL.ST_TYPE]:
 			Data.STATUS_SLEEP:
 				pass
@@ -140,7 +143,7 @@ func applyEffect(entity):
 				pass
 			Data.STATUS_FIRE_WP:
 				dmgWeapon(entity, rank, 4, Data.DMG_FIRE)
-			Data.STATUS_POISON_WP:
+			Data.STATUS_POIS_WP:
 				pass
 			Data.STATUS_SHOCK_WP:
 				dmgWeapon(entity, rank, 4, Data.DMG_LIGHTNING)
@@ -148,6 +151,10 @@ func applyEffect(entity):
 				pass
 			Data.STATUS_PRECISION:
 				addToHit(entity, rank)
+			Data.STATUS_WILLPOWER:
+				addToSaves(entity, rank, 0)
+			Data.STATUS_PHYSICS:
+				addToSaves(entity, 0, rank)
 
 func applyEnchantEffect(entity, status, rank: int):
 	match (status[GLOBAL.ST_TYPE] - 1000):
@@ -189,3 +196,8 @@ func addToProt(entity, rank: int):
 	entity.stats.prot += rank
 	if entity is Character:
 		entity.stats.updateProt(entity.stats.prot)
+
+func addToResist(entity, dmgType: int, rank: int):
+	entity.stats.resists[dmgType] += rank
+	if entity is Character:
+		entity.stats.updateResists()

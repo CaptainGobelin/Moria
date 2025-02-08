@@ -20,9 +20,9 @@ func applyEffect(entity, enchant: int, item: int):
 	var id = []
 	match enchant:
 		Data.ENCH_FIRE_RESIST_1:
-			id = createStatus(entity, Data.STATUS_FIRE_RESIST, 1)
+			id = createStatus(entity, Data.STATUS_RESIST + Data.DMG_FIRE, 1)
 		Data.ENCH_POIS_RESIST_1:
-			id = createStatus(entity, Data.STATUS_POISON_RESIST, 1)
+			id = createStatus(entity, Data.STATUS_RESIST + Data.DMG_POISON, 1)
 		Data.ENCH_VISION:
 			id = createStatus(entity, Data.STATUS_LIGHT, 2)
 		Data.ENCH_BLESSED:
@@ -39,8 +39,12 @@ func applyEffect(entity, enchant: int, item: int):
 			id = createStatus(entity, Data.STATUS_HOLY_WP, 1)
 		Data.ENCH_PRECISION:
 			id = createStatus(entity, Data.STATUS_PRECISION, 1)
+		Data.ENCH_MIND:
+			id = createStatus(entity, Data.STATUS_WILLPOWER, 1)
+		Data.ENCH_RESISTANCE:
+			id = createStatus(entity, Data.STATUS_PHYSICS, 1)
 		_:
-			id = createStatus(entity, enchant + 1000, 1)
+			id = createStatus(entity, enchant + Data.STATUS_ENCHANT, 1)
 	if id.empty():
 		return
 	if entity.enchants.has(item):

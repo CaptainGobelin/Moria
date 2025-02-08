@@ -34,6 +34,7 @@ func getItemType(forSell: bool = false):
 	return result
 
 func generateItem(rarity: int, type: int = -1, forSell: bool = false):
+	rarity = 4
 	if type == -1:
 		type = getItemType(forSell)
 	match type:
@@ -392,26 +393,27 @@ func addEnchantsAffixes(enchants: Array, base: String) -> String:
 			base = base + " " + Data.enchants[e][Data.EN_SUFFIX]
 	return base
 
-func getWeapon(idx: int):
+func getWeapon(idx: int, enchants: Array = []):
 	var base = Data.weapons[idx].duplicate()
 	id += 1
+	base[Data.W_NAME] = addEnchantsAffixes(enchants, base[Data.W_NAME])
 	base[Data.W_NAME][0] = base[Data.W_NAME][0].capitalize()
-	GLOBAL.items[id] = mapWeaponToItem(base, idx)
-	GLOBAL.items[id][GLOBAL.IT_SPEC] = []
+	GLOBAL.items[id] = mapWeaponToItem(base, idx, enchants)
 	return [id]
 
-func getShield(idx: int):
+func getShield(idx: int, enchants: Array = []):
 	var base = Data.shields[idx].duplicate()
 	id += 1
-	GLOBAL.items[id] = mapShieldToItem(base, idx)
-	GLOBAL.items[id][GLOBAL.IT_SPEC] = []
+	base[Data.W_NAME] = addEnchantsAffixes(enchants, base[Data.W_NAME])
+	base[Data.W_NAME][0] = base[Data.W_NAME][0].capitalize()
+	GLOBAL.items[id] = mapShieldToItem(base, idx, enchants)
 	return [id]
 
-func getArmor(idx: int):
+func getArmor(idx: int, enchants: Array = []):
 	var base = Data.armors[idx].duplicate()
 	id += 1
-	GLOBAL.items[id] = mapArmorToItem(base, idx)
-	GLOBAL.items[id][GLOBAL.IT_SPEC] = []
+	base[Data.A_NAME] = addEnchantsAffixes(enchants, base[Data.A_NAME])
+	GLOBAL.items[id] = mapArmorToItem(base, idx, enchants)
 	return [id]
 
 func getPotion(idx: int):
@@ -432,12 +434,13 @@ func getThrowable(idx: int):
 	GLOBAL.items[id] = mapThrowingToItem(base, idx)
 	return [id]
 
-func getTalisman(idx: int):
+func getTalisman(idx: int, enchants: Array = []):
 	var base  = Data.talismans[idx].duplicate()
 	id += 1
 	GLOBAL.items[id] = mapTalismanToItem(base)
-	var enchant  = generateTalismanEnchant(0)
-	GLOBAL.items[id][GLOBAL.IT_NAME] = addEnchantsAffixes(enchant, GLOBAL.items[id][GLOBAL.IT_NAME])
+	if enchants.empty():
+		enchants  = generateTalismanEnchant(0)
+	GLOBAL.items[id][GLOBAL.IT_NAME] = addEnchantsAffixes(enchants, GLOBAL.items[id][GLOBAL.IT_NAME])
 	GLOBAL.items[id][GLOBAL.IT_NAME][0] = GLOBAL.items[id][GLOBAL.IT_NAME][0].capitalize()
-	GLOBAL.items[id][GLOBAL.IT_SPEC] = enchant
+	GLOBAL.items[id][GLOBAL.IT_SPEC] = enchants
 	return [id]

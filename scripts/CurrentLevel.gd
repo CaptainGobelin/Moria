@@ -173,7 +173,7 @@ func spawnMonster(idx: int = 0, pos = null, isAllied: bool = false):
 func addLoot(cell: Vector2, rarityBonus: int):
 	var rarity = 1 + rarityBonus
 	for item in Ref.game.itemGenerator.generateItem(rarity):
-		#print(GLOBAL.items[item][GLOBAL.IT_NAME])
+		print(GLOBAL.items[item][GLOBAL.IT_NAME])
 		GLOBAL.dropItemOnFloor(item, cell)
 
 func dropItem():
