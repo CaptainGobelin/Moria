@@ -66,6 +66,7 @@ func getStatusRank(entity, type: int) -> int:
 	return GLOBAL.statuses[entity.statuses[type][0]][GLOBAL.ST_RANK]
 
 func decreaseStatusesTime(entity):
+	entity.stats.applyPoison()
 	var toRefresh = false
 	for type in entity.statuses.keys():
 		for st in entity.statuses[type]:
@@ -108,32 +109,19 @@ func applyEffect(entity):
 			addToResist(entity, statusItem[GLOBAL.ST_TYPE] - Data.STATUS_RESIST, rank)
 			continue
 		match GLOBAL.statuses[status][GLOBAL.ST_TYPE]:
-			Data.STATUS_SLEEP:
-				pass
-			Data.STATUS_TERROR:
-				pass
 			Data.STATUS_BLIND:
 				addToHit(entity, -1)
-				addToRange(entity, -3)
-			Data.STATUS_PARALYZED:
-				pass
-			Data.STATUS_VULNERABLE:
-				pass
 			Data.STATUS_LIGHT:
 				addToRange(entity, 1)
 				if rank > 0:
 					addToPerception(entity, 1)
 			Data.STATUS_DETECT_EVIL:
 				pass
-			Data.STATUS_REVEAL_TRAPS:
-				pass
 			Data.STATUS_BLESSED:
 				addToSaves(entity, 1, 1)
 			Data.STATUS_SHIELD:
 				pass
-			Data.STATUS_MAGE_ARMOR:
-				pass
-			Data.STATUS_ARMOR_FAITH:
+			Data.STATUS_PROTECTED:
 				addToAC(entity, 1)
 				if rank > 0:
 					addToProt(entity, 1)
@@ -143,12 +131,8 @@ func applyEffect(entity):
 				pass
 			Data.STATUS_FIRE_WP:
 				dmgWeapon(entity, rank, 4, Data.DMG_FIRE)
-			Data.STATUS_POIS_WP:
-				pass
 			Data.STATUS_SHOCK_WP:
 				dmgWeapon(entity, rank, 4, Data.DMG_LIGHTNING)
-			Data.STATUS_HOLY_WP:
-				pass
 			Data.STATUS_PRECISION:
 				addToHit(entity, rank)
 			Data.STATUS_WILLPOWER:
@@ -201,3 +185,30 @@ func addToResist(entity, dmgType: int, rank: int):
 	entity.stats.resists[dmgType] += rank
 	if entity is Character:
 		entity.stats.updateResists()
+
+func applyWeaponEffects(entity, target):
+	if entity.statuses.has(Data.STATUS_POIS_WP):
+		var rank = getStatusRank(entity, Data.STATUS_POIS_WP)
+		SpellEngine.applyPoison(target, rank, 3)
+
+func decreaseShieldRanks(entity, dmg: int) -> int:
+	if !entity.statuses.has(Data.STATUS_SHIELD):
+		return dmg
+	var highestShield = GLOBAL.statuses[entity.statuses[Data.STATUS_SHIELD][0]]
+	var result = max(0, dmg - (highestShield[GLOBAL.ST_RANK] + 1))
+	if result > 0:
+		removeStatusType(entity, Data.STATUS_SHIELD)
+		Ref.ui.statusBar.refreshStatuses(Ref.character)
+		return result
+	for idx in entity.statuses[Data.STATUS_SHIELD]:
+		var status = GLOBAL.statuses[idx]
+		status[GLOBAL.ST_RANK] -= dmg
+		if status[GLOBAL.ST_RANK] < 0:
+			entity.statuses[Data.STATUS_SHIELD].erase(idx)
+			GLOBAL.statuses.erase(idx)
+		else:
+			status[GLOBAL.ST_NAME] = Data.statusPrefabs[Data.STATUS_SHIELD][0]
+			status[GLOBAL.ST_NAME] += " " + Utils.toRoman(status[GLOBAL.ST_RANK] + 1)
+	if entity.statuses[Data.STATUS_SHIELD].empty():
+		entity.statuses.erase(Data.STATUS_SHIELD)
+	return result

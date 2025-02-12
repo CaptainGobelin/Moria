@@ -16,6 +16,7 @@ onready var perception = GeneralEngine.dice(1, 6, 0)
 onready var resists: Array = [0, 0, 0, 0, 0, 0, 0, 0]
 onready var maxResists: Array = [1, 1, 1, 1, 1, 1, 1, 1]
 onready var saveBonus: Array = [0, 0]
+onready var lastPoisonTick: int = 5
 
 func init(charClass: int):
 	if charClass == -1:
@@ -47,6 +48,7 @@ func computeStats():
 	computeResists()
 	StatusEngine.applyEffect(get_parent())
 	applyMageArmor()
+	applyBlind()
 #	Utils.printDict(get_parent().enchants)
 #	Utils.printDict(get_parent().statuses)
 
@@ -91,6 +93,22 @@ func applyMageArmor():
 		if ca <= (4 + rank):
 			ca = 4 + rank
 			updateCA(ca)
+
+func applyBlind():
+	if hasStatus(Data.STATUS_BLIND):
+		atkRange = 3
+
+func applyPoison():
+	if hasStatus(Data.STATUS_POISON):
+		lastPoisonTick -= 1
+		if lastPoisonTick <= 0:
+			var rank = getStatusRank(Data.STATUS_POISON)
+			var dice = GeneralEngine.dmgDice(0, 0, rank + 1, Data.DMG_POISON)
+			var dmg = GeneralEngine.computeDamages([dice], resists)
+			get_parent().takeHit(dmg)
+			lastPoisonTick = 5
+	else:
+		lastPoisonTick = 5
 
 func computeProt():
 	var items = [
@@ -177,3 +195,8 @@ func hasStatus(status: int) -> bool:
 
 func getStatusRank(status: int) -> int:
 	return StatusEngine.getStatusRank(get_parent(), status)
+
+func hpPercent() -> float:
+	var current = hp as float
+	var maxHp = hpMax as float
+	return current / maxHp

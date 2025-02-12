@@ -321,11 +321,38 @@ const monsters = {
 	],
 }
 
+const TAG_EVIL = 0
+const TAG_UNDEAD = 1
+const TAG_GOBLIN = 2
+const TAG_ANIMAL = 3
+const TAG_ANIMATED = 4
+const TAG_MAGICAL = 5
+const TAG_DEMON = 6
+const TAG_SUMMONED = 7
+
 const monsterTags = {
-	MO_SKELETON: ["evil", "undead"],
-	MO_SUM_WOLF: ["animal", "summoned"],
-	MO_SUM_HAMMER: ["animated", "summoned"]
+	MO_GIANT_BAT: [TAG_ANIMAL],
+	MO_GIANT_SNAKE: [TAG_ANIMAL],
+	MO_GIANT_LEECH: [TAG_ANIMAL],
+	MO_SKELETON: [TAG_EVIL, TAG_UNDEAD],
+	MO_LESSER_SKELETON: [TAG_EVIL, TAG_UNDEAD],
+	MO_ZOMBIE: [TAG_EVIL, TAG_UNDEAD],
+	MO_GOBLIN: [TAG_GOBLIN],
+	MO_SHAMAN_GOBLIN: [TAG_GOBLIN],
+	MO_SUM_WOLF: [TAG_ANIMAL, TAG_SUMMONED],
+	MO_SUM_HAMMER: [TAG_ANIMATED, TAG_SUMMONED],
+	MO_SUM_HAMMER+1: [TAG_ANIMATED, TAG_SUMMONED],
+	MO_SUM_HAMMER+2: [TAG_ANIMATED, TAG_SUMMONED],
 }
+
+static func hasTag(entity, tag: int) -> bool:
+	if !entity is Monster:
+		return false 
+	if !monsterTags.has(entity.type):
+		return false
+	if monsterTags[entity.type].has(tag):
+		return true
+	return false
 
 func monstersReader():
 	var statsCsv = Utils.csvToDict("MONSTER_STATS.csv")
@@ -741,10 +768,10 @@ const enchants = {
 	ENCH_LIFE_DRAIN: 	["Life drain", 			null, 			"of draining", 			false, 1, true, false, [EN_SLOT_TA]],
 	ENCH_IMP_MAGIC_MIS:	["Improved magic missiles", null, 		"of the arcanist", 		false, 1, true, false, [EN_SLOT_TA, EN_SLOT_ST]],
 	ENCH_EMP_ENCH: 		["Empowered enchantments",null, 		"of enchantment", 		false, 2, true, false, [EN_SLOT_TA, EN_SLOT_ST]],
-	ENCH_DESTRUCTION: 	["Destruction",			null, 			"of destruction", 		false, 3, true, false, [EN_SLOT_TA, EN_SLOT_ST]],
+#	ENCH_DESTRUCTION: 	["Destruction",			null, 			"of destruction", 		false, 3, true, false, [EN_SLOT_TA, EN_SLOT_ST]],
 	ENCH_PROTECTION: 	["Protection", 			null, 			"of protection", 		false, 3, true, false, [EN_SLOT_TA]],
 	ENCH_ESCAPE: 		["Emergency escape",	null, 			"of escapism", 			false, 3, true, false, [EN_SLOT_TA]],
-	ENCH_PARALYZE: 		["Paralysis",			null, 			"of paralysis", 		false, 4, true, false, [EN_SLOT_TH]],
+#	ENCH_PARALYZE: 		["Paralysis",			null, 			"of paralysis", 		false, 4, true, false, [EN_SLOT_TH]],
 	ENCH_FLAMING_1: 	["Flaming I",			"Flaming",		"of fire", 				false, 1, true, false, [EN_SLOT_WP, EN_SLOT_TH]],
 	ENCH_VENOM_1: 		["Venomous I",			"Venomous",		"of poison", 			false, 1, true, false, [EN_SLOT_WP, EN_SLOT_TH]],
 	ENCH_PIERCING: 		["Piercing",			"Piercing",		"of piercing", 			false, 1, true, false, [EN_SLOT_WP]],
@@ -1060,6 +1087,7 @@ const STATUS_TERROR = 1
 const STATUS_BLIND = 2
 const STATUS_PARALYZED = 3
 const STATUS_VULNERABLE = 4
+const STATUS_POISON = 5
 
 const STATUS_LIGHT = 100
 const STATUS_DETECT_EVIL = 101
@@ -1067,20 +1095,21 @@ const STATUS_REVEAL_TRAPS = 102
 const STATUS_BLESSED = 103
 const STATUS_SHIELD = 104
 const STATUS_MAGE_ARMOR = 105
-const STATUS_ARMOR_FAITH = 106
+const STATUS_PROTECTED = 106
 const STATUS_PROTECT_EVIL = 107
 const STATUS_SANCTUARY = 108
+const STATUS_INVISIBLE = 109
 
 const STATUS_WILLPOWER = 200
 const STATUS_PHYSICS = 201
 const STATUS_PRECISION = 202
 const STATUS_PROTECTION = 203
 const STATUS_VISION = 204
-const STATUS_INVISIBLE = 205
 const STATUS_FIRE_WP = 206
 const STATUS_POIS_WP = 207
 const STATUS_HOLY_WP = 208
 const STATUS_SHOCK_WP = 209
+const STATUS_GOBLIN_WP = 210
 
 const STATUS_RESIST = 10000
 
@@ -1109,6 +1138,9 @@ const statusesDescriptions = {
 	STATUS_VULNERABLE: [
 		"Your defences are breached. Any attack will bypass your PROT."
 	],
+	STATUS_POISON: [
+		"Your are sick and suffer 1 poison damage/rank each 5 turns."
+	],
 	
 	STATUS_LIGHT: [
 		"A floating glow follows you, enlighting your surroundings. It grants you +1 range.",
@@ -1125,16 +1157,16 @@ const statusesDescriptions = {
 		"A sacred blessing stands upoon your, protecting yourself against spells. It grants you +1 to all save rolls."
 	],
 	STATUS_SHIELD: [
-		"A magical shield protects you against attacks. I will absorb as much incoming damages as its rank."
+		"A magical shield protects you against attacks. It will absorb as much incoming damages as its rank."
 	],
 	STATUS_MAGE_ARMOR: [
 		"A protective force surrounds you and replace your armor. Set your AC to 4 if it's lower.",
 		"A protective force surrounds you and replace your armor. Set your AC to 5 if it's lower.",
 		"A protective force surrounds you and replace your armor. Set your AC to 6 if it's lower.",
 	],
-	STATUS_ARMOR_FAITH: [
-		"A shimmering field srurrounds you and protect you. It grants +1 AC.",
-		"A shimmering field srurrounds you and protect you. It grants +1 AC and +1 PROT.",
+	STATUS_PROTECTED: [
+		"A shimmering field surrounds you and protect you. It grants +1 AC.",
+		"A shimmering field surrounds you and protect you. It grants +1 AC and +1 PROT.",
 	],
 	STATUS_PROTECT_EVIL: [
 		"You are  protected aginst spells casted evil creatures (undeads and demons). You gains +1 to save rolls against such spells.",
@@ -1145,6 +1177,9 @@ const statusesDescriptions = {
 		"You are protected by a divine barrier preventing any attack against you. The shield disappears if you attack or cast a spell.",
 		"You are protected by a divine barrier preventing any attack against you. The shield disappears if you attack or cast a spell on omebody else.",
 	],
+	STATUS_INVISIBLE: [
+		"You are undetectable by normal vision. Beware that creatures can still detect you by other means."
+	],
 }
 
 const statusPrefabs = {
@@ -1152,6 +1187,7 @@ const statusPrefabs = {
 	STATUS_TERROR: ["Terror", 2, null, null, STATUS_TERROR, null, null, false],
 	STATUS_BLIND: ["Blind", 3, null, null, STATUS_BLIND, null, null, false],
 	STATUS_PARALYZED: ["Paralyzed", 14, null, null, STATUS_PARALYZED, null, null, false],
+	STATUS_POISON: ["Poisoned", 0, null, null, STATUS_POISON, null, null, false],
 	
 	STATUS_LIGHT: ["Light", 23, null, null, STATUS_LIGHT, null, null, false],
 	STATUS_DETECT_EVIL: ["Detect evil", 9, null, null, STATUS_DETECT_EVIL, null, null, false],
@@ -1159,9 +1195,10 @@ const statusPrefabs = {
 	STATUS_BLESSED: ["Blessed", 11, null, null, STATUS_BLESSED, null, null, false],
 	STATUS_SHIELD: ["Shield", 39, null, null, STATUS_SHIELD, null, null, false],
 	STATUS_MAGE_ARMOR: ["Mage armor", 27, null, null, STATUS_MAGE_ARMOR, null, null, false],
-	STATUS_ARMOR_FAITH: ["Armor of faith", 5, null, null, STATUS_ARMOR_FAITH, null, null, false],
+	STATUS_PROTECTED: ["Protected", 5, null, null, STATUS_PROTECTED, null, null, false],
 	STATUS_PROTECT_EVIL: ["Protection from evil", 41, null, null, STATUS_PROTECT_EVIL, null, null, false],
 	STATUS_SANCTUARY: ["Sanctuary", 33, null, null, STATUS_SANCTUARY, null, null, false],
+	STATUS_INVISIBLE: ["Invisible", 38, null, null, STATUS_INVISIBLE, null, null, false],
 }
 
 const FE_NAME = 0

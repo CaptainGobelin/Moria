@@ -113,21 +113,44 @@ func hit(entity):
 	if entity == null:
 		return
 	if entity.is_in_group("Monster"):
+		var isSlaying = false
+		if statuses.has(Data.STATUS_GOBLIN_WP) and Data.hasTag(entity, Data.TAG_GOBLIN):
+			isSlaying = true
 		var result = stats.hitDices.roll()
+		if isSlaying:
+			result += 1
 		if result >= entity.stats.ca:
 			Ref.ui.writeCharacterStrike(entity.stats.entityName, result, entity.stats.ca)
+			var dmgDices = stats.dmgDices.duplicate()
+			if entity.statuses.has(Data.STATUS_HOLY_WP) and Data.hasTag(entity, Data.TAG_EVIL):
+				dmgDices.append(GeneralEngine.DmgDice.new(1, 4, 0, Data.DMG_RADIANT))
 			var dmg = GeneralEngine.computeDamages(stats.dmgDices, entity.stats.resists)
-			entity.takeHit(dmg)
+			if isSlaying:
+				dmg += 1
+			if statuses.has(Data.STATUS_ENCH + Data.ENCH_PIERCING):
+				entity.takeHit(dmg, 2)
+			else:
+				entity.takeHit(dmg)
+			StatusEngine.applyWeaponEffects(self, entity)
 		else:
 			Ref.ui.writeCharacterMiss(entity.stats.entityName, result, entity.stats.ca)
 
-func takeHit(dmg: int, bypassProt: bool = false):
-	var totalDmg = dmg - stats.prot
-	if bypassProt:
-		totalDmg = dmg
-	stats.hp -= totalDmg
-	Ref.ui.writeCharacterTakeHit(totalDmg)
-	return totalDmg
+func takeHit(dmg: int, bypassProt: int = 0):
+	var isCritical = stats.hpPercent() < 0.25
+	if stats.hasStatus(Data.STATUS_VULNERABLE):
+		bypassProt = 9999
+	var realDmg = (dmg - max(0, stats.prot - bypassProt))
+	realDmg = StatusEngine.decreaseShieldRanks(self, realDmg)
+	stats.hp -= realDmg
+	Ref.ui.writeCharacterTakeHit(realDmg)
+	if !isCritical and stats.hpPercent() < 0.25:
+		if statuses.has(Data.STATUS_ENCHANT + Data.ENCH_ESCAPE):
+			var status = SpellEngine.createSpellStatus(Data.STATUS_INVISIBLE, 1, 5)
+			StatusEngine.addStatus(self, status)
+	return realDmg
+
+func heal(amount: int):
+	stats.updateHp(stats.hp + amount)
 
 func pickItem(items: Array, price: int = 0):
 	var item = GLOBAL.items[items[0]]

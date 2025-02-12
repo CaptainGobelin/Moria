@@ -133,7 +133,11 @@ func hit(entity):
 		if result >= entity.stats.ca:
 			var rolledDmg = GeneralEngine.computeDamages(stats.dmgDices, entity.stats.resists)
 			Ref.ui.writeMonsterStrike(stats.entityName, targetName, result, entity.stats.ca)
-			entity.takeHit(rolledDmg)
+			if statuses.has(Data.STATUS_ENCH + Data.ENCH_PIERCING):
+				entity.takeHit(rolledDmg, 2)
+			else:
+				entity.takeHit(rolledDmg)
+			StatusEngine.applyWeaponEffects(self, entity)
 		else:
 			Ref.ui.writeMonsterMiss(stats.entityName, targetName, result, entity.stats.ca)
 
@@ -162,12 +166,13 @@ func setPosition(newPos: Vector2):
 func refreshMapPosition():
 	position = 9 * pos
 
-func takeHit(dmg: int, bypassProt: bool = false):
+func takeHit(dmg: int, bypassProt: int = 0):
 	if status == "dead":
 		return
-	var realDmg = (dmg - stats.prot)
-	if bypassProt or stats.hasStatus(Data.STATUS_VULNERABLE):
-		realDmg = dmg
+	if stats.hasStatus(Data.STATUS_VULNERABLE):
+		bypassProt = 9999
+	var realDmg = (dmg - max(0, stats.prot - bypassProt))
+	realDmg = StatusEngine.decreaseShieldRanks(self, realDmg)
 	stats.currentHp -= realDmg
 	Ref.ui.writeMonsterTakeHit(stats.entityName, realDmg)
 	if stats.currentHp <= 0:
@@ -178,8 +183,10 @@ func takeHit(dmg: int, bypassProt: bool = false):
 func die():
 	status = "dead"
 	Ref.ui.writeMonsterDie(stats.entityName)
-	#TODO no xp for summons
-	Ref.character.stats.xp += stats.xp
+	if Data.hasTag(type, Data.TAG_SUMMONED):
+		Ref.character.stats.xp += stats.xp
+	if Ref.character.statuses.has(Data.STATUS_ENCHANT + Data.ENCH_LIFE_DRAIN):
+		Ref.character.heal(2)
 	if GLOBAL.monstersByPosition.has(pos):
 		GLOBAL.monstersByPosition.erase(pos)
 	GLOBAL.targets.erase(get_instance_id())

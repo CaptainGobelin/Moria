@@ -180,7 +180,7 @@ func _input(event):
 			if item != null:
 				match Ref.character.shortcuts.shortcutsType[i]:
 					GLOBAL.WP_TYPE:
-						pass
+						pass #TODO switch wepaons
 					GLOBAL.PO_TYPE:
 						Ref.character.quaffPotion(item)
 					GLOBAL.SC_TYPE:
@@ -217,7 +217,8 @@ func _input(event):
 	elif (event.is_action_released("load")):
 		saveSystem.loadGame(Ref.character.stats.charName)
 	elif (event.is_action_released("no")):
-		Ref.ui.askForContinue(self)
-		var coroutineReturn = yield(Ref.ui, "coroutine_signal")
-		if coroutineReturn:
-			pass
+		Ref.character.takeHit(3)
+#		Ref.ui.askForContinue(self)
+#		var coroutineReturn = yield(Ref.ui, "coroutine_signal")
+#		if coroutineReturn:
+#			pass

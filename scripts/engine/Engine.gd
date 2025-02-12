@@ -3,6 +3,7 @@ extends Node
 var turn = 0
 var isFaking = false
 var fakedValue = 4
+var canAct = true
 
 # nDd+b
 class Dice:
@@ -18,9 +19,9 @@ class Dice:
 	func roll():
 		if (GeneralEngine.isFaking):
 			return GeneralEngine.fakedValue
-		var result = 0
+		var result = self.b
 		for _d in range(self.n):
-			result += (randi() % self.d) + self.b + 1
+			result += (randi() % self.d)
 		return result
 	
 	func toString():
@@ -70,10 +71,10 @@ func basicDice(v: Vector2):
 func dmgDice(n: int, d: int, b: int, t: int):
 	return GeneralEngine.DmgDice.new(n, d, b, t)
 
-func diceFromArray(array: Array):
+func diceFromArray(array: Array) -> Dice:
 	return dice(array[0], array[1], array[2])
 
-func dmgDiceFromArray(array: Array):
+func dmgDiceFromArray(array: Array) -> DmgDice:
 	return dmgDice(array[0], array[1], array[2], array[3])
 
 func dmgFromDice(dice: Dice, type: int):
@@ -92,6 +93,32 @@ func newTurn():
 	StatusEngine.decreaseStatusesTime(Ref.character)
 	Ref.currentLevel.refresh_view()
 	Ref.ui.monsterPanelList.fillList()
+	if !canCharacterAct():
+		canAct = false
+		passTurn()
+	elif !canAct:
+		Ref.ui.writeFreeToAct()
+		canAct = true
+	else:
+		canAct = true
+
+func canCharacterAct() -> bool:
+	if Ref.character.statuses.has(Data.STATUS_SLEEP):
+		Ref.ui.writeCannotAct(Ref.ui.ST_SLEEP)
+		return false
+	if Ref.character.statuses.has(Data.STATUS_TERROR):
+		Ref.ui.writeCannotAct(Ref.ui.ST_TERROR)
+		return false
+	if Ref.character.statuses.has(Data.STATUS_PARALYZED):
+		Ref.ui.writeCannotAct(Ref.ui.ST_PARALYSIS)
+		return false
+	return true
+
+func passTurn():
+	Ref.ui.askForContinue(Ref.game)
+	var coroutineReturn = yield(Ref.ui, "coroutine_signal")
+	if coroutineReturn:
+		newTurn()
 
 func computeDamages(dmgDices: Array, resist: Array, byPassResists: bool = false):
 	var result = 0

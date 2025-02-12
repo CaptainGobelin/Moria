@@ -370,6 +370,18 @@ func writeWishChoice():
 	write(msg)
 	lastPrinted = "writeWishChoice"
 
+func writeFreeToAct():
+	write("You are free to move again.")
+	lastPrinted = "writeFreeToAct"
+
+const ST_SLEEP = "sleeping"
+const ST_PARALYSIS = "paralyzed"
+const ST_TERROR = "terrorized"
+
+func writeCannotAct(status: String):
+	var msg = "You are " + status + ", you cannot move."
+	write(color(msg, "red"))
+
 func askForRest(rests: int):
 	var msg = "You can rest " + String(rests)
 	if rests == 1:

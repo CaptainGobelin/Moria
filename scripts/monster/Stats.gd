@@ -16,6 +16,7 @@ onready var saveBonus: Array = [0, 0]
 onready var spellcasterLevel: int = 0
 onready var xp = 0
 onready var state: String = ""
+onready var lastPoisonTick: int = 5
 
 func init(monsterType: int):
 	type = monsterType
@@ -37,12 +38,30 @@ func computeStats():
 	init(type)
 	StatusEngine.applyEffect(get_parent())
 	applyMageArmor()
+	applyBlind()
 
 func applyMageArmor():
 	if hasStatus(Data.STATUS_MAGE_ARMOR):
 		var rank = getStatusRank(Data.STATUS_MAGE_ARMOR)
 		if ca <= (4 + rank):
 			ca = 4 + rank
+
+func applyBlind():
+	if hasStatus(Data.STATUS_BLIND):
+		atkRange = 3
+
+func applyPoison():
+	if hasStatus(Data.STATUS_POISON):
+		if lastPoisonTick <= 0:
+			var rank = getStatusRank(Data.STATUS_POISON)
+			var dice = GeneralEngine.dmgDice(0, 0, rank + 1, Data.DMG_POISON)
+			var dmg = GeneralEngine.computeDamages(dice, resists)
+			get_parent().takeHit(dmg)
+			lastPoisonTick = 5
+		else:
+			lastPoisonTick -= 1
+	else:
+		lastPoisonTick = 5
 
 func computeState():
 	state = ""
