@@ -50,6 +50,7 @@ func open(school: int, level: int):
 
 func close():
 	visible = false
+	MasterInput.cancelInput(self)
 
 func loadSpellList():
 	var count = startRow

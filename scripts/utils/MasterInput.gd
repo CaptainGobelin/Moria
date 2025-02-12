@@ -9,3 +9,9 @@ func setMaster(node: Node):
 	oldMaster = masterInput
 	masterInput = node
 	masterInput.set_process_input(true)
+
+func cancelInput(node: Node):
+	if is_instance_valid(node):
+		node.set_process_input(false)
+	if masterInput == node:
+		masterInput = null
