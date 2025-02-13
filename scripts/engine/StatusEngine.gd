@@ -115,18 +115,10 @@ func applyEffect(entity):
 				addToRange(entity, 1)
 				if rank > 0:
 					addToPerception(entity, 1)
-			Data.STATUS_DETECT_EVIL:
-				pass
 			Data.STATUS_BLESSED:
 				addToSaves(entity, 1, 1)
-			Data.STATUS_SHIELD:
-				pass
 			Data.STATUS_PROTECTED:
-				addToAC(entity, 1)
-				if rank > 0:
-					addToProt(entity, 1)
-			Data.STATUS_PROTECT_EVIL:
-				pass
+				addToProt(entity, rank + 1)
 			Data.STATUS_SANCTUARY:
 				pass
 			Data.STATUS_FIRE_WP:
@@ -198,7 +190,8 @@ func decreaseShieldRanks(entity, dmg: int) -> int:
 	var result = max(0, dmg - (highestShield[GLOBAL.ST_RANK] + 1))
 	if result > 0:
 		removeStatusType(entity, Data.STATUS_SHIELD)
-		Ref.ui.statusBar.refreshStatuses(Ref.character)
+		if entity is Character:
+			Ref.ui.statusBar.refreshStatuses(Ref.character)
 		return result
 	for idx in entity.statuses[Data.STATUS_SHIELD]:
 		var status = GLOBAL.statuses[idx]
@@ -212,3 +205,11 @@ func decreaseShieldRanks(entity, dmg: int) -> int:
 	if entity.statuses[Data.STATUS_SHIELD].empty():
 		entity.statuses.erase(Data.STATUS_SHIELD)
 	return result
+
+func createSimpleStatus(type: int, rank: int, turns: int):
+	var status = Data.statusPrefabs[type].duplicate(true)
+	if rank > 0:
+		status[GLOBAL.ST_NAME] += " " + Utils.toRoman(rank + 1)
+	status[GLOBAL.ST_TIMING] = GLOBAL.TIMING_TIMER
+	status[GLOBAL.ST_TURNS] = turns
+	return status

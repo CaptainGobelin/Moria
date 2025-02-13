@@ -66,9 +66,7 @@ func refresh_view():
 			m.bodySprite.visible = true
 			m.mask.visible = false
 		else:
-#			m.bodySprite.visible = false
-#			m.mask.visible = false
-			if m.tags.has("evil"):
+			if Data.hasTag(m, Data.TAG_EVIL):
 				if Ref.character.statuses.has(Data.STATUS_DETECT_EVIL):
 					m.mask.visible = true
 	for a in allies.get_children():

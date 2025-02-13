@@ -133,7 +133,7 @@ func hit(entity):
 		if result >= entity.stats.ca:
 			var rolledDmg = GeneralEngine.computeDamages(stats.dmgDices, entity.stats.resists)
 			Ref.ui.writeMonsterStrike(stats.entityName, targetName, result, entity.stats.ca)
-			if statuses.has(Data.STATUS_ENCH + Data.ENCH_PIERCING):
+			if statuses.has(Data.STATUS_ENCHANT + Data.ENCH_PIERCING):
 				entity.takeHit(rolledDmg, 2)
 			else:
 				entity.takeHit(rolledDmg)

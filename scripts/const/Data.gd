@@ -692,11 +692,11 @@ const KIT_GO = 6
 const KIT_LO = 7
 
 const KIT_UNDEF = [-1, -1, -1, [], [], [], 0, 0]
-const KIT_FIGHTER = [3, 0, 1, [0, 0], [], [0, 0, 0], 30, 2]
-const KIT_THIEF =	[1,-1, 1, [0, 0], [], [0, 0, 0], 45, 3]
-const KIT_MAGE = 	[8,-1, 0, [0, 0], [0], [], 30, 2]
-const KIT_CLERIC = 	[0, 0, 1, [0, 0], [], [], 30, 2]
-const KIT_PALADIN = [9,-1, 1, [0, 0], [], [], 30, 2]
+const KIT_FIGHTER = [W_HATCHET, SH_BUCKLER, A_PADDED, [PO_HEALING, PO_HEALING], [], [TH_KNIFE, TH_KNIFE, TH_KNIFE], 30, 2]
+const KIT_THIEF =	[W_DAGGER, -1, A_PADDED, [PO_HEALING, PO_HEALING], [SC_BLINK], [TH_KNIFE, TH_KNIFE, TH_KNIFE], 45, 3]
+const KIT_MAGE = 	[W_STAFF, -1, A_ROBE, [PO_HEALING, PO_HEALING], [SC_ANIMALS], [], 30, 2]
+const KIT_CLERIC = 	[W_CLUB, SH_BUCKLER, A_ROBE, [PO_HEALING, PO_HEALING], [], [], 30, 2]
+const KIT_PALADIN = [W_GREATCLUB, -1, A_PADDED, [PO_HEALING, PO_HEALING], [], [], 30, 2]
 
 const CLASS_KITS = {
 	-1: KIT_UNDEF,
@@ -1021,8 +1021,8 @@ var spellDescriptions = {
 	],
 	SP_ARMOR_OF_FAITH: [
 		"Invokes divine forces to protect you during %%TURNS_1.",
-		"Gives you [PROTECTION] (+1 CA).",
-		"Gives you [PROTECTION II] (+1 CA +1 protection).",
+		"Gives you [ARMOR OF FAITH] (+1 CA).",
+		"Gives you [ARMOR OF FAITH II] (+1 CA +2 protection).",
 		"Lasts until rest."
 	],
 	SP_PROTECTION_FROM_EVIL: [
@@ -1099,6 +1099,7 @@ const STATUS_PROTECTED = 106
 const STATUS_PROTECT_EVIL = 107
 const STATUS_SANCTUARY = 108
 const STATUS_INVISIBLE = 109
+const STATUS_ARMOR_OF_FAITH = 110
 
 const STATUS_WILLPOWER = 200
 const STATUS_PHYSICS = 201
@@ -1148,13 +1149,13 @@ const statusesDescriptions = {
 	],
 	STATUS_DETECT_EVIL: [
 		"You detect the negative aura of evil enemies (undeads and demons). They appear on you map.",
-		"You detect the negative aura of evil enemies (undeads and demons). They appear on you ma and they are vulnerables to your attacks.",
+		"You detect the negative aura of evil enemies (undeads and demons). They appear on you map and they gain [Vulnerable] (you ignore their protection).",
 	],
 	STATUS_REVEAL_TRAPS: [
 		"All traps appear on your map, and you reveal them when they are in sight."
 	],
 	STATUS_BLESSED: [
-		"A sacred blessing stands upoon your, protecting yourself against spells. It grants you +1 to all save rolls."
+		"A sacred blessing stands upon your, protecting yourself against spells. It grants you +1 to all save rolls."
 	],
 	STATUS_SHIELD: [
 		"A magical shield protects you against attacks. It will absorb as much incoming damages as its rank."
@@ -1164,18 +1165,18 @@ const statusesDescriptions = {
 		"A protective force surrounds you and replace your armor. Set your AC to 5 if it's lower.",
 		"A protective force surrounds you and replace your armor. Set your AC to 6 if it's lower.",
 	],
-	STATUS_PROTECTED: [
+	STATUS_ARMOR_OF_FAITH: [
 		"A shimmering field surrounds you and protect you. It grants +1 AC.",
-		"A shimmering field surrounds you and protect you. It grants +1 AC and +1 PROT.",
+		"A shimmering field surrounds you and protect you. It grants +1 AC and +2 Prot."
 	],
 	STATUS_PROTECT_EVIL: [
-		"You are  protected aginst spells casted evil creatures (undeads and demons). You gains +1 to save rolls against such spells.",
-		"You are  protected aginst spells casted evil creatures (undeads and demons). You gains +2 to save rolls against such spells.",
+		"You are protected aginst spells casted evil creatures (undeads and demons). You gains +1 to save rolls against such spells.",
+		"You are protected aginst spells casted evil creatures (undeads and demons). You gains +2 to save rolls against such spells.",
 	],
 	STATUS_SANCTUARY: [
 		"You are protected by a divine barrier preventing any attack against you. The shield disappears if you attack, drink a potion or cast a spell.",
 		"You are protected by a divine barrier preventing any attack against you. The shield disappears if you attack or cast a spell.",
-		"You are protected by a divine barrier preventing any attack against you. The shield disappears if you attack or cast a spell on omebody else.",
+		"You are protected by a divine barrier preventing any attack against you. The shield disappears if you attack or cast a spell on somebody else.",
 	],
 	STATUS_INVISIBLE: [
 		"You are undetectable by normal vision. Beware that creatures can still detect you by other means."
@@ -1187,6 +1188,7 @@ const statusPrefabs = {
 	STATUS_TERROR: ["Terror", 2, null, null, STATUS_TERROR, null, null, false],
 	STATUS_BLIND: ["Blind", 3, null, null, STATUS_BLIND, null, null, false],
 	STATUS_PARALYZED: ["Paralyzed", 14, null, null, STATUS_PARALYZED, null, null, false],
+	STATUS_VULNERABLE: ["Vulenrable", 8, null, null, STATUS_VULNERABLE, null, null, false],
 	STATUS_POISON: ["Poisoned", 0, null, null, STATUS_POISON, null, null, false],
 	
 	STATUS_LIGHT: ["Light", 23, null, null, STATUS_LIGHT, null, null, false],
@@ -1195,7 +1197,7 @@ const statusPrefabs = {
 	STATUS_BLESSED: ["Blessed", 11, null, null, STATUS_BLESSED, null, null, false],
 	STATUS_SHIELD: ["Shield", 39, null, null, STATUS_SHIELD, null, null, false],
 	STATUS_MAGE_ARMOR: ["Mage armor", 27, null, null, STATUS_MAGE_ARMOR, null, null, false],
-	STATUS_PROTECTED: ["Protected", 5, null, null, STATUS_PROTECTED, null, null, false],
+	STATUS_ARMOR_OF_FAITH: ["Armor of faith", 5, null, null, STATUS_ARMOR_OF_FAITH, null, null, false],
 	STATUS_PROTECT_EVIL: ["Protection from evil", 41, null, null, STATUS_PROTECT_EVIL, null, null, false],
 	STATUS_SANCTUARY: ["Sanctuary", 33, null, null, STATUS_SANCTUARY, null, null, false],
 	STATUS_INVISIBLE: ["Invisible", 38, null, null, STATUS_INVISIBLE, null, null, false],

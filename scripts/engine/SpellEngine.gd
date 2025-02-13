@@ -4,6 +4,9 @@ onready var effectScene = preload("res://scenes/Effect.tscn")
 
 onready var throwings = get_node("Throwings")
 
+const TIME_FLOOR = 9000
+const TIME_REST = 9001
+
 var saveType = Data.SAVE_NO
 var saveCap = 99
 var fromChar = false
@@ -19,6 +22,10 @@ func createSpellStatus(type: int, rank: int, time: int):
 
 func applySpellStatus(entity, type: int, rank: int, time: int):
 	var status = createSpellStatus(type, rank, time)
+	if time == TIME_FLOOR:
+		status[GLOBAL.ST_TIMING] = GLOBAL.TIMING_FLOOR
+	elif time == TIME_REST:
+		status[GLOBAL.ST_TIMING] = GLOBAL.TIMING_REST
 	StatusEngine.addStatus(entity, status)
 	entity.stats.computeStats()
 
@@ -281,10 +288,12 @@ func mageArmor(caster, entity, rank: int):
 func armorFaith(caster, entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)
 	var turns = getTurns(Data.SP_ARMOR_OF_FAITH, rank)
+	if rank >= 2:
+		turns = TIME_REST
 	if rank == 0:
-		applySpellStatus(entity, Data.STATUS_PROTECTION, 0, turns)
+		applySpellStatus(entity, Data.STATUS_ARMOR_OF_FAITH, 0, turns)
 	else:
-		applySpellStatus(entity, Data.STATUS_PROTECTION, 1, turns)
+		applySpellStatus(entity, Data.STATUS_ARMOR_OF_FAITH, 1, turns)
 
 func protectEvil(caster, entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)

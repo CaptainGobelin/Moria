@@ -122,15 +122,18 @@ func hit(entity):
 		if result >= entity.stats.ca:
 			Ref.ui.writeCharacterStrike(entity.stats.entityName, result, entity.stats.ca)
 			var dmgDices = stats.dmgDices.duplicate()
-			if entity.statuses.has(Data.STATUS_HOLY_WP) and Data.hasTag(entity, Data.TAG_EVIL):
-				dmgDices.append(GeneralEngine.DmgDice.new(1, 4, 0, Data.DMG_RADIANT))
+			var bypassProt = 0
+			if Data.hasTag(entity, Data.TAG_EVIL):
+				if StatusEngine.getStatusRank(self, Data.STATUS_DETECT_EVIL) > 0:
+					bypassProt = max(bypassProt, 9999)
+				if statuses.has(Data.STATUS_HOLY_WP):
+					dmgDices.append(GeneralEngine.DmgDice.new(1, 4, 0, Data.DMG_RADIANT))
 			var dmg = GeneralEngine.computeDamages(stats.dmgDices, entity.stats.resists)
 			if isSlaying:
 				dmg += 1
-			if statuses.has(Data.STATUS_ENCH + Data.ENCH_PIERCING):
-				entity.takeHit(dmg, 2)
-			else:
-				entity.takeHit(dmg)
+			if statuses.has(Data.STATUS_ENCHANT + Data.ENCH_PIERCING):
+				bypassProt = max(bypassProt, 2)
+			entity.takeHit(dmg, bypassProt)
 			StatusEngine.applyWeaponEffects(self, entity)
 		else:
 			Ref.ui.writeCharacterMiss(entity.stats.entityName, result, entity.stats.ca)
