@@ -113,6 +113,7 @@ func hit(entity):
 	if entity == null:
 		return
 	if entity.is_in_group("Monster"):
+		SpellEngine.breakSanctuary(self, SpellEngine.SANCT_ATTACK)
 		var isSlaying = false
 		if statuses.has(Data.STATUS_GOBLIN_WP) and Data.hasTag(entity, Data.TAG_GOBLIN):
 			isSlaying = true
@@ -231,6 +232,7 @@ func quaffPotion(idx):
 	PotionEngine.applyEffect(self, potion[GLOBAL.IT_SPEC])
 	Ref.ui.writeQuaffedPotion(potion[GLOBAL.IT_NAME])
 	GLOBAL.items.erase(idx)
+	SpellEngine.breakSanctuary(self, SpellEngine.SANCT_POTION)
 
 func attemptLockpick(dd: int):
 	var roll = GeneralEngine.dice(1, 6, 0).roll()
@@ -294,3 +296,6 @@ func getDisplaYStatusList() -> Array:
 		if not GLOBAL.statuses[statusId][GLOBAL.ST_HIDDEN]:
 			result.append(statusId)
 	return result
+
+func ignore(entity) -> bool:
+	return false

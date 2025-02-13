@@ -1176,7 +1176,7 @@ const statusesDescriptions = {
 	STATUS_SANCTUARY: [
 		"You are protected by a divine barrier preventing any attack against you. The shield disappears if you attack, drink a potion or cast a spell.",
 		"You are protected by a divine barrier preventing any attack against you. The shield disappears if you attack or cast a spell.",
-		"You are protected by a divine barrier preventing any attack against you. The shield disappears if you attack or cast a spell on somebody else.",
+		"You are protected by a divine barrier preventing any attack against you. The shield disappears if you attack or cast an offensive spell.",
 	],
 	STATUS_INVISIBLE: [
 		"You are undetectable by normal vision. Beware that creatures can still detect you by other means."

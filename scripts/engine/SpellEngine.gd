@@ -7,6 +7,11 @@ onready var throwings = get_node("Throwings")
 const TIME_FLOOR = 9000
 const TIME_REST = 9001
 
+const SANCT_ATTACK = 0
+const SANCT_BUFF = 1
+const SANCT_POTION = 2
+
+
 var saveType = Data.SAVE_NO
 var saveCap = 99
 var fromChar = false
@@ -307,6 +312,19 @@ func sanctuary(caster, entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)
 	var turns = getTurns(Data.SP_SANCTUARY, rank)
 	applySpellStatus(entity, Data.STATUS_SANCTUARY, rank, turns)
+
+func breakSanctuary(entity, action: int):
+	var rank = StatusEngine.getStatusRank(entity, Data.STATUS_SANCTUARY)
+	if rank < 0:
+		return
+	if (action == SANCT_POTION) and (rank > 0):
+		return
+	if (action == SANCT_BUFF) and (rank > 1):
+		return
+	StatusEngine.removeStatusType(entity, Data.STATUS_SANCTUARY)
+	Ref.ui.statusBar.refreshStatuses(entity)
+	if entity is Character:
+		Ref.ui.writeSancturayBreak()
 
 func acidSplash(caster, entity, rank: int):
 	var dmgDice = getDmgDice(caster, Data.SP_ACID_SPLASH, rank)

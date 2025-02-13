@@ -382,6 +382,10 @@ func writeCannotAct(status: String):
 	var msg = "You are " + status + ", you cannot move."
 	write(color(msg, "red"))
 
+func writeSancturayBreak():
+	write("You broke your sanctuary !")
+	lastPrinted = "writeSancturayBreak"
+
 func askForRest(rests: int):
 	var msg = "You can rest " + String(rests)
 	if rests == 1:

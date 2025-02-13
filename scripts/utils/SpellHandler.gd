@@ -33,6 +33,7 @@ func castSpellAsync(spellId: int, scrollId = null):
 				for target in targets:
 					SpellEngine.applyEffect(Ref.character, instance_from_id(target), spellId, true, spellRank, savingCap)
 			spellCasted = true
+			SpellEngine.breakSanctuary(Ref.character, SpellEngine.SANCT_ATTACK)
 		Data.SP_TARGET_TARGET:
 			if GLOBAL.targets.size() == 0:
 				Ref.ui.noTarget()
@@ -48,6 +49,7 @@ func castSpellAsync(spellId: int, scrollId = null):
 				yield(castProjectile(GLOBAL.targets[targetId], spell[Data.SP_PROJ]), "completed")
 			SpellEngine.applyEffect(Ref.character, instance_from_id(targetId), spellId, true, spellRank, savingCap)
 			spellCasted = true
+			SpellEngine.breakSanctuary(Ref.character, SpellEngine.SANCT_ATTACK)
 		Data.SP_TARGET_DIRECT:
 			Ref.ui.writeSpellDirection()
 			Ref.ui.askForDirection(Ref.game)
@@ -65,6 +67,7 @@ func castSpellAsync(spellId: int, scrollId = null):
 			Ref.ui.writeCastSpell(spell[Data.SP_NAME])
 			SpellEngine.applyEffect(Ref.character, Ref.character, spellId, true, spellRank, savingCap, coroutineReturn)
 			spellCasted = true
+			SpellEngine.breakSanctuary(Ref.character, SpellEngine.SANCT_ATTACK)
 		Data.SP_TARGET_SELF:
 			Ref.ui.writeCastSpell(spell[Data.SP_NAME])
 			SpellEngine.applyEffect(Ref.character, Ref.character, spellId, true, spellRank, savingCap)
@@ -72,6 +75,7 @@ func castSpellAsync(spellId: int, scrollId = null):
 			if Data.spells[spellId][Data.SP_SCHOOL] == Data.SC_ABJURATION:
 				if Ref.character.statuses.has(Data.STATUS_ENCHANT + Data.ENCH_REJUVENATION):
 					Ref.character.heal(3)
+			SpellEngine.breakSanctuary(Ref.character, SpellEngine.SANCT_BUFF)
 		Data.SP_TARGET_ITEM_CHOICE:
 			Ref.ui.writeWishChoice()
 			Ref.ui.askForChoice(wishableItems, Ref.game)
@@ -79,6 +83,7 @@ func castSpellAsync(spellId: int, scrollId = null):
 			if coroutineReturn > 0:
 				SpellEngine.applyEffect(Ref.character, Ref.character, spellId, true, spellRank, wishableItems[coroutineReturn-1])
 				spellCasted = true
+				SpellEngine.breakSanctuary(Ref.character, SpellEngine.SANCT_BUFF)
 	if (spellCasted):
 		if scrollId == null:
 			Ref.character.spells.spellsUses[spellId] -= 1
@@ -100,3 +105,7 @@ func castSpellMonster(spellId: int, caster, target, path: Array):
 	var savingCap = caster.stats.spellcasterLevel + 3
 	var spellRank = max(1, min(caster.stats.spellcasterLevel, 3))
 	SpellEngine.applyEffect(caster, target, spellId, true, spellRank, savingCap)
+	if target is Character:
+		SpellEngine.breakSanctuary(caster, SpellEngine.SANCT_ATTACK)
+	else:
+		SpellEngine.breakSanctuary(caster, SpellEngine.SANCT_BUFF)

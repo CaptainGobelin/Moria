@@ -50,8 +50,12 @@ func takeTurn():
 					buffCD = 10
 					return
 			#var rangeToChar = Utils.dist(pos, Ref.character.pos)
-			var losToChar = Ref.currentLevel.canTarget(pos, Ref.character.pos)
-			attack(Ref.character, losToChar)
+			if ignore(Ref.character):
+				wander()
+			else:
+				var losToChar = Ref.currentLevel.canTarget(pos, Ref.character.pos)
+				#TODO attack also invocations
+				attack(Ref.character, losToChar)
 		"help": # Allies behavior
 			if Utils.dist(Ref.character.pos, pos) > 9:
 				moveTo(Ref.character)
@@ -210,12 +214,15 @@ func quaffPotion(idx: int, actionType: String):
 	PotionEngine.applyEffect(self, potion[GLOBAL.IT_SPEC])
 	Ref.ui.writeMonsterQuaffedPotion(stats.entityName, potion[GLOBAL.IT_NAME])
 	actions.consumeAction(idx, actionType)
+	SpellEngine.breakSanctuary(self, SpellEngine.SANCT_ATTACK)
 
 func getClosestTarget(targets):
 	var result = null
 	var currentLos = []
 	var dist = 99
 	for t in targets:
+		if ignore(t):
+			continue
 		var target = instance_from_id(t)
 		var los = Ref.currentLevel.canTarget(pos, target.pos)
 		if los.empty() or los.size() > dist:
@@ -240,3 +247,10 @@ func getTargetableAlly(toHeal: bool = false):
 		return null
 	var resultId = Utils.chooseRandom(result.keys())
 	return [resultId, result[resultId]]
+
+func ignore(entity) -> bool:
+	if entity.statuses.has(Data.STATUS_SANCTUARY):
+		return true
+	if entity.statuses.has(Data.STATUS_INVISIBLE):
+		return randf() < 0.33
+	return false
