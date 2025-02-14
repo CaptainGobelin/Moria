@@ -106,6 +106,7 @@ func cleanFloor():
 	GLOBAL.hiddenDoors.clear()
 	GLOBAL.lockedDoors.clear()
 	GLOBAL.testedDoors.clear()
+	Ref.currentLevel.searched.clear()
 	for i in range(GLOBAL.FLOOR_SIZE_X):
 		Ref.currentLevel.searched.append([])
 		for _j in range(GLOBAL.FLOOR_SIZE_Y):

@@ -96,7 +96,49 @@ const tests = {
 		],
 		["search", "assert_one_hidden_door", "ui_up", "assert_no_move"]
 	],
+	10: [
+		"Automatically discover trap",
+		Vector2(10, 12),
+		[
+			["spawn_trap", 0, Vector2(10, 3)],
+			["fake_dice", 6],
+		],
+		[["assert_trap_hidden", Vector2(10, 3)], "ui_up",
+		"ui_up", "ui_up", "ui_up", "ui_up", "ui_up", "ui_up", "ui_up",
+		["assert_trap_revealed", Vector2(10, 3)],
+		"fake_last_printed", "ui_up", ["assert_last_printed", ""]]
+	],
+	11: [
+		"Manually discover trap",
+		Vector2(10, 12),
+		[
+			["spawn_trap", 0, Vector2(10, 3)],
+			["fake_dice", 1],
+		],
+		["ui_up", "ui_up", "ui_up", "ui_up", "ui_up", "ui_up", "ui_up", "ui_up",
+		["assert_trap_hidden", Vector2(10, 3)], "search",
+		["assert_trap_hidden", Vector2(10, 3)], "fake_high_dice",
+		"search", ["assert_last_printed", "writeHiddenTrapDetected"],
+		["assert_trap_revealed", Vector2(10, 3)],
+		"fake_last_printed", "ui_up", ["assert_last_printed", ""],
+		["assert_trap_revealed", Vector2(10, 3)]]
+	],
+	12: [
+		"Trigger trap",
+		Vector2(10, 12),
+		[
+			["spawn_trap", 0, Vector2(10, 3)],
+			["fake_dice", 1],
+		],
+		["ui_up", "ui_up", "ui_up", "ui_up", "ui_up", "ui_up", "ui_up", "ui_up",
+		["assert_trap_hidden", Vector2(10, 3)], "ui_up",
+		["assert_last_printed", "writeCharacterTakeHit"],
+		["assert_no_trap", Vector2(10, 3)]]
+	],
 }
+
+func assert_last_printed(testId: int, msg: String):
+	assert(Ref.ui.lastPrinted == msg)
 
 func assert_no_move(testId: int):
 	assert(Ref.character.pos == tests[testId][get_parent().TEST_POS])
@@ -119,3 +161,12 @@ func assert_no_hidden_door(testId: int):
 
 func assert_one_hidden_door(testId: int):
 	assert(GLOBAL.hiddenDoors.size() == 1)
+
+func assert_trap_hidden(testId: int, pos: Vector2):
+	assert(GLOBAL.getTrapByPos(pos).hidden)
+
+func assert_no_trap(testId: int, pos: Vector2):
+	assert(!GLOBAL.trapsByPos.has(pos))
+
+func assert_trap_revealed(testId: int, pos: Vector2):
+	assert(!GLOBAL.getTrapByPos(pos).hidden)

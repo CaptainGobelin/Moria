@@ -81,6 +81,9 @@ func fake_low_dice(_testId: int):
 func fake_high_dice(_testId: int):
 	GeneralEngine.fakedValue = 6
 
+func fake_last_printed(_testId: int):
+	Ref.ui.lastPrinted = ""
+
 func spawn_locked_door(pos: Vector2):
 	Ref.currentLevel.dungeon.set_cellv(pos, GLOBAL.DOOR_ID, false, false, false, Vector2(0,1))
 	GLOBAL.lockedDoors.append(pos)
@@ -167,3 +170,6 @@ func spawn_golds(pos: Vector2, count: int):
 
 func spawn_monster(idx: int, pos: Vector2):
 	Ref.currentLevel.spawnMonster(idx, pos)
+
+func spawn_trap(idx: int, pos: Vector2):
+	Ref.currentLevel.placeTrap(pos, idx)

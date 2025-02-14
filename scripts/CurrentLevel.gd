@@ -195,12 +195,12 @@ func createChest():
 	var cell = getRandomFreeCell()
 	addChest(cell, 0)
 
-func placeTrap(pos: Vector2):
+func placeTrap(pos: Vector2, idx: int = Data.TR_DART):
 	if GLOBAL.trapsByPos.has(pos):
 		return
 	var trap = trapScene.instance()
 	traps.add_child(trap)
-	trap.init(0, pos)
+	trap.init(idx, pos)
 
 func getLootMessage(cell):
 	var lootList = GLOBAL.getItemList(cell)
