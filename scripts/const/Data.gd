@@ -314,7 +314,7 @@ const monsters = {
 		[]
 	],
 	MO_DUMMY: [
-		"Dummy target", 100, 0, Vector3(1, 1, 0),
+		"Dummy target", 1, 0, Vector3(1, 1, 0),
 		2, 1, 1, 10, false,
 		1, 0, 0, 1,
 		[]

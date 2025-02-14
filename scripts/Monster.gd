@@ -147,12 +147,14 @@ func hit(entity):
 
 func moveTo(entity) -> bool:
 	var path = Ref.game.pathfinder.a_star(pos, entity.pos, 20)
-	if path == null:
+	if path == null or !Data.monsters[type][Data.MO_MOVE]:
 		return false
 	setPosition(path[1])
 	return true
 
 func moveStep(d: Vector2) -> bool:
+	if !Data.monsters[type][Data.MO_MOVE]:
+		return false
 	if Ref.character.pos == pos + d:
 		return false
 	if Ref.currentLevel.isCellFree(pos+d)[0]:

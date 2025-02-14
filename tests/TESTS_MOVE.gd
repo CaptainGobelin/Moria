@@ -135,6 +135,30 @@ const tests = {
 		["assert_last_printed", "writeCharacterTakeHit"],
 		["assert_no_trap", Vector2(10, 3)]]
 	],
+	13: [
+		"Attack contact creature",
+		Vector2(10, 12),
+		[
+			["spawn_monster", Data.MO_DUMMY, Vector2(10, 9)],
+			["fake_dice", 6],
+		],
+		["ui_up", "ui_up",
+		["assert_last_printed", "writeCharacterTakeHit"],
+		"fake_last_printed", "search",
+		["assert_last_printed", "writeCharacterTakeHit"],
+		"ui_up"]
+	],
+	14: [
+		"Awake creature",
+		Vector2(10, 12),
+		[
+			["spawn_monster", Data.MO_DUMMY, Vector2(10, 3)],
+			["fake_dice", 6],
+		],
+		[["assert_creature_sleep", Vector2(10, 3)],
+		"ui_up", "ui_up", "ui_up", "ui_up",
+		["assert_creature_awake", Vector2(10, 3)]]
+	],
 }
 
 func assert_last_printed(testId: int, msg: String):
@@ -170,3 +194,9 @@ func assert_no_trap(testId: int, pos: Vector2):
 
 func assert_trap_revealed(testId: int, pos: Vector2):
 	assert(!GLOBAL.getTrapByPos(pos).hidden)
+
+func assert_creature_sleep(testId: int, pos: Vector2):
+	assert(GLOBAL.getMonsterByPos(pos).status == "sleep")
+
+func assert_creature_awake(testId: int, pos: Vector2):
+	assert(GLOBAL.getMonsterByPos(pos).status == "awake")

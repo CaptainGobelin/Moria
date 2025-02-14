@@ -192,3 +192,6 @@ func testDoor(pos: Vector2):
 var targets: Dictionary = {}
 
 var monstersByPosition: Dictionary = {}
+
+func getMonsterByPos(cell: Vector2) -> Monster:
+	return instance_from_id(GLOBAL.monstersByPosition[cell]) as Monster
