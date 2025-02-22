@@ -43,7 +43,7 @@ func newFloor():
 				break
 			var cell = Utils.chooseRandom(cells)
 			if randf() < 0.5:
-				Ref.currentLevel.addLoot(cell, 1)
+				Ref.currentLevel.addLoot(cell, true)
 			else:
 				Ref.currentLevel.addChest(cell, 1)
 			decorator.flags[cell.x][cell.y] = 0

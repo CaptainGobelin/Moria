@@ -23,6 +23,7 @@ onready var levelBuffer = get_node("LevelBuffer")
 
 var currentBiome
 var currentFloor
+var currentLevel = 1
 var searched: Array
 var specialEntries: Array = [null, null]
 
@@ -168,15 +169,27 @@ func spawnMonster(idx: int = 0, pos = null, isAllied: bool = false):
 		monsters.add_child(monster)
 	monster.spawn(idx, cell)
 
-func addLoot(cell: Vector2, rarityBonus: int):
-	var rarity = 1 + rarityBonus
+func addLoot(cell: Vector2, isSecret: bool = false):
+	var rarity = currentLevel
+	var rand = randf()
+	if isSecret:
+		if rand < 0.4:
+			rarity += 1
+		elif rand < 0.5:
+			rarity -= 1
+	else:
+		if rand < 0.1:
+			rarity += 1
+		elif rand < 0.6:
+			rarity -= 1
+	rarity += Skills.getLootRarityBonus()
 	for item in Ref.game.itemGenerator.generateItem(rarity):
 		print(GLOBAL.items[item][GLOBAL.IT_NAME])
 		GLOBAL.dropItemOnFloor(item, cell)
 
 func dropItem():
 	var cell = getRandomFreeCell()
-	addLoot(cell, 0)
+	addLoot(cell, false)
 
 func addChest(cell: Vector2, rarityBonus: int):
 	var chest = chestScene.instance()
@@ -221,7 +234,10 @@ func getLootMessage(cell):
 			list.append(Utils.addArticle(item[GLOBAL.IT_NAME], items.size()))
 	msg += Utils.makeList(list)
 	if forSell:
-		msg += " for " + String(GLOBAL.itemsOnFloor[cell][GLOBAL.FLOOR_PRICE]) + " golds"
+		var price = GLOBAL.itemsOnFloor[cell][GLOBAL.FLOOR_PRICE]
+		# Thievery price reduction
+		price = int(ceil(price * Skills.getMerchantDiscount()))
+		msg += " for " + String(price) + " golds"
 		if lootList.values()[0].size() > 1:
 			msg += " each"
 	msg += "."
@@ -269,4 +285,5 @@ func getNextLocation() -> bool:
 			return false
 		else:
 			setLocation(0, Data.biomes[currentBiome][Data.BI_CONNECT][0])
+			currentLevel += 1
 	return true

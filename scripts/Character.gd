@@ -234,9 +234,9 @@ func quaffPotion(idx):
 	GLOBAL.items.erase(idx)
 	SpellEngine.breakSanctuary(self, SpellEngine.SANCT_POTION)
 
-func attemptLockpick(dd: int):
-	var roll = GeneralEngine.dice(1, 6, 0).roll()
-	if roll >= dd:
+func attemptLockpick(dc: int) -> bool:
+	var roll = GeneralEngine.dice(1, 6, Skills.getLockpickBonus()).roll()
+	if roll >= dc:
 		Ref.ui.writeLockpickSuccess(roll)
 		return true
 	Ref.ui.writeLockpickFailure(roll)
@@ -255,7 +255,7 @@ func search():
 	GeneralEngine.newTurn()
 
 func rollPerception(cell: Vector2):
-	var perceptionRoll = GeneralEngine.dice(1, 6, 0).roll()
+	var perceptionRoll = stats.perception.roll()
 	if perceptionRoll > 4:
 		# Detect traps
 		if GLOBAL.trapsByPos.has(cell):

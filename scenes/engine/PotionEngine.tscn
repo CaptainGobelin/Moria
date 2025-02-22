@@ -10,6 +10,8 @@ func applyEffect(character, potion):
 
 func healingPotion(character):
 	var result:float = character.stats.hpMax * 0.5
+	if Skills.hasImprovedPotions():
+		result = character.stats.hpMax * 0.75
 	character.stats.hp += ceil(result)
 "
 

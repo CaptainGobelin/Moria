@@ -34,6 +34,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/Monster.gd"
 }, {
+"base": "Node",
+"class": "Skills",
+"language": "GDScript",
+"path": "res://scripts/character/Skills.gd"
+}, {
 "base": "Node2D",
 "class": "SpellDescription",
 "language": "GDScript",
@@ -55,6 +60,7 @@ _global_script_class_icons={
 "Game": "",
 "ItemGenerator": "",
 "Monster": "",
+"Skills": "",
 "SpellDescription": "",
 "Trap": "",
 "Ui": ""

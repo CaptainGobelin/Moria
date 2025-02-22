@@ -104,11 +104,17 @@ func newTurn():
 
 func canCharacterAct() -> bool:
 	if Ref.character.statuses.has(Data.STATUS_SLEEP):
-		Ref.ui.writeCannotAct(Ref.ui.ST_SLEEP)
-		return false
+		if Skills.isImmuneToSleep():
+			StatusEngine.removeStatusType(Ref.character, Data.STATUS_SLEEP)
+		else:
+			Ref.ui.writeCannotAct(Ref.ui.ST_SLEEP)
+			return false
 	if Ref.character.statuses.has(Data.STATUS_TERROR):
-		Ref.ui.writeCannotAct(Ref.ui.ST_TERROR)
-		return false
+		if Skills.isImmuneToTerror():
+			StatusEngine.removeStatusType(Ref.character, Data.STATUS_TERROR)
+		else:
+			Ref.ui.writeCannotAct(Ref.ui.ST_TERROR)
+			return false
 	if Ref.character.statuses.has(Data.STATUS_PARALYZED):
 		Ref.ui.writeCannotAct(Ref.ui.ST_PARALYSIS)
 		return false

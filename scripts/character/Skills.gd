@@ -1,4 +1,5 @@
 extends Node
+class_name Skills
 
 var feats: Array = []
 var ftp: int = 2
@@ -15,6 +16,7 @@ func improve(idx: int, isFree: bool = false):
 	if !isFree:
 		skp -= 1
 	var school = skillToSchool(idx)
+	Ref.character.stats.computeStats()
 	if school == null:
 		return null
 	var spLevel = 0
@@ -119,3 +121,119 @@ func addFeat(feat: int):
 			masteries[Data.SK_THI] += 1
 			return improve(Data.SK_THI)
 	return null
+
+static func removeForbiddenFeats(featList: Array) -> Array:
+	if featList.has(Data.FEAT_SKILLED_COMBAT):
+		if Ref.character.skills.masteries[Data.SK_COMBAT] == 2:
+			featList.erase(Data.FEAT_SKILLED_COMBAT)
+	if featList.has(Data.FEAT_SKILLED_ARMOR):
+		if Ref.character.skills.masteries[Data.SK_ARMOR] == 2:
+			featList.erase(Data.FEAT_SKILLED_ARMOR)
+	if featList.has(Data.FEAT_SKILLED_EVOCATION):
+		if Ref.character.skills.masteries[Data.SK_EVOC] == 2:
+			featList.erase(Data.FEAT_SKILLED_EVOCATION)
+	if featList.has(Data.FEAT_SKILLED_ENCHANTMENT):
+		if Ref.character.skills.masteries[Data.SK_ENCH] == 2:
+			featList.erase(Data.FEAT_SKILLED_ENCHANTMENT)
+	if featList.has(Data.FEAT_SKILLED_ABJURATION):
+		if Ref.character.skills.masteries[Data.SK_ABJ] == 2:
+			featList.erase(Data.FEAT_SKILLED_ABJURATION)
+	if featList.has(Data.FEAT_SKILLED_DIVINATION):
+		if Ref.character.skills.masteries[Data.SK_DIV] == 2:
+			featList.erase(Data.FEAT_SKILLED_DIVINATION)
+	if featList.has(Data.FEAT_SKILLED_CONJURATION):
+		if Ref.character.skills.masteries[Data.SK_CONJ] == 2:
+			featList.erase(Data.FEAT_SKILLED_CONJURATION)
+	if featList.has(Data.FEAT_SKILLED_PHYSICS):
+		if Ref.character.skills.masteries[Data.SK_PHY] == 2:
+			featList.erase(Data.FEAT_SKILLED_PHYSICS)
+	if featList.has(Data.FEAT_SKILLED_WILLPOWER):
+		if Ref.character.skills.masteries[Data.SK_WIL] == 2:
+			featList.erase(Data.FEAT_SKILLED_WILLPOWER)
+	if featList.has(Data.FEAT_SKILLED_PERCEPTION):
+		if Ref.character.skills.masteries[Data.SK_PER] == 2:
+			featList.erase(Data.FEAT_SKILLED_PERCEPTION)
+	if featList.has(Data.FEAT_SKILLED_THIEVERY):
+		if Ref.character.skills.masteries[Data.SK_THI] == 2:
+			featList.erase(Data.FEAT_SKILLED_THIEVERY)
+	return featList
+
+static func canEquipWeapon(idx: int) -> bool:
+	return Ref.character.skills.skills[Data.SK_COMBAT] >= Data.weapons[idx][Data.W_SKILL] 
+
+static func getHitBonus() -> int:
+	if Ref.character.skills.skills[Data.SK_COMBAT] == 5:
+		return 3
+	if Ref.character.skills.skills[Data.SK_COMBAT] >= 3:
+		return 2
+	if Ref.character.skills.skills[Data.SK_COMBAT] >= 1:
+		return 1
+	return 0
+
+static func getPerceptionBonus() -> int:
+	if Ref.character.skills.skills[Data.SK_PER] == 5:
+		return 3
+	if Ref.character.skills.skills[Data.SK_PER] >= 3:
+		return 2
+	if Ref.character.skills.skills[Data.SK_PER] >= 1:
+		return 1
+	return 0
+
+static func getLootRarityBonus() -> int:
+	var rand = randf()
+	if Ref.character.skills.skills[Data.SK_PER] >= 4 and rand < 0.3:
+		return 1
+	if Ref.character.skills.skills[Data.SK_PER] >= 2 and rand < 0.15:
+		return 1
+	return 0
+
+static func getAmorMalusReduction() -> int:
+	return 5 - Ref.character.skills.skills[Data.SK_ARMOR]
+
+static func getLockpickBonus() -> int:
+	return Ref.character.skills.skills[Data.SK_THI]
+
+static func getMerchantDiscount() -> float:
+	if Ref.character.skills.skills[Data.SK_THI] == 5:
+		return 0.55
+	if Ref.character.skills.skills[Data.SK_THI] >= 3:
+		return 0.7
+	if Ref.character.skills.skills[Data.SK_THI] >= 1:
+		return 0.85
+	return 1.0
+
+static func getPhySavesBonus() -> int:
+	if Ref.character.skills.skills[Data.SK_PHY] == 5:
+		return 3
+	if Ref.character.skills.skills[Data.SK_PHY] >= 3:
+		return 2
+	if Ref.character.skills.skills[Data.SK_PHY] >= 1:
+		return 1
+	return 0
+
+static func hasImproveHp() -> bool:
+	return Ref.character.skills.skills[Data.SK_PHY] >= 2
+
+static func hasImprovedPotions() -> bool:
+	return Ref.character.skills.skills[Data.SK_PHY] >= 4
+
+static func hasPoisonResistance() -> bool:
+	return Ref.character.skills.skills[Data.SK_PHY] >= 2
+
+static func hasFireResistance() -> bool:
+	return Ref.character.skills.skills[Data.SK_PHY] >= 4
+
+static func getWilSavesBonus() -> int:
+	if Ref.character.skills.skills[Data.SK_WIL] == 5:
+		return 3
+	if Ref.character.skills.skills[Data.SK_WIL] >= 3:
+		return 2
+	if Ref.character.skills.skills[Data.SK_WIL] >= 1:
+		return 1
+	return 0
+
+static func isImmuneToSleep() -> bool:
+	return Ref.character.skills.skills[Data.SK_WIL] >= 2
+
+static func isImmuneToTerror() -> bool:
+	return Ref.character.skills.skills[Data.SK_WIL] >= 4

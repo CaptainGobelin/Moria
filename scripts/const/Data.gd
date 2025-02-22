@@ -417,7 +417,7 @@ const W_SKILL = 6
 const W_ICON = 7
 
 const weapons = {
-	W_CLUB: 		["club",		null, Vector2(1,  4), "B", 0, false, 0, 0],
+	W_CLUB: 		["club",		null, Vector2(1,  4), "B", 0, false, 0,  0],
 	W_DAGGER:		["dagger",		null, Vector2(1,  4), "S", 1, false, 0,  1],
 	W_HATCHET: 		["hatchet",		null, Vector2(1,  6), "S", 1, false, 2,  2],
 	W_MACE: 		["mace",		null, Vector2(1,  8), "B", 2, false, 2,  3],
@@ -499,7 +499,7 @@ const A_CA = 1
 const A_PROT = 2
 const A_RAR = 3
 const A_ICON = 4
-const A_ENCH = 5
+const A_SKILL = 5
 const A_HELM = 6
 
 const A_ROBE = 0
@@ -510,15 +510,15 @@ const A_CAP = 10
 const A_HELMET = 11
 
 const armors = {
-	A_ROBE: 		["Robe",				2, 0, 0, 18, 1.0, false],
-	A_PADDED: 		["Padded armour",	3, 0, 0, 19, 1.0, false],
-	A_LEATHER: 		["Leather armour",	4, 1, 1, 20, 1.0, false],
-	A_BRIGANDINE: 	["Brigandine",		4, 1, 2, 21, 1.0, false],
-	4: ["Scalemail",		5, 2, 3, 22, 1.0, false],
-	5: ["Full plate",		5, 3, 4, 23, 1.0, false],
+	A_ROBE: 		["Robe",			2, 0, 0, 18, 0, false],
+	A_PADDED: 		["Padded armour",	3, 0, 0, 19, 1, false],
+	A_LEATHER: 		["Leather armour",	4, 1, 1, 20, 2, false],
+	A_BRIGANDINE: 	["Brigandine",		4, 1, 2, 21, 3, false],
+	4: ["Scalemail",		5, 2, 3, 22, 4, false],
+	5: ["Full plate",		5, 3, 4, 23, 5, false],
 	
-	A_CAP: 			["Leather cap",		0, 1, 0, 16, 1.0, true],
-	A_HELMET: 		["Horned helm",		1, 1, 4, 17, 1.0, true],
+	A_CAP: 			["Leather cap",		0, 1, 0, 16, 2, true],
+	A_HELMET: 		["Horned helm",		1, 1, 4, 17, 4, true],
 }
 
 const armorDescriptions = {
@@ -1201,6 +1201,7 @@ const statusPrefabs = {
 	STATUS_PROTECT_EVIL: ["Protection from evil", 41, null, null, STATUS_PROTECT_EVIL, null, null, false],
 	STATUS_SANCTUARY: ["Sanctuary", 33, null, null, STATUS_SANCTUARY, null, null, false],
 	STATUS_INVISIBLE: ["Invisible", 38, null, null, STATUS_INVISIBLE, null, null, false],
+	STATUS_PROTECTED: ["Protected", 40, null, null, STATUS_PROTECTED, null, null, false],
 }
 
 const FE_NAME = 0

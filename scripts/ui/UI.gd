@@ -408,6 +408,10 @@ func writeRested():
 	write("You wake up, fully rested.")
 	lastPrinted = "writeRested"
 
+func writeCannotEquipWeapon():
+	write("You don't have enough fighting skill to equip this weapon.")
+	lastPrinted = "writeCannotEquipWeapon"
+
 func writeWishResult(items: Array):
 	var msg = ""
 	var list = []

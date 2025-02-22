@@ -34,6 +34,8 @@ func removeStatusType(entity, type: int):
 	if not entity.statuses.has(type):
 		return
 	entity.statuses.erase(type)
+	if entity is Character:
+		Ref.ui.statusBar.refreshStatuses(Ref.character)
 
 func removeStatus(entity, statusId: int):
 	var type = GLOBAL.statuses[statusId][GLOBAL.ST_TYPE]

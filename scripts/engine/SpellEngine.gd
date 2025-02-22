@@ -322,7 +322,6 @@ func breakSanctuary(entity, action: int):
 	if (action == SANCT_BUFF) and (rank > 1):
 		return
 	StatusEngine.removeStatusType(entity, Data.STATUS_SANCTUARY)
-	Ref.ui.statusBar.refreshStatuses(entity)
 	if entity is Character:
 		Ref.ui.writeSancturayBreak()
 

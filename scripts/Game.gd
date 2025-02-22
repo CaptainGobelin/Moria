@@ -90,6 +90,7 @@ func startGame():
 		_:
 			newFloor()
 			Ref.currentLevel.setLocation(1, Data.BIOME_DUNGEON)
+			Ref.currentLevel.currentLevel = 1
 	Ref.currentLevel.refresh_view()
 	MasterInput.setMaster(self)
 	GLOBAL.currentMode = GLOBAL.MODE_NORMAL

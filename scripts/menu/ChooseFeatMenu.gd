@@ -27,6 +27,7 @@ func open(feats: Array = [], masterFeatId = null, canCancelChoice: bool = true):
 				featList.append(f)
 	else:
 		featList = feats
+	featList = Skills.removeForbiddenFeats(featList)
 	if featList.empty():
 		close()
 		return

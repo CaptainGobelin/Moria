@@ -57,7 +57,9 @@ func computeRange():
 
 func computeHpMax():
 	var value = classStats[Data.CL_HP]
-	value += (level-1) * classStats[Data.CL_HPLVL] 
+	value += (level-1) * classStats[Data.CL_HPLVL]
+	if Skills.hasImproveHp():
+		value += 2 * level
 	updateHpMax(value)
 
 func updateHpMax(newValue: int):
@@ -146,7 +148,7 @@ func addDmg(newValue):
 	updateDmg(dmgDices)
 
 func computeHit():
-	var value = GeneralEngine.dice(1, 6, 0)
+	var value = GeneralEngine.dice(1, 6, Skills.getHitBonus())
 	var weapon = Ref.character.inventory.getWeapon()
 	if weapon != -1:
 		value.b += GLOBAL.items[weapon][GLOBAL.IT_HIT]
@@ -157,11 +159,15 @@ func updateHit(newValue):
 	Ref.ui.updateStat(Data.CHAR_HIT, newValue)
 
 func computePerception():
-	perception = GeneralEngine.dice(1, 6, 0)
+	perception = GeneralEngine.dice(1, 6, Skills.getPerceptionBonus())
 
 func computeResists():
 	for i in range(8):
 		resists[i] = 0
+	if Skills.hasPoisonResistance():
+		resists[Data.DMG_POISON] += 1
+	if Skills.hasFireResistance():
+		resists[Data.DMG_FIRE] += 1
 	updateResists()
 
 func updateResists():
@@ -170,6 +176,8 @@ func updateResists():
 
 func computeSaves():
 	saveBonus = [0, 0]
+	saveBonus[Data.SAVE_WIL] = Skills.getWilSavesBonus()
+	saveBonus[Data.SAVE_PHY] = Skills.getPhySavesBonus()
 
 func updateLevel(newValue):
 	level = newValue

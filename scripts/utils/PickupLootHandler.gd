@@ -7,6 +7,8 @@ func pickupLootAsync():
 		return
 	if GLOBAL.isForSell(Ref.character.pos):
 		var price = GLOBAL.itemsOnFloor[Ref.character.pos][GLOBAL.FLOOR_PRICE]
+		# Thievery price reduction
+		price = int(ceil(price * Skills.getMerchantDiscount()))
 		buyLoot(loots, price)
 	else:
 		chooseLoot(loots)
