@@ -82,6 +82,16 @@ func refresh_view():
 				TrapEngine.reveal(t.pos)
 			elif t.hidden:
 				t.mask.visible = true
+	for l in loots.get_children():
+		l.mask.visible = false
+		if Ref.character.statuses.has(Data.STATUS_LOCATE_OBJECTS):
+			if fog.get_cellv(l.pos) != 0:
+				l.mask.visible = true
+#	for c in chests.get_children():
+#		c.mask.visible = true
+#		if Ref.character.statuses.has(Data.STATUS_LOCATE_OBJECTS):
+#			if fog.get_cellv(c.pos) != 0:
+#				c.mask.visible = true
 	Ref.character.currentVision.erase(Ref.character.pos)
 
 func initShadows():
@@ -194,7 +204,7 @@ func dropItem():
 func addChest(cell: Vector2, rarityBonus: int):
 	var chest = chestScene.instance()
 	chests.add_child(chest)
-	chest.position = cell * 9
+	chest.init(cell)
 	GLOBAL.chests[chest.get_instance_id()] = [cell, [], false, 0]
 	if randf() < 0.35:
 		GLOBAL.chests[chest.get_instance_id()][GLOBAL.CH_LOCKED] = 3

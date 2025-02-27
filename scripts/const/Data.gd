@@ -90,6 +90,11 @@ const SP_ELECTRIC_GRASP = 1
 const SP_HEAL = 2
 const SP_SMITE = 3
 const SP_FIREBOLT = 4
+const SP_BURN_HANDS = 5
+const SP_LIGHT_BOLT = 6
+const SP_REPEL_EVIL = 7
+const SP_CURE_WOUNDS = 8
+const SP_FROST_NOVA = 9
 const SP_FIREBALL = 10
 
 const SP_SLEEP = 15
@@ -97,22 +102,42 @@ const SP_UNLOCK = 16
 const SP_BLESS = 17
 const SP_COMMAND = 18
 const SP_LIGHT = 19
+const SP_NEGATE_ENER = 20
+const SP_MIRROR_IMAGES = 21
+const SP_HOLY_BLADE = 22
+const SP_CURSE = 23
+const SP_FIRE_BLADE = 24
 
 const SP_BLIND = 30
 const SP_MIND_SPIKE = 31
 const SP_DETECT_EVIL = 32
 const SP_REVEAL_TRAPS = 33
+const SP_LOCATE_OBJECTS = 34
+const SP_REVEAL_WEAK = 35
+const SP_REVEAL_HIDDEN = 36
+const SP_BLINK = 37
+const SP_TRUE_STRIKE = 38
+const SP_FUMBLE = 39
 
 const SP_SHIELD = 45
 const SP_MAGE_ARMOR = 46
 const SP_ARMOR_OF_FAITH = 47
 const SP_PROTECTION_FROM_EVIL = 48
 const SP_SANCTUARY = 49
+const SP_REPEL_MISS = 50
+const SP_FLAMESKIN = 51
+const SP_FREED_MOVE = 52
+const SP_PROTECT_POISON = 53
+const SP_PROTECT_FIRE = 54
 
 const SP_ACID_SPLASH = 60
 const SP_CONJURE_ANIMAL = 61
 const SP_SPIRITUAL_HAMMER = 62
 const SP_LESSER_AQUIREMENT = 63
+const SP_STONE_MUD = 64
+const SP_POISON_CLOUD = 65
+const SP_GUADRIAN_SPIRITS = 66
+const SP_ANIMATE_SKELETONS = 67
 
 const SP_TH_FIREBOMB = 100
 const SP_TH_POISON = 101
@@ -883,6 +908,7 @@ const spells = {
 	SP_MIND_SPIKE: 		["Mind spike", 1, SC_DIVINATION, [false, true, false], null, 31, [10, 10, 10], SP_TARGET_TARGET, 0, SAVE_WIL],
 	SP_DETECT_EVIL:		["Detect evil", 1, SC_DIVINATION, [false, true, true], null, 32, [10, 10, 10], SP_TARGET_SELF, 0, SAVE_NO],
 	SP_REVEAL_TRAPS:	["Find traps", 1, SC_DIVINATION, [true, true, true], null, 33, [5, 10, 15], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_LOCATE_OBJECTS:	["Locate objects", 1, SC_DIVINATION, [true, false, false], null, 34, [2, 4, 6], SP_TARGET_SELF, 0, SAVE_NO],
 	# Abjuration
 	SP_SHIELD:			["Shield", 1, SC_ABJURATION, [true, false, false], null, 45, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
 	SP_MAGE_ARMOR:		["Mage armor", 1, SC_ABJURATION, [true, false, false], null, 46, [15, 15, 15], SP_TARGET_SELF, 0, SAVE_NO],
@@ -897,11 +923,11 @@ const spells = {
 }
 
 const spellDamages = {
-	SP_MAGIC_MISSILE: [[1, 4, 1, DMG_MAGIC], [1, 4, 1, DMG_MAGIC], [1, 4, 1, DMG_MAGIC]],
+	SP_MAGIC_MISSILE: [[1, 4, 0, DMG_MAGIC], [1, 4, 0, DMG_MAGIC], [1, 4, 0, DMG_MAGIC]],
 	SP_ELECTRIC_GRASP: [[1, 12, 0, DMG_LIGHTNING], [1, 12, 0, DMG_LIGHTNING], [2, 12, 0, DMG_LIGHTNING]],
-	SP_HEAL: [[1, 6, 0, DMG_MAGIC], [1, 8, 0, DMG_MAGIC], [1, 10, 0, DMG_MAGIC]],
-	SP_SMITE: [[1, 8, 1, DMG_RADIANT], [1, 10, 2, DMG_RADIANT], [1, 12, 3, DMG_RADIANT]],
-	SP_FIREBOLT: [[1, 10, 0, DMG_FIRE], [1, 10, 2, DMG_FIRE], [1, 10, 4, DMG_FIRE]],
+	SP_HEAL: [[2, 4, 0, DMG_MAGIC], [2, 8, 0, DMG_MAGIC], [2, 10, 0, DMG_MAGIC]],
+	SP_SMITE: [[2, 4, 0, DMG_RADIANT], [3, 4, 0, DMG_RADIANT], [4, 4, 0, DMG_RADIANT]],
+	SP_FIREBOLT: [[1, 6, 2, DMG_FIRE], [1, 6, 4, DMG_FIRE], [1, 6, 6, DMG_FIRE]],
 	SP_FIREBALL: [[], [], [3, 6, 0, DMG_FIRE]],
 	SP_MIND_SPIKE: [[1, 8, 0, DMG_MAGIC], [1, 8, 2, DMG_MAGIC], [1, 8, 4, DMG_MAGIC]],
 	SP_ACID_SPLASH: [[2, 4, 0, DMG_SLASH], [3, 4, 0, DMG_SLASH], [4, 4, 0, DMG_SLASH]],
@@ -909,28 +935,28 @@ const spellDamages = {
 
 const spellTurns = {
 	SP_SLEEP: [15, 15, 15],
-	SP_BLESS: [15, 15, 15],
+	SP_BLESS: [15, 30, 30],
 	SP_COMMAND: [5, 5, 5],
-	SP_LIGHT: [40, 40, 40],
+	SP_LIGHT: [50, 50, 50],
 	SP_BLIND: [15, 15, 15],
 	SP_DETECT_EVIL: [40, 40, 40],
 	SP_REVEAL_TRAPS: [40, 40, 40],
 	SP_SHIELD: [25, 25, 25],
 	SP_ARMOR_OF_FAITH: [100, 100, 100],
-	SP_PROTECTION_FROM_EVIL: [25, 25, 25],
+	SP_PROTECTION_FROM_EVIL: [15, 25, 25],
 	SP_SANCTUARY: [15, 15, 15],
 	SP_SPIRITUAL_HAMMER: [40, 40, 40],
 }
 
 var spellDescriptions = {
 	SP_MAGIC_MISSILE: [
-		"Fires arcane projectiles to random targets, each dealing %%DMG_1 damages. No saving throw.",
-		"Fires two projectiles.",
-		"Fires three projectiles.",
-		"Fires four projectiles."
+		"Fires arcane projectiles to random targets, each dealing %%DMG_1 magic damages. No saving throw.",
+		"Fires 2 projectiles.",
+		"Fires 3 projectiles.",
+		"Fires 4 projectiles."
 	],
 	SP_ELECTRIC_GRASP: [
-		"Gives a powerful electrical jolt to %%CONTACT.",
+		"Deals electrical damages to %%CONTACT.",
 		"%%D_DMG_1",
 		"Also inflicts [PARALYZED] the target for two turns.",
 		"%%INC_DMG_3"
@@ -942,7 +968,7 @@ var spellDescriptions = {
 		"Increases healing to %%DMGN_3."
 	],
 	SP_SMITE: [
-		"Conjures a beam of sunlight to damage %%LINE.",
+		"Conjures a beam of sunlight to inflict radiant damages to %%LINE.",
 		"%%D_DMG_1",
 		"%%INC_DMG_2",
 		"%%INC_DMG_3"
@@ -967,38 +993,38 @@ var spellDescriptions = {
 	],
 	SP_BLESS: [
 		"Bless you with divine energy to improve all your save rolls.",
-		"Gives [BLESS] (+1 to all save rolls) for %%TURNS_1.",
+		"+1 to all save rolls for %%TURNS_1.",
 		"Lasts for %%TURNS_2.",
-		"Lasts for %%TURNS_3.",
+		"Lasts until rest.",
 	],
 	SP_COMMAND: [
-		"Enables you to command another creature with a single word. Applies [TERROR].",
-		"Lasts %%TURNS_1.",
+		"Commands another creature with a single word to stay immobile.",
+		"Inflicts [TERROR] for %%TURNS_1.",
 		"Lasts %%TURNS_2.",
 		"Lasts %%TURNS_3.",
 	],
 	SP_LIGHT: [
 		"Surrounds you with a floating light that follows you for %%TURNS_1.",
-		"Gives you [LIGHT] (+1 range).",
-		"Gives you [LIGHT II] (+1 perception rolls).",
+		"Grants +1 range.",
+		"Grants +1 perception rolls.",
 		"Lasts until rest.",
 	],
 	SP_BLIND: [
-		"Causes the target to become blind for %%TURNS_1.",
-		"Inflicts [BLIND] (-1 to hit rolls -3 to range) to %%TARGET.",
+		"Causes the target to become blind (reduce range to 3 and -1 to hit rolls) for %%TURNS_1.",
+		"Targets %%TARGET.",
 		"Also targets all creatures at range 1.",
 		"Also targets all creatures at range 3.",
 	],
 	SP_MIND_SPIKE: [
-		"Reaches another creature's mind to damage it.",
+		"Reaches another creature's mind to deals magic damages.",
 		"%%D_DMG_1",
 		"%%INC_DMG_2",
 		"%%INC_DMG_3"
 	],
 	SP_DETECT_EVIL: [
 		"Detects all evil creatures (undeads and demons) on the current floor. No saving throw.",
-		"Gives [DETECT EVIL] for %%TURNS_1.",
-		"Inflicts [VULNERABLE] (ignore prot) to revealed creatures.",
+		"Lasts %%TURNS_1.",
+		"Inflicts [VULNERABLE] (ignore Prot) to revealed creatures.",
 		"%%USES_3."
 	],
 	SP_REVEAL_TRAPS: [
@@ -1007,51 +1033,57 @@ var spellDescriptions = {
 		"%%USES_2.",
 		"%%USES_3."
 	],
+	SP_LOCATE_OBJECTS: [
+		"Reveals all items and chests on the current floor. Lasts for the whole floor.",
+		"%%USES_1.",
+		"%%USES_2.",
+		"%%USES_3."
+	],
 	SP_SHIELD: [
-		"Protects you with an invisible barrier that absorbs incoming damages.",
-		"Gives you [SHIELD] (absorb 10 damages) for %%TURNS_1.",
+		"Protects you with an invisible barrier that absorbs incoming damages. Lasts %%TURNS_1.",
+		"Absorbs 10 damages.",
 		"Absorbs 15 damages.",
 		"Absorbs 20 damages."
 	],
 	SP_MAGE_ARMOR: [
 		"Creates a magical field of force that replaces your armor. Lasts until rest.",
-		"Gives you [MAGE ARMOR] (set your AC to 4).",
+		"Set your AC to 4.",
 		"Set your AC to 5.",
 		"Set your AC to 6."
 	],
 	SP_ARMOR_OF_FAITH: [
 		"Invokes divine forces to protect you during %%TURNS_1.",
-		"Gives you [ARMOR OF FAITH] (+1 CA).",
-		"Gives you [ARMOR OF FAITH II] (+1 CA +2 protection).",
+		"Grants +1 CA.",
+		"Grants +2 Protection.",
 		"Lasts until rest."
 	],
 	SP_PROTECTION_FROM_EVIL: [
 		"Protects you from spells casted by evil creatures (undeads and demons). Lasts %%TURNS_1.",
-		"Gives you [PROTECTION FROM EVIL] (+1 to all saves).",
+		"Grants +1 to all save rolls.",
 		"Lasts %%TURNS_2.",
 		"Increases bonus to +2."
 	],
 	SP_SANCTUARY: [
 		"Prevent any creatures to harm you until you attack, drink a potion or cast a spell.",
-		"Gives you [SANCTUARY] for %%TURNS_1.",
+		"Lasts %%TURNS_1.",
 		"You can drink potions.",
 		"You can cast spells on yourself."
 	],
 	SP_ACID_SPLASH: [
-		"Creates a magic arrow that inflicts acid damages to %%TARGET. It bypass protection and resistances.",
+		"Creates a magic arrow that inflicts acid damages to a target at range. It bypasses protection and resistances.",
 		"%%D_DMG_1",
 		"%%INC_DMG_2",
 		"%%INC_DMG_3"
 	],
 	SP_CONJURE_ANIMAL: [
-		"Conjures a wolf to fight by your side.",
-		"Conures 1d2 wolves.",
-		"Conures 1d2+1 wolves.",
-		"Conures 1d2+2 wolves.",
+		"Conjures a wolf to fight by your side. Lasts until rest.",
+		"Conjures 1d2 wolves.",
+		"Conjures 1d2+1 wolves.",
+		"Conjures 1d2+2 wolves.",
 	],
 	SP_SPIRITUAL_HAMMER: [
 		"Conjures an animated hammer that will fight your enemies.",
-		"Convokes a hamer for %%TURNS_1.",
+		"Convokes a hammer for %%TURNS_1.",
 		"Improves the hammer.",
 		"Improves the hammer."
 	],
@@ -1100,6 +1132,7 @@ const STATUS_PROTECT_EVIL = 107
 const STATUS_SANCTUARY = 108
 const STATUS_INVISIBLE = 109
 const STATUS_ARMOR_OF_FAITH = 110
+const STATUS_LOCATE_OBJECTS = 111
 
 const STATUS_WILLPOWER = 200
 const STATUS_PHYSICS = 201
@@ -1154,6 +1187,9 @@ const statusesDescriptions = {
 	STATUS_REVEAL_TRAPS: [
 		"All traps appear on your map, and you reveal them when they are in sight."
 	],
+	STATUS_LOCATE_OBJECTS: [
+		"All items and chests appear on wour map."
+	],
 	STATUS_BLESSED: [
 		"A sacred blessing stands upon your, protecting yourself against spells. It grants you +1 to all save rolls."
 	],
@@ -1194,13 +1230,14 @@ const statusPrefabs = {
 	STATUS_LIGHT: ["Light", 23, null, null, STATUS_LIGHT, null, null, false],
 	STATUS_DETECT_EVIL: ["Detect evil", 9, null, null, STATUS_DETECT_EVIL, null, null, false],
 	STATUS_REVEAL_TRAPS: ["Find traps", 15, null, null, STATUS_REVEAL_TRAPS, null, null, false],
+	STATUS_LOCATE_OBJECTS: ["Locate objects", 51, null, null, STATUS_LOCATE_OBJECTS, null, null, false],
 	STATUS_BLESSED: ["Blessed", 11, null, null, STATUS_BLESSED, null, null, false],
 	STATUS_SHIELD: ["Shield", 39, null, null, STATUS_SHIELD, null, null, false],
 	STATUS_MAGE_ARMOR: ["Mage armor", 27, null, null, STATUS_MAGE_ARMOR, null, null, false],
 	STATUS_ARMOR_OF_FAITH: ["Armor of faith", 5, null, null, STATUS_ARMOR_OF_FAITH, null, null, false],
 	STATUS_PROTECT_EVIL: ["Protection from evil", 41, null, null, STATUS_PROTECT_EVIL, null, null, false],
 	STATUS_SANCTUARY: ["Sanctuary", 33, null, null, STATUS_SANCTUARY, null, null, false],
-	STATUS_INVISIBLE: ["Invisible", 38, null, null, STATUS_INVISIBLE, null, null, false],
+	STATUS_INVISIBLE: ["Invisible", 45, null, null, STATUS_INVISIBLE, null, null, false],
 	STATUS_PROTECTED: ["Protected", 40, null, null, STATUS_PROTECTED, null, null, false],
 }
 

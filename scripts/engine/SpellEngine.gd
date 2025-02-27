@@ -119,6 +119,8 @@ func applyEffect(caster, entity, spellId: int, fromCharacter: bool, rank: int, s
 			detectEvil(caster, entity, rank)
 		Data.SP_REVEAL_TRAPS:
 			revealTraps(caster, entity)
+		Data.SP_LOCATE_OBJECTS:
+			locateObjects(caster, entity)
 		Data.SP_SHIELD:
 			shield(caster, entity, rank)
 		Data.SP_MAGE_ARMOR:
@@ -224,9 +226,9 @@ func unlock(caster, entity, direction: Vector2):
 
 func bless(caster, entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)
-	for i in range(100, 109):
-		applySpellStatus(entity, i, 0, 10)
 	var turns = getTurns(Data.SP_BLESS, rank)
+	if rank >= 2:
+		turns = TIME_REST
 	applySpellStatus(entity, Data.STATUS_BLESSED, 0, turns)
 
 func command(caster, entity, rank: int):
@@ -238,6 +240,8 @@ func command(caster, entity, rank: int):
 func light(caster, entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)
 	var turns = getTurns(Data.SP_COMMAND, rank)
+	if rank >= 2:
+		turns = TIME_REST
 	if rank == 0:
 		applySpellStatus(entity, Data.STATUS_LIGHT, 0, turns)
 	else:
@@ -278,6 +282,11 @@ func revealTraps(caster, entity):
 	applySpellStatus(entity, Data.STATUS_REVEAL_TRAPS, 0, turns)
 	Ref.currentLevel.refresh_view()
 
+func locateObjects(caster, entity):
+	playEffect(entity.pos, 7, 5, 0.6)
+	applySpellStatus(entity, Data.STATUS_LOCATE_OBJECTS, 0, TIME_FLOOR)
+	Ref.currentLevel.refresh_view()
+
 func shield(caster, entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)
 	var turns = getTurns(Data.SP_SHIELD, rank)
@@ -285,10 +294,7 @@ func shield(caster, entity, rank: int):
 
 func mageArmor(caster, entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)
-	var status = createSpellStatus(Data.STATUS_MAGE_ARMOR, rank, 99)
-	status[GLOBAL.ST_TIMING] = GLOBAL.TIMING_REST
-	StatusEngine.addStatus(entity, status)
-	entity.stats.computeStats()
+	applySpellStatus(entity, Data.STATUS_MAGE_ARMOR, rank, TIME_REST)
 
 func armorFaith(caster, entity, rank: int):
 	playEffect(entity.pos, 7, 5, 0.6)

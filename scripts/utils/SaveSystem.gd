@@ -351,7 +351,7 @@ func loadGlobals(dict: Dictionary):
 	for c in dict["chests"].values():
 		var chest = chestScene.instance()
 		Ref.currentLevel.chests.add_child(chest)
-		chest.position = c[0] * 9
+		chest.init(c[0])
 		GLOBAL.chests[chest.get_instance_id()] = c
 	GLOBAL.hiddenDoors = dict["hiddenDoors"]
 	GLOBAL.lockedDoors = dict["lockedDoors"]
