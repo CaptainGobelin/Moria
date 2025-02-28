@@ -48,6 +48,10 @@ func castSpellAsync(spellId: int, scrollId = null):
 			if spell[Data.SP_PROJ] != null:
 				yield(castProjectile(GLOBAL.targets[targetId], spell[Data.SP_PROJ]), "completed")
 			SpellEngine.applyEffect(Ref.character, instance_from_id(targetId), spellId, true, spellRank, savingCap)
+			if spellId == Data.SP_LIGHT_BOLT:
+				var rebound = spellRebound(spellId, Ref.character, instance_from_id(targetId), spellRank, savingCap, spellRank-1)
+				if rebound is GDScriptFunctionState:
+					yield(rebound, "completed")
 			spellCasted = true
 			SpellEngine.breakSanctuary(Ref.character, SpellEngine.SANCT_ATTACK)
 		Data.SP_TARGET_DIRECT:
@@ -109,3 +113,27 @@ func castSpellMonster(spellId: int, caster, target, path: Array):
 		SpellEngine.breakSanctuary(caster, SpellEngine.SANCT_ATTACK)
 	else:
 		SpellEngine.breakSanctuary(caster, SpellEngine.SANCT_BUFF)
+
+func spellRebound(spellId: int, caster, initial, spellRank: int, savingCap: int, n: int):
+	var targets = [Ref.currentLevel.allies.get_children()]
+	targets.append(Ref.character)
+	if caster is Character:
+		targets = Ref.currentLevel.monsters.get_children()
+	elif caster is Monster and caster.status == "help":
+		targets = Ref.currentLevel.monsters.get_children()
+	targets.shuffle()
+	for m in targets:
+		if m == initial:
+			continue
+		if m.status == "dead" or m.status == "help":
+			continue
+		var los = Ref.currentLevel.canTarget(initial.pos, m.pos)
+		if los.empty():
+			continue
+		if los.size() > 5:
+			continue
+		yield(castProjectile(los, Data.spells[spellId][Data.SP_PROJ]), "completed")
+		SpellEngine.applyEffect(caster, m, spellId, true, spellRank, savingCap)
+		if n > 1:
+			yield(spellRebound(spellId, caster, m, spellRank, savingCap, n - 1), "completed")
+		return

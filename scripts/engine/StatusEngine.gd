@@ -121,8 +121,6 @@ func applyEffect(entity):
 				addToSaves(entity, 1, 1)
 			Data.STATUS_PROTECTED:
 				addToProt(entity, rank + 1)
-			Data.STATUS_SANCTUARY:
-				pass
 			Data.STATUS_FIRE_WP:
 				dmgWeapon(entity, rank, 4, Data.DMG_FIRE)
 			Data.STATUS_SHOCK_WP:

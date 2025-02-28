@@ -7,6 +7,7 @@ onready var inventory = get_node("Inventory")
 onready var spells = get_node("Spells")
 onready var skills = get_node("Skills")
 onready var shortcuts = get_node("Shortcuts")
+onready var status = ""
 
 var currentVision: Array = []
 var charClass: int = 0
@@ -43,6 +44,8 @@ func move(movement):
 func moveAsync(movement):
 	var cellState = Ref.currentLevel.isCellFree(pos + movement)
 	if cellState[0]:
+		if statuses.has(Data.STATUS_IMMOBILE):
+			return
 		move(movement)
 		return
 	match cellState[1]:
@@ -149,8 +152,8 @@ func takeHit(dmg: int, bypassProt: int = 0):
 	Ref.ui.writeCharacterTakeHit(realDmg)
 	if !isCritical and stats.hpPercent() < 0.25:
 		if statuses.has(Data.STATUS_ENCHANT + Data.ENCH_ESCAPE):
-			var status = SpellEngine.createSpellStatus(Data.STATUS_INVISIBLE, 1, 5)
-			StatusEngine.addStatus(self, status)
+			var s = SpellEngine.createSpellStatus(Data.STATUS_INVISIBLE, 1, 5)
+			StatusEngine.addStatus(self, s)
 	return realDmg
 
 func heal(amount: int):

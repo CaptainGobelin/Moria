@@ -40,6 +40,7 @@ const PROJ_WHITE_LONG = [Colors.white, 3]
 const PROJ_WHITE_R = [Colors.white, 9]
 const PROJ_GREEN_M = [Colors.green, 6]
 const PROJ_GREEN_R = [Colors.green, 9]
+const PROJ_BLUE_ZAP = [Colors.blue, 18]
 
 # Feats
 const FEAT_FIGHTER = 0
@@ -371,6 +372,8 @@ const monsterTags = {
 }
 
 static func hasTag(entity, tag: int) -> bool:
+	if entity == null:
+		return false
 	if !entity is Monster:
 		return false 
 	if !monsterTags.has(entity.type):
@@ -896,7 +899,12 @@ const spells = {
 	SP_HEAL: 			["Heal", 1, SC_EVOCATION, [false, true, true], null, 2, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
 	SP_SMITE: 			["Sunscorch", 1, SC_EVOCATION, [false, true, false], null, 3, [10, 10, 10], SP_TARGET_DIRECT, 1, SAVE_PHY],
 	SP_FIREBOLT: 		["Fire bolt", 1, SC_EVOCATION, [true, false, false], PROJ_RED_L, 4, [15, 15, 15], SP_TARGET_TARGET, 0, SAVE_PHY],
-	SP_FIREBALL: 		["Fireball", 3, SC_EVOCATION, [true, false, false], PROJ_RED_R, 10, [10, 10, 10], SP_TARGET_TARGET, 3, SAVE_PHY],
+	SP_BURN_HANDS: 		["Burning hands", 2, SC_EVOCATION, [true, false, true], null, 5, [10, 10, 10], SP_TARGET_DIRECT, 3, SAVE_PHY],
+	SP_LIGHT_BOLT: 		["Lightning bolt", 2, SC_EVOCATION, [true, true, true], PROJ_BLUE_ZAP, 6, [8, 8, 8], SP_TARGET_TARGET, 0, SAVE_PHY],
+	SP_REPEL_EVIL: 		["Repel evil", 2, SC_EVOCATION, [false, true, false], null, 7, [10, 10, 10], SP_TARGET_SELF, 4, SAVE_WIL],
+	SP_CURE_WOUNDS: 	["Cure wounds", 2, SC_EVOCATION, [false, true, true], null, 8, [3, 3, 3], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_FROST_NOVA: 		["Frost nova", 2, SC_EVOCATION, [true, false, false], null, 9, [5, 5, 5], SP_TARGET_SELF, 3, SAVE_PHY],
+	SP_FIREBALL: 		["Fireball", 3, SC_EVOCATION, [true, false, false], PROJ_RED_R, 10, [10, 10, 10], SP_TARGET_TARGET, 4, SAVE_PHY],
 	# Enchantment
 	SP_SLEEP:	 		["Sleep", 1, SC_ENCHANTMENT, [true, false, true], null, 15, [8, 8, 8], SP_TARGET_TARGET, 0, SAVE_WIL],
 	SP_UNLOCK:	 		["Unlock", 1, SC_ENCHANTMENT, [true, false, false], null, 16, [5, 10, 15], SP_TARGET_DIRECT, 1, SAVE_NO],
@@ -904,14 +912,14 @@ const spells = {
 	SP_COMMAND:	 		["Command", 1, SC_ENCHANTMENT, [false, true, false], null, 18, [5, 5, 5], SP_TARGET_TARGET, 0, SAVE_WIL],
 	SP_LIGHT:	 		["Light", 1, SC_ENCHANTMENT, [true, true, true], null, 19, [20, 20, 20], SP_TARGET_SELF, 0, SAVE_NO],
 	# Divination
-	SP_BLIND: 			["Blind", 1, SC_DIVINATION, [true, false, true], null, 30, [15, 15, 15], SP_TARGET_TARGET, 0, SAVE_PHY],
+	SP_BLIND: 			["Blindness", 1, SC_DIVINATION, [true, false, true], null, 30, [15, 15, 15], SP_TARGET_TARGET, 0, SAVE_PHY],
 	SP_MIND_SPIKE: 		["Mind spike", 1, SC_DIVINATION, [false, true, false], null, 31, [10, 10, 10], SP_TARGET_TARGET, 0, SAVE_WIL],
 	SP_DETECT_EVIL:		["Detect evil", 1, SC_DIVINATION, [false, true, true], null, 32, [10, 10, 10], SP_TARGET_SELF, 0, SAVE_NO],
 	SP_REVEAL_TRAPS:	["Find traps", 1, SC_DIVINATION, [true, true, true], null, 33, [5, 10, 15], SP_TARGET_SELF, 0, SAVE_NO],
 	SP_LOCATE_OBJECTS:	["Locate objects", 1, SC_DIVINATION, [true, false, false], null, 34, [2, 4, 6], SP_TARGET_SELF, 0, SAVE_NO],
 	# Abjuration
 	SP_SHIELD:			["Shield", 1, SC_ABJURATION, [true, false, false], null, 45, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
-	SP_MAGE_ARMOR:		["Mage armor", 1, SC_ABJURATION, [true, false, false], null, 46, [15, 15, 15], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_MAGE_ARMOR:		["Armor", 1, SC_ABJURATION, [true, false, false], null, 46, [15, 15, 15], SP_TARGET_SELF, 0, SAVE_NO],
 	SP_ARMOR_OF_FAITH:	["Armor of faith", 1, SC_ABJURATION, [false, true, false], null, 47, [10, 10, 10], SP_TARGET_SELF, 0, SAVE_NO],
 	SP_PROTECTION_FROM_EVIL:["Protection from evil", 1, SC_ABJURATION, [false, true, true], null, 49, [10, 10, 10], SP_TARGET_SELF, 0, SAVE_NO],
 	SP_SANCTUARY:		["Sanctuary", 1, SC_ABJURATION, [false, true, true], null, 48, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
@@ -923,17 +931,23 @@ const spells = {
 }
 
 const spellDamages = {
-	SP_MAGIC_MISSILE: [[1, 4, 0, DMG_MAGIC], [1, 4, 0, DMG_MAGIC], [1, 4, 0, DMG_MAGIC]],
-	SP_ELECTRIC_GRASP: [[1, 12, 0, DMG_LIGHTNING], [1, 12, 0, DMG_LIGHTNING], [2, 12, 0, DMG_LIGHTNING]],
-	SP_HEAL: [[2, 4, 0, DMG_MAGIC], [2, 8, 0, DMG_MAGIC], [2, 10, 0, DMG_MAGIC]],
-	SP_SMITE: [[2, 4, 0, DMG_RADIANT], [3, 4, 0, DMG_RADIANT], [4, 4, 0, DMG_RADIANT]],
-	SP_FIREBOLT: [[1, 6, 2, DMG_FIRE], [1, 6, 4, DMG_FIRE], [1, 6, 6, DMG_FIRE]],
-	SP_FIREBALL: [[], [], [3, 6, 0, DMG_FIRE]],
-	SP_MIND_SPIKE: [[1, 8, 0, DMG_MAGIC], [1, 8, 2, DMG_MAGIC], [1, 8, 4, DMG_MAGIC]],
-	SP_ACID_SPLASH: [[2, 4, 0, DMG_SLASH], [3, 4, 0, DMG_SLASH], [4, 4, 0, DMG_SLASH]],
+	SP_MAGIC_MISSILE: 	[[1, 4, 0, DMG_MAGIC], [1, 4, 0, DMG_MAGIC], [1, 4, 0, DMG_MAGIC]],
+	SP_ELECTRIC_GRASP: 	[[1, 12, 0, DMG_LIGHTNING], [1, 12, 0, DMG_LIGHTNING], [2, 12, 0, DMG_LIGHTNING]],
+	SP_HEAL:	 		[[2, 4, 0, DMG_MAGIC], [2, 8, 0, DMG_MAGIC], [2, 10, 0, DMG_MAGIC]],
+	SP_SMITE: 			[[2, 4, 0, DMG_RADIANT], [3, 4, 0, DMG_RADIANT], [4, 4, 0, DMG_RADIANT]],
+	SP_FIREBOLT: 		[[1, 6, 2, DMG_FIRE], [1, 6, 4, DMG_FIRE], [1, 6, 6, DMG_FIRE]],
+	SP_BURN_HANDS: 		[[2, 6, 0, DMG_FIRE], [2, 6, 0, DMG_FIRE], [3, 6, 0, DMG_FIRE]],
+	SP_LIGHT_BOLT: 		[[2, 8, 0, DMG_LIGHTNING], [2, 8, 0, DMG_LIGHTNING], [2, 8, 0, DMG_LIGHTNING]],
+	SP_REPEL_EVIL: 		[[2, 6, 0, DMG_RADIANT], [2, 6, 0, DMG_RADIANT], [2, 6, 0, DMG_RADIANT]],
+	SP_FROST_NOVA: 		[[2, 4, 0, DMG_ICE], [2, 4, 0, DMG_ICE], [2, 4, 0, DMG_ICE]],
+	SP_FIREBALL: 		[[3, 6, 0, DMG_FIRE], [3, 6, 0, DMG_FIRE], [3, 6, 0, DMG_FIRE]],
+	SP_MIND_SPIKE: 		[[1, 8, 0, DMG_MAGIC], [1, 8, 2, DMG_MAGIC], [1, 8, 4, DMG_MAGIC]],
+	SP_ACID_SPLASH: 	[[2, 4, 0, DMG_SLASH], [3, 4, 0, DMG_SLASH], [4, 4, 0, DMG_SLASH]],
 }
 
 const spellTurns = {
+	SP_REPEL_EVIL: [3, 3, 3],
+	SP_FROST_NOVA: [5, 5, 5],
 	SP_SLEEP: [15, 15, 15],
 	SP_BLESS: [15, 30, 30],
 	SP_COMMAND: [5, 5, 5],
@@ -957,9 +971,9 @@ var spellDescriptions = {
 	],
 	SP_ELECTRIC_GRASP: [
 		"Deals electrical damages to %%CONTACT.",
-		"%%D_DMG_1",
+		"%%D_DMG_1.",
 		"Also inflicts [PARALYZED] the target for two turns.",
-		"%%INC_DMG_3"
+		"%%INC_DMG_3."
 	],
 	SP_HEAL: [
 		"Conjures healing energies to cure your wounds.",
@@ -969,15 +983,45 @@ var spellDescriptions = {
 	],
 	SP_SMITE: [
 		"Conjures a beam of sunlight to inflict radiant damages to %%LINE.",
-		"%%D_DMG_1",
-		"%%INC_DMG_2",
-		"%%INC_DMG_3"
+		"%%D_DMG_1.",
+		"%%INC_DMG_2.",
+		"%%INC_DMG_3."
 	],
 	SP_FIREBOLT: [
 		"Fires a bolt of flame to %%TARGET.",
-		"%%D_DMG_1",
-		"%%INC_DMG_2",
-		"%%INC_DMG_3"
+		"%%D_DMG_1.",
+		"%%INC_DMG_2.",
+		"%%INC_DMG_3."
+	],
+	SP_BURN_HANDS: [
+		"Deals fire damages to all creatures in a 3-range cone in front of you.",
+		"",
+		"%%D_DMG_2.",
+		"%%INC_DMG_3."
+	],
+	SP_LIGHT_BOLT: [
+		"Deals electrical damages to a creature at range and bounce to another creature.",
+		"",
+		"%%D_DMG_2.",
+		"Bounce a second time."
+	],
+	SP_REPEL_EVIL: [
+		"Deals radiant damages to all evil creatures (undeads and demons) at range 3.",
+		"",
+		"%%D_DMG_2.",
+		"Also inflicts [TERROR] for %%TURNS_3."
+	],
+	SP_CURE_WOUNDS: [
+		"Accelerate your natural healing to cure your injuries.",
+		"",
+		"Heals a random injury.",
+		"Also restore 100 fatigue."
+	],
+	SP_FROST_NOVA: [
+		"Creates a ring of frost around you. Deals frost damages and inflicts [IMMOBILE] for %%TURNS_1.",
+		"",
+		"%%D_DMG_2 at range 2.",
+		"Increases range to 3."
 	],
 	SP_SLEEP: [
 		"Forces a creature to fall asleep. Any damage will break the spell.",
@@ -1017,9 +1061,9 @@ var spellDescriptions = {
 	],
 	SP_MIND_SPIKE: [
 		"Reaches another creature's mind to deals magic damages.",
-		"%%D_DMG_1",
-		"%%INC_DMG_2",
-		"%%INC_DMG_3"
+		"%%D_DMG_1.",
+		"%%INC_DMG_2.",
+		"%%INC_DMG_3."
 	],
 	SP_DETECT_EVIL: [
 		"Detects all evil creatures (undeads and demons) on the current floor. No saving throw.",
@@ -1071,9 +1115,9 @@ var spellDescriptions = {
 	],
 	SP_ACID_SPLASH: [
 		"Creates a magic arrow that inflicts acid damages to a target at range. It bypasses protection and resistances.",
-		"%%D_DMG_1",
-		"%%INC_DMG_2",
-		"%%INC_DMG_3"
+		"%%D_DMG_1.",
+		"%%INC_DMG_2.",
+		"%%INC_DMG_3."
 	],
 	SP_CONJURE_ANIMAL: [
 		"Conjures a wolf to fight by your side. Lasts until rest.",
@@ -1120,6 +1164,7 @@ const STATUS_BLIND = 2
 const STATUS_PARALYZED = 3
 const STATUS_VULNERABLE = 4
 const STATUS_POISON = 5
+const STATUS_IMMOBILE = 6
 
 const STATUS_LIGHT = 100
 const STATUS_DETECT_EVIL = 101
@@ -1175,6 +1220,9 @@ const statusesDescriptions = {
 	STATUS_POISON: [
 		"Your are sick and suffer 1 poison damage/rank each 5 turns."
 	],
+	STATUS_IMMOBILE: [
+		"Your are kept on place, you cannot move."
+	],
 	
 	STATUS_LIGHT: [
 		"A floating glow follows you, enlighting your surroundings. It grants you +1 range.",
@@ -1226,6 +1274,7 @@ const statusPrefabs = {
 	STATUS_PARALYZED: ["Paralyzed", 14, null, null, STATUS_PARALYZED, null, null, false],
 	STATUS_VULNERABLE: ["Vulenrable", 8, null, null, STATUS_VULNERABLE, null, null, false],
 	STATUS_POISON: ["Poisoned", 0, null, null, STATUS_POISON, null, null, false],
+	STATUS_IMMOBILE: ["Immobilized", 19, null, null, STATUS_IMMOBILE, null, null, false],
 	
 	STATUS_LIGHT: ["Light", 23, null, null, STATUS_LIGHT, null, null, false],
 	STATUS_DETECT_EVIL: ["Detect evil", 9, null, null, STATUS_DETECT_EVIL, null, null, false],

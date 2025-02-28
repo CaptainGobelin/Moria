@@ -146,6 +146,8 @@ func hit(entity):
 			Ref.ui.writeMonsterMiss(stats.entityName, targetName, result, entity.stats.ca)
 
 func moveTo(entity) -> bool:
+	if status == "immobile":
+		return false
 	var path = Ref.game.pathfinder.a_star(pos, entity.pos, 20)
 	if path == null or !Data.monsters[type][Data.MO_MOVE]:
 		return false

@@ -379,8 +379,13 @@ const ST_PARALYSIS = "paralyzed"
 const ST_TERROR = "terrorized"
 
 func writeCannotAct(status: String):
-	var msg = "You are " + status + ", you cannot move."
+	var msg = "You are " + status + ", you cannot act."
 	write(color(msg, "red"))
+	lastPrinted = "writeCannotAct"
+
+func writeCannotMove():
+	write(color("You are immobilized, you cannot move.", "red"))
+	lastPrinted = "writeCannotMove"
 
 func writeSancturayBreak():
 	write("You broke your sanctuary !")

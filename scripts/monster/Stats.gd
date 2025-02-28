@@ -65,6 +65,8 @@ func applyPoison():
 
 func computeState():
 	state = ""
+	if hasStatus(Data.STATUS_IMMOBILE):
+		state = "immobile"
 	if hasStatus(Data.STATUS_SLEEP):
 		state = "disabled"
 	elif hasStatus(Data.STATUS_PARALYZED):

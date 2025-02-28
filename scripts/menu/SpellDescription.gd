@@ -22,9 +22,9 @@ func generateDescription(idx: int, rank: int = 0, saveCap: int = 0):
 	var d: String = "[fill]" + Data.spellDescriptions[spellId][0] + "\n"
 	for i in range(Data.spells[spellId][Data.SP_LVL], 4):
 		var color = Colors.white.to_html(false)
-		if i < rank:
+		if i < (rank + 1):
 			color = Colors.shade3.to_html(false)
-		elif i == rank:
+		elif i == (rank + 1):
 			color = Colors.yellow.to_html(false)
 		d += "\n[color=#" + color + "]Rank " + String(i) + ": "
 		d += Data.spellDescriptions[spellId][i]
@@ -72,7 +72,7 @@ static func replacePlaceholders(toReplace: String, id: int) -> String:
 	return d
 
 static func replace(string: String, from: String, to: String):
-	if string.find(from) > 0:
+	if from in string:
 		string = string.replace(from, to)
 	return string
 
@@ -107,11 +107,11 @@ static func rangeSelf():
 
 static func dmgDescription(dmg: Array):
 	var dmgStr = dmgToStr(dmg)
-	return "Deals " + dmgStr + " damages."
+	return "Deals " + dmgStr + " damages"
 
 static func dmgIncrease(dmg: Array):
 	var dmgStr = dmgToStr(dmg, false)
-	return "Increases damages to " + dmgStr + "."
+	return "Increases damages to " + dmgStr
 
 static func saveHalf():
 	return "A succeded saving throw halves the damages."
