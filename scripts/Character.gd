@@ -45,6 +45,7 @@ func moveAsync(movement):
 	var cellState = Ref.currentLevel.isCellFree(pos + movement)
 	if cellState[0]:
 		if statuses.has(Data.STATUS_IMMOBILE):
+			Ref.ui.writeCannotMove()
 			return
 		move(movement)
 		return
