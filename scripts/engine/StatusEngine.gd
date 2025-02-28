@@ -62,6 +62,22 @@ func clearStatuses(entity):
 	if entity is Character:
 		Ref.ui.statusBar.refreshStatuses(entity)
 
+func removeRandomBuff(entity) -> bool:
+	var keys = entity.statuses.keys().duplicate()
+	keys.shuffle()
+	for type in keys:
+		var s = entity.statuses[type][0]
+		if !GLOBAL.statuses[s][GLOBAL.ST_DISPEL]:
+			continue
+		if !GLOBAL.statuses[s][GLOBAL.ST_BONUS]:
+			continue
+		removeStatusType(entity, type)
+		entity.stats.computeStats()
+		if entity is Character:
+			Ref.ui.statusBar.refreshStatuses(entity)
+		return true
+	return false
+
 func getStatusRank(entity, type: int) -> int:
 	if not entity.statuses.has(type):
 		return -1
@@ -113,6 +129,8 @@ func applyEffect(entity):
 		match GLOBAL.statuses[status][GLOBAL.ST_TYPE]:
 			Data.STATUS_BLIND:
 				addToHit(entity, -1)
+			Data.STATUS_CURSE:
+				addToSaves(entity, -2, -2)
 			Data.STATUS_LIGHT:
 				addToRange(entity, 1)
 				if rank > 0:
@@ -131,6 +149,10 @@ func applyEffect(entity):
 				addToSaves(entity, rank, 0)
 			Data.STATUS_PHYSICS:
 				addToSaves(entity, 0, rank)
+			Data.STATUS_HOLY_BLADE:
+				dmgWeapon(entity, 1, 4 + 2 * rank, Data.DMG_RADIANT)
+			Data.STATUS_FIRE_BLADE:
+				dmgWeapon(entity, 1, 4 + 2 * rank, Data.DMG_FIRE)
 
 func applyEnchantEffect(entity, status, rank: int):
 	match (status[GLOBAL.ST_TYPE] - 1000):
@@ -183,27 +205,27 @@ func applyWeaponEffects(entity, target):
 		var rank = getStatusRank(entity, Data.STATUS_POIS_WP)
 		SpellEngine.applyPoison(target, rank, 3)
 
-func decreaseShieldRanks(entity, dmg: int) -> int:
-	if !entity.statuses.has(Data.STATUS_SHIELD):
-		return dmg
-	var highestShield = GLOBAL.statuses[entity.statuses[Data.STATUS_SHIELD][0]]
-	var result = max(0, dmg - (highestShield[GLOBAL.ST_RANK] + 1))
+func decreaseStatusRanks(entity, amount: int, type: int) -> int:
+	if !entity.statuses.has(type):
+		return amount
+	var highestShield = GLOBAL.statuses[entity.statuses[type][0]]
+	var result = max(0, amount - (highestShield[GLOBAL.ST_RANK] + 1))
 	if result > 0:
-		removeStatusType(entity, Data.STATUS_SHIELD)
+		removeStatusType(entity, type)
 		if entity is Character:
 			Ref.ui.statusBar.refreshStatuses(Ref.character)
 		return result
-	for idx in entity.statuses[Data.STATUS_SHIELD]:
+	for idx in entity.statuses[type]:
 		var status = GLOBAL.statuses[idx]
-		status[GLOBAL.ST_RANK] -= dmg
+		status[GLOBAL.ST_RANK] -= amount
 		if status[GLOBAL.ST_RANK] < 0:
-			entity.statuses[Data.STATUS_SHIELD].erase(idx)
+			entity.statuses[type].erase(idx)
 			GLOBAL.statuses.erase(idx)
 		else:
-			status[GLOBAL.ST_NAME] = Data.statusPrefabs[Data.STATUS_SHIELD][0]
+			status[GLOBAL.ST_NAME] = Data.statusPrefabs[type][0]
 			status[GLOBAL.ST_NAME] += " " + Utils.toRoman(status[GLOBAL.ST_RANK] + 1)
-	if entity.statuses[Data.STATUS_SHIELD].empty():
-		entity.statuses.erase(Data.STATUS_SHIELD)
+	if entity.statuses[type].empty():
+		entity.statuses.erase(type)
 	return result
 
 func createSimpleStatus(type: int, rank: int, turns: int):

@@ -7,6 +7,8 @@ func createItemEnchant(type: int, rank: int):
 	status[GLOBAL.ST_TYPE] = type
 	status[GLOBAL.ST_RANK] = rank
 	status[GLOBAL.ST_HIDDEN] = true
+	status[GLOBAL.ST_BONUS] = true
+	status[GLOBAL.ST_DISPEL] = false
 	return status
 
 func removeEnchant(entity, item: int):

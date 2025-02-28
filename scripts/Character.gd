@@ -144,11 +144,15 @@ func hit(entity):
 			Ref.ui.writeCharacterMiss(entity.stats.entityName, result, entity.stats.ca)
 
 func takeHit(dmg: int, bypassProt: int = 0):
+	if statuses.has(Data.STATUS_MIRROR_IMAGES) and randf() < 0.5:
+		StatusEngine.decreaseStatusRanks(self, 1, Data.STATUS_MIRROR_IMAGES)
+		Ref.ui.writeCharacterHitImage()
+		return 0
 	var isCritical = stats.hpPercent() < 0.25
 	if stats.hasStatus(Data.STATUS_VULNERABLE):
 		bypassProt = 9999
 	var realDmg = (dmg - max(0, stats.prot - bypassProt))
-	realDmg = StatusEngine.decreaseShieldRanks(self, realDmg)
+	realDmg = StatusEngine.decreaseStatusRanks(self, realDmg, Data.STATUS_SHIELD)
 	stats.hp -= realDmg
 	Ref.ui.writeCharacterTakeHit(realDmg)
 	if !isCritical and stats.hpPercent() < 0.25:

@@ -187,6 +187,10 @@ func getStatusDescription(statusId: int) -> String:
 	var statusRank = GLOBAL.statuses[statusId][GLOBAL.ST_RANK]
 	if GLOBAL.statuses[statusId][GLOBAL.ST_TYPE] == Data.STATUS_SHIELD:
 		statusRank = 0
+	if GLOBAL.statuses[statusId][GLOBAL.ST_TYPE] == Data.STATUS_POISON:
+		statusRank = 0
+	if GLOBAL.statuses[statusId][GLOBAL.ST_TYPE] == Data.STATUS_MIRROR_IMAGES:
+		statusRank = 0
 	result += Data.statusesDescriptions[statusType][statusRank] + "\n\n"
 	var statusTiming = GLOBAL.statuses[statusId][GLOBAL.ST_TIMING]
 	var statusTurns = GLOBAL.statuses[statusId][GLOBAL.ST_TURNS]

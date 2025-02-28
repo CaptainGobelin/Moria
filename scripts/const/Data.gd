@@ -186,7 +186,7 @@ const SP_LIST_NATURE = 2
 
 const classes = {
 	#								C  A  E  E  D  A  C  P  W  P  T    C  A  E  E  D  A  C  P  W  P  T
-	CL_FIGHTER: ["Fighter", 10, 5, [1, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0], [2, 2, 0, 0, 0, 0, 0, 2, 1, 1, 1], SP_LIST_ARCANE],
+	CL_FIGHTER: ["Fighter", 10, 5, [2, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0], [2, 2, 0, 0, 0, 0, 0, 2, 1, 1, 1], SP_LIST_ARCANE],
 	CL_THIEF: 	["Thief", 	 8, 4, [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1], [2, 1, 0, 0, 0, 0, 0, 1, 1, 2, 2], SP_LIST_ARCANE],
 	CL_MAGE: 	["Mage", 	 6, 3, [0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0], [0, 0, 2,-1,-1,-1,-1, 0, 2, 1, 0], SP_LIST_ARCANE],
 	CL_CLERIC: 	["Cleric", 	 8, 4, [0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0], [0, 1, 2,-1,-1,-1,-1, 1, 2, 0, 0], SP_LIST_DIVINE],
@@ -641,7 +641,7 @@ const scrolls = {
 }
 
 const scrollDescriptions = {
-	SC_MAGIC_MISSILE: "Fires arcane projectiles to random targets, each dealing %%DMG_1 damages. No saving throw."
+	SC_MAGIC_MISSILE: "Fires arcane projectiles to random targets, each dealing %%DMG_1. No saving throw."
 }
  
 var scrollsByRarity = {}
@@ -911,6 +911,11 @@ const spells = {
 	SP_BLESS: 			["Bless", 1, SC_ENCHANTMENT, [false, true, true], null, 17, [15, 15, 15], SP_TARGET_SELF, 0, SAVE_NO],
 	SP_COMMAND:	 		["Command", 1, SC_ENCHANTMENT, [false, true, false], null, 18, [5, 5, 5], SP_TARGET_TARGET, 0, SAVE_WIL],
 	SP_LIGHT:	 		["Light", 1, SC_ENCHANTMENT, [true, true, true], null, 19, [20, 20, 20], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_NEGATE_ENER:	 	["Dispel magic", 2, SC_ENCHANTMENT, [true, true, true], null, 20, [8, 8, 8], SP_TARGET_SELF, 3, SAVE_WIL],
+	SP_MIRROR_IMAGES:	["Mirror images", 2, SC_ENCHANTMENT, [true, false, false], null, 21, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_HOLY_BLADE:	 	["Holy weappon", 2, SC_ENCHANTMENT, [false, true, false], null, 22, [12, 12, 12], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_CURSE:	 		["Curse", 2, SC_ENCHANTMENT, [false, true, false], null, 23, [10, 10, 10], SP_TARGET_TARGET, 3, SAVE_WIL],
+	SP_FIRE_BLADE:	 	["Fire weapon", 2, SC_ENCHANTMENT, [true, false, true], null, 24, [12, 12, 12], SP_TARGET_SELF, 0, SAVE_NO],
 	# Divination
 	SP_BLIND: 			["Blindness", 1, SC_DIVINATION, [true, false, true], null, 30, [15, 15, 15], SP_TARGET_TARGET, 0, SAVE_PHY],
 	SP_MIND_SPIKE: 		["Mind spike", 1, SC_DIVINATION, [false, true, false], null, 31, [10, 10, 10], SP_TARGET_TARGET, 0, SAVE_WIL],
@@ -941,6 +946,9 @@ const spellDamages = {
 	SP_REPEL_EVIL: 		[[2, 6, 0, DMG_RADIANT], [2, 6, 0, DMG_RADIANT], [2, 6, 0, DMG_RADIANT]],
 	SP_FROST_NOVA: 		[[2, 4, 0, DMG_ICE], [2, 4, 0, DMG_ICE], [2, 4, 0, DMG_ICE]],
 	SP_FIREBALL: 		[[3, 6, 0, DMG_FIRE], [3, 6, 0, DMG_FIRE], [3, 6, 0, DMG_FIRE]],
+	SP_NEGATE_ENER: 	[[2, 8, 0, DMG_MAGIC], [2, 8, 0, DMG_MAGIC], [2, 8, 0, DMG_MAGIC]],
+	SP_HOLY_BLADE: 		[[1, 4, 0, DMG_RADIANT], [1, 4, 0, DMG_RADIANT], [1, 6, 0, DMG_RADIANT]],
+	SP_FIRE_BLADE: 		[[1, 4, 0, DMG_FIRE], [1, 4, 0, DMG_FIRE], [1, 6, 0, DMG_FIRE]],
 	SP_MIND_SPIKE: 		[[1, 8, 0, DMG_MAGIC], [1, 8, 2, DMG_MAGIC], [1, 8, 4, DMG_MAGIC]],
 	SP_ACID_SPLASH: 	[[2, 4, 0, DMG_SLASH], [3, 4, 0, DMG_SLASH], [4, 4, 0, DMG_SLASH]],
 }
@@ -952,6 +960,9 @@ const spellTurns = {
 	SP_BLESS: [15, 30, 30],
 	SP_COMMAND: [5, 5, 5],
 	SP_LIGHT: [50, 50, 50],
+	SP_HOLY_BLADE: [25, 25, 25],
+	SP_CURSE: [15, 15, 15],
+	SP_FIRE_BLADE: [25, 25, 25],
 	SP_BLIND: [15, 15, 15],
 	SP_DETECT_EVIL: [40, 40, 40],
 	SP_REVEAL_TRAPS: [40, 40, 40],
@@ -964,7 +975,7 @@ const spellTurns = {
 
 var spellDescriptions = {
 	SP_MAGIC_MISSILE: [
-		"Fires arcane projectiles to random targets, each dealing %%DMG_1 magic damages. No saving throw.",
+		"Fires arcane projectiles to random targets, each dealing %%DMG_1. No saving throw.",
 		"Fires 2 projectiles.",
 		"Fires 3 projectiles.",
 		"Fires 4 projectiles."
@@ -1052,6 +1063,36 @@ var spellDescriptions = {
 		"Grants +1 range.",
 		"Grants +1 perception rolls.",
 		"Lasts until rest.",
+	],
+	SP_NEGATE_ENER: [
+		"Dissipate one magical spell to targets and banish conjured creatures. Deals %%DMG_1 if a status is dispelled.",
+		"",
+		"Targets all creatures in range 3.",
+		"Targets all creatures in range 5.",
+	],
+	SP_MIRROR_IMAGES: [
+		"Creates illusions of yourself around you to fool your enemies. Every attack or spell has 50 % chances to hit an illusion instead of you. Lasts until rest.",
+		"",
+		"Creates 3 illusions.",
+		"Creates 4 illusions.",
+	],
+	SP_HOLY_BLADE: [
+		"Imbues your weapon with sacred powers to add radiant damages to your attacks. Lasts %%TURNS_1.",
+		"",
+		"+%%DMG_2 damages.",
+		"+%%DMG_3 damages.",
+	],
+	SP_CURSE: [
+		"Curse your enemies, they have -2 to all their save rolls. Target one creature at range and all surrounding creatures at range 3. Lasts %%TURNS_2.",
+		"",
+		"Targets have -1 to the save roll.",
+		"Targets have -2 to the save roll.",
+	],
+	SP_FIRE_BLADE: [
+		"Surrounds your weapon with a magic flame to add fire damages to your attacks. Lasts %%TURNS_1.",
+		"",
+		"+%%DMG_2 damages.",
+		"+%%DMG_3 damages.",
 	],
 	SP_BLIND: [
 		"Causes the target to become blind (reduce range to 3 and -1 to hit rolls) for %%TURNS_1.",
@@ -1165,6 +1206,7 @@ const STATUS_PARALYZED = 3
 const STATUS_VULNERABLE = 4
 const STATUS_POISON = 5
 const STATUS_IMMOBILE = 6
+const STATUS_CURSE = 7
 
 const STATUS_LIGHT = 100
 const STATUS_DETECT_EVIL = 101
@@ -1178,6 +1220,9 @@ const STATUS_SANCTUARY = 108
 const STATUS_INVISIBLE = 109
 const STATUS_ARMOR_OF_FAITH = 110
 const STATUS_LOCATE_OBJECTS = 111
+const STATUS_MIRROR_IMAGES = 112
+const STATUS_HOLY_BLADE = 113
+const STATUS_FIRE_BLADE = 114
 
 const STATUS_WILLPOWER = 200
 const STATUS_PHYSICS = 201
@@ -1223,6 +1268,9 @@ const statusesDescriptions = {
 	STATUS_IMMOBILE: [
 		"Your are kept on place, you cannot move."
 	],
+	STATUS_CURSE: [
+		"A baleful curse hangs over you, you have a -2 malus to all you save rolls."
+	],
 	
 	STATUS_LIGHT: [
 		"A floating glow follows you, enlighting your surroundings. It grants you +1 range.",
@@ -1265,29 +1313,44 @@ const statusesDescriptions = {
 	STATUS_INVISIBLE: [
 		"You are undetectable by normal vision. Beware that creatures can still detect you by other means."
 	],
+	STATUS_MIRROR_IMAGES: [
+		"You surrounded by illusions (1 per status rank) of youself, fooling your enemies. Each attack or spell targeting you has 50% to destroy an illusion instead of you."
+	],
+	STATUS_HOLY_BLADE: [
+		"Your weapon is imbued with sacred powers, it adds 1d4 radiant damages to your attacks.",
+		"Your weapon is imbued with sacred powers, it adds 1d6 radiant damages to your attacks.",
+	],
+	STATUS_FIRE_BLADE: [
+		"Your weapon is imbued with magic fire, it adds 1d4 fire damages to your attacks.",
+		"Your weapon is imbued with magic fire, it adds 1d6 fire damages to your attacks.",
+	],
 }
 
 const statusPrefabs = {
-	STATUS_SLEEP: ["Sleep", 7, null, null, STATUS_SLEEP, null, null, false],
-	STATUS_TERROR: ["Terror", 2, null, null, STATUS_TERROR, null, null, false],
-	STATUS_BLIND: ["Blind", 3, null, null, STATUS_BLIND, null, null, false],
-	STATUS_PARALYZED: ["Paralyzed", 14, null, null, STATUS_PARALYZED, null, null, false],
-	STATUS_VULNERABLE: ["Vulenrable", 8, null, null, STATUS_VULNERABLE, null, null, false],
-	STATUS_POISON: ["Poisoned", 0, null, null, STATUS_POISON, null, null, false],
-	STATUS_IMMOBILE: ["Immobilized", 19, null, null, STATUS_IMMOBILE, null, null, false],
+	STATUS_SLEEP: ["Sleep", 7, null, null, STATUS_SLEEP, null, null, false, true],
+	STATUS_TERROR: ["Terror", 2, null, null, STATUS_TERROR, null, null, false, false, true],
+	STATUS_BLIND: ["Blind", 3, null, null, STATUS_BLIND, null, null, false, false, true],
+	STATUS_PARALYZED: ["Paralyzed", 14, null, null, STATUS_PARALYZED, null, null, false, false, true],
+	STATUS_VULNERABLE: ["Vulenrable", 8, null, null, STATUS_VULNERABLE, null, null, false, false, true],
+	STATUS_POISON: ["Poisoned", 0, null, null, STATUS_POISON, null, null, false, false, true],
+	STATUS_IMMOBILE: ["Immobilized", 19, null, null, STATUS_IMMOBILE, null, null, false, false, true],
+	STATUS_CURSE: ["Cursed", 12, null, null, STATUS_CURSE, null, null, false, false, true],
 	
-	STATUS_LIGHT: ["Light", 23, null, null, STATUS_LIGHT, null, null, false],
-	STATUS_DETECT_EVIL: ["Detect evil", 9, null, null, STATUS_DETECT_EVIL, null, null, false],
-	STATUS_REVEAL_TRAPS: ["Find traps", 15, null, null, STATUS_REVEAL_TRAPS, null, null, false],
-	STATUS_LOCATE_OBJECTS: ["Locate objects", 51, null, null, STATUS_LOCATE_OBJECTS, null, null, false],
-	STATUS_BLESSED: ["Blessed", 11, null, null, STATUS_BLESSED, null, null, false],
-	STATUS_SHIELD: ["Shield", 39, null, null, STATUS_SHIELD, null, null, false],
-	STATUS_MAGE_ARMOR: ["Mage armor", 27, null, null, STATUS_MAGE_ARMOR, null, null, false],
-	STATUS_ARMOR_OF_FAITH: ["Armor of faith", 5, null, null, STATUS_ARMOR_OF_FAITH, null, null, false],
-	STATUS_PROTECT_EVIL: ["Protection from evil", 41, null, null, STATUS_PROTECT_EVIL, null, null, false],
-	STATUS_SANCTUARY: ["Sanctuary", 33, null, null, STATUS_SANCTUARY, null, null, false],
-	STATUS_INVISIBLE: ["Invisible", 45, null, null, STATUS_INVISIBLE, null, null, false],
-	STATUS_PROTECTED: ["Protected", 40, null, null, STATUS_PROTECTED, null, null, false],
+	STATUS_LIGHT: ["Light", 23, null, null, STATUS_LIGHT, null, null, false, true, true],
+	STATUS_DETECT_EVIL: ["Detect evil", 9, null, null, STATUS_DETECT_EVIL, null, null, false, true, true],
+	STATUS_REVEAL_TRAPS: ["Find traps", 15, null, null, STATUS_REVEAL_TRAPS, null, null, false, true, true],
+	STATUS_LOCATE_OBJECTS: ["Locate objects", 51, null, null, STATUS_LOCATE_OBJECTS, null, null, false, true, true],
+	STATUS_BLESSED: ["Blessed", 11, null, null, STATUS_BLESSED, null, null, false, true, true],
+	STATUS_SHIELD: ["Shield", 39, null, null, STATUS_SHIELD, null, null, false, true, true],
+	STATUS_MAGE_ARMOR: ["Mage armor", 27, null, null, STATUS_MAGE_ARMOR, null, null, false, true, true],
+	STATUS_ARMOR_OF_FAITH: ["Armor of faith", 5, null, null, STATUS_ARMOR_OF_FAITH, null, null, false, true, true],
+	STATUS_PROTECT_EVIL: ["Protection from evil", 41, null, null, STATUS_PROTECT_EVIL, null, null, false, true, true],
+	STATUS_SANCTUARY: ["Sanctuary", 33, null, null, STATUS_SANCTUARY, null, null, false, true, true],
+	STATUS_INVISIBLE: ["Invisible", 45, null, null, STATUS_INVISIBLE, null, null, false, true, true],
+	STATUS_PROTECTED: ["Protected", 40, null, null, STATUS_PROTECTED, null, null, false, true, true],
+	STATUS_MIRROR_IMAGES: ["Mirror images", 47, null, null, STATUS_MIRROR_IMAGES, null, null, false, true, true],
+	STATUS_HOLY_BLADE: ["Holy weapon", 17, null, null, STATUS_HOLY_BLADE, null, null, false, true, true],
+	STATUS_FIRE_BLADE: ["Fire weapon", 4, null, null, STATUS_FIRE_BLADE, null, null, false, true, true],
 }
 
 const FE_NAME = 0

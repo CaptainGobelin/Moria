@@ -26,8 +26,8 @@ func init(charClass: int):
 	else:
 		weapons = []
 	if classKit[Data.KIT_SH] != -1:
-		var items = Ref.game.itemGenerator.getWeapon(classKit[Data.KIT_SH])
-		weapons = items
+		var items = Ref.game.itemGenerator.getShield(classKit[Data.KIT_SH])
+		weapons.append_array(items)
 		equipWeapon(items[0])
 	if classKit[Data.KIT_AR] != -1:
 		var items = Ref.game.itemGenerator.getArmor(classKit[Data.KIT_AR])

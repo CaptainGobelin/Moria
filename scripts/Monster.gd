@@ -177,10 +177,14 @@ func refreshMapPosition():
 func takeHit(dmg: int, bypassProt: int = 0):
 	if status == "dead":
 		return
+	if statuses.has(Data.STATUS_MIRROR_IMAGES) and randf() < 0.5:
+		StatusEngine.decreaseStatusRanks(self, 1, Data.STATUS_MIRROR_IMAGES)
+		Ref.ui.writeMonsterHitImage(stats.entityName)
+		return
 	if stats.hasStatus(Data.STATUS_VULNERABLE):
 		bypassProt = 9999
 	var realDmg = (dmg - max(0, stats.prot - bypassProt))
-	realDmg = StatusEngine.decreaseShieldRanks(self, realDmg)
+	realDmg = StatusEngine.decreaseStatusRanks(self, realDmg, Data.STATUS_SHIELD)
 	stats.currentHp -= realDmg
 	Ref.ui.writeMonsterTakeHit(stats.entityName, realDmg)
 	if stats.currentHp <= 0:

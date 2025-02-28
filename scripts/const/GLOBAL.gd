@@ -169,6 +169,8 @@ const ST_TYPE = 4
 const ST_RANK = 5
 const ST_ID = 6
 const ST_HIDDEN = 7
+const ST_BONUS = 8
+const ST_DISPEL = 9
 var statuses: Dictionary = {}
 
 # Traps
