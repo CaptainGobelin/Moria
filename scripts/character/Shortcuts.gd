@@ -6,8 +6,9 @@ var shortcutsType: Dictionary
 func assign(key: int, category: int, item: int):
 	for k in shortcuts.keys():
 		if shortcuts[k] == item:
-			shortcuts.erase(k)
-			shortcutsType.erase(k)
+			if shortcutsType.has(k) and shortcutsType[k] == category:
+				shortcuts.erase(k)
+				shortcutsType.erase(k)
 	match category:
 		GLOBAL.WP_TYPE:
 			shortcuts[key] = item
@@ -22,10 +23,11 @@ func assign(key: int, category: int, item: int):
 	shortcutsType[key] = category
 	setUIHsortcutList()
 
-func getKey(item: int):
+func getKey(item: int, category: int):
 	for k in shortcuts.keys():
 		if shortcuts[k] == item:
-			return k
+			if shortcutsType.has(k) and shortcutsType[k] == category:
+				return k
 	return null
 
 func getItem(key: int):

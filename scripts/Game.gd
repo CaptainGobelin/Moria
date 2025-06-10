@@ -104,6 +104,8 @@ func nextFloor():
 	newFloor()
 
 func cleanFloor():
+	for s in Ref.currentLevel.secrets.get_children():
+		s.free()
 	GLOBAL.hiddenDoors.clear()
 	GLOBAL.lockedDoors.clear()
 	GLOBAL.testedDoors.clear()
@@ -134,6 +136,7 @@ func testFloor():
 	cleanFloor()
 	dungeonGenerator.simpleFloor()
 	Ref.currentLevel.initShadows()
+	Ref.currentLevel.initSecrets()
 
 func merchantFloor():
 	Ref.currentLevel.levelBuffer.saveLevel()
@@ -143,6 +146,7 @@ func merchantFloor():
 		cleanFloor()
 		var spawnPos = dungeonGenerator.newFloor(3)
 		Ref.currentLevel.initShadows()
+		Ref.currentLevel.initSecrets()
 		Ref.currentLevel.placeCharacter(spawnPos)
 		Ref.currentLevel.levelBuffer.currentLevel = "merchant"
 
@@ -158,6 +162,7 @@ func newFloor():
 		_:
 			spawnPos = dungeonGenerator.newFloor()
 	Ref.currentLevel.initShadows()
+	Ref.currentLevel.initSecrets()
 	Ref.currentLevel.placeCharacter(spawnPos)
 	for a in Ref.currentLevel.allies.get_children():
 		var cell = Ref.character.getRandomCloseCell()

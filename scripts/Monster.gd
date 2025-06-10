@@ -130,13 +130,17 @@ func hit(entity):
 	if entity == null:
 		return
 	if entity.is_in_group("Character") or status == "help":
-		var result = stats.hitDices.roll()
+		var result = stats.hitDices.roll(self)
 		var targetName = entity.stats.entityName
 		if entity is Character:
 			targetName = "you"
 		if result >= entity.stats.ca:
-			var rolledDmg = GeneralEngine.computeDamages(stats.dmgDices, entity.stats.resists)
+			var rolledDmg = GeneralEngine.computeDamages(self, stats.dmgDices, entity.stats.resists)
 			Ref.ui.writeMonsterStrike(stats.entityName, targetName, result, entity.stats.ca)
+			if statuses.has(Data.STATUS_MIRROR_IMAGES) and randf() < 0.5:
+				StatusEngine.decreaseStatusRanks(self, 1, Data.STATUS_MIRROR_IMAGES)
+				Ref.ui.writeCharacterHitImage()
+				return
 			if statuses.has(Data.STATUS_ENCHANT + Data.ENCH_PIERCING):
 				entity.takeHit(rolledDmg, 2)
 			else:
@@ -177,13 +181,9 @@ func refreshMapPosition():
 func takeHit(dmg: int, bypassProt: int = 0):
 	if status == "dead":
 		return
-	if statuses.has(Data.STATUS_MIRROR_IMAGES) and randf() < 0.5:
-		StatusEngine.decreaseStatusRanks(self, 1, Data.STATUS_MIRROR_IMAGES)
-		Ref.ui.writeMonsterHitImage(stats.entityName)
-		return
 	if stats.hasStatus(Data.STATUS_VULNERABLE):
 		bypassProt = 9999
-	var realDmg = (dmg - max(0, stats.prot - bypassProt))
+	var realDmg = max(1, dmg - max(0, stats.prot - bypassProt))
 	realDmg = StatusEngine.decreaseStatusRanks(self, realDmg, Data.STATUS_SHIELD)
 	stats.currentHp -= realDmg
 	Ref.ui.writeMonsterTakeHit(stats.entityName, realDmg)
@@ -195,7 +195,8 @@ func takeHit(dmg: int, bypassProt: int = 0):
 func die():
 	status = "dead"
 	Ref.ui.writeMonsterDie(stats.entityName)
-	if Data.hasTag(type, Data.TAG_SUMMONED):
+	StatusEngine.clearStatuses(self)
+	if not Data.hasTag(type, Data.TAG_SUMMONED):
 		Ref.character.stats.xp += stats.xp
 	if Ref.character.statuses.has(Data.STATUS_ENCHANT + Data.ENCH_LIFE_DRAIN):
 		Ref.character.heal(2)
@@ -229,9 +230,9 @@ func getClosestTarget(targets):
 	var currentLos = []
 	var dist = 99
 	for t in targets:
-		if ignore(t):
-			continue
 		var target = instance_from_id(t)
+		if ignore(target):
+			continue
 		var los = Ref.currentLevel.canTarget(pos, target.pos)
 		if los.empty() or los.size() > dist:
 			continue

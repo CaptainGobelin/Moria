@@ -2,7 +2,7 @@ extends Node
 
 func createItemEnchant(type: int, rank: int):
 	var status: Array = []
-	status.resize(GLOBAL.ST_HIDDEN + 1)
+	status.resize(GLOBAL.ST_DISPEL + 1)
 	status[GLOBAL.ST_TIMING] = GLOBAL.TIMING_UNDEF
 	status[GLOBAL.ST_TYPE] = type
 	status[GLOBAL.ST_RANK] = rank

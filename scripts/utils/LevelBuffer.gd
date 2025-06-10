@@ -18,11 +18,11 @@ func saveLevel():
 
 func loadLevel(level: String):
 	Ref.game.cleanFloor()
+	Ref.game.saveSystem.loadGlobals(savedLevels[level]["globals"].duplicate(true))
 	Ref.game.saveSystem.loadMap(savedLevels[level]["map"].duplicate(true))
 	Ref.game.saveSystem.loadTraps(savedLevels[level]["traps"].duplicate(true))
 	Ref.game.saveSystem.loadMonsters(savedLevels[level]["monsters"].duplicate(true))
 	Ref.game.saveSystem.loadNpcs(savedLevels[level]["npcs"].duplicate(true))
-	Ref.game.saveSystem.loadGlobals(savedLevels[level]["globals"].duplicate(true))
 	Ref.character.setPosition(savedLevels[level]["pos"])
 	savedLevels.erase(level)
 	currentLevel = level

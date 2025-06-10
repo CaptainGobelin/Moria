@@ -29,6 +29,11 @@ func setPosition(newPos):
 	pos = newPos
 	Ref.currentLevel.refresh_view()
 	refreshMapPosition()
+	Ref.ui.write(Ref.currentLevel.getLootMessage(pos))
+	if GLOBAL.trapsByPos.has(pos):
+		var trap = GLOBAL.getTrapByPos(pos)
+		if trap.hidden:
+			TrapEngine.trigger(trap, self)
 
 func move(movement):
 	pos += movement
@@ -83,6 +88,7 @@ func moveAsync(movement):
 			Ref.ui.askForYesNo(Ref.game)
 			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
 			if (coroutineReturn):
+				StatusEngine.removeFloorStatuses(self)
 				Ref.game.nextFloor()
 				GeneralEngine.newTurn()
 		"chest": 
@@ -121,11 +127,15 @@ func hit(entity):
 		var isSlaying = false
 		if statuses.has(Data.STATUS_GOBLIN_WP) and Data.hasTag(entity, Data.TAG_GOBLIN):
 			isSlaying = true
-		var result = stats.hitDices.roll()
+		var result = stats.hitDices.roll(self)
 		if isSlaying:
 			result += 1
 		if result >= entity.stats.ca:
 			Ref.ui.writeCharacterStrike(entity.stats.entityName, result, entity.stats.ca)
+			if statuses.has(Data.STATUS_MIRROR_IMAGES) and randf() < 0.5:
+				StatusEngine.decreaseStatusRanks(self, 1, Data.STATUS_MIRROR_IMAGES)
+				Ref.ui.writeMonsterHitImage(entity.stats.entityName)
+				return
 			var dmgDices = stats.dmgDices.duplicate()
 			var bypassProt = 0
 			if Data.hasTag(entity, Data.TAG_EVIL):
@@ -133,7 +143,7 @@ func hit(entity):
 					bypassProt = max(bypassProt, 9999)
 				if statuses.has(Data.STATUS_HOLY_WP):
 					dmgDices.append(GeneralEngine.DmgDice.new(1, 4, 0, Data.DMG_RADIANT))
-			var dmg = GeneralEngine.computeDamages(stats.dmgDices, entity.stats.resists)
+			var dmg = GeneralEngine.computeDamages(self, stats.dmgDices, entity.stats.resists)
 			if isSlaying:
 				dmg += 1
 			if statuses.has(Data.STATUS_ENCHANT + Data.ENCH_PIERCING):
@@ -144,14 +154,10 @@ func hit(entity):
 			Ref.ui.writeCharacterMiss(entity.stats.entityName, result, entity.stats.ca)
 
 func takeHit(dmg: int, bypassProt: int = 0):
-	if statuses.has(Data.STATUS_MIRROR_IMAGES) and randf() < 0.5:
-		StatusEngine.decreaseStatusRanks(self, 1, Data.STATUS_MIRROR_IMAGES)
-		Ref.ui.writeCharacterHitImage()
-		return 0
 	var isCritical = stats.hpPercent() < 0.25
 	if stats.hasStatus(Data.STATUS_VULNERABLE):
 		bypassProt = 9999
-	var realDmg = (dmg - max(0, stats.prot - bypassProt))
+	var realDmg = max(1, dmg - max(0, stats.prot - bypassProt))
 	realDmg = StatusEngine.decreaseStatusRanks(self, realDmg, Data.STATUS_SHIELD)
 	stats.hp -= realDmg
 	Ref.ui.writeCharacterTakeHit(realDmg)
@@ -243,7 +249,7 @@ func quaffPotion(idx):
 	SpellEngine.breakSanctuary(self, SpellEngine.SANCT_POTION)
 
 func attemptLockpick(dc: int) -> bool:
-	var roll = GeneralEngine.dice(1, 6, Skills.getLockpickBonus()).roll()
+	var roll = GeneralEngine.dice(1, 6, Skills.getLockpickBonus()).roll(self)
 	if roll >= dc:
 		Ref.ui.writeLockpickSuccess(roll)
 		return true
@@ -263,17 +269,14 @@ func search():
 	GeneralEngine.newTurn()
 
 func rollPerception(cell: Vector2):
-	var perceptionRoll = stats.perception.roll()
+	var perceptionRoll = stats.perception.roll(self)
 	if perceptionRoll > 4:
 		# Detect traps
 		if GLOBAL.trapsByPos.has(cell):
 			TrapEngine.reveal(cell)
 	if perceptionRoll > 5:
 		# Detect doors
-		if GLOBAL.hiddenDoors.has(cell):
-			GLOBAL.hiddenDoors.erase(cell)
-			Ref.currentLevel.dungeon.set_cellv(cell, GLOBAL.DOOR_ID, false, false, false, Vector2(0,1))
-			Ref.ui.writeHiddenDoorDetected()
+		Ref.currentLevel.discoverDoor(cell)
 
 func rest():
 	inventory.rests -= 1

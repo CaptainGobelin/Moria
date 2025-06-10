@@ -16,11 +16,11 @@ func throwAsync(itemId: int):
 	yield(castProjectile(GLOBAL.targets[targetId], item[Data.TH_PROJ]), "completed")
 	if item[Data.TH_DMG] != null:
 		var entity = instance_from_id(targetId)
-		var result = Ref.character.stats.hitDices.roll()
+		var result = Ref.character.stats.hitDices.roll(Ref.character)
 		if result >= entity.stats.ca:
 			Ref.ui.writeCharacterStrike(entity.stats.entityName, result, entity.stats.ca)
 			var wpDmg = item[Data.TH_DMG]
-			entity.takeHit(GeneralEngine.dmgDice(wpDmg.x, wpDmg.y, 0, Data.DMG_SLASH).roll())
+			entity.takeHit(GeneralEngine.dmgDice(wpDmg.x, wpDmg.y, 0, Data.DMG_SLASH).roll(Ref.character))
 		else:
 			Ref.ui.writeCharacterMiss(entity.stats.entityName, result, entity.stats.ca)
 	if item[Data.TH_EFFECT] != null:
@@ -40,11 +40,11 @@ func castThrowMonster(itemId: int, caster, target, path: Array):
 	var item = Data.throwings[itemId]
 	castProjectile(path, item[Data.TH_PROJ])
 	if item[Data.TH_DMG] != null:
-		var result = caster.stats.hitDices.roll()
+		var result = caster.stats.hitDices.roll(caster)
 		if result >= target.stats.ca:
 			Ref.ui.writeMonsterStrike(caster.stats.entityName, target.stats.entityName, result, target.stats.ca)
 			var wpDmg = item[Data.TH_DMG]
-			target.takeHit(GeneralEngine.dmgDice(wpDmg.x, wpDmg.y, 0, Data.DMG_SLASH).roll())
+			target.takeHit(GeneralEngine.dmgDice(wpDmg.x, wpDmg.y, 0, Data.DMG_SLASH).roll(caster))
 		else:
 			Ref.ui.writeMonsterMiss(caster.stats.entityName, target.stats.entityName, result, target.stats.ca)
 	if item[Data.TH_EFFECT] != null:

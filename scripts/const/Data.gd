@@ -632,12 +632,12 @@ const SC_MIRROR_IMAGE = 6
 
 const scrolls = {
 	SC_MAGIC_MISSILE: 	["Scroll of magic missile", SP_MAGIC_MISSILE, 1, 0, 100],
-	SC_BLINK: 			["Scroll of blink", SP_MAGIC_MISSILE, 0, 0, 101],
-	SC_REPEL_EVIL: 		["Scroll of repel evil", SP_MAGIC_MISSILE, 0, 1, 102],
-	SC_REVEAL: 			["Scroll of reveal hidden", SP_MAGIC_MISSILE, 0, 1, 103],
-	SC_ANIMALS: 		["Scroll of conjure animals", SP_CONJURE_ANIMAL, 1, 2, 104],
-	SC_LESSER_ACQ: 		["Scroll of lesser acquirement", SP_LESSER_AQUIREMENT, 1, 3, 105],
-	SC_MIRROR_IMAGE: 	["Scroll of mirror image", SP_MAGIC_MISSILE, 0, 3, 106],
+	SC_BLINK: 			["Scroll of blink", SP_BLINK, 1, 0, 101],
+	SC_REPEL_EVIL: 		["Scroll of repel evil", SP_REPEL_EVIL, 1, 1, 102],
+	SC_REVEAL: 			["Scroll of reveal hidden", SP_REVEAL_HIDDEN, 1, 1, 103],
+	SC_ANIMALS: 		["Scroll of conjure animals", SP_CONJURE_ANIMAL, 0, 2, 104],
+	SC_LESSER_ACQ: 		["Scroll of lesser acquirement", SP_LESSER_AQUIREMENT, 0, 3, 105],
+	SC_MIRROR_IMAGE: 	["Scroll of mirror images", SP_MIRROR_IMAGES, 1, 3, 106],
 }
 
 const scrollDescriptions = {
@@ -922,17 +922,31 @@ const spells = {
 	SP_DETECT_EVIL:		["Detect evil", 1, SC_DIVINATION, [false, true, true], null, 32, [10, 10, 10], SP_TARGET_SELF, 0, SAVE_NO],
 	SP_REVEAL_TRAPS:	["Find traps", 1, SC_DIVINATION, [true, true, true], null, 33, [5, 10, 15], SP_TARGET_SELF, 0, SAVE_NO],
 	SP_LOCATE_OBJECTS:	["Locate objects", 1, SC_DIVINATION, [true, false, false], null, 34, [2, 4, 6], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_REVEAL_WEAK:		["Reveal weakness", 2, SC_DIVINATION, [true, false, false], null, 35, [10, 10, 15], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_REVEAL_HIDDEN:	["Reveal hidden", 2, SC_DIVINATION, [false, true, true], null, 36, [5, 5, 8], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_BLINK:			["Blink", 2, SC_DIVINATION, [true, false, false], null, 37, [10, 10, 20], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_TRUE_STRIKE:		["True strike", 2, SC_DIVINATION, [true, true, true], null, 38, [10, 10, 15], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_FUMBLE:			["Break destiny", 2, SC_DIVINATION, [false, true, false], null, 39, [6, 6, 6], SP_TARGET_TARGET, 0, SAVE_WIL],
 	# Abjuration
 	SP_SHIELD:			["Shield", 1, SC_ABJURATION, [true, false, false], null, 45, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
 	SP_MAGE_ARMOR:		["Armor", 1, SC_ABJURATION, [true, false, false], null, 46, [15, 15, 15], SP_TARGET_SELF, 0, SAVE_NO],
 	SP_ARMOR_OF_FAITH:	["Armor of faith", 1, SC_ABJURATION, [false, true, false], null, 47, [10, 10, 10], SP_TARGET_SELF, 0, SAVE_NO],
 	SP_PROTECTION_FROM_EVIL:["Protection from evil", 1, SC_ABJURATION, [false, true, true], null, 49, [10, 10, 10], SP_TARGET_SELF, 0, SAVE_NO],
 	SP_SANCTUARY:		["Sanctuary", 1, SC_ABJURATION, [false, true, true], null, 48, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_REPEL_MISS:		["Repel missiles", 2, SC_ABJURATION, [true, false, false], null, 50, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_FLAMESKIN:		["Fire aura", 2, SC_ABJURATION, [true, true, false], null, 51, [10, 10, 10], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_FREED_MOVE:		["Free action", 2, SC_ABJURATION, [true, true, true], null, 52, [8, 8, 8], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_PROTECT_POISON:	["Protection from poison", 2, SC_ABJURATION, [false, true, true], null, 53, [15, 15, 15], SP_TARGET_SELF, 0, SAVE_NO],
+	SP_PROTECT_FIRE:	["Protection from fire", 2, SC_ABJURATION, [false, true, false], null, 54, [10, 10, 10], SP_TARGET_SELF, 0, SAVE_NO],
 	# Conjuration
 	SP_ACID_SPLASH: 	["Acid arrow", 1, SC_CONJURATION, [true, false, true], PROJ_GREEN_M, 60, [15, 15, 15], SP_TARGET_TARGET, 0, SAVE_PHY],
 	SP_CONJURE_ANIMAL:	["Conjure animals", 1, SC_CONJURATION, [true, false, true], null, 61, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
 	SP_SPIRITUAL_HAMMER:["Spiritual hammer", 1, SC_CONJURATION, [false, true, false], null, 62, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
 	SP_LESSER_AQUIREMENT:["Lesser acquirement", 1, SC_CONJURATION, [true, true, false], null, 63, [5, 5, 5], SP_TARGET_ITEM_CHOICE, 0, SAVE_NO],
+	SP_STONE_MUD:		["Stone to mud", 2, SC_CONJURATION, [true, false, true], null, 65, [10, 10, 20], SP_TARGET_DIRECT, 0, SAVE_PHY],
+	SP_POISON_CLOUD:	["Poison cloud", 2, SC_CONJURATION, [true, false, true], null, 66, [8, 8, 8], SP_TARGET_TARGET, 2, SAVE_PHY],
+	SP_GUADRIAN_SPIRITS:["Spirit guardians", 2, SC_CONJURATION, [false, true, false], null, 67, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_PHY],
+	SP_ANIMATE_SKELETONS:["Animate dead", 2, SC_CONJURATION, [true, true, false], null, 68, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
 }
 
 const spellDamages = {
@@ -950,7 +964,10 @@ const spellDamages = {
 	SP_HOLY_BLADE: 		[[1, 4, 0, DMG_RADIANT], [1, 4, 0, DMG_RADIANT], [1, 6, 0, DMG_RADIANT]],
 	SP_FIRE_BLADE: 		[[1, 4, 0, DMG_FIRE], [1, 4, 0, DMG_FIRE], [1, 6, 0, DMG_FIRE]],
 	SP_MIND_SPIKE: 		[[1, 8, 0, DMG_MAGIC], [1, 8, 2, DMG_MAGIC], [1, 8, 4, DMG_MAGIC]],
+	SP_FLAMESKIN: 		[[1, 4, 0, DMG_FIRE], [1, 4, 0, DMG_FIRE], [1, 4, 0, DMG_FIRE]],
 	SP_ACID_SPLASH: 	[[2, 4, 0, DMG_SLASH], [3, 4, 0, DMG_SLASH], [4, 4, 0, DMG_SLASH]],
+	SP_POISON_CLOUD: 	[[1, 6, 0, DMG_POISON], [1, 6, 0, DMG_POISON], [1, 8, 0, DMG_POISON]],
+	SP_GUADRIAN_SPIRITS:[[1, 4, 0, DMG_RADIANT], [1, 4, 0, DMG_RADIANT], [1, 4, 0, DMG_RADIANT]],
 }
 
 const spellTurns = {
@@ -966,11 +983,20 @@ const spellTurns = {
 	SP_BLIND: [15, 15, 15],
 	SP_DETECT_EVIL: [40, 40, 40],
 	SP_REVEAL_TRAPS: [40, 40, 40],
+	SP_REVEAL_WEAK: [10, 10, 10],
+	SP_TRUE_STRIKE: [25, 25, 25],
+	SP_FUMBLE: [4, 6, 6],
 	SP_SHIELD: [25, 25, 25],
 	SP_ARMOR_OF_FAITH: [100, 100, 100],
 	SP_PROTECTION_FROM_EVIL: [15, 25, 25],
 	SP_SANCTUARY: [15, 15, 15],
+	SP_FLAMESKIN: [20, 20, 20],
+	SP_FREED_MOVE: [25, 25, 25],
+	SP_PROTECT_POISON: [25, 25, 25],
+	SP_PROTECT_FIRE: [25, 25, 25],
 	SP_SPIRITUAL_HAMMER: [40, 40, 40],
+	SP_POISON_CLOUD: [10, 10, 10],
+	SP_GUADRIAN_SPIRITS: [5, 5, 10],
 }
 
 var spellDescriptions = {
@@ -1130,6 +1156,36 @@ var spellDescriptions = {
 		"Absorbs 15 damages.",
 		"Absorbs 20 damages."
 	],
+	SP_REVEAL_WEAK: [
+		"Allows you to see the true nature of creatures. You ignore their resistances. Lasts %%TURNS_2.",
+		"",
+		"%%USES_2.",
+		"%%USES_3."
+	],
+	SP_REVEAL_HIDDEN: [
+		"All hidden doors appears on your map.",
+		"",
+		"%%USES_2.",
+		"%%USES_3."
+	],
+	SP_BLINK: [
+		"Teleports yourself to a near random place. ",
+		"",
+		"%%USES_2.",
+		"%%USES_3."
+	],
+	SP_TRUE_STRIKE: [
+		"Improves your aim, grants +1 to Hit rolls and you are immune to [BLIND] for %%TURNS_2.",
+		"",
+		"%%USES_2.",
+		"%%USES_3."
+	],
+	SP_FUMBLE: [
+		"Provokes an extreme bad luck to a creature at range. It will roll only 1s with dice.",
+		"",
+		"Lasts %%TURNS_2.",
+		"Lasts %%TURNS_3."
+	],
 	SP_MAGE_ARMOR: [
 		"Creates a magical field of force that replaces your armor. Lasts until rest.",
 		"Set your AC to 4.",
@@ -1154,6 +1210,36 @@ var spellDescriptions = {
 		"You can drink potions.",
 		"You can cast spells on yourself."
 	],
+	SP_REPEL_MISS: [
+		"Creates a invisible field around you. It may deflect every missile targeting you (spell or attack). Lasts until rest.",
+		"",
+		"15% chances to deflect.",
+		"25% chances to deflect."
+	],
+	SP_FLAMESKIN : [
+		"Surrounds you with a 2-range aura of magic fire. It deals 1 fire damage every turn to creatures and %%DMG_2 to a melee attacker.",
+		"",
+		"Lasts %%TURNS_2",
+		"Adds * to your fire resistance."
+	],
+	SP_FREED_MOVE : [
+		"Frees and immunes you to effects that can restrain your actions. Lasts %%TURNS_2.",
+		"",
+		"Immune to [SLOW], [IMMOBILIZED] and [PARALYZED].",
+		"Also immune to [TERROR]."
+	],
+	SP_PROTECT_POISON : [
+		"Protects you against the poison damages. Lasts %%TURNS_2. Also cure [POISONNED] status on cast.",
+		"",
+		"Adds * to your poison resistance.",
+		"You are immune to poison damages."
+	],
+	SP_PROTECT_FIRE : [
+		"Protects you against the fire damages. Increases your fire resistance and maximum fire resistance. Lasts %%TURNS_2.",
+		"",
+		"Adds * to your fire resistance.",
+		"Adds * to your maximum fire resistance."
+	],
 	SP_ACID_SPLASH: [
 		"Creates a magic arrow that inflicts acid damages to a target at range. It bypasses protection and resistances.",
 		"%%D_DMG_1.",
@@ -1177,7 +1263,31 @@ var spellDescriptions = {
 		"Creates a weapon, an armor, a scroll, a potion or golds.",
 		"Improves object quality.",
 		"Improves object quality."
-	]
+	],
+	SP_STONE_MUD: [
+		"Transmutes all stone-made object on a line into a pile of mud.",
+		"",
+		"%%USES_2.",
+		"%%USES_3."
+	],
+	SP_POISON_CLOUD: [
+		"Creates a cloud of deadly gas that will float on a 2-range wide area around the target. Lasts %%TURNS_2.",
+		"",
+		"%%D_DMG_2 per turn.",
+		"%%INC_DMG_3 per turn."
+	],
+	SP_GUADRIAN_SPIRITS: [
+		"Creates a sacred aura of conjured spirits around you dealing %%DMG_1 every turn.",
+		"",
+		"Lasts %%TURNS_2.",
+		"Lasts %%TURNS_3."
+	],
+	SP_ANIMATE_SKELETONS: [
+		"Animates skeletons to fight for you. Lasts until rest.",
+		"",
+		"Animates 2 skeletons.",
+		"Animates an additionnal archer skeleton."
+	],
 }
 
 const spellsPerSchool: Dictionary = {}
@@ -1207,6 +1317,7 @@ const STATUS_VULNERABLE = 4
 const STATUS_POISON = 5
 const STATUS_IMMOBILE = 6
 const STATUS_CURSE = 7
+const STATUS_FUMBLE = 8
 
 const STATUS_LIGHT = 100
 const STATUS_DETECT_EVIL = 101
@@ -1223,6 +1334,11 @@ const STATUS_LOCATE_OBJECTS = 111
 const STATUS_MIRROR_IMAGES = 112
 const STATUS_HOLY_BLADE = 113
 const STATUS_FIRE_BLADE = 114
+const STATUS_REVEAL_WEAKNESS = 115
+const STATUS_REVEAL_HIDDEN = 116
+const STATUS_TRUE_STRIKE = 117
+const STATUS_FIRE_AURA = 118
+const STATUS_FREED_MOVE = 119
 
 const STATUS_WILLPOWER = 200
 const STATUS_PHYSICS = 201
@@ -1270,6 +1386,9 @@ const statusesDescriptions = {
 	],
 	STATUS_CURSE: [
 		"A baleful curse hangs over you, you have a -2 malus to all you save rolls."
+	],
+	STATUS_FUMBLE: [
+		"The threads of your destiny are torned. All odds are against you, you will roll a 1 with dice every time."
 	],
 	
 	STATUS_LIGHT: [
@@ -1324,6 +1443,22 @@ const statusesDescriptions = {
 		"Your weapon is imbued with magic fire, it adds 1d4 fire damages to your attacks.",
 		"Your weapon is imbued with magic fire, it adds 1d6 fire damages to your attacks.",
 	],
+	STATUS_REVEAL_WEAKNESS: [
+		"You third eye is opened, allowing you to distinguish the true nature of enemies. You ignore their resistances."
+	],
+	STATUS_REVEAL_HIDDEN: [
+		"You can feel nearby hidden secrets. All secret doors appear on your map."
+	],
+	STATUS_TRUE_STRIKE: [
+		"Your vision is enhanced, you have +1 to your hit rolls and you are immune to [BLIND]."
+	],
+	STATUS_FIRE_AURA: [
+		"You are surrounded by fire, creatures at range 1 suffers 1 fire damage per turn, attacker suffers 1d4 fire damages."
+	],
+	STATUS_FREED_MOVE: [
+		"You are magically protected against [SLOW], [IMMOBILIZED] and [PARALYZED].",
+		"You are magically protected against [SLOW], [IMMOBILIZED], [PARALYZED] and [TERROR].",
+	]
 }
 
 const statusPrefabs = {
@@ -1335,6 +1470,7 @@ const statusPrefabs = {
 	STATUS_POISON: ["Poisoned", 0, null, null, STATUS_POISON, null, null, false, false, true],
 	STATUS_IMMOBILE: ["Immobilized", 19, null, null, STATUS_IMMOBILE, null, null, false, false, true],
 	STATUS_CURSE: ["Cursed", 12, null, null, STATUS_CURSE, null, null, false, false, true],
+	STATUS_FUMBLE: ["Break destiny", 13, null, null, STATUS_FUMBLE, null, null, false, false, true],
 	
 	STATUS_LIGHT: ["Light", 23, null, null, STATUS_LIGHT, null, null, false, true, true],
 	STATUS_DETECT_EVIL: ["Detect evil", 9, null, null, STATUS_DETECT_EVIL, null, null, false, true, true],
@@ -1351,6 +1487,11 @@ const statusPrefabs = {
 	STATUS_MIRROR_IMAGES: ["Mirror images", 47, null, null, STATUS_MIRROR_IMAGES, null, null, false, true, true],
 	STATUS_HOLY_BLADE: ["Holy weapon", 17, null, null, STATUS_HOLY_BLADE, null, null, false, true, true],
 	STATUS_FIRE_BLADE: ["Fire weapon", 4, null, null, STATUS_FIRE_BLADE, null, null, false, true, true],
+	STATUS_REVEAL_WEAKNESS: ["Reveal weakness", 46, null, null, STATUS_REVEAL_WEAKNESS, null, null, false, true, true],
+	STATUS_REVEAL_HIDDEN: ["Reveal hidden", 21, null, null, STATUS_REVEAL_HIDDEN, null, null, false, true, true],
+	STATUS_TRUE_STRIKE: ["True strike", 16, null, null, STATUS_TRUE_STRIKE, null, null, false, true, true],
+	STATUS_FIRE_AURA: ["Fire aura", 52, null, null, STATUS_FIRE_AURA, null, null, false, true, true],
+	STATUS_FREED_MOVE: ["Freedom of movement", 28, null, null, STATUS_FREED_MOVE, null, null, false, true, true],
 }
 
 const FE_NAME = 0

@@ -91,7 +91,7 @@ func getWeaponRows():
 	for w in weapons:
 		var current = GLOBAL.items[w]
 		var equiped = (w == currentWeapon.x) or (w == currentWeapon.y)
-		var key = Ref.character.shortcuts.getKey(w)
+		var key = Ref.character.shortcuts.getKey(w, GLOBAL.WP_TYPE)
 		result.append([GLOBAL.WP_TYPE, w, current[GLOBAL.IT_NAME], equiped, key, current[GLOBAL.IT_ICON]])
 	return result
 
@@ -108,7 +108,7 @@ func getPotionRows():
 	for p in potions:
 		var current = GLOBAL.items[p]
 		if !dict.has(current[GLOBAL.IT_STACK]):
-			var key = Ref.character.shortcuts.getKey(current[GLOBAL.IT_STACK])
+			var key = Ref.character.shortcuts.getKey(current[GLOBAL.IT_STACK], GLOBAL.PO_TYPE)
 			dict[current[GLOBAL.IT_STACK]] = [GLOBAL.PO_TYPE, current[GLOBAL.IT_NAME], key, current[GLOBAL.IT_ICON], [p]]
 		else:
 			dict[current[GLOBAL.IT_STACK]][4].append(p)
@@ -122,7 +122,7 @@ func getScrollRows():
 	for s in scrolls:
 		var current = GLOBAL.items[s]
 		if !dict.has(current[GLOBAL.IT_STACK]):
-			var key = Ref.character.shortcuts.getKey(current[GLOBAL.IT_STACK])
+			var key = Ref.character.shortcuts.getKey(current[GLOBAL.IT_STACK], GLOBAL.SC_TYPE)
 			dict[current[GLOBAL.IT_STACK]] = [GLOBAL.SC_TYPE, current[GLOBAL.IT_NAME], key, current[GLOBAL.IT_ICON], [s]]
 		else:
 			dict[current[GLOBAL.IT_STACK]][4].append(s)
@@ -136,7 +136,7 @@ func getThrowingRows():
 	for t in throwings:
 		var current = GLOBAL.items[t]
 		if !dict.has(current[GLOBAL.IT_STACK]):
-			var key = Ref.character.shortcuts.getKey(current[GLOBAL.IT_STACK])
+			var key = Ref.character.shortcuts.getKey(current[GLOBAL.IT_STACK], GLOBAL.TH_TYPE)
 			dict[current[GLOBAL.IT_STACK]] = [GLOBAL.TH_TYPE, current[GLOBAL.IT_NAME], key, current[GLOBAL.IT_ICON], [t]]
 		else:
 			dict[current[GLOBAL.IT_STACK]][4].append(t)

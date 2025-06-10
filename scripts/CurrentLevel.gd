@@ -2,21 +2,25 @@ extends Node2D
 
 class_name CurrentLevel
 
+onready var auraScene = preload("res://scenes/Aura.tscn")
 onready var monsterScene = preload("res://scenes/Monster.tscn")
 onready var lootScene = preload("res://scenes/Loot.tscn")
 onready var chestScene = preload("res://scenes/Chest.tscn")
+onready var secretScene = preload("res://scenes/Secret.tscn")
 onready var trapScene = preload("res://scenes/Trap.tscn")
 
 onready var dungeon = get_node("Map")
 onready var fog = get_node("Fog")
 onready var shadows = get_node("Shadows")
 onready var underShadows = shadows.get_node("Under")
+onready var auras = get_node("Auras")
 onready var traps = get_node("Traps")
 onready var monsters = get_node("Monsters")
 onready var allies = get_node("Allies")
 onready var npcs = get_node("Npcs")
 onready var loots = get_node("Loots")
 onready var chests = get_node("Chests")
+onready var secrets = get_node("Secrets")
 onready var effects = get_node("Effects")
 onready var targetArrow = get_node("TargetArrow")
 onready var levelBuffer = get_node("LevelBuffer")
@@ -87,11 +91,20 @@ func refresh_view():
 		if Ref.character.statuses.has(Data.STATUS_LOCATE_OBJECTS):
 			if fog.get_cellv(l.pos) != 0:
 				l.mask.visible = true
-#	for c in chests.get_children():
-#		c.mask.visible = true
-#		if Ref.character.statuses.has(Data.STATUS_LOCATE_OBJECTS):
-#			if fog.get_cellv(c.pos) != 0:
-#				c.mask.visible = true
+	for c in chests.get_children():
+		c.mask.visible = false
+		if Ref.character.statuses.has(Data.STATUS_LOCATE_OBJECTS):
+			if fog.get_cellv(c.pos) != 0:
+				c.mask.visible = true
+	if Ref.character.statuses.has(Data.STATUS_REVEAL_HIDDEN):
+		secrets.visible = true
+		for s in secrets.get_children():
+			if fog.get_cellv(s.pos) != 0:
+				s.visible = true
+			else:
+				discoverDoor(s.pos)
+	else:
+		secrets.visible = false
 	Ref.character.currentVision.erase(Ref.character.pos)
 
 func initShadows():
@@ -102,6 +115,22 @@ func initShadows():
 			shadows.set_cell(i, j, 0)
 			shadows.update_bitmask_area(Vector2(i, j))
 			underShadows.set_cell(i, j, 2)
+
+func initSecrets():
+	for cell in GLOBAL.hiddenDoors:
+		var secret = secretScene.instance()
+		secrets.add_child(secret)
+		secret.init(cell)
+
+func discoverDoor(cell: Vector2):
+	if !GLOBAL.hiddenDoors.has(cell):
+		return
+	GLOBAL.hiddenDoors.erase(cell)
+	for s in Ref.currentLevel.secrets.get_children():
+		if s.pos == cell:
+			s.queue_free()
+	Ref.currentLevel.dungeon.set_cellv(cell, GLOBAL.DOOR_ID, false, false, false, Vector2(0,1))
+	Ref.ui.writeHiddenDoorDetected()
 
 func clearFog():
 	for i in range(GLOBAL.FLOOR_SIZE_X):

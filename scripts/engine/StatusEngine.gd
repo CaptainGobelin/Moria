@@ -21,6 +21,16 @@ func addStatus(entity, status: Array):
 	status[GLOBAL.ST_ID] = id
 	GLOBAL.statuses[id] = status
 	var idx = status[GLOBAL.ST_TYPE]
+	match idx:
+		Data.STATUS_IMMOBILE:
+			if getStatusRank(entity, Data.STATUS_FREED_MOVE) >= 0:
+				return
+		Data.STATUS_PARALYZED:
+			if getStatusRank(entity, Data.STATUS_FREED_MOVE) >= 0:
+				return
+		Data.STATUS_TERROR:
+			if getStatusRank(entity, Data.STATUS_FREED_MOVE) >= 1:
+				return
 	if entity.statuses.has(idx):
 		entity.statuses[idx].append(id)
 		entity.statuses[idx].sort_custom(StatusSorter, "sort_by_rank")
@@ -33,6 +43,8 @@ func addStatus(entity, status: Array):
 func removeStatusType(entity, type: int):
 	if not entity.statuses.has(type):
 		return
+	for s in entity.statuses[type]:
+		GLOBAL.statuses.erase(s)
 	entity.statuses.erase(type)
 	if entity is Character:
 		Ref.ui.statusBar.refreshStatuses(Ref.character)
@@ -49,6 +61,32 @@ func removeStatus(entity, statusId: int):
 				entity.statuses.erase(type)
 			return
 
+func removeRestStatuses(entity):
+	var statusToRemove = []
+	for type in entity.statuses:
+		for s in entity.statuses[type]:
+			var status = GLOBAL.statuses[s]
+			if status[GLOBAL.ST_TIMING] == GLOBAL.TIMING_REST:
+				statusToRemove.append(s)
+	for s in statusToRemove:
+		StatusEngine.removeStatus(entity, s)
+	entity.stats.computeStats()
+	if entity is Character:
+		Ref.ui.statusBar.refreshStatuses(entity)
+
+func removeFloorStatuses(entity):
+	var statusToRemove = []
+	for type in entity.statuses:
+		for s in entity.statuses[type]:
+			var status = GLOBAL.statuses[s]
+			if status[GLOBAL.ST_TIMING] == GLOBAL.TIMING_FLOOR:
+				statusToRemove.append(s)
+	for s in statusToRemove:
+		StatusEngine.removeStatus(entity, s)
+	entity.stats.computeStats()
+	if entity is Character:
+		Ref.ui.statusBar.refreshStatuses(entity)
+
 func clearStatuses(entity):
 	var statusToRemove = []
 	for type in entity.statuses:
@@ -61,6 +99,12 @@ func clearStatuses(entity):
 	entity.stats.computeStats()
 	if entity is Character:
 		Ref.ui.statusBar.refreshStatuses(entity)
+
+func deleteStatus(statusId: int):
+	GLOBAL.statuses.erase(statusId)
+	for a in Ref.currentLevel.auras.get_children():
+		if a.tiedStatus == statusId:
+			a.queue_free()
 
 func removeRandomBuff(entity) -> bool:
 	var keys = entity.statuses.keys().duplicate()
@@ -153,6 +197,10 @@ func applyEffect(entity):
 				dmgWeapon(entity, 1, 4 + 2 * rank, Data.DMG_RADIANT)
 			Data.STATUS_FIRE_BLADE:
 				dmgWeapon(entity, 1, 4 + 2 * rank, Data.DMG_FIRE)
+			Data.STATUS_FIRE_AURA:
+				addToResist(entity, Data.DMG_FIRE, 1)
+				if rank > 0:
+					addToMaxResist(entity, Data.DMG_FIRE, 1)
 
 func applyEnchantEffect(entity, status, rank: int):
 	match (status[GLOBAL.ST_TYPE] - 1000):
@@ -197,6 +245,11 @@ func addToProt(entity, rank: int):
 
 func addToResist(entity, dmgType: int, rank: int):
 	entity.stats.resists[dmgType] += rank
+	if entity is Character:
+		entity.stats.updateResists()
+
+func addToMaxResist(entity, dmgType: int, rank: int):
+	entity.stats.maxResists[dmgType] += rank
 	if entity is Character:
 		entity.stats.updateResists()
 

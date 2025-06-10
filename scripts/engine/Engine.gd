@@ -16,12 +16,15 @@ class Dice:
 		d = dice
 		b = bonus
 	
-	func roll():
+	func roll(entity = null):
+		if entity != null:
+			if entity.statuses.has(Data.STATUS_FUMBLE):
+				return self.n + self.b
 		if (GeneralEngine.isFaking):
 			return GeneralEngine.fakedValue
 		var result = self.b
 		for _d in range(self.n):
-			result += (randi() % self.d)
+			result += 1 + (randi() % self.d)
 		return result
 	
 	func toString():
@@ -47,8 +50,8 @@ class DmgDice:
 		self.dice = Dice.new(n, d, b)
 		type = dmgType
 	
-	func roll():
-		return self.dice.roll()
+	func roll(entity = null):
+		return self.dice.roll(entity)
 	
 	func toString():
 		return dice.toString()
@@ -92,6 +95,7 @@ func newTurn():
 		StatusEngine.decreaseStatusesTime(m)
 	StatusEngine.decreaseStatusesTime(Ref.character)
 	Ref.currentLevel.refresh_view()
+	Aura.updateAll()
 	Ref.ui.monsterPanelList.fillList()
 	if !canCharacterAct():
 		canAct = false
@@ -126,7 +130,10 @@ func passTurn():
 	if coroutineReturn:
 		newTurn()
 
-func computeDamages(dmgDices: Array, resist: Array, byPassResists: bool = false):
+func computeDamages(source, dmgDices: Array, resist: Array, byPassResists: bool = false):
+	if source != null:
+		if source.statuses.has(Data.STATUS_REVEAL_WEAKNESS):
+			byPassResists = true
 	var result = 0
 	for dice in dmgDices:
 		var dmg = dice.roll()

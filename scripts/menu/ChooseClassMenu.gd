@@ -46,6 +46,7 @@ func _input(event):
 func initCharacter(feat: int):
 	visible = false
 	Ref.character.stats.init(selectedClass)
+	Ref.character.charClass = selectedClass
 	var count = -1
 	for skill in Ref.character.skills.skills:
 		count += 1
@@ -59,6 +60,7 @@ func initCharacter(feat: int):
 					Ref.game.chooseSpellMenu.open(event[1], event[2])
 					if Ref.game.chooseSpellMenu.visible:
 						yield(Ref.game.chooseSpellMenu, "selected")
+	Ref.character.init(selectedClass)
 	var featResult = Ref.character.skills.addFeat(feat)
 	if featResult != null:
 		match featResult[0]:
@@ -66,7 +68,6 @@ func initCharacter(feat: int):
 				Ref.game.chooseSpellMenu.open(featResult[1], featResult[2])
 				if Ref.game.chooseSpellMenu.visible:
 					yield(Ref.game.chooseSpellMenu, "selected")
-	Ref.character.init(selectedClass)
 	close()
 	Ref.game.chooseNameMenu.open()
 

@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://sprites/masks.png" type="Texture" id=1]
+[ext_resource path="res://scripts/engine/Aura.gd" type="Script" id=2]
+
+[node name="Aura" type="Sprite"]
+z_index = 1
+texture = ExtResource( 1 )
+centered = false
+hframes = 6
+vframes = 2
+frame = 9
+script = ExtResource( 2 )
+__meta__ = {
+"_editor_description_": ""
+}

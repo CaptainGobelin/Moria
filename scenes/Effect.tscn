@@ -66,6 +66,7 @@ hframes = 5
 vframes = 20
 frame = 1
 script = ExtResource( 1 )
+type = 6
 coords = Vector2( 1, 0 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

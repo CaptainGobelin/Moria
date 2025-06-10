@@ -23,7 +23,7 @@ func castSpellAsync(spellId: int, scrollId = null):
 			if spellId == Data.SP_MAGIC_MISSILE:
 				Ref.ui.writeCastSpell(spell[Data.SP_NAME])
 				var targets = []
-				for _i in spellRank:
+				for _i in (1 + spellRank):
 					var targetId = Utils.chooseRandom(GLOBAL.targets.keys())
 					targets.append(targetId)
 					yield(castProjectile(GLOBAL.targets[targetId], spell[Data.SP_PROJ], "launched"), "completed")

@@ -106,7 +106,7 @@ func applyPoison():
 		if lastPoisonTick <= 0:
 			var rank = getStatusRank(Data.STATUS_POISON)
 			var dice = GeneralEngine.dmgDice(0, 0, rank + 1, Data.DMG_POISON)
-			var dmg = GeneralEngine.computeDamages([dice], resists)
+			var dmg = GeneralEngine.computeDamages(null, [dice], resists)
 			get_parent().takeHit(dmg)
 			lastPoisonTick = 5
 	else:
@@ -164,6 +164,7 @@ func computePerception():
 func computeResists():
 	for i in range(8):
 		resists[i] = 0
+		maxResists[i] = 1
 	if Skills.hasPoisonResistance():
 		resists[Data.DMG_POISON] += 1
 	if Skills.hasFireResistance():
@@ -190,6 +191,7 @@ func updateXp(newValue):
 	if newValue >= Data.lvlCaps[level]:
 		xp = (newValue % Data.lvlCaps[level])
 		updateLevel(level + 1)
+		computeHpMax()
 		Ref.character.skills.skp += Data.skpGains[level]
 		Ref.character.skills.ftp += Data.ftpGains[level]
 		Ref.ui.writeLevelUp(level, classStats[Data.CL_HPLVL], Data.skpGains[level], Data.ftpGains[level])

@@ -91,6 +91,7 @@ func saveMap() -> Dictionary:
 
 func loadMap(dict: Dictionary):
 	Ref.currentLevel.initShadows()
+	Ref.currentLevel.initSecrets()
 	arrayToTilemap(dict["dungeon"], Ref.currentLevel.dungeon)
 	arrayToTilemap(dict["shadows"], Ref.currentLevel.shadows, false)
 	arrayToTilemap(dict["under"], Ref.currentLevel.underShadows, false)
