@@ -21,6 +21,15 @@ func learnSpell(idx: int):
 	var rank = getSpellRank(school)
 	spellsUses[idx] = Data.spells[idx][Data.SP_USES][rank]
 
+func improveUses(school: int):
+	var rank = getSpellRank(school)
+	if rank == 0:
+		return
+	for s in spells:
+		var spell = Data.spells[s]
+		if spell[Data.SP_SCHOOL] == school:
+			spellsUses[s] += (spell[Data.SP_USES][rank] - spell[Data.SP_USES][rank-1])
+
 func schoolToSkill(school: int):
 	match school:
 		Data.SC_EVOCATION:
@@ -40,5 +49,6 @@ func getSpellsRows():
 	for s in spells:
 		var current = Data.spells[s]
 		var key = Ref.character.shortcuts.getKey(s, GLOBAL.SP_TYPE)
-		result.append([s, current[Data.SP_NAME], current[Data.SP_ICON], spellsUses[s], current[Data.SP_USES][0], key])
+		var maxUses = current[Data.SP_USES][getSpellRank(Data.spells[s][Data.SP_SCHOOL])]
+		result.append([s, current[Data.SP_NAME], current[Data.SP_ICON], spellsUses[s], maxUses, key])
 	return result

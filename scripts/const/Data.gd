@@ -226,6 +226,8 @@ const MO_SHAMAN_GOBLIN = 7
 const MO_ZOMBIE = 8
 const MO_SUM_WOLF = 900
 const MO_SUM_HAMMER = 901 #902 903 reserved also
+const MO_SUM_SKELETON = 904
+const MO_SUM_ARCHER_SKELETON = 905
 const MO_DUMMY = 1000
 
 const MO_NAME = 0
@@ -338,6 +340,18 @@ const monsters = {
 		4, 2, 28, 0, true,
 		1, 0, 0, 1,
 		[]
+	],
+	MO_SUM_SKELETON: [
+		"Animated skeleton", 4, -1, Vector3(1, 1, 0),
+		3, 0, 2, 4, true,
+		1, 0, 0, 2,
+		[]
+	],
+	MO_SUM_ARCHER_SKELETON: [
+		"Animated archer", 4, -1, Vector3(1, 1, 0),
+		3, 0, 6, 4, true,
+		1, 0, 0, 2,
+		[[0, ACT_THROW, null, 2000]]
 	],
 	MO_DUMMY: [
 		"Dummy target", 1, 0, Vector3(1, 1, 0),
@@ -1211,7 +1225,7 @@ var spellDescriptions = {
 		"You can cast spells on yourself."
 	],
 	SP_REPEL_MISS: [
-		"Creates a invisible field around you. It may deflect every missile targeting you (spell or attack). Lasts until rest.",
+		"Creates a invisible field around you. It may deflect every missile targeting you (not spells). Lasts until rest.",
 		"",
 		"15% chances to deflect.",
 		"25% chances to deflect."
@@ -1339,6 +1353,10 @@ const STATUS_REVEAL_HIDDEN = 116
 const STATUS_TRUE_STRIKE = 117
 const STATUS_FIRE_AURA = 118
 const STATUS_FREED_MOVE = 119
+const STATUS_SPIRIT_GUARD = 120
+const STATUS_PROTECT_FIRE = 121
+const STATUS_PROTECT_POISON = 122
+const STATUS_REPEL_MISSILES = 123
 
 const STATUS_WILLPOWER = 200
 const STATUS_PHYSICS = 201
@@ -1458,6 +1476,18 @@ const statusesDescriptions = {
 	STATUS_FREED_MOVE: [
 		"You are magically protected against [SLOW], [IMMOBILIZED] and [PARALYZED].",
 		"You are magically protected against [SLOW], [IMMOBILIZED], [PARALYZED] and [TERROR].",
+	],
+	STATUS_PROTECT_FIRE: [
+		"You are protected against fire damages, grants * in Fire resistance.",
+		"You are heavily protected against fire damages, grants ** in Fire resistance.",
+	],
+	STATUS_PROTECT_POISON: [
+		"You are protected against poison damages, grants * in Poison resistance.",
+		"You are immune to all poison damages.",
+	],
+	STATUS_REPEL_MISSILES: [
+		"You are protected against any normal projectiles.",
+		"You are protected against any normal or magical projectiles.",
 	]
 }
 
@@ -1492,6 +1522,10 @@ const statusPrefabs = {
 	STATUS_TRUE_STRIKE: ["True strike", 16, null, null, STATUS_TRUE_STRIKE, null, null, false, true, true],
 	STATUS_FIRE_AURA: ["Fire aura", 52, null, null, STATUS_FIRE_AURA, null, null, false, true, true],
 	STATUS_FREED_MOVE: ["Freedom of movement", 28, null, null, STATUS_FREED_MOVE, null, null, false, true, true],
+	STATUS_SPIRIT_GUARD: ["", 28, null, null, STATUS_SPIRIT_GUARD, null, null, true, true, true],
+	STATUS_PROTECT_FIRE: ["Protect from fire", 29, null, null, STATUS_RESIST + DMG_FIRE, null, null, false, true, true],
+	STATUS_PROTECT_POISON: ["Protect from poison", 35, null, null, STATUS_RESIST + DMG_POISON, null, null, false, true, true],
+	STATUS_REPEL_MISSILES: ["Deflect projectiles", 34, null, null, STATUS_REPEL_MISSILES, null, null, false, true, true],
 }
 
 const FE_NAME = 0

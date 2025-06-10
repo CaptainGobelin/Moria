@@ -13,9 +13,11 @@ func throwAsync(itemId: int):
 	if coroutineReturn == -1:
 		return
 	var targetId = GLOBAL.targets.keys()[coroutineReturn]
+	var entity = instance_from_id(targetId)
 	yield(castProjectile(GLOBAL.targets[targetId], item[Data.TH_PROJ]), "completed")
+	if StatusEngine.getStatusRank(entity, Data.STATUS_REPEL_MISSILES) >= 0 and randf() < 0.15:
+		Ref.ui.writeDeflectMonster(entity.stats.entityName)
 	if item[Data.TH_DMG] != null:
-		var entity = instance_from_id(targetId)
 		var result = Ref.character.stats.hitDices.roll(Ref.character)
 		if result >= entity.stats.ca:
 			Ref.ui.writeCharacterStrike(entity.stats.entityName, result, entity.stats.ca)
@@ -40,6 +42,8 @@ func castThrowMonster(itemId: int, caster, target, path: Array):
 	var item = Data.throwings[itemId]
 	castProjectile(path, item[Data.TH_PROJ])
 	if item[Data.TH_DMG] != null:
+		if StatusEngine.getStatusRank(target, Data.STATUS_REPEL_MISSILES) >= 0 and randf() < 0.15:
+			Ref.ui.writeDeflectCharacter()
 		var result = caster.stats.hitDices.roll(caster)
 		if result >= target.stats.ca:
 			Ref.ui.writeMonsterStrike(caster.stats.entityName, target.stats.entityName, result, target.stats.ca)

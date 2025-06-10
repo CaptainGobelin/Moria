@@ -244,7 +244,9 @@ func addToProt(entity, rank: int):
 		entity.stats.updateProt(entity.stats.prot)
 
 func addToResist(entity, dmgType: int, rank: int):
-	entity.stats.resists[dmgType] += rank
+	entity.stats.resists[dmgType] += 1
+	if rank == 2:
+		entity.stats.maxResists[dmgType] += 1
 	if entity is Character:
 		entity.stats.updateResists()
 

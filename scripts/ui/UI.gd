@@ -319,6 +319,11 @@ func writeCharacterMiss(name: String, hit: int, ca: int):
 	write(msg)
 	lastPrinted = "writeCharacterMiss"
 
+func writeDeflectCharacter():
+	var msg = "The projectile was deflected by your spell."
+	write(msg)
+	lastPrinted = "writeDeflectCharacter"
+
 func writeCharacterHitImage():
 	write("You destroyed an illusion !")
 	lastPrinted = "writeCharacterHitImage"
@@ -338,6 +343,11 @@ func writeMonsterMiss(name: String, target: String, hit: int, ca: int):
 	msg += " (rolled " + String(hit) + " vs " + String(ca) + ")."
 	write(msg)
 	lastPrinted = "writeMonsterMiss"
+
+func writeDeflectMonster(name: String):
+	var msg = "The projectile was deflected by the " + name + "'s spell."
+	write(msg)
+	lastPrinted = "writeDeflectMonster"
 
 func writeMonsterHitImage(name: String):
 	var msg = "The " + name + " destroyed an illusion !"

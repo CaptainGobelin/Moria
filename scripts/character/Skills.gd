@@ -26,6 +26,8 @@ func improve(idx: int, isFree: bool = false):
 		spLevel = 2
 	if skills[idx] == 5:
 		spLevel = 3
+	if skills[idx] == 2 or skills[idx] == 4:
+		Ref.character.spells.improveUses(school)
 	return ["chooseSpell", school, spLevel]
 
 func skillToSchool(skill: int):

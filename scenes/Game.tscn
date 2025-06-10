@@ -97,11 +97,11 @@ tracks/1/keys = {
 [node name="Game" type="Node2D"]
 scale = Vector2( 4, 4 )
 script = ExtResource( 15 )
-start = 2
 
 [node name="Utils" type="Node" parent="."]
 
 [node name="DungeonGenerator_v2" parent="Utils" instance=ExtResource( 1 )]
+biome = 0
 
 [node name="ItemGenerator" type="Node" parent="Utils"]
 script = ExtResource( 6 )

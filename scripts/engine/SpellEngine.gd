@@ -24,6 +24,12 @@ func createSpellStatus(type: int, rank: int, time: int):
 	status[GLOBAL.ST_RANK] = rank
 	return status
 
+func conjureCreature(caster, type: int):
+	var cell = caster.getRandomCloseCell()
+	if cell == null:
+		return
+	Ref.currentLevel.spawnMonster(type, cell, caster is Character)
+
 func applySpellStatus(entity, type: int, rank: int, time: int):
 	var status = createSpellStatus(type, rank, time)
 	if time == TIME_FLOOR:
@@ -161,20 +167,32 @@ func applyEffect(caster, entity, spellId: int, fromCharacter: bool, rank: int, s
 			protectEvil(caster, entity, rank)
 		Data.SP_SANCTUARY:
 			sanctuary(caster, entity, rank)
+		Data.SP_REPEL_MISS:
+			repelMissiles(caster, rank)
 		Data.SP_FLAMESKIN:
 			flameskin(caster, rank)
 		Data.SP_FREED_MOVE:
 			freedomMovement(caster, rank)
+		Data.SP_PROTECT_FIRE:
+			fireProtection(caster, rank)
+		Data.SP_PROTECT_POISON:
+			poisonProtection(caster, rank)
 		Data.SP_ACID_SPLASH:
 			acidSplash(caster, entity, rank)
 		Data.SP_CONJURE_ANIMAL:
-			conjureAnimal(caster, entity, rank)
+			conjureAnimal(caster, rank)
 		Data.SP_SPIRITUAL_HAMMER:
-			spiritualHammer(caster, entity, rank)
+			spiritualHammer(caster, rank)
 		Data.SP_LESSER_AQUIREMENT:
 			lesserAcquirement(caster, entity, rank, savingCap)
+		Data.SP_STONE_MUD:
+			stoneToMud(caster, direction)
 		Data.SP_POISON_CLOUD:
 			poisonCloud(caster, entity, rank)
+		Data.SP_ANIMATE_SKELETONS:
+			animatedDead(caster, rank)
+		Data.SP_GUADRIAN_SPIRITS:
+			spiritGuardians(caster, rank)
 		Data.SP_FIREBALL:
 			fireball(caster, entity)
 		Data.SP_TH_FIREBOMB:
@@ -506,11 +524,15 @@ func breakSanctuary(entity, action: int):
 	if entity is Character:
 		Ref.ui.writeSancturayBreak()
 
+func repelMissiles(caster, rank: int):
+	playEffect(caster.pos, Effect.BUFF, 5, 0.6)
+	applySpellStatus(caster, Data.STATUS_REPEL_MISSILES, rank-1, TIME_REST)
+
 func flameskin(caster, rank: int):
 	playEffect(caster.pos, Effect.BUFF, 5, 0.6)
 	var turns = getTurns(Data.SP_FLAMESKIN, rank)
 	var auraSt = applySpellStatus(caster, Data.STATUS_FIRE_AURA, 0, turns)
-	var targetedCells = getAuraCells(2)
+	var targetedCells = getAuraCells(3)
 	Aura.create(targetedCells, Aura.FIRE_AURA, turns+20, true, caster, auraSt)
 
 func freedomMovement(caster, rank: int):
@@ -522,6 +544,17 @@ func freedomMovement(caster, rank: int):
 	if rank > 1:
 		StatusEngine.removeStatusType(caster, Data.STATUS_TERROR)
 
+func fireProtection(caster, rank: int):
+	playEffect(caster.pos, Effect.BUFF, 5, 0.6)
+	var turns = getTurns(Data.SP_PROTECT_FIRE, rank)
+	applySpellStatus(caster, Data.STATUS_PROTECT_FIRE, rank, turns)
+
+func poisonProtection(caster, rank: int):
+	playEffect(caster.pos, Effect.BUFF, 5, 0.6)
+	var turns = getTurns(Data.SP_PROTECT_POISON, rank)
+	applySpellStatus(caster, Data.STATUS_PROTECT_POISON, rank, turns)
+	StatusEngine.removeStatusType(caster, Data.STATUS_POISON)
+
 func acidSplash(caster, entity, rank: int):
 	var dmgDice = getDmgDice(caster, Data.SP_ACID_SPLASH, rank)
 	var dmg = GeneralEngine.computeDamages(caster, dmgDice, entity.stats.resists, true)
@@ -529,26 +562,34 @@ func acidSplash(caster, entity, rank: int):
 		dmg = int(floor(dmg/2))
 	entity.takeHit(dmg, 9999)
 
-func conjureAnimal(caster, entity, rank: int):
-	if entity is Character:
-		for _i in range(GeneralEngine.dice(1, 2, rank).roll(caster)):
-			var cell = entity.getRandomCloseCell()
-			if cell == null:
-				return
-			Ref.currentLevel.spawnMonster(Data.MO_SUM_WOLF, cell, true)
+func conjureAnimal(caster, rank: int):
+	for _i in range(GeneralEngine.dice(1, 2, rank).roll(caster)):
+		conjureCreature(caster, Data.MO_SUM_WOLF)
 
-func spiritualHammer(caster, entity, rank: int):
-	if entity is Character:
-		var cell = entity.getRandomCloseCell()
-		if cell == null:
-			return
-		Ref.currentLevel.spawnMonster(Data.MO_SUM_HAMMER+rank, cell, true)
+func spiritualHammer(caster, rank: int):
+	conjureCreature(caster, Data.MO_SUM_HAMMER+rank)
 
 func lesserAcquirement(caster, entity, rank: int, itemType: int):
 	var items = Ref.game.itemGenerator.generateItem(rank * 2, itemType)
 	for item in items:
 		GLOBAL.dropItemOnFloor(item, entity.pos)
 	Ref.ui.writeWishResult(items)
+
+func stoneToMud(caster, direction: Vector2):
+	var targetCell = caster.pos
+	for _i in range(caster.stats.atkRange):
+		targetCell += direction
+		if targetCell.x < 1 or targetCell.x >= (GLOBAL.FLOOR_SIZE_X - 1):
+			break
+		if targetCell.y < 1 or targetCell.y >= (GLOBAL.FLOOR_SIZE_Y - 1):
+			break
+		if Ref.currentLevel.dungeon.get_cellv(targetCell) == GLOBAL.WALL_ID:
+			Ref.currentLevel.dungeon.set_cellv(targetCell, GLOBAL.FLOOR_ID)
+		if Ref.currentLevel.isCellFree(targetCell)[4]:
+			break
+		playEffect(targetCell, Effect.TRANSMUT, 5, 1.1)
+	if caster is Character:
+		Ref.currentLevel.refresh_view()
 
 func poisonCloud(caster, entity, rank: int):
 	var turns = getTurns(Data.SP_POISON_CLOUD, rank)
@@ -564,6 +605,19 @@ func poisonCloud(caster, entity, rank: int):
 		Aura.create(auraCells, Aura.POISON_CLOUD_I, turns, caster is Character)
 	else:
 		Aura.create(auraCells, Aura.POISON_CLOUD_II, turns, caster is Character)
+
+func animatedDead(caster, rank: int):
+	for _i in range(2):
+		conjureCreature(caster, Data.MO_SUM_SKELETON)
+	if rank == 2:
+		conjureCreature(caster, Data.MO_SUM_ARCHER_SKELETON)
+
+func spiritGuardians(caster, rank: int):
+	playEffect(caster.pos, Effect.BUFF, 5, 0.6)
+	var turns = getTurns(Data.SP_GUADRIAN_SPIRITS, rank)
+	var auraSt = applySpellStatus(caster, Data.STATUS_SPIRIT_GUARD, 0, turns)
+	var targetedCells = getAuraCells(2)
+	Aura.create(targetedCells, Aura.SPIRIT_GUARDIANS, turns, true, caster, auraSt)
 
 func fireball(caster, entity):
 	var targetedCells = getArea(entity.pos, 4)
@@ -660,6 +714,7 @@ func getAuraCells(size: int):
 	if size > 0:
 		result.append_array([Vector2(-1, 0), Vector2(1, 0), Vector2(0, -1), Vector2(0, 1)])
 	if size > 1:
-		result.append_array([Vector2(-1, -1), Vector2(-2, 0), Vector2(-1, 1), Vector2(0, 2)])
-		result.append_array([Vector2(1, -1), Vector2(2, 0), Vector2(1, 1), Vector2(0, -2)])
+		result.append_array([Vector2(-1, -1), Vector2(1, -1), Vector2(1, 1) , Vector2(-1, 1)])
+	if size > 2:
+		result.append_array([Vector2(-2, 0), Vector2(2, 0), Vector2(0, 2), Vector2(0, -2)])
 	return result

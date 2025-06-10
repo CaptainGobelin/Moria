@@ -66,6 +66,10 @@ func trigger(entity):
 			var dmgDice = [GeneralEngine.dmgDice(0, 0, 1, Data.DMG_FIRE)]
 			var dmg = GeneralEngine.computeDamages(null, dmgDice, entity.stats.resists)
 			entity.takeHit(dmg)
+		SPIRIT_GUARDIANS:
+			var dmgDice = [GeneralEngine.dmgDice(1, 4, 0, Data.DMG_RADIANT)]
+			var dmg = GeneralEngine.computeDamages(null, dmgDice, entity.stats.resists)
+			entity.takeHit(dmg)
 		POISON_CLOUD_I:
 			var dmgDice = [GeneralEngine.dmgDiceFromArray(Data.spellDamages[Data.SP_POISON_CLOUD][1])]
 			var dmg = GeneralEngine.computeDamages(null, dmgDice, entity.stats.resists)
