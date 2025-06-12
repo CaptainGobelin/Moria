@@ -68,7 +68,7 @@ func flagMap():
 				if count == 6:
 					flags[i][j] = 2
 
-# Set everw cell analyzed to true for all critical rooms
+# Set every cell analyzed to true for all critical rooms
 func flagCriticalPath(path: Array, removeDoors: bool = false):
 	for p in path:
 		if analyzed[p.x][p.y]:

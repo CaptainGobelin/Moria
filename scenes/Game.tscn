@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=2]
+[gd_scene load_steps=41 format=2]
 
 [ext_resource path="res://scenes/engine/DungeonGenerator.tscn" type="PackedScene" id=1]
 [ext_resource path="res://tilesets/basic.tres" type="TileSet" id=2]
@@ -37,6 +37,7 @@
 [ext_resource path="res://scripts/utils/SaveSystem.gd" type="Script" id=35]
 [ext_resource path="res://scripts/utils/LevelBuffer.gd" type="Script" id=36]
 [ext_resource path="res://scripts/ui/ContinueHandler.gd" type="Script" id=37]
+[ext_resource path="res://tilesets/masks_tileset.tres" type="TileSet" id=38]
 
 [sub_resource type="Animation" id=1]
 resource_name = "FadeIn"
@@ -97,11 +98,13 @@ tracks/1/keys = {
 [node name="Game" type="Node2D"]
 scale = Vector2( 4, 4 )
 script = ExtResource( 15 )
+start = 1
+debugClass = 3
+debugMode = true
 
 [node name="Utils" type="Node" parent="."]
 
 [node name="DungeonGenerator_v2" parent="Utils" instance=ExtResource( 1 )]
-biome = 0
 
 [node name="ItemGenerator" type="Node" parent="Utils"]
 script = ExtResource( 6 )
@@ -183,6 +186,19 @@ format = 1
 
 [node name="LevelBuffer" type="Node" parent="CurrentLevel"]
 script = ExtResource( 36 )
+
+[node name="Debug" type="Node2D" parent="CurrentLevel"]
+visible = false
+
+[node name="Secrets" type="TileMap" parent="CurrentLevel/Debug"]
+tile_set = ExtResource( 38 )
+cell_size = Vector2( 9, 9 )
+format = 1
+
+[node name="Traps" type="TileMap" parent="CurrentLevel/Debug"]
+tile_set = ExtResource( 38 )
+cell_size = Vector2( 9, 9 )
+format = 1
 
 [node name="UI" type="Node2D" parent="."]
 script = ExtResource( 9 )
@@ -372,8 +388,46 @@ custom_fonts/font = ExtResource( 8 )
 text = "10"
 valign = 1
 
-[node name="DmgContainer" type="Node2D" parent="UI/SideMenu"]
+[node name="FatigueContainer" type="Node2D" parent="UI/SideMenu"]
 position = Vector2( 360, 45 )
+scale = Vector2( 0.25, 0.25 )
+
+[node name="Label" type="Label" parent="UI/SideMenu/FatigueContainer"]
+margin_right = 72.0
+margin_bottom = 35.0
+custom_fonts/font = ExtResource( 8 )
+text = "Fatigue"
+align = 1
+valign = 1
+
+[node name="Current" type="Label" parent="UI/SideMenu/FatigueContainer/Label"]
+margin_left = 72.0
+margin_right = 180.0
+margin_bottom = 35.0
+custom_fonts/font = ExtResource( 8 )
+text = "1000"
+align = 2
+valign = 1
+
+[node name="Slash" type="Label" parent="UI/SideMenu/FatigueContainer/Label"]
+margin_left = 180.0
+margin_right = 216.0
+margin_bottom = 35.0
+custom_fonts/font = ExtResource( 8 )
+text = "/"
+align = 1
+valign = 1
+
+[node name="Max" type="Label" parent="UI/SideMenu/FatigueContainer/Label"]
+margin_left = 216.0
+margin_right = 324.0
+margin_bottom = 35.0
+custom_fonts/font = ExtResource( 8 )
+text = "1000"
+valign = 1
+
+[node name="DmgContainer" type="Node2D" parent="UI/SideMenu"]
+position = Vector2( 360, 54 )
 scale = Vector2( 0.25, 0.25 )
 
 [node name="Label" type="Label" parent="UI/SideMenu/DmgContainer"]
@@ -393,7 +447,7 @@ bbcode_enabled = true
 scroll_active = false
 
 [node name="HitContainer" type="Node2D" parent="UI/SideMenu"]
-position = Vector2( 360, 54 )
+position = Vector2( 414, 54 )
 scale = Vector2( 0.25, 0.25 )
 
 [node name="Label" type="Label" parent="UI/SideMenu/HitContainer"]

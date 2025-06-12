@@ -138,6 +138,10 @@ func saveCharacter() -> Dictionary:
 		"shortcuts": {
 			"shortcuts": Ref.character.shortcuts.shortcuts,
 			"shortcutsType": Ref.character.shortcuts.shortcutsType,
+		},
+		"fatigue": {
+			"actual": Ref.character.fatigue.acutal,
+			"total": Ref.character.fatigue.total,
 		}
 	}
 

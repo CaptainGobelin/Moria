@@ -26,6 +26,8 @@ func newFloor():
 	var specialDoor = decorator.placeSpecialRoom(exits)
 	get_parent().drawFloor(array)
 	var criticalPath = Ref.game.pathfinder.a_star(exits[0], exits[2], 9999, true)
+	if criticalPath == null:
+		return newFloor()
 	decorator.flagCriticalPath(criticalPath)
 	var rooms = decorator.getTreasuresCandidates()
 	decorator.flagMap()
@@ -38,11 +40,14 @@ func newFloor():
 		var room = Utils.chooseRandom(rooms[1])
 		rooms[1].erase(room)
 		var cells = decorator.getChestCells(rooms[0][room][0])
-		for _j in range(1 + (randi() % GLOBAL.LOOTS_PER_TREASURE)):
+		#DEBUG
+		for c in cells:
+			Ref.currentLevel.get_node("Debug/Secrets").set_cellv(c, 4)
+		for _j in range(2 + (randi() % (GLOBAL.LOOTS_PER_TREASURE-2))):
 			if cells.size() == 0:
 				break
 			var cell = Utils.chooseRandom(cells)
-			if randf() < 0.5:
+			if randf() < 0.75:
 				Ref.currentLevel.addLoot(cell, true)
 			else:
 				Ref.currentLevel.addChest(cell, 1)
@@ -52,8 +57,12 @@ func newFloor():
 			if randf() < (1 - 2 * GLOBAL.HIDDEN_DOORS_RATIO):
 				GLOBAL.hiddenDoors.append(d)
 				array[d.x][d.y] = GLOBAL.WALL_ID
+				#DEBUG
+				Ref.currentLevel.get_node("Debug/Secrets").set_cellv(d, 3)
 			if randf() < (1 - 2 * GLOBAL.LOCKED_DOORS_RATIO):
 				GLOBAL.lockedDoors.append(d)
+				#DEBUG
+				Ref.currentLevel.get_node("Debug/Traps").set_cellv(d, 5)
 			if validatedDoors.has(d):
 				validatedDoors.erase(d)
 		nTreasures -= (2 * treasureThreshold)
@@ -64,6 +73,8 @@ func newFloor():
 			if randf() < GLOBAL.HIDDEN_DOORS_RATIO:
 				GLOBAL.hiddenDoors.append(d)
 				array[d.x][d.y] = GLOBAL.WALL_ID
+				#DEBUG
+				Ref.currentLevel.get_node("Debug/Secrets").set_cellv(d, 3)
 				if validatedDoors.has(d):
 					validatedDoors.erase(d)
 	# Lock doors
@@ -71,6 +82,8 @@ func newFloor():
 		for d in r[1]:
 			if randf() < GLOBAL.LOCKED_DOORS_RATIO:
 				GLOBAL.lockedDoors.append(d)
+				#DEBUG
+				Ref.currentLevel.get_node("Debug/Traps").set_cellv(d, 5)
 				if validatedDoors.has(d):
 					validatedDoors.erase(d)
 	# Place traps
@@ -85,13 +98,14 @@ func newFloor():
 					if t.has(trapPos):
 						if array[trapPos.x][trapPos.y] == GLOBAL.FLOOR_ID:
 							Ref.currentLevel.placeTrap(trapPos)
+							#DEBUG
+							Ref.currentLevel.get_node("Debug/Traps").set_cellv(trapPos, 2)
 						t.erase(trapPos)
 	deleteCorridorDoors()
 	get_parent().drawFloor(array)
 	# Draw entries
 	dungeon.set_cellv(exits[1], GLOBAL.PASS_ID, false, false, false, Vector2(2, 0))
 	dungeon.set_cellv(specialDoor, GLOBAL.PASS_ID, false, false, false, Vector2(1, 0))
-	print("Generated after ", retries, " retires.")
 	return exits[0]
 
 func generate():
@@ -231,7 +245,7 @@ func deleteCorridorDoors():
 	for d in validatedDoors:
 		if GLOBAL.hiddenDoors.has(d):
 			continue
-		if randf() < GLOBAL.DOOR_REDUCTION_RATIO:
+		if randf() < (1 - GLOBAL.DOOR_REDUCTION_RATIO):
 			continue
 		var count = 0
 		for di in range(-1, 2):

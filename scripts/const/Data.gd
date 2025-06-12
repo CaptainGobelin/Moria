@@ -162,6 +162,12 @@ const lvlCaps = [0, 30, 50, 75, 110, 150, 200, 275]
 const skpGains = [0, 0, 2, 1, 2, 1, 2, 1, 2]
 const ftpGains = [0, 0, 0, 1, 0, 1, 0, 1, 0]
 
+# Fatigue
+const FA_INITIAL = 1000
+const FA_FIGHT_COST = 4
+const FA_SPELL_COST = 10
+const FA_SEARCH_COST = 2
+
 # Classes
 const CL_FIGHTER = 0
 const CL_THIEF = 1
@@ -229,6 +235,8 @@ const MO_SUM_HAMMER = 901 #902 903 reserved also
 const MO_SUM_SKELETON = 904
 const MO_SUM_ARCHER_SKELETON = 905
 const MO_DUMMY = 1000
+const MO_DUMMY_SUPER = 1001
+const MO_DUMMY_WEAK = 1002
 
 const MO_NAME = 0
 const MO_HP = 1
@@ -359,6 +367,18 @@ const monsters = {
 		1, 0, 0, 1,
 		[]
 	],
+	MO_DUMMY_SUPER: [
+		"Super target", 100, 0, Vector3(1, 1, 0),
+		2, 1, 1, 10, false,
+		1, 100, 100, 1,
+		[]
+	],
+	MO_DUMMY_WEAK: [
+		"Weak target", 100, 0, Vector3(1, 1, 0),
+		2, 1, 1, 10, false,
+		1, -100, -100, 1,
+		[]
+	],
 }
 
 const TAG_EVIL = 0
@@ -435,6 +455,8 @@ const CHAR_R_RADIANT = 15
 const CHAR_R_MAGIC = 16
 const CHAR_R_ICE = 17
 const CHAR_R_LIGHTNING = 18
+const CHAR_FATIGUE = 19
+const CHAR_FATIGUEMAX = 20
 
 # Weapons
 const W_CLUB = 0

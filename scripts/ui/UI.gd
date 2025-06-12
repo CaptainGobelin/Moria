@@ -20,6 +20,8 @@ onready var xpLabel = get_node("SideMenu/Level/Label/CurrentXP")
 onready var maxXpLabel = get_node("SideMenu/Level/Label/MaxXP")
 onready var hpMaxLabel = get_node("SideMenu/HPContainer/Label/Max")
 onready var hpLabel = get_node("SideMenu/HPContainer/Label/Current")
+onready var fatigueLabel = get_node("SideMenu/FatigueContainer/Label/Current")
+onready var fatigueMaxLabel = get_node("SideMenu/FatigueContainer/Label/Max")
 onready var caLabel = get_node("SideMenu/CAContainer/Label/Current")
 onready var protLabel = get_node("SideMenu/ProtContainer/Label/Current")
 onready var dmgLabel = get_node("SideMenu/DmgContainer/Label/Current")
@@ -313,6 +315,12 @@ func writeCharacterStrike(name: String, hit: int, ca: int):
 	write(color(msg, "yellow"))
 	lastPrinted = "writeCharacterStrike"
 
+func writeCharacterShoot(name: String, weapon: String):
+	var msg = "You shoot " + Utils.addArticle(weapon)
+	msg += " at the " + name + "."
+	write(color(msg, "yellow"))
+	lastPrinted = "writeCharacterShoot"
+
 func writeCharacterMiss(name: String, hit: int, ca: int):
 	var msg = "You miss the " + name
 	msg += " (rolled " + String(hit) + " vs " + String(ca) + ")."
@@ -337,6 +345,16 @@ func writeMonsterStrike(name: String, target: String, hit: int, ca: int):
 	msg += "(rolled " + String(hit) + " vs " + String(ca) + ")."
 	write(color(msg, "red"))
 	lastPrinted = "writeMonsterStrike"
+
+func writeMonsterShoot(name: String, target: String, weapon: String):
+	var msg = "The " + name + " shoots " + Utils.addArticle(weapon)
+	if target == "you":
+		msg += " at " + target
+	else:
+		msg += " at your " + target
+	msg += "."
+	write(color(msg, "yellow"))
+	lastPrinted = "writeMonsterShoot"
 
 func writeMonsterMiss(name: String, target: String, hit: int, ca: int):
 	var msg = "The " + name + " misses " + target + " "
@@ -469,6 +487,10 @@ func updateStat(stat: int, value):
 			hpMaxLabel.text = String(value)
 		Data.CHAR_HP:
 			hpLabel.text = String(value)
+		Data.CHAR_FATIGUE:
+			fatigueLabel.text = String(value)
+		Data.CHAR_FATIGUEMAX:
+			fatigueMaxLabel.text = String(value)
 		Data.CHAR_CA:
 			caLabel.text = String(value)
 		Data.CHAR_PROT:

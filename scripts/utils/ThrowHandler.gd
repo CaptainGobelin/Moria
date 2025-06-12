@@ -15,6 +15,7 @@ func throwAsync(itemId: int):
 	var targetId = GLOBAL.targets.keys()[coroutineReturn]
 	var entity = instance_from_id(targetId)
 	yield(castProjectile(GLOBAL.targets[targetId], item[Data.TH_PROJ]), "completed")
+	Ref.ui.writeCharacterShoot(entity.stats.entityName, item[Data.TH_NAME])
 	if StatusEngine.getStatusRank(entity, Data.STATUS_REPEL_MISSILES) >= 0 and randf() < 0.15:
 		Ref.ui.writeDeflectMonster(entity.stats.entityName)
 	if item[Data.TH_DMG] != null:
@@ -28,6 +29,7 @@ func throwAsync(itemId: int):
 	if item[Data.TH_EFFECT] != null:
 		SpellEngine.applyEffect(Ref.character, instance_from_id(targetId), item[Data.TH_EFFECT], true, 1, 99)
 	Ref.character.inventory.throwings.erase(itemId)
+	Ref.character.fatigue.fightCost()
 	Ref.game.set_process_input(true)
 	GLOBAL.currentMode = GLOBAL.MODE_NORMAL
 	GeneralEngine.newTurn()
@@ -40,6 +42,10 @@ func castProjectile(path: Array, projInfo):
 
 func castThrowMonster(itemId: int, caster, target, path: Array):
 	var item = Data.throwings[itemId]
+	if target is Character:
+		Ref.ui.writeMonsterShoot(caster.stats.entityName, "you", item[Data.TH_NAME])
+	else:
+		Ref.ui.writeMonsterShoot(caster.stats.entityName, target.stats.entityName, item[Data.TH_NAME])
 	castProjectile(path, item[Data.TH_PROJ])
 	if item[Data.TH_DMG] != null:
 		if StatusEngine.getStatusRank(target, Data.STATUS_REPEL_MISSILES) >= 0 and randf() < 0.15:

@@ -24,6 +24,7 @@ onready var secrets = get_node("Secrets")
 onready var effects = get_node("Effects")
 onready var targetArrow = get_node("TargetArrow")
 onready var levelBuffer = get_node("LevelBuffer")
+onready var debugLayer = get_node("Debug")
 
 var currentBiome
 var currentFloor
@@ -191,6 +192,20 @@ func getRandomFreeCell():
 		if isCellFree(cell)[0]:
 			return cell
 
+func isBlockingCell(cell: Vector2) -> bool:
+	var isInBlock: bool = false
+	var firstBlockEncountered: bool = false
+	for n in Utils.neighbours:
+		if not isCellFree(cell + n)[0]:
+			isInBlock = true
+		else:
+			if isInBlock and firstBlockEncountered:
+				return false
+			if isInBlock:
+				firstBlockEncountered = true
+				isInBlock = false
+	return false
+
 func placeCharacter(pos: Vector2 = Vector2(-1,-1)):
 	if pos == Vector2(-1, -1):
 		pos = getRandomFreeCell()
@@ -223,7 +238,6 @@ func addLoot(cell: Vector2, isSecret: bool = false):
 			rarity -= 1
 	rarity += Skills.getLootRarityBonus()
 	for item in Ref.game.itemGenerator.generateItem(rarity):
-		print(GLOBAL.items[item][GLOBAL.IT_NAME])
 		GLOBAL.dropItemOnFloor(item, cell)
 
 func dropItem():
@@ -244,8 +258,11 @@ func addChest(cell: Vector2, rarityBonus: int):
 			GLOBAL.chests[chest.get_instance_id()][GLOBAL.CH_CONTENT].append(item)
 
 func createChest():
-	var cell = getRandomFreeCell()
-	addChest(cell, 0)
+	for _i in range(5):
+		var cell = getRandomFreeCell()
+		if not isBlockingCell(cell):
+			addChest(cell, 0)
+			return
 
 func placeTrap(pos: Vector2, idx: int = Data.TR_DART):
 	if GLOBAL.trapsByPos.has(pos):

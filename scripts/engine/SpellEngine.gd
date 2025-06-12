@@ -296,6 +296,8 @@ func repelEvil(caster, rank: int):
 
 func cureWounds(entity, rank: int):
 	playEffect(entity.pos, Effect.BUFF)
+	if rank >= 2 and entity is Character:
+		Ref.character.fatigue.refresh(100)
 
 func frostNova(caster, rank: int):
 	var dmgDice = getDmgDice(caster, Data.SP_FROST_NOVA, rank)

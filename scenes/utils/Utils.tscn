@@ -4,6 +4,13 @@
 script/source = "extends Node
 
 const directons = [Vector2(-1, 0), Vector2(0, -1), Vector2(1, 0), Vector2(0, 1)]
+const neighbours = [
+	Vector2(1, 0), Vector2(1, 1), Vector2(0, 1),
+	Vector2(-1, 1), Vector2(-1, 0), Vector2(-1, -1),
+	Vector2(0, -1), Vector2(1, -1),
+	Vector2(1, 0), Vector2(1, 1), Vector2(0, 1),
+	Vector2(-1, 1), Vector2(-1, 0), Vector2(-1, -1)
+]
 
 func addArticle(name: String, nb = 1):
 	if nb > 1:

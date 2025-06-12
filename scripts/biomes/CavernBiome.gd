@@ -32,6 +32,8 @@ func newFloor():
 	var specialDoor = decorator.placeSpecialRoom(exits)
 	get_parent().drawFloor(array)
 	var criticalPath = Ref.game.pathfinder.a_star(exits[0], exits[2], 9999, true)
+	if criticalPath == null:
+		return newFloor()
 	decorator.flagCriticalPath(criticalPath, true)
 	get_parent().drawFloor(array)
 	rooms = decorator.getTreasuresCandidates(50)
@@ -45,6 +47,9 @@ func newFloor():
 		var room = Utils.chooseRandom(rooms[1])
 		rooms[1].erase(room)
 		var cells = decorator.getChestCells(rooms[0][room][0])
+		#DEBUG
+		for c in cells:
+			Ref.currentLevel.get_node("Debug/Secrets").set_cellv(c, 4)
 		for _j in range(2 + (randi() % (GLOBAL.LOOTS_PER_TREASURE-2))):
 			if cells.size() == 0:
 				break
@@ -59,6 +64,8 @@ func newFloor():
 			if randf() < (1 - GLOBAL.HIDDEN_DOORS_RATIO):
 				GLOBAL.hiddenDoors.append(d)
 				array[d.x][d.y] = GLOBAL.WALL_ID
+				#DEBUG
+				Ref.currentLevel.get_node("Debug/Secrets").set_cellv(d, 3)
 			if randf() < (1 - 2 * GLOBAL.LOCKED_DOORS_RATIO):
 				GLOBAL.lockedDoors.append(d)
 #			if validatedDoors.has(d):
@@ -66,11 +73,21 @@ func newFloor():
 		nTreasures -= (0.5 * treasureThreshold)
 		treasureThreshold /= 2.0
 	hideAllDoors()
+	for _i in range(2/GLOBAL.TRAPPED_ROOMS_RATIO - (randi() % 12)):
+		var pos = getRandomCell()
+		if pos == null:
+			continue
+		for _j in range(randi() % GLOBAL.TRAPS_PER_ROOM):
+			for cell in decorator.getTrapPattern():
+				var trapPos = pos + cell
+				if array[trapPos.x][trapPos.y] == GLOBAL.FLOOR_ID:
+					Ref.currentLevel.placeTrap(trapPos)
+					#DEBUG
+					Ref.currentLevel.get_node("Debug/Traps").set_cellv(trapPos, 2)
 	get_parent().drawFloor(array)
 	# Draw entries
 	dungeon.set_cellv(exits[1], GLOBAL.PASS_ID, false, false, false, Vector2(2, 0))
 	dungeon.set_cellv(specialDoor, GLOBAL.PASS_ID, false, false, false, Vector2(1, 0))
-	print("Generated after ", retries, " retires.")
 	return exits[0]
 
 func generate():
@@ -257,3 +274,17 @@ func hideAllDoors():
 				if randf() < 3 * GLOBAL.HIDDEN_DOORS_RATIO:
 					GLOBAL.hiddenDoors.append(Vector2(i, j))
 					array[i][j] = GLOBAL.WALL_ID
+					#DEBUG
+					Ref.currentLevel.get_node("Debug/Secrets").set_cellv(Vector2(i, j), 3)
+				if randf() < GLOBAL.LOCKED_DOORS_RATIO:
+					GLOBAL.lockedDoors.append(Vector2(i, j))
+					#DEBUG
+					Ref.currentLevel.get_node("Debug/Traps").set_cellv(Vector2(i, j), 5)
+
+func getRandomCell():
+	for _c in range(10):
+		var i = randi() % GLOBAL.FLOOR_SIZE_X
+		var j = randi() % GLOBAL.FLOOR_SIZE_Y
+		if array[i][j] == GLOBAL.FLOOR_ID:
+			return Vector2(i, j)
+	return null

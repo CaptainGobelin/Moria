@@ -7,6 +7,7 @@ onready var inventory = get_node("Inventory")
 onready var spells = get_node("Spells")
 onready var skills = get_node("Skills")
 onready var shortcuts = get_node("Shortcuts")
+onready var fatigue = get_node("Fatigue")
 onready var status = ""
 
 var currentVision: Array = []
@@ -21,6 +22,7 @@ func _ready():
 func init(newCharClass: int, isCreation: bool = true):
 	charClass = newCharClass
 	stats.init(charClass)
+	fatigue.init()
 	if isCreation:
 		skills.init(charClass)
 		inventory.init(charClass)
@@ -123,6 +125,7 @@ func hit(entity):
 	if entity == null:
 		return
 	if entity.is_in_group("Monster"):
+		fatigue.fightCost()
 		SpellEngine.breakSanctuary(self, SpellEngine.SANCT_ATTACK)
 		var isSlaying = false
 		if statuses.has(Data.STATUS_GOBLIN_WP) and Data.hasTag(entity, Data.TAG_GOBLIN):
@@ -259,6 +262,7 @@ func attemptLockpick(dc: int) -> bool:
 
 func search():
 	Ref.ui.writeSearch()
+	fatigue.searchCost()
 	for i in range(-4, 5):
 		for j in range(-4, 5):
 			var cell = pos + Vector2(i, j)
@@ -284,6 +288,7 @@ func rest():
 		a.queue_free()
 	StatusEngine.clearStatuses(self)
 	stats.updateHp(stats.hpMax)
+	fatigue.refresh()
 	for s in spells.spellsUses.keys():
 		var school = Data.spells[s][Data.SP_SCHOOL]
 		var rank = spells.getSpellRank(school)

@@ -93,6 +93,7 @@ func castSpellAsync(spellId: int, scrollId = null):
 			Ref.character.spells.spellsUses[spellId] -= 1
 		else:
 			Ref.character.inventory.scrolls.erase(scrollId)
+		Ref.character.fatigue.spellCost()
 		GeneralEngine.newTurn()
 
 func castProjectile(path: Array, projInfo, yieldFor: String = "end_coroutine"):

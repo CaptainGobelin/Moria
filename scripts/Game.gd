@@ -3,6 +3,8 @@ extends Node2D
 class_name Game
 
 export (int, "Normal, Fast, Tests, Dungeon, Menu, Debug") var start = 0
+export (int, "Fighter", "Thief", "Mage", "Cleric", "Paladin", "Bard", "Druid", "Ranger") var debugClass = 0
+export (bool) var debugMode = false
 
 onready var inventoryMenu = get_node("InventoryMenu")
 onready var characterMenu = get_node("CharacterMenu")
@@ -25,6 +27,10 @@ var random_seed: int
 var autoexplore = false setget setAutoExplore
 
 func _ready():
+	if debugMode:
+		Ref.currentLevel.fog.visible = false
+		Ref.currentLevel.shadows.visible = false
+		Ref.currentLevel.debugLayer.visible = true
 	if GLOBAL.startingMode != null:
 		start = GLOBAL.startingMode
 	if start == 4:
@@ -50,7 +56,10 @@ func _ready():
 		5:
 			chooseClassMenu.queue_free()
 			dungeonGenerator.biome = 4
-			Ref.character.init(Data.CL_FIGHTER)
+			Ref.character.init(debugClass)
+			Ref.character.skills.masteries = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+			Ref.character.skills.skp = 50
+			Ref.character.skills.ftp = 10
 			startGame()
 		_:
 			Ref.character.init(Data.CL_FIGHTER)
@@ -81,11 +90,16 @@ func setAutoExplore(value: bool):
 
 func startGame():
 	match start:
+		1:
+			newFloor()
+			Ref.currentLevel.currentLevel = 1
 		2:
 			testFloor()
 		5:
 			testFloor()
 			Ref.currentLevel.placeCharacter(Vector2(30, 10))
+			Ref.currentLevel.spawnMonster(Data.MO_DUMMY_SUPER, Vector2(20, 4))
+			Ref.currentLevel.spawnMonster(Data.MO_DUMMY_WEAK, Vector2(24, 4))
 			dungeonGenerator.loadAllItems()
 		_:
 			newFloor()
@@ -104,6 +118,9 @@ func nextFloor():
 	newFloor()
 
 func cleanFloor():
+	#DEBUG
+	Ref.currentLevel.get_node("Debug/Traps").clear()
+	Ref.currentLevel.get_node("Debug/Secrets").clear()
 	for s in Ref.currentLevel.secrets.get_children():
 		s.free()
 	GLOBAL.hiddenDoors.clear()
@@ -171,7 +188,7 @@ func newFloor():
 		a.setPosition(cell)
 	for i in range(9):
 		Ref.currentLevel.spawnMonster(i)
-	for _i in range(randi() % 4):
+	for _i in range(max(0, randi() % 6 - 2)):
 		Ref.currentLevel.createChest()
 	for _i in range(3 + (randi() % 4)):
 		Ref.currentLevel.dropItem()
@@ -218,7 +235,8 @@ func _input(event):
 	elif event.is_action_released("rest"):
 		restHandler.askrForRest()
 	elif (event.is_action_released("debug_new_floor")):
-		Ref.character.setPosition(dungeonGenerator.newFloor())
+#		Ref.character.setPosition(dungeonGenerator.newFloor())
+		newFloor()
 	elif (event.is_action_released("save")):
 		saveSystem.saveGame()
 	elif (event.is_action_released("load")):
