@@ -6,7 +6,7 @@ signal completed
 
 export(int, "Fire", "Light", "Desintegrate", "PoisonGas", 
 "SleepGas", "Shock", "Smite", "Buff", "Arcane", "Ice",
-"Sparkles", "Dark", "Skull", "Transmut") var type = 0 setget setType
+"Sparkles", "Dark", "Skull", "Transmut", "Circle") var type = 0 setget setType
 
 const FIRE = 0
 const LIGHT = 1
@@ -22,6 +22,7 @@ const SPARK = 10
 const DARK = 11
 const SKULL = 12
 const TRANSMUT = 13
+const CIRCLE = 14
 
 func setType(value):
 	type = value
@@ -35,7 +36,7 @@ func setCoord(value):
 	# Update the correct frame_coords values
 	frame_coords = Vector2(coords.x, type)
 
-func play(pos: Vector2, effectType: int, length: int, speed = 1.0):
+func play(pos: Vector2, effectType: int, length: int = 5, speed: float = 1.0):
 	position = pos * 9
 	type = effectType
 	get_node("AnimationPlayer").play("play" + String(length), -1, speed)

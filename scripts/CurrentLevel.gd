@@ -8,6 +8,7 @@ onready var lootScene = preload("res://scenes/Loot.tscn")
 onready var chestScene = preload("res://scenes/Chest.tscn")
 onready var secretScene = preload("res://scenes/Secret.tscn")
 onready var trapScene = preload("res://scenes/Trap.tscn")
+onready var effectScene = preload("res://scenes/Effect.tscn")
 
 onready var dungeon = get_node("Map")
 onready var fog = get_node("Fog")
@@ -26,9 +27,6 @@ onready var targetArrow = get_node("TargetArrow")
 onready var levelBuffer = get_node("LevelBuffer")
 onready var debugLayer = get_node("Debug")
 
-var currentBiome
-var currentFloor
-var currentLevel = 1
 var searched: Array
 var specialEntries: Array = [null, null]
 
@@ -131,6 +129,9 @@ func discoverDoor(cell: Vector2):
 		if s.pos == cell:
 			s.queue_free()
 	Ref.currentLevel.dungeon.set_cellv(cell, GLOBAL.DOOR_ID, false, false, false, Vector2(0,1))
+	var effect = effectScene.instance()
+	effects.add_child(effect)
+	effect.play(cell, Effect.CIRCLE, 5, 0.5)
 	Ref.ui.writeHiddenDoorDetected()
 
 func clearFog():
@@ -224,7 +225,7 @@ func spawnMonster(idx: int = 0, pos = null, isAllied: bool = false):
 	monster.spawn(idx, cell)
 
 func addLoot(cell: Vector2, isSecret: bool = false):
-	var rarity = currentLevel
+	var rarity = WorldHandler.currentCR
 	var rand = randf()
 	if isSecret:
 		if rand < 0.4:
@@ -327,19 +328,3 @@ func target(pos):
 
 func untarget():
 	targetArrow.visible = false
-
-func setLocation(newFloor: int, newBiome = currentBiome):
-	currentFloor = newFloor
-	currentBiome = newBiome
-	Ref.ui.updateLocation(currentBiome, currentFloor)
-
-func getNextLocation() -> bool:
-	if currentFloor < Data.biomes[currentBiome][Data.BI_FLOORS]:
-		setLocation(Ref.currentLevel.currentFloor + 1)
-	else:
-		if Data.biomes[currentBiome][Data.BI_CONNECT].empty():
-			return false
-		else:
-			setLocation(0, Data.biomes[currentBiome][Data.BI_CONNECT][0])
-			currentLevel += 1
-	return true

@@ -1,6 +1,8 @@
 extends Node2D
 class_name Trap
 
+onready var effectScene = preload("res://scenes/Effect.tscn")
+
 onready var sprite = get_node("Sprite")
 onready var mask = get_node("Mask")
 
@@ -31,3 +33,6 @@ func reveal():
 	hidden = false
 	sprite.visible = true
 	mask.visible = false
+	var effect = effectScene.instance()
+	Ref.currentLevel.effects.add_child(effect)
+	effect.play(pos, Effect.CIRCLE, 5, 0.5)
