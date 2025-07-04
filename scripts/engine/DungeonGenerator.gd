@@ -1,6 +1,8 @@
 extends Node
 
 onready var game = get_parent().get_parent()
+onready var analyzer = get_node("GeneratorAnalyzer")
+onready var encounterHandler = get_node("EncounterHandler")
 onready var normalBiome = get_node("NormalBiome")
 onready var cavernBiome = get_node("CavernBiome")
 onready var merchantRoom = get_node("MerchantRoom")
@@ -17,8 +19,11 @@ var textures = [
 var waitingDoors:Array = []
 var validatedDoors:Array = []
 var array:Array = []
+var enemyCells: Array = []
 var arrayFullness = 0
 var trapList: Dictionary = {}
+var retries: int = 0
+var startCell: Vector2
 
 func _ready():
 	set_process_input(false)
@@ -68,8 +73,10 @@ func simpleFloor():
 	array[4][6] = GLOBAL.WALL_ID
 	array[3][4] = GLOBAL.WALL_ID
 	array[3][6] = GLOBAL.WALL_ID
+	startCell = Vector2(int(GLOBAL.FLOOR_SIZE_X/2), int(GLOBAL.FLOOR_SIZE_Y/2))
 	drawFloor(array)
-	return Vector2(int(GLOBAL.FLOOR_SIZE_X/2), int(GLOBAL.FLOOR_SIZE_Y/2))
+	flagEnemyCells()
+	return startCell
 
 func drawFloor(floorArray: Array):
 	dungeon = Ref.currentLevel.dungeon as TileMap
@@ -106,3 +113,19 @@ func loadAllItems():
 		if item != null:
 			GLOBAL.dropItemOnFloor(item[0], cells[idx])
 			idx = (idx + 1) % cells.size()
+
+# Call after drawFloor
+func flagEnemyCells():
+	enemyCells.clear()
+	for c in dungeon.get_used_cells_by_id(GLOBAL.FLOOR_ID):
+		if Utils.squareDist(c, startCell) < (GLOBAL.VIEW_RANGE + 3):
+			if Ref.currentLevel.canTarget(startCell, c):
+				continue
+		var valid: int = 0
+		for d in Utils.neighbours:
+			if dungeon.get_cellv(c + d) != GLOBAL.FLOOR_ID:
+				valid += 1
+		if valid < 7:
+			enemyCells.append(c)
+			#DEBUG
+			Ref.currentLevel.get_node("Debug/Enemies").set_cellv(c, 2)

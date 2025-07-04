@@ -14,11 +14,11 @@ var trapList: Dictionary = {}
 
 func newFloor():
 	dungeon = Ref.currentLevel.dungeon as TileMap
-	var retries = 0
+	get_parent().retries = 0
 	generate()
 	while !isFloorFull():
 		generate()
-		retries += 1
+		get_parent().retries += 1
 	fuseDoorsAndWalls()
 	decorator.init(array)
 	var exits = decorator.placeExits()
@@ -102,10 +102,13 @@ func newFloor():
 							Ref.currentLevel.get_node("Debug/Traps").set_cellv(trapPos, 2)
 						t.erase(trapPos)
 	deleteCorridorDoors()
+	get_parent().startCell = exits[0]
 	get_parent().drawFloor(array)
+	get_parent().flagEnemyCells()
 	# Draw entries
 	dungeon.set_cellv(exits[1], GLOBAL.PASS_ID, false, false, false, Vector2(2, 0))
 	dungeon.set_cellv(specialDoor, GLOBAL.PASS_ID, false, false, false, Vector2(1, 0))
+	get_parent().encounterHandler.createEncounters()
 	return exits[0]
 
 func generate():

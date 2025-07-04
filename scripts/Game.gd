@@ -2,7 +2,7 @@ extends Node2D
 
 class_name Game
 
-export (int, "Normal, Fast, Tests, Dungeon, Menu, Debug") var start = 0
+export (int, "Normal, Fast, Tests, Dungeon, Menu, Debug, Generator report") var start = 0
 export (int, "Fighter", "Thief", "Mage", "Cleric", "Paladin", "Bard", "Druid", "Ranger") var debugClass = 0
 export (bool) var debugMode = false
 
@@ -28,7 +28,7 @@ var autoexplore = false setget setAutoExplore
 
 func _ready():
 	if debugMode:
-		Ref.currentLevel.fog.visible = false
+#		Ref.currentLevel.fog.visible = false
 		Ref.currentLevel.shadows.visible = false
 		Ref.currentLevel.debugLayer.visible = true
 	if GLOBAL.startingMode != null:
@@ -61,6 +61,8 @@ func _ready():
 			Ref.character.skills.skp = 50
 			Ref.character.skills.ftp = 10
 			startGame()
+		6:
+			dungeonGenerator.analyzer.generateReport()
 		_:
 			Ref.character.init(Data.CL_FIGHTER)
 			startGame()
@@ -92,7 +94,7 @@ func startGame():
 	match start:
 		1:
 			newFloor()
-			Ref.currentLevel.currentLevel = 1
+			WorldHandler.currentCR = 2
 		2:
 			testFloor()
 		5:
@@ -102,9 +104,9 @@ func startGame():
 			Ref.currentLevel.spawnMonster(Data.MO_DUMMY_WEAK, Vector2(24, 4))
 			dungeonGenerator.loadAllItems()
 		_:
+			WorldHandler.setLocation(1, Data.BIOME_DUNGEON)
+			WorldHandler.currentCR = 2
 			newFloor()
-			Ref.currentLevel.setLocation(1, Data.BIOME_DUNGEON)
-			Ref.currentLevel.currentLevel = 1
 	Ref.currentLevel.refresh_view()
 	MasterInput.setMaster(self)
 	GLOBAL.currentMode = GLOBAL.MODE_NORMAL
@@ -112,7 +114,7 @@ func startGame():
 		Tests.runAll()
 
 func nextFloor():
-	if !Ref.currentLevel.getNextLocation():
+	if !WorldHandler.getNextLocation():
 		#TODO add a final screen
 		pass
 	newFloor()
@@ -121,6 +123,7 @@ func cleanFloor():
 	#DEBUG
 	Ref.currentLevel.get_node("Debug/Traps").clear()
 	Ref.currentLevel.get_node("Debug/Secrets").clear()
+	Ref.currentLevel.get_node("Debug/Enemies").clear()
 	for s in Ref.currentLevel.secrets.get_children():
 		s.free()
 	GLOBAL.hiddenDoors.clear()
@@ -171,7 +174,7 @@ func newFloor():
 	Ref.currentLevel.levelBuffer.flush()
 	cleanFloor()
 	var spawnPos: Vector2
-	match Ref.currentLevel.currentBiome:
+	match WorldHandler.currentBiome:
 		Data.BIOME_DUNGEON:
 			spawnPos = dungeonGenerator.dungeonFloor()
 		Data.BIOME_CAVERN:
@@ -186,8 +189,8 @@ func newFloor():
 		if cell == null:
 			a.die()
 		a.setPosition(cell)
-	for i in range(9):
-		Ref.currentLevel.spawnMonster(i)
+#	for i in range(9):
+#		Ref.currentLevel.spawnMonster(i)
 	for _i in range(max(0, randi() % 6 - 2)):
 		Ref.currentLevel.createChest()
 	for _i in range(3 + (randi() % 4)):
@@ -236,7 +239,7 @@ func _input(event):
 		restHandler.askrForRest()
 	elif (event.is_action_released("debug_new_floor")):
 #		Ref.character.setPosition(dungeonGenerator.newFloor())
-		newFloor()
+		nextFloor()
 	elif (event.is_action_released("save")):
 		saveSystem.saveGame()
 	elif (event.is_action_released("load")):

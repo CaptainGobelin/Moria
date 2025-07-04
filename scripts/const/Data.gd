@@ -1675,28 +1675,33 @@ const BI_CR = 0
 const BI_FLOORS = 1
 const BI_CONNECT = 2
 const biomes = {
-	BIOME_DUNGEON: [3, 5, [BIOME_CAVERN]],
-	BIOME_CAVERN: 	[6, 5, []],
+	BIOME_DUNGEON: [1, 5, [BIOME_CAVERN]],
+	BIOME_CAVERN: 	[2, 5, []],
 }
 
 const ENC_MONSTERS = 0
-const ENC_PROB = 1
-const ENC_DIFF = 2
+const ENC_MO_TYPE = 0
+const ENC_MO_MIN = 1
+const ENC_MO_MAX = 2
+const ENC_IS_LOW = 1
+const ENC_IS_RARE = 2
 const encounters = {
 	BIOME_DUNGEON: [
-		[[MO_SKELETON], 1, 0],
-		[[MO_SKELETON, MO_SKELETON], 1, 1],
-	]
+		[[[MO_GIANT_BAT, 1, 1]], true, false],
+		[[[MO_GIANT_BAT, 2, 2]], true, true],
+		[[[MO_GIANT_SNAKE, 1, 1]], true, false],
+		[[[MO_LESSER_SKELETON, 1, 1]], true, false],
+		[[[MO_GOBLIN, 1, 1]], true, true],
+		[[[MO_LESSER_SKELETON, 2, 2]], false, false],
+		[[[MO_GIANT_SNAKE, 3, 3]], false, true],
+		[[[MO_GIANT_LEECH, 2, 4]], false, false],
+		[[[MO_GOBLIN, 1, 1]], false, false],
+		[[[MO_SPIDER, 1, 1]], false, false],
+	],
 }
 
-var encountersCumultaiveProb: Dictionary = {}
-
-func encountersReader():
-	for biome in encounters.keys():
-		if !encountersCumultaiveProb.has(biome):
-			encountersCumultaiveProb[biome] = 0
-		for encounter in encounters[biome]:
-			encountersCumultaiveProb[biome] += encounter[ENC_PROB]
+const ENC_RARE_DISMISS = 0.65
+const ENC_BAD_CR_DISMISS = 0.75
 
 func _ready():
 	classesReader()
@@ -1709,4 +1714,3 @@ func _ready():
 	throwingsReader()
 	spellsReader()
 	enchantsReader()
-	encountersReader()

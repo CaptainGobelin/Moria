@@ -223,6 +223,7 @@ func spawnMonster(idx: int = 0, pos = null, isAllied: bool = false):
 	else:
 		monsters.add_child(monster)
 	monster.spawn(idx, cell)
+	return monster
 
 func addLoot(cell: Vector2, isSecret: bool = false):
 	var rarity = WorldHandler.currentCR

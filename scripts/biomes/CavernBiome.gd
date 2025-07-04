@@ -3,8 +3,6 @@ extends Node
 onready var decorator = get_node("../DungeonDecorator")
 onready var dungeon: TileMap
 
-export (int, "Normal, Cavern, Arena") var biome = 0
-
 # Door: [position:Vector2, direction:String]
 var waitingDoors:Array = []
 var validatedDoors:Array = []
@@ -14,7 +12,7 @@ var trapList: Dictionary = {}
 
 func newFloor():
 	dungeon = Ref.currentLevel.dungeon as TileMap
-	var retries = 0
+	get_parent().retries = 0
 	generate()
 	get_parent().drawFloor(array)
 	decorator.init(array)
@@ -84,7 +82,9 @@ func newFloor():
 					Ref.currentLevel.placeTrap(trapPos)
 					#DEBUG
 					Ref.currentLevel.get_node("Debug/Traps").set_cellv(trapPos, 2)
+	get_parent().startCell = exits[0]
 	get_parent().drawFloor(array)
+	get_parent().flagEnemyCells()
 	# Draw entries
 	dungeon.set_cellv(exits[1], GLOBAL.PASS_ID, false, false, false, Vector2(2, 0))
 	dungeon.set_cellv(specialDoor, GLOBAL.PASS_ID, false, false, false, Vector2(1, 0))

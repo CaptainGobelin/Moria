@@ -191,11 +191,18 @@ script = ExtResource( 36 )
 visible = false
 
 [node name="Secrets" type="TileMap" parent="CurrentLevel/Debug"]
+visible = false
 tile_set = ExtResource( 38 )
 cell_size = Vector2( 9, 9 )
 format = 1
 
 [node name="Traps" type="TileMap" parent="CurrentLevel/Debug"]
+visible = false
+tile_set = ExtResource( 38 )
+cell_size = Vector2( 9, 9 )
+format = 1
+
+[node name="Enemies" type="TileMap" parent="CurrentLevel/Debug"]
 tile_set = ExtResource( 38 )
 cell_size = Vector2( 9, 9 )
 format = 1

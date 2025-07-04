@@ -100,6 +100,7 @@ TrapEngine="*res://scenes/engine/TrapEngine.tscn"
 StatusEngine="*res://scenes/engine/StatusEngine.tscn"
 EnchantEngine="*res://scenes/engine/EnchantEngine.tscn"
 Tests="*res://tests/TESTS.tscn"
+WorldHandler="*res://scripts/engine/WorldHandler.gd"
 
 [debug]
 
