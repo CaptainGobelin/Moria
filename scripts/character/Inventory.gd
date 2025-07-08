@@ -191,7 +191,7 @@ func equipWeapon(idx: int):
 	# Shield
 	else:
 		if currentWeapon.y != -1:
-			unequipWeapon(currentWeapon.x, false)
+			unequipWeapon(currentWeapon.y, false)
 		currentWeapon.y = idx
 		for e in item[GLOBAL.IT_SPEC]:
 			EnchantEngine.applyEffect(get_parent(), e, idx)
