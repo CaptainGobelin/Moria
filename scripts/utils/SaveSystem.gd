@@ -179,6 +179,9 @@ func loadCharacter(dict: Dictionary):
 func saveMonsters() -> Dictionary:
 	var result = []
 	for m in Ref.currentLevel.monsters.get_children():
+		var allies = []
+		for a in m.allies:
+			allies.append(a.get_instance_id())
 		result.append({
 			"id": m.get_instance_id(),
 			"type": m.type,
@@ -186,7 +189,7 @@ func saveMonsters() -> Dictionary:
 			"statuses": m.statuses,
 			"pos": m.pos,
 			"skipNextTurn": m.skipNextTurn,
-			"allies": m.allies,
+			"allies": allies,
 			"buffCD": m.buffCD,
 			"actions": {
 				"throwings": m.actions.throwings,
@@ -224,7 +227,7 @@ func loadMonsters(dict: Dictionary):
 		monster.actions.selfHeals = m["actions"]["selfHeals"]
 		monster.stats.computeStats()
 		alliesOldIds[monster.get_instance_id()] = m["allies"]
-		reverseIds[m["id"]] = monster.get_instance_id()
+		reverseIds[m["id"]] = monster
 	for monster in Ref.currentLevel.monsters.get_children():
 		for allyId in alliesOldIds[monster.get_instance_id()]:
 			monster.allies.append(reverseIds[allyId])
