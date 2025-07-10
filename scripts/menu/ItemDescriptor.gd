@@ -35,7 +35,7 @@ func fillDescription(id: int):
 			potionDescription(item)
 			return item[GLOBAL.PO_TYPE]
 		GLOBAL.TH_TYPE:
-			weaponDescription(item)
+			throwingDescription(item)
 			return item[GLOBAL.TH_TYPE]
 	return null
 
@@ -96,3 +96,12 @@ func potionDescription(item):
 	nameLabel.text = item[GLOBAL.IT_NAME]
 	infoLabel.text = ""
 	effectsLabel.text = Data.potionDescriptions[item[GLOBAL.IT_BASE]]
+
+func throwingDescription(item):
+	icon.frame = item[GLOBAL.IT_ICON]
+	icon.visible = true
+	nameLabel.text = item[GLOBAL.IT_NAME]
+#	var info = "AC: " + String(item[GLOBAL.IT_CA])
+#	info += " Prot: " + String(item[GLOBAL.IT_PROT])
+#	infoLabel.text = info
+	effectsLabel.text = "- No special effect."
