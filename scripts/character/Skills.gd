@@ -55,76 +55,76 @@ func addFeat(feat: int):
 			masteries[Data.SK_DIV] = 1
 			masteries[Data.SK_CONJ] = 1
 			masteries[Data.SK_ENCH] = 0
-			return improve(Data.SK_ABJ)
+			return improve(Data.SK_ABJ, true)
 		Data.FEAT_CONJURER:
 			masteries[Data.SK_ABJ] = 0
 			masteries[Data.SK_DIV] = 1
 			masteries[Data.SK_CONJ] = 2
 			masteries[Data.SK_ENCH] = 1
-			return improve(Data.SK_CONJ)
+			return improve(Data.SK_CONJ, true)
 		Data.FEAT_DIVINER:
 			masteries[Data.SK_ABJ] = 1
 			masteries[Data.SK_DIV] = 2
 			masteries[Data.SK_CONJ] = 0
 			masteries[Data.SK_ENCH] = 1
-			return improve(Data.SK_DIV)
+			return improve(Data.SK_DIV, true)
 		Data.FEAT_ENCHANTER:
 			masteries[Data.SK_ABJ] = 1
 			masteries[Data.SK_DIV] = 0
 			masteries[Data.SK_CONJ] = 1
 			masteries[Data.SK_ENCH] = 2
-			return improve(Data.SK_ENCH)
+			return improve(Data.SK_ENCH, true)
 		Data.FEAT_SPHERE_WAR:
 			masteries[Data.SK_ABJ] = 2
 			masteries[Data.SK_DIV] = 0
 			masteries[Data.SK_CONJ] = 0
 			masteries[Data.SK_ENCH] = 1
-			return improve(Data.SK_ABJ)
+			return improve(Data.SK_ABJ, true)
 		Data.FEAT_SPHERE_ASTRAL:
 			masteries[Data.SK_ABJ] = 0
 			masteries[Data.SK_DIV] = 2
 			masteries[Data.SK_CONJ] = 1
 			masteries[Data.SK_ENCH] = 0
-			return improve(Data.SK_DIV)
+			return improve(Data.SK_DIV, true)
 		Data.FEAT_SPHERE_LAW:
 			masteries[Data.SK_ABJ] = 0
 			masteries[Data.SK_DIV] = 1
 			masteries[Data.SK_CONJ] = 0
 			masteries[Data.SK_ENCH] = 2
-			return improve(Data.SK_ENCH)
+			return improve(Data.SK_ENCH, true)
 		Data.FEAT_SKILLED_COMBAT:
 			masteries[Data.SK_COMBAT] += 1
-			return improve(Data.SK_COMBAT)
+			return improve(Data.SK_COMBAT, true)
 		Data.FEAT_SKILLED_ARMOR:
 			masteries[Data.SK_ARMOR] += 1
-			return improve(Data.SK_ARMOR)
+			return improve(Data.SK_ARMOR, true)
 		Data.FEAT_SKILLED_EVOCATION:
 			masteries[Data.SK_EVOC] += 1
-			return improve(Data.SK_EVOC)
+			return improve(Data.SK_EVOC, true)
 		Data.FEAT_SKILLED_ENCHANTMENT:
 			masteries[Data.SK_ENCH] += 1
-			return improve(Data.SK_ENCH)
+			return improve(Data.SK_ENCH, true)
 		Data.FEAT_SKILLED_ABJURATION:
 			masteries[Data.SK_ABJ] += 1
-			return improve(Data.SK_ABJ)
+			return improve(Data.SK_ABJ, true)
 		Data.FEAT_SKILLED_DIVINATION:
 			masteries[Data.SK_DIV] += 1
-			return improve(Data.SK_DIV)
+			return improve(Data.SK_DIV, true)
 		Data.FEAT_SKILLED_CONJURATION:
 			masteries[Data.SK_CONJ] += 1
-			return improve(Data.SK_CONJ)
+			return improve(Data.SK_CONJ, true)
 		Data.FEAT_SKILLED_PHYSICS:
 			masteries[Data.SK_PHY] += 1
-			return improve(Data.SK_PHY)
+			return improve(Data.SK_PHY, true)
 		Data.FEAT_SKILLED_WILLPOWER:
 			masteries[Data.SK_WIL] += 1
-			return improve(Data.SK_WIL)
+			return improve(Data.SK_WIL, true)
 		Data.FEAT_SKILLED_PERCEPTION:
 			masteries[Data.SK_PER] += 1
-			return improve(Data.SK_PER)
+			return improve(Data.SK_PER, true)
 		Data.FEAT_SKILLED_THIEVERY:
 			masteries[Data.SK_THI] += 1
-			return improve(Data.SK_THI)
+			return improve(Data.SK_THI, true)
 	return null
 
 static func removeForbiddenFeats(featList: Array) -> Array:
