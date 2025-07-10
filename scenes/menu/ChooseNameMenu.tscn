@@ -5,7 +5,7 @@
 [ext_resource path="res://scripts/menu/ChooseNameMenu.gd" type="Script" id=3]
 
 [node name="ChooseNameMenu" type="Node2D"]
-position = Vector2( 0, -27 )
+position = Vector2( -9, -45 )
 script = ExtResource( 3 )
 __meta__ = {
 "_editor_description_": ""

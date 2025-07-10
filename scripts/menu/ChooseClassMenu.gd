@@ -20,6 +20,8 @@ func open():
 	setSelected()
 
 func close():
+	Ref.game.chooseFeatMenu.position = Vector2(-63, 0)
+	Ref.game.chooseSpellMenu.position = Vector2(0, 0)
 	queue_free()
 
 func _input(event):

@@ -45,7 +45,7 @@ func _ready():
 		0:
 			chooseClassMenu.open()
 		1:
-			chooseClassMenu.queue_free()
+			chooseClassMenu.close()
 			Ref.character.init(Data.CL_FIGHTER)
 			startGame()
 		3:
@@ -54,7 +54,7 @@ func _ready():
 			Ref.character.setPosition(dungeonGenerator.newFloor())
 			set_process_input(true)
 		5:
-			chooseClassMenu.queue_free()
+			chooseClassMenu.close()
 			dungeonGenerator.biome = 4
 			Ref.character.init(debugClass)
 			Ref.character.skills.masteries = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]

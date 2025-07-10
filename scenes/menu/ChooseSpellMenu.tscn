@@ -8,6 +8,7 @@
 [ext_resource path="res://scripts/menu/ChooseSpellMenu.gd" type="Script" id=7]
 
 [node name="ChooseSpellMenu" type="Node2D"]
+position = Vector2( 67.5, 9 )
 script = ExtResource( 7 )
 
 [node name="TileMap" type="TileMap" parent="."]
