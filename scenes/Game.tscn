@@ -99,6 +99,7 @@ tracks/1/keys = {
 scale = Vector2( 4, 4 )
 script = ExtResource( 15 )
 debugClass = 3
+debugMode = true
 
 [node name="Utils" type="Node" parent="."]
 

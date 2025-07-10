@@ -42,9 +42,9 @@ func newFloor():
 	return masks.get_used_cells_by_id(SPAWN+1)[0] + roomOffset
 
 func generateArticle(cell: Vector2):
-	var rarity = (randi() % 3) + 1
+	var rarity = (randi() % 2) + WorldHandler.currentBiome
 	var items = Ref.game.itemGenerator.generateItem(rarity, -1, true)
-	var price = rarity * 5 + (randi() % 20)
+	var price = (rarity + 1) * 5 * (2.75 - 2 * randf())
 	price = int(ceil(price / items.size()))
 	for item in items:
 		GLOBAL.dropItemOnFloor(item, cell, true, price, false)
