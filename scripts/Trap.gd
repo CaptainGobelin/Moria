@@ -29,7 +29,7 @@ func disable():
 	disabled = true
 	hidden = false
 
-func reveal():
+func reveal(playEffect: bool = true):
 	hidden = false
 	sprite.visible = true
 	mask.visible = false

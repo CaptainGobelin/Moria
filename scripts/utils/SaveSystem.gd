@@ -314,7 +314,7 @@ func loadTraps(dict: Dictionary):
 		Ref.currentLevel.traps.add_child(trap)
 		trap.init(t[0], t[1])
 		if not t[2]:
-			trap.reveal()
+			trap.reveal(false)
 		elif t[3]:
 			trap.disable()
 			GLOBAL.trapsByPos.erase(trap.pos)
