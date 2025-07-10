@@ -3,16 +3,17 @@
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node
 
-func applyEffect(character, potion):
+func applyEffect(entity, potion):
 	match potion:
 		Data.PO_HEALING:
-			healingPotion(character)
+			healingPotion(entity)
 
-func healingPotion(character):
-	var result:float = character.stats.hpMax * 0.5
-	if Skills.hasImprovedPotions():
-		result = character.stats.hpMax * 0.75
-	character.stats.hp += ceil(result)
+func healingPotion(entity):
+	var result:float = entity.stats.hpMax * 0.5
+	if entity is Character:
+		if Skills.hasImprovedPotions():
+			result = entity.stats.hpMax * 0.75
+	entity.heal(ceil(result))
 "
 
 [node name="PotionEngine" type="Node"]

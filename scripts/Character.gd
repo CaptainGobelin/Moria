@@ -248,8 +248,8 @@ func equipItem(idx):
 func quaffPotion(idx):
 	var potion = GLOBAL.items[idx]
 	inventory.potions.erase(idx)
-	PotionEngine.applyEffect(self, potion[GLOBAL.IT_SPEC])
 	Ref.ui.writeQuaffedPotion(potion[GLOBAL.IT_NAME])
+	PotionEngine.applyEffect(self, potion[GLOBAL.IT_BASE])
 	GLOBAL.items.erase(idx)
 	SpellEngine.breakSanctuary(self, SpellEngine.SANCT_POTION)
 

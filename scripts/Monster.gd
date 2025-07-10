@@ -225,8 +225,8 @@ func wander():
 
 func quaffPotion(idx: int, actionType: String):
 	var potion = GLOBAL.items[idx]
-	PotionEngine.applyEffect(self, potion[GLOBAL.IT_SPEC])
 	Ref.ui.writeMonsterQuaffedPotion(stats.entityName, potion[GLOBAL.IT_NAME])
+	PotionEngine.applyEffect(self, potion[GLOBAL.IT_BASE])
 	actions.consumeAction(idx, actionType)
 	SpellEngine.breakSanctuary(self, SpellEngine.SANCT_ATTACK)
 

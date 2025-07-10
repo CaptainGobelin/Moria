@@ -13,7 +13,7 @@ func _ready():
 func setData(id: int):
 	var monster = instance_from_id(id) as Monster
 	setName(monster.stats.entityName)
-	setHp(monster.stats.currentHp, monster.stats.maxHp)
+	setHp(monster.stats.currentHp, monster.stats.hpMax)
 	setStats(monster.stats.ca, monster.stats.prot, monster.stats.saveBonus[0], monster.stats.saveBonus[1])
 	statusBar.refreshStatuses(monster)
 	visible = true

@@ -4,7 +4,7 @@ onready var entityName = "Snail"
 onready var type = -1
 onready var ca = 6
 onready var prot = 0
-onready var maxHp = 10
+onready var hpMax = 10
 onready var currentHp = 1
 onready var atkRange = 6
 onready var hitBonus = 0
@@ -23,8 +23,8 @@ func init(monsterType: int):
 	entityName = Data.monsters[type][Data.MO_NAME]
 	ca = Data.monsters[type][Data.MO_CA]
 	prot = Data.monsters[type][Data.MO_PROT]
-	maxHp = Data.monsters[type][Data.MO_HP]
-	currentHp = maxHp
+	hpMax = Data.monsters[type][Data.MO_HP]
+	currentHp = hpMax
 	hitBonus = Data.monsters[type][Data.MO_HIT]
 	hitDices = GeneralEngine.dice(1, 6, hitBonus)
 	var dmg = Data.monsters[type][Data.MO_DMG]
@@ -75,7 +75,7 @@ func computeState():
 		state = "disabled"
 
 func hpPercent() -> float:
-	return float(currentHp)/float(maxHp) * 100
+	return float(currentHp)/float(hpMax) * 100
 
 func hasStatus(status: int) -> bool:
 	return get_parent().statuses.has(status)
