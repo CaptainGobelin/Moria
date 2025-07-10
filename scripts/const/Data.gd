@@ -820,7 +820,7 @@ const EN_TYPE_MINOR = 0
 const EN_TYPE_MAJOR = 1
 
 const enchants = {
-	ENCH_PLUS_1: 		["", 					null, 			"+1", 					false, 1, true, true, [EN_SLOT_WP, EN_SLOT_AR]],
+	ENCH_PLUS_1: 		["", 					null, 			"+1", 					false, 1, false, true, [EN_SLOT_WP, EN_SLOT_AR]],
 	ENCH_FIRE_RESIST_1: ["Fire resistance I", 	null, 			"of fire resistance", 	false, 1, true, false, [EN_SLOT_TA, EN_SLOT_AR]],
 	ENCH_POIS_RESIST_1: ["Poison resistance I",	null, 			"of poison resistance", false, 1, true, false, [EN_SLOT_TA, EN_SLOT_AR]],
 	ENCH_ARCANE_SHIELD: ["Arcane shield", 		null, 			"of arcane shield", 	true,  2, true, false, [EN_SLOT_TA, EN_SLOT_AR]],
