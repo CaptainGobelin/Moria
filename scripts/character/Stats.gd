@@ -195,6 +195,7 @@ func updateXp(newValue):
 		Ref.character.skills.skp += Data.skpGains[level]
 		Ref.character.skills.ftp += Data.ftpGains[level]
 		Ref.ui.writeLevelUp(level, classStats[Data.CL_HPLVL], Data.skpGains[level], Data.ftpGains[level])
+		Ref.ui.askForContinue(MasterInput.masterInput)
 		Ref.ui.updateStat(Data.CHAR_XP, xp)
 	else:
 		xp = newValue

@@ -245,7 +245,8 @@ func _input(event):
 	elif (event.is_action_released("load")):
 		saveSystem.loadGame(Ref.character.stats.charName)
 	elif (event.is_action_released("no")):
-		Ref.character.takeHit(3)
+		Ref.character.stats.xp += 7
+#		Ref.character.takeHit(3)
 #		Ref.ui.askForContinue(self)
 #		var coroutineReturn = yield(Ref.ui, "coroutine_signal")
 #		if coroutineReturn:
