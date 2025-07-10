@@ -83,7 +83,7 @@ static func dmgToStr(array: Array, showType: bool = true):
 	elif array[2] < 0:
 		bonus = String(array[2])
 	var type = ""
-	if showType:
+	if showType and array.size() >= 4:
 		type = " " + Data.DMG_NAMES[array[3]]
 	return String(array[0]) + "d" + String(array[1]) + bonus + type
 

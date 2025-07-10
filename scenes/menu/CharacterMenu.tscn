@@ -145,6 +145,7 @@ margin_bottom = 35.0
 custom_colors/font_color = Color( 0.807843, 0.858824, 0.882353, 1 )
 custom_fonts/font = ExtResource( 1 )
 text = "3"
+align = 1
 
 [node name="FeatsScreen" type="Node2D" parent="."]
 visible = false

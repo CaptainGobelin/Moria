@@ -44,6 +44,9 @@ var diaryContent: String = ""
 
 func _ready():
 	Ref.ui = self
+	Ref.character.shortcuts.setUIHsortcutList()
+	for _i in range(7):
+		diary.append_bbcode('\n')
 
 func askForNumber(maxNb: int, inputer, msg = "How much?"):
 	previousMode = GLOBAL.currentMode
@@ -340,9 +343,13 @@ func writeCharacterTakeHit(dmg: int):
 	write(color("You suffer " + String(dmg) + " damages.", "red"))
 	lastPrinted = "writeCharacterTakeHit"
 
+func writeCharacterHeal(dmg: int):
+	write("You regain " + String(dmg) + " HP.")
+	lastPrinted = "writeCharacterHeal"
+
 func writeMonsterStrike(name: String, target: String, hit: int, ca: int):
-	var msg = "The " + name + " strikes " + target + " "
-	msg += "(rolled " + String(hit) + " vs " + String(ca) + ")."
+	var msg = "The " + name + " strikes " + target
+	msg += " (rolled " + String(hit) + " vs " + String(ca) + ")."
 	write(color(msg, "red"))
 	lastPrinted = "writeMonsterStrike"
 
@@ -357,7 +364,7 @@ func writeMonsterShoot(name: String, target: String, weapon: String):
 	lastPrinted = "writeMonsterShoot"
 
 func writeMonsterMiss(name: String, target: String, hit: int, ca: int):
-	var msg = "The " + name + " misses " + target + " "
+	var msg = "The " + name + " misses " + target
 	msg += " (rolled " + String(hit) + " vs " + String(ca) + ")."
 	write(msg)
 	lastPrinted = "writeMonsterMiss"
@@ -376,6 +383,10 @@ func writeMonsterTakeHit(name: String, dmg: int):
 	var msg = "The " + name + " suffers " + String(dmg) + " damages."
 	write(color(msg, "yellow"))
 	lastPrinted = "writeMonsterTakeHit"
+
+func writeMonsterHeal(name: String, dmg: int):
+	write("The " + name + " regain " + String(dmg) + " HP.")
+	lastPrinted = "writeMonsterHeal"
 
 func writeMonsterDie(name: String):
 	write(color("The " + name + " dies.", "yellow"))

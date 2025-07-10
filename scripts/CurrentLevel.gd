@@ -226,7 +226,7 @@ func spawnMonster(idx: int = 0, pos = null, isAllied: bool = false):
 	return monster
 
 func addLoot(cell: Vector2, isSecret: bool = false):
-	var rarity = WorldHandler.currentCR
+	var rarity = WorldHandler.currentBiome
 	var rand = randf()
 	if isSecret:
 		if rand < 0.4:
@@ -255,7 +255,7 @@ func addChest(cell: Vector2, rarityBonus: int):
 		GLOBAL.chests[chest.get_instance_id()][GLOBAL.CH_LOCKED] = 3
 	var quantity = randi() % 3 + 1
 	for _i in range(quantity):
-		var rarity = 1 + rarityBonus
+		var rarity = WorldHandler.currentBiome + rarityBonus
 		for item in Ref.game.itemGenerator.generateItem(rarity):
 			GLOBAL.chests[chest.get_instance_id()][GLOBAL.CH_CONTENT].append(item)
 

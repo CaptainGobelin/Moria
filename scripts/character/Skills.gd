@@ -2,14 +2,17 @@ extends Node
 class_name Skills
 
 var feats: Array = []
-var ftp: int = 2
+var ftp: int = 0
 var skills: Array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 var masteries: Array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-var skp: int = 5
+var skp: int = 0
 
 func init(charClass: int):
 	if charClass != -1:
 		masteries = Data.classes[charClass][Data.CL_SKMAS].duplicate()
+	if Ref.game.debugMode:
+		skp = 5
+		ftp = 2
 
 func improve(idx: int, isFree: bool = false):
 	skills[idx] += 1

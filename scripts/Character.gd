@@ -171,7 +171,9 @@ func takeHit(dmg: int, bypassProt: int = 0):
 	return realDmg
 
 func heal(amount: int):
+	var oldHp = stats.hp
 	stats.updateHp(stats.hp + amount)
+	Ref.ui.writeCharacterHeal(stats.hp - oldHp)
 
 func pickItem(items: Array, price: int = 0):
 	var item = GLOBAL.items[items[0]]

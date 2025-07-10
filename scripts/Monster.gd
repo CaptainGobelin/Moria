@@ -43,7 +43,7 @@ func takeTurn():
 			return
 		"awake":
 			if randf() < 0.25:
-				if heal():
+				if healAction():
 					return
 			if buffCD <= 0 and randf() < 0.25:
 				if buff():
@@ -70,7 +70,7 @@ func takeTurn():
 			wander()
 			return
 
-func heal():
+func healAction():
 	var heal = actions.getAction(actions.heals, "heal")
 	if heal != null:
 		var ally = getTargetableAlly(true)
@@ -191,6 +191,11 @@ func takeHit(dmg: int, bypassProt: int = 0):
 		die()
 	elif StatusEngine.removeStatusType(self, Data.STATUS_SLEEP):
 		Ref.ui.writeMonsterRemoveSleep(stats.entityName)
+
+func heal(amount: int):
+	var oldHp = stats.currentHp
+	stats.currentHp += amount
+	Ref.ui.writeMonsterHeal(stats.entityName, stats.currentHp - oldHp)
 
 func die():
 	status = "dead"
