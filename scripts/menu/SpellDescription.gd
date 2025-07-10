@@ -16,6 +16,7 @@ func selectSpell(idx: int, rank: int = 0, saveCap: int = 0):
 	spellSave.text = getSpellSave(Data.spells[idx][Data.SP_SAVE], saveCap)
 	spellSchool.text = getSpellSchool(idx)
 	icon.frame = Data.spells[idx][Data.SP_ICON]
+	icon.visible = true
 
 func generateDescription(idx: int, rank: int = 0, saveCap: int = 0):
 	spellId = idx
@@ -37,7 +38,7 @@ func blank():
 	spellUses.text = ""
 	spellSave.text = ""
 	spellSchool.text = ""
-	icon.frame = 29
+	icon.visible = false
 	description.bbcode_text = ""
 
 static func replacePlaceholders(toReplace: String, id: int) -> String:
