@@ -207,7 +207,7 @@ func _input(event):
 			if item != null:
 				match Ref.character.shortcuts.shortcutsType[i]:
 					GLOBAL.WP_TYPE:
-						pass #TODO switch wepaons
+						Ref.character.equipItem(item)
 					GLOBAL.PO_TYPE:
 						Ref.character.quaffPotion(item)
 					GLOBAL.SC_TYPE:
