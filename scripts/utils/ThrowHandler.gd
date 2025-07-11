@@ -29,6 +29,7 @@ func throwAsync(itemId: int):
 	if item[Data.TH_EFFECT] != null:
 		SpellEngine.applyEffect(Ref.character, instance_from_id(targetId), item[Data.TH_EFFECT], true, 1, 99)
 	Ref.character.inventory.throwings.erase(itemId)
+	Ref.character.shortcuts.refreshShortcuts(GLOBAL.items[itemId][GLOBAL.IT_STACK])
 	Ref.character.fatigue.fightCost()
 	Ref.game.set_process_input(true)
 	GLOBAL.currentMode = GLOBAL.MODE_NORMAL

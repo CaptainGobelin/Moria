@@ -102,14 +102,14 @@ func _input(event):
 				Ref.ui.noTarget()
 				return
 		close()
-		Ref.game.spellHandler.castSpellAsync(spellId, selected)
+		Ref.character.readScroll(selected)
 	elif (event.is_action_released("throw") or event.is_action_released("ui_accept")) \
 	and currentTab == GLOBAL.INV_THROWINGS:
 		var selected = itemList.getSelected()
 		if selected == null:
 			return
 		close()
-		Ref.game.throwHandler.throwAsync(selected)
+		Ref.character.throw(selected)
 	elif (event.is_action_released("assignShortcut")):
 		if currentTab == GLOBAL.INV_ARMORS or currentTab == GLOBAL.INV_TALSMANS:
 			return

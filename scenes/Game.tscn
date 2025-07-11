@@ -98,7 +98,8 @@ tracks/1/keys = {
 [node name="Game" type="Node2D"]
 scale = Vector2( 4, 4 )
 script = ExtResource( 15 )
-debugClass = 3
+start = 5
+debugClass = 1
 
 [node name="Utils" type="Node" parent="."]
 
@@ -260,13 +261,12 @@ tile_data = PoolIntArray( -65509, 1, 0, -65508, 1, 1, -65507, 1, 1, -65506, 1, 1
 scale = Vector2( 0.25, 0.25 )
 
 [node name="Label" type="Label" parent="UI/Shortcuts/TextContainer"]
-margin_left = 1009.0
+margin_left = 1006.0
 margin_top = -10.0
-margin_right = 1338.0
+margin_right = 1335.0
 margin_bottom = 296.0
 theme = ExtResource( 33 )
 custom_constants/line_spacing = 1
-autowrap = true
 clip_text = true
 
 [node name="SideMenu" type="TileMap" parent="UI"]

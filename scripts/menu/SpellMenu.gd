@@ -27,7 +27,7 @@ func _input(event):
 			Ref.ui.writeNoSpell(Data.spells[spell][Data.SP_NAME])
 			return
 		close()
-		Ref.game.spellHandler.castSpellAsync(spell)
+		Ref.character.castSpell(spell)
 	elif (event.is_action_released("assignShortcut")):
 		var spell = spellList.getSelected()
 		if spell == null:

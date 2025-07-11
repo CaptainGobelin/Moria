@@ -91,8 +91,11 @@ func castSpellAsync(spellId: int, scrollId = null):
 	if (spellCasted):
 		if scrollId == null:
 			Ref.character.spells.spellsUses[spellId] -= 1
+			Ref.character.shortcuts.refreshShortcuts(spellId)
 		else:
 			Ref.character.inventory.scrolls.erase(scrollId)
+			Ref.character.shortcuts.refreshShortcuts(GLOBAL.items[scrollId][GLOBAL.IT_STACK])
+			GLOBAL.items.erase(scrollId)
 		Ref.character.fatigue.spellCost()
 		GeneralEngine.newTurn()
 

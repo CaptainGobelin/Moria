@@ -271,3 +271,16 @@ func getTotalArmorMalus() -> int:
 		var armor = Data.armors[GLOBAL.items[getHelmet()][GLOBAL.IT_BASE]]
 		result = max(result, armor[Data.A_SKILL])
 	return int(max(0, result - Skills.getAmorMalusReduction()))
+
+func getItemAmount(type: int, base: int) -> int:
+	var list = []
+	var result: int = 0
+	match type:
+		GLOBAL.TH_TYPE: list = throwings
+		GLOBAL.PO_TYPE: list = potions
+		GLOBAL.SC_TYPE: list = scrolls
+		_: return result
+	for i in list:
+		if GLOBAL.items[i][GLOBAL.IT_BASE] == base:
+			result += 1
+	return result

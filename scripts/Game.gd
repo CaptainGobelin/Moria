@@ -211,11 +211,11 @@ func _input(event):
 					GLOBAL.PO_TYPE:
 						Ref.character.quaffPotion(item)
 					GLOBAL.SC_TYPE:
-						spellHandler.castSpellAsync(GLOBAL.items[item][GLOBAL.IT_SPEC], item)
+						Ref.character.readScroll(item)
 					GLOBAL.TH_TYPE:
-						throwHandler.throwAsync(item)
+						Ref.character.throw(item)
 					GLOBAL.SP_TYPE:
-						spellHandler.castSpellAsync(item)
+						Ref.character.castSpell(item)
 				return
 	if (event.is_action_pressed("ui_up")):
 		Ref.character.moveAsync(Vector2(0,-1))

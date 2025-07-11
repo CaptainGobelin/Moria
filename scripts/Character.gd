@@ -182,9 +182,16 @@ func pickItem(items: Array, price: int = 0):
 		match item[GLOBAL.IT_TYPE]:
 			GLOBAL.WP_TYPE: inventory.weapons.append(idx)
 			GLOBAL.AR_TYPE: inventory.armors.append(idx)
-			GLOBAL.PO_TYPE: inventory.potions.append(idx)
-			GLOBAL.SC_TYPE: inventory.scrolls.append(idx)
-			GLOBAL.TH_TYPE: inventory.throwings.append(idx)
+			GLOBAL.PO_TYPE:
+				inventory.potions.append(idx)
+				shortcuts.refreshShortcuts(item[GLOBAL.IT_STACK])
+			GLOBAL.SC_TYPE:
+				inventory.scrolls.append(idx)
+				shortcuts.refreshShortcuts(item[GLOBAL.IT_STACK])
+			GLOBAL.TH_TYPE:
+				inventory.throwings.append(idx)
+				shortcuts.refreshShortcuts(item[GLOBAL.IT_STACK])
+				
 			GLOBAL.TA_TYPE: inventory.talismans.append(idx)
 			GLOBAL.LO_TYPE: inventory.lockpicks += item[GLOBAL.IT_SPEC]
 			GLOBAL.GO_TYPE: inventory.golds += item[GLOBAL.IT_SPEC]
@@ -206,16 +213,20 @@ func dropItem(idx):
 	match item[GLOBAL.IT_TYPE]:
 		GLOBAL.WP_TYPE:
 			inventory.weapons.erase(idx)
+			shortcuts.refreshShortcuts(idx)
 		GLOBAL.AR_TYPE:
 			inventory.armors.erase(idx)
 		GLOBAL.TA_TYPE:
 			inventory.talismans.erase(idx)
 		GLOBAL.PO_TYPE:
 			inventory.potions.erase(idx)
+			shortcuts.refreshShortcuts(item[GLOBAL.IT_STACK])
 		GLOBAL.SC_TYPE:
 			inventory.scrolls.erase(idx)
+			shortcuts.refreshShortcuts(item[GLOBAL.IT_STACK])
 		GLOBAL.TH_TYPE:
 			inventory.throwings.erase(idx)
+			shortcuts.refreshShortcuts(item[GLOBAL.IT_STACK])
 	GLOBAL.dropItemOnFloor(idx, pos)
 	Ref.ui.write("You dropped " + Utils.addArticle(item[GLOBAL.IT_NAME]) + ".")
 
@@ -251,7 +262,17 @@ func quaffPotion(idx):
 	Ref.ui.writeQuaffedPotion(potion[GLOBAL.IT_NAME])
 	PotionEngine.applyEffect(self, potion[GLOBAL.IT_BASE])
 	GLOBAL.items.erase(idx)
+	shortcuts.refreshShortcuts(potion[GLOBAL.IT_STACK])
 	SpellEngine.breakSanctuary(self, SpellEngine.SANCT_POTION)
+
+func readScroll(item: int):
+	Ref.game.spellHandler.castSpellAsync(GLOBAL.items[item][GLOBAL.IT_SPEC], item)
+
+func castSpell(spell: int):
+	Ref.game.spellHandler.castSpellAsync(spell)
+
+func throw(item: int):
+	Ref.game.throwHandler.throwAsync(item)
 
 func attemptLockpick(dc: int) -> bool:
 	var roll = GeneralEngine.dice(1, 6, Skills.getLockpickBonus()).roll(self)

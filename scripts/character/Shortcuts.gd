@@ -13,11 +13,11 @@ func assign(key: int, category: int, item: int):
 		GLOBAL.WP_TYPE:
 			shortcuts[key] = item
 		GLOBAL.PO_TYPE:
-			shortcuts[key] = GLOBAL.items[item][GLOBAL.IT_STACK]
+			shortcuts[key] = GLOBAL.items[item][GLOBAL.IT_BASE]
 		GLOBAL.SC_TYPE:
-			shortcuts[key] = GLOBAL.items[item][GLOBAL.IT_STACK]
+			shortcuts[key] = GLOBAL.items[item][GLOBAL.IT_BASE]
 		GLOBAL.TH_TYPE:
-			shortcuts[key] = GLOBAL.items[item][GLOBAL.IT_STACK]
+			shortcuts[key] = GLOBAL.items[item][GLOBAL.IT_BASE]
 		GLOBAL.SP_TYPE:
 			shortcuts[key] = item
 	shortcutsType[key] = category
@@ -67,21 +67,33 @@ func getShortcutList() -> String:
 	for key in range(1, 10):
 		if key != 1:
 			result += '\n'
-		result += String(key) + ":"
-		var item = getItem(key)
+		result += String(key) + ": "
 		var itemName = ""
-		if item != null:
+		if shortcuts.has(key):
+			var item = shortcuts[key]
 			if shortcutsType[key] == GLOBAL.SP_TYPE:
-				itemName = Data.spells[item][Data.SP_NAME]
+				var n = Ref.character.spells.spellsUses[shortcuts[key]]
+				itemName = String(n) + "x " + Data.spells[item][Data.SP_NAME]
+			elif shortcutsType[key] == GLOBAL.PO_TYPE:
+				var n = Ref.character.inventory.getItemAmount(GLOBAL.PO_TYPE, shortcuts[key])
+				itemName = String(n) + "x " + Data.potions[item][Data.PO_NAME]
+			elif shortcutsType[key] == GLOBAL.SC_TYPE:
+				var n = Ref.character.inventory.getItemAmount(GLOBAL.SC_TYPE, shortcuts[key])
+				itemName = String(n) + "x " + Data.scrolls[item][Data.SC_NAME]
+			elif shortcutsType[key] == GLOBAL.TH_TYPE:
+				var n = Ref.character.inventory.getItemAmount(GLOBAL.TH_TYPE, shortcuts[key])
+				itemName = String(n) + "x " + Data.throwings[item][Data.TH_NAME]
 			else:
 				itemName = GLOBAL.items[item][GLOBAL.IT_NAME]
-		if itemName.length() > 21:
-			itemName.substr(0, 21)
-			itemName[18] = "."
-			itemName[19] = "."
-			itemName[20] = "."
+		if itemName.length() > 20:
+			itemName = itemName.substr(0, 20)
+			itemName[19] = "…"
 		result += itemName
 	return result
+
+func refreshShortcuts(base: int):
+	if shortcuts.values().has(base):
+		setUIHsortcutList()
 
 func setUIHsortcutList():
 	Ref.ui.shortcuts.text = getShortcutList()
