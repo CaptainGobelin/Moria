@@ -5,6 +5,13 @@ onready var projScene = preload("res://scenes/Projectile.tscn")
 var wishableItems = [0, 1, 4, 5, 7]
 
 func castSpellAsync(spellId: int, scrollId = null):
+	MasterInput.setMaster(self)
+	var spellCast = castSpellCharacter(spellId, scrollId)
+	if spellCast is GDScriptFunctionState:
+		yield(spellCast, "completed")
+	MasterInput.setMaster(Ref.game)
+
+func castSpellCharacter(spellId: int, scrollId = null):
 	var spellCasted = false
 	var spell = Data.spells[spellId]
 	var savingCap = 0
@@ -39,7 +46,7 @@ func castSpellAsync(spellId: int, scrollId = null):
 				Ref.ui.noTarget()
 				return
 			Ref.game.set_process_input(false)
-			Ref.ui.askForTarget(GLOBAL.targets.keys(), Ref.game)
+			Ref.ui.askForTarget(GLOBAL.targets.keys(), self)
 			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
 			if coroutineReturn == -1:
 				return
@@ -56,7 +63,7 @@ func castSpellAsync(spellId: int, scrollId = null):
 			SpellEngine.breakSanctuary(Ref.character, SpellEngine.SANCT_ATTACK)
 		Data.SP_TARGET_DIRECT:
 			Ref.ui.writeSpellDirection()
-			Ref.ui.askForDirection(Ref.game)
+			Ref.ui.askForDirection(self)
 			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
 			if coroutineReturn == Vector2(0, 0):
 				return
@@ -82,7 +89,7 @@ func castSpellAsync(spellId: int, scrollId = null):
 			SpellEngine.breakSanctuary(Ref.character, SpellEngine.SANCT_BUFF)
 		Data.SP_TARGET_ITEM_CHOICE:
 			Ref.ui.writeWishChoice()
-			Ref.ui.askForChoice(wishableItems, Ref.game)
+			Ref.ui.askForChoice(wishableItems, self)
 			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
 			if coroutineReturn > 0:
 				SpellEngine.applyEffect(Ref.character, Ref.character, spellId, true, spellRank, wishableItems[coroutineReturn-1])

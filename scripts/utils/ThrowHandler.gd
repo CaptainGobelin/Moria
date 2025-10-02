@@ -3,12 +3,19 @@ extends Node
 onready var projScene = preload("res://scenes/Projectile.tscn")
 
 func throwAsync(itemId: int):
+	MasterInput.setMaster(self)
+	var throwing = throwCharacter(itemId)
+	if throwing is GDScriptFunctionState:
+		yield(throwing, "completed")
+	MasterInput.setMaster(Ref.game)
+
+func throwCharacter(itemId: int):
 	var item = Data.throwings[GLOBAL.items[itemId][GLOBAL.IT_BASE]]
 	if GLOBAL.targets.size() == 0:
 		Ref.ui.noTarget()
 		return
 	Ref.game.set_process_input(false)
-	Ref.ui.askForTarget(GLOBAL.targets.keys(), Ref.game)
+	Ref.ui.askForTarget(GLOBAL.targets.keys(), self)
 	var coroutineReturn = yield(Ref.ui, "coroutine_signal")
 	if coroutineReturn == -1:
 		return
