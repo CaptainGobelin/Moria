@@ -207,7 +207,7 @@ func assert_last_printed_pickup(testId: int):
 	assert(Ref.ui.lastPrinted == "writePickupLoot")
 
 func assert_last_printed_quaffed(testId: int):
-	assert(Ref.ui.lastPrinted == "writeQuaffedPotion")
+	assert(Ref.ui.lastPrinted == "writeCharacterHeal")
 
 func assert_last_printed_null(testId: int):
 	assert(Ref.ui.lastPrinted == "")

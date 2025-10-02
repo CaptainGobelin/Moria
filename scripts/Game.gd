@@ -5,6 +5,7 @@ class_name Game
 export (int, "Normal, Fast, Tests, Dungeon, Menu, Debug, Generator report") var start = 0
 export (int, "Fighter", "Thief", "Mage", "Cleric", "Paladin", "Bard", "Druid", "Ranger") var debugClass = 0
 export (bool) var debugMode = false
+export (int, "All", "Move", "Inventory") var tests = 0
 
 onready var inventoryMenu = get_node("InventoryMenu")
 onready var characterMenu = get_node("CharacterMenu")

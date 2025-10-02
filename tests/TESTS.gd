@@ -16,7 +16,10 @@ const TEST_INPUTS = 3
 var spawnedItems: Array = []
 
 func runAll():
-	for c in get_children():
+	var collection = get_children()
+	if Ref.game.tests != 0:
+		collection = [get_child(Ref.game.tests-1)]
+	for c in collection:
 		if not c.toTest:
 			continue
 		prints("Testing collection", c.name)
