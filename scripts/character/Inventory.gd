@@ -272,7 +272,7 @@ func getTotalArmorMalus() -> int:
 		result = max(result, armor[Data.A_SKILL])
 	return int(max(0, result - Skills.getAmorMalusReduction()))
 
-func getItemAmount(type: int, base: int) -> int:
+func getItemAmount(type: int, stack: int) -> int:
 	var list = []
 	var result: int = 0
 	match type:
@@ -281,6 +281,6 @@ func getItemAmount(type: int, base: int) -> int:
 		GLOBAL.SC_TYPE: list = scrolls
 		_: return result
 	for i in list:
-		if GLOBAL.items[i][GLOBAL.IT_BASE] == base:
+		if GLOBAL.items[i][GLOBAL.IT_STACK] == stack:
 			result += 1
 	return result

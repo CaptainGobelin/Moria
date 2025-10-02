@@ -13,11 +13,11 @@ func assign(key: int, category: int, item: int):
 		GLOBAL.WP_TYPE:
 			shortcuts[key] = item
 		GLOBAL.PO_TYPE:
-			shortcuts[key] = GLOBAL.items[item][GLOBAL.IT_BASE]
+			shortcuts[key] = GLOBAL.items[item][GLOBAL.IT_STACK]
 		GLOBAL.SC_TYPE:
-			shortcuts[key] = GLOBAL.items[item][GLOBAL.IT_BASE]
+			shortcuts[key] = GLOBAL.items[item][GLOBAL.IT_STACK]
 		GLOBAL.TH_TYPE:
-			shortcuts[key] = GLOBAL.items[item][GLOBAL.IT_BASE]
+			shortcuts[key] = GLOBAL.items[item][GLOBAL.IT_STACK]
 		GLOBAL.SP_TYPE:
 			shortcuts[key] = item
 	shortcutsType[key] = category
@@ -76,13 +76,13 @@ func getShortcutList() -> String:
 				itemName = String(n) + "x " + Data.spells[item][Data.SP_NAME]
 			elif shortcutsType[key] == GLOBAL.PO_TYPE:
 				var n = Ref.character.inventory.getItemAmount(GLOBAL.PO_TYPE, shortcuts[key])
-				itemName = String(n) + "x " + Data.potions[item][Data.PO_NAME]
+				itemName = String(n) + "x " + Data.potions[Data.itemByStack[item]][Data.PO_NAME]
 			elif shortcutsType[key] == GLOBAL.SC_TYPE:
 				var n = Ref.character.inventory.getItemAmount(GLOBAL.SC_TYPE, shortcuts[key])
-				itemName = String(n) + "x " + Data.scrolls[item][Data.SC_NAME]
+				itemName = String(n) + "x " + Data.scrolls[Data.itemByStack[item]][Data.SC_NAME]
 			elif shortcutsType[key] == GLOBAL.TH_TYPE:
 				var n = Ref.character.inventory.getItemAmount(GLOBAL.TH_TYPE, shortcuts[key])
-				itemName = String(n) + "x " + Data.throwings[item][Data.TH_NAME]
+				itemName = String(n) + "x " + Data.throwings[Data.itemByStack[item]][Data.TH_NAME]
 			else:
 				itemName = GLOBAL.items[item][GLOBAL.IT_NAME]
 		if itemName.length() > 20:

@@ -458,6 +458,9 @@ const CHAR_R_LIGHTNING = 18
 const CHAR_FATIGUE = 19
 const CHAR_FATIGUEMAX = 20
 
+# Items general
+var itemByStack = {}
+
 # Weapons
 const W_CLUB = 0
 const W_DAGGER = 1
@@ -649,6 +652,7 @@ func potionsReader():
 		if !potionsByRarity.has(rarity):
 			potionsByRarity[rarity] = []
 		potionsByRarity[rarity].append(idx)
+		itemByStack[potions[idx][PO_STACK]] = idx
 
 # Scrolls
 const SC_NAME = 0
@@ -688,8 +692,9 @@ func scrollsReader():
 		if !scrollsByRarity.has(rarity):
 			scrollsByRarity[rarity] = []
 		scrollsByRarity[rarity].append(idx)
+		itemByStack[scrolls[idx][SC_STACK]] = idx
 
-# Taslimans
+# Talimans
 const TA_NAMES = 0
 const TA_ICONS = 1
 const TA_PROB = 2
@@ -738,12 +743,15 @@ var throwingsByRarity = {}
 
 func throwingsReader():
 	for idx in throwings.keys():
+		itemByStack[throwings[idx][TH_STACK]] = idx
 		if !throwings[idx][TH_CAN_POP]:
 			continue
 		var rarity = throwings[idx][TH_RAR]
 		if !throwingsByRarity.has(rarity):
 			throwingsByRarity[rarity] = []
 		throwingsByRarity[rarity].append(idx)
+
+
 
 # Starting kits
 const KIT_WP = 0

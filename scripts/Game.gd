@@ -37,6 +37,7 @@ func _ready():
 		get_tree().change_scene("res://scenes/UI/TitleScreen.tscn")
 	randomize()
 	var randomSeed = randi()
+	print("Seed: " + String(randomSeed))
 	seed(randomSeed)
 	Ref.game = self
 	set_process_input(false)
