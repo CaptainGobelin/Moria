@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scripts/menu/SpellMenu.gd" type="Script" id=1]
 [ext_resource path="res://tilesets/int_tileset.tres" type="TileSet" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://scenes/menu/SpellRow.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scripts/menu/SpellsList.gd" type="Script" id=5]
 [ext_resource path="res://scenes/menu/SpellDescription.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/menu/MenuScroller.tscn" type="PackedScene" id=7]
 
 [node name="SpellMenu" type="Node2D"]
 script = ExtResource( 1 )
@@ -45,23 +46,45 @@ position = Vector2( 9, 126 )
 position = Vector2( 9, 18 )
 scale = Vector2( 0.25, 0.25 )
 
-[node name="Label" type="Label" parent="TileMap/TextContainer"]
-margin_left = 104.0
-margin_top = 36.0
-margin_right = 644.0
-margin_bottom = 72.0
+[node name="Name" type="Label" parent="TileMap/TextContainer"]
+margin_left = 108.0
+margin_top = 32.0
+margin_right = 468.0
+margin_bottom = 68.0
 custom_colors/font_color = Color( 0.807843, 0.858824, 0.882353, 1 )
 custom_fonts/font = ExtResource( 3 )
-text = "Spell                      Uses    Key"
+text = "Spell"
+
+[node name="Uses" type="Label" parent="TileMap/TextContainer"]
+margin_left = 468.0
+margin_top = 32.0
+margin_right = 540.0
+margin_bottom = 68.0
+custom_colors/font_color = Color( 0.807843, 0.858824, 0.882353, 1 )
+custom_fonts/font = ExtResource( 3 )
+text = "Uses"
+align = 1
+
+[node name="Key" type="Label" parent="TileMap/TextContainer"]
+margin_left = 540.0
+margin_top = 32.0
+margin_right = 612.0
+margin_bottom = 68.0
+custom_colors/font_color = Color( 0.807843, 0.858824, 0.882353, 1 )
+custom_fonts/font = ExtResource( 3 )
+text = "Key"
+align = 1
 
 [node name="Commands" type="Label" parent="TileMap/TextContainer"]
 margin_left = 36.0
-margin_top = 576.0
-margin_right = 644.0
-margin_bottom = 612.0
+margin_top = 584.0
+margin_right = 648.0
+margin_bottom = 620.0
 custom_colors/font_color = Color( 0.807843, 0.858824, 0.882353, 1 )
 custom_fonts/font = ExtResource( 3 )
-text = "Close: Esc    Cast spell: Enter"
+text = "Close:Esc   Cast spell:Enter   Assign:A"
+align = 1
+valign = 1
 
 [node name="Title" type="Label" parent="TileMap/TextContainer"]
 margin_top = -36.0
@@ -72,4 +95,9 @@ text = "Magic Menu"
 align = 1
 
 [node name="SpellDescription" parent="TileMap" instance=ExtResource( 6 )]
-position = Vector2( 189, 36 )
+position = Vector2( 189, 27 )
+
+[node name="MenuScroller" parent="TileMap" instance=ExtResource( 7 )]
+position = Vector2( 164, 44 )
+length = 109
+elements = 7

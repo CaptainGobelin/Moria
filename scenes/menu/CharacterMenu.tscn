@@ -230,3 +230,14 @@ margin_bottom = 428.0
 theme = ExtResource( 7 )
 valign = 1
 autowrap = true
+
+[node name="Title" type="Label" parent="TextContainer"]
+margin_left = -540.0
+margin_top = -184.0
+margin_right = 396.0
+margin_bottom = -148.0
+theme = ExtResource( 7 )
+text = "Character Menu"
+align = 1
+valign = 1
+autowrap = true

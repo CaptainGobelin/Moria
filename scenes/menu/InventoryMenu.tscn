@@ -208,6 +208,18 @@ custom_fonts/font = ExtResource( 5 )
 text = "Key"
 align = 1
 
+[node name="Key2" type="Label" parent="TextContainer"]
+margin_left = -568.0
+margin_top = -104.0
+margin_right = 368.0
+margin_bottom = -69.0
+custom_colors/font_color = Color( 0.807843, 0.858824, 0.882353, 1 )
+custom_fonts/font = ExtResource( 5 )
+text = "Inventory Menu"
+align = 1
+valign = 1
+autowrap = true
+
 [node name="MenuScroller" parent="." instance=ExtResource( 6 )]
 
 [node name="DetailPanel" type="Node2D" parent="."]
