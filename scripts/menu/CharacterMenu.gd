@@ -2,6 +2,7 @@ extends Node2D
 
 onready var tabs = get_node("Tabs").get_children()
 onready var descriptor = get_node("TextContainer/Description")
+onready var largePanelDescriptor = get_node("LargeDescriptorPanel")
 onready var skillsScreen = get_node("SkillsScreen")
 onready var skills = get_node("SkillsScreen/SkillsList").get_children()
 onready var skp = get_node("SkillsScreen/TextContainer/RemainingPoints")
@@ -115,6 +116,9 @@ func setTab(tab, row = 0):
 		t.setInactive()
 	tabs[tab].setActive()
 	descriptor.text = ""
+	descriptor.rect_position = Vector2(0, -4)
+	descriptor.rect_size = Vector2(396, 324)
+	largePanelDescriptor.visible = false
 	match tab:
 		GLOBAL.CHAR_SKILLS:
 			skillsScreen.visible = true
@@ -180,6 +184,15 @@ func selectSkill(row: int):
 	for s in skills:
 		s.unselect()
 	skills[currentRow].select()
+	largePanelDescriptor.visible = true
+	descriptor.rect_position = Vector2(0, -76)
+	descriptor.rect_size = Vector2(540, 504)
+	descriptor.text = Data.skillDescriptions[currentRow][0] + "\n\n"
+	descriptor.text += "*.... " + Data.skillDescriptions[currentRow][1] + "\n"
+	descriptor.text += "**... " + Data.skillDescriptions[currentRow][2] + "\n"
+	descriptor.text += "***.. " + Data.skillDescriptions[currentRow][3] + "\n"
+	descriptor.text += "****. " + Data.skillDescriptions[currentRow][4] + "\n"
+	descriptor.text += "***** " + Data.skillDescriptions[currentRow][5]
 
 func getStatusDescription(statusId: int) -> String:
 	var result = ""

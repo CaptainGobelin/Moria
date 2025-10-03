@@ -157,6 +157,97 @@ const SK_WIL = 8
 const SK_PER = 9
 const SK_THI = 10
 
+const skillDescriptions = {
+	SK_COMBAT: [
+		"Combat skill improve your accuracy when fighting and allow you to wield more powerful weapons.",
+		"+1 to hit",
+		"Unlock simple weapons",
+		"+1 to hit",
+		"Unlock advanced weapons",
+		"+1 to hit"
+	],
+	SK_ARMOR: [
+		"Armor skill allows you to wear more protective amors, helms and shields.",
+		"Unlock padded armors.",
+		"Unlock leather armors.",
+		"Unlock scale armors.",
+		"Unlock plate armors.",
+		"Unlock full plate armors."
+	],
+	SK_EVOC: [
+		"Evocation spells are offensive or healing spells.",
+		"Learn a lvl 1 spell",
+		"Spells improve to rank 2",
+		"Learn a lvl 2 spell",
+		"Spells improve to rank 3",
+		"Learn a lvl 3 spell"
+	],
+	SK_ENCH: [
+		"Enchantment spells alters the reality to impair enemies or improve your capacities.",
+		"Learn a lvl 1 spell",
+		"Spells improve to rank 2",
+		"Learn a lvl 2 spell",
+		"Spells improve to rank 3",
+		"Learn a lvl 3 spell"
+	],
+	SK_DIV: [
+		"Divination spells reveal the unknown and disturbe your enemies' mind.",
+		"Learn a lvl 1 spell",
+		"Spells improve to rank 2",
+		"Learn a lvl 2 spell",
+		"Spells improve to rank 3",
+		"Learn a lvl 3 spell"
+	],
+	SK_ABJ: [
+		"Abjuration seplls protect yourself against attacks and spells.",
+		"Learn a lvl 1 spell",
+		"Spells improve to rank 2",
+		"Learn a lvl 2 spell",
+		"Spells improve to rank 3",
+		"Learn a lvl 3 spell"
+	],
+	SK_CONJ: [
+		"Conjuration spells invokes servants or items and elements to hurts your enemies.",
+		"Learn a lvl 1 spell",
+		"Spells improve to rank 2",
+		"Learn a lvl 2 spell",
+		"Spells improve to rank 3",
+		"Learn a lvl 3 spell"
+	],
+	SK_PHY: [
+		"Physics skill improves your resistance to attacks and spells.",
+		"+1 to PHY save rolls",
+		"+2 HP/lvl, * rPoison",
+		"+1 to PHY save rolls",
+		"Potion effect +50%, * rFire",
+		"+1 to PHY save rolls"
+	],
+	SK_WIL: [
+		"Willpower skill sharpens your mind to resist to mind attacks and improve your spells.",
+		"+1 to WIL save rolls",
+		"Immune to sleep\n      +1 to your spells DC",
+		"+1 to WIL save rolls",
+		"Immune to terror\n      +1 to your spells DC",
+		"+1 to WIL save rolls"
+	],
+	SK_PER: [
+		"Perception skill allows you to detect traps, secret doors and treasures.",
+		"+1 to perception rolls",
+		"Improve loot quality by 15%",
+		"+1 to perception rolls",
+		"Improve loot quality by 15%",
+		"+1 to perception rolls"
+	],
+	SK_THI: [
+		"Thievery skill allows you to bargain with merchant and pick locks.",
+		"+1 to lockpick rolls\n      -15% merchant prices",
+		"+1 to lockpick rolls\n      +1 to save rolls against traps",
+		"+1 to lockpick rolls\n      -15% merchant prices",
+		"+1 to lockpick rolls\n      +1 to save rolls against traps",
+		"+1 to lockpick rolls\n      -15% merchant prices"
+	]
+}
+
 # Level caps
 const lvlCaps = [0, 30, 50, 75, 110, 150, 200, 275]
 const skpGains = [0, 0, 2, 1, 2, 1, 2, 1, 2]
