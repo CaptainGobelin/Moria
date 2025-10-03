@@ -9,7 +9,7 @@ position = Vector2( 180, 36 )
 script = ExtResource( 2 )
 
 [node name="Icon" type="Sprite" parent="."]
-position = Vector2( 99, 9 )
+position = Vector2( 108, 9 )
 scale = Vector2( 1.8, 1.8 )
 texture = ExtResource( 3 )
 centered = false
@@ -21,14 +21,14 @@ scale = Vector2( 0.25, 0.25 )
 
 [node name="Name" type="Label" parent="TextContainer"]
 margin_top = 37.0
-margin_right = 324.0
+margin_right = 360.0
 margin_bottom = 72.0
 theme = ExtResource( 1 )
 text = "Magic Missiles"
 
 [node name="Uses" type="Label" parent="TextContainer"]
 margin_top = 73.0
-margin_right = 324.0
+margin_right = 360.0
 margin_bottom = 108.0
 theme = ExtResource( 1 )
 text = "15 uses per rest"
@@ -43,14 +43,14 @@ text = "Evocation spell level 1"
 
 [node name="Saving" type="Label" parent="TextContainer"]
 margin_top = 109.0
-margin_right = 324.0
+margin_right = 360.0
 margin_bottom = 144.0
 theme = ExtResource( 1 )
 text = "No saving throw"
 
 [node name="Description" type="RichTextLabel" parent="TextContainer"]
 margin_top = 181.0
-margin_right = 504.0
+margin_right = 540.0
 margin_bottom = 504.0
 theme = ExtResource( 1 )
 bbcode_enabled = true
