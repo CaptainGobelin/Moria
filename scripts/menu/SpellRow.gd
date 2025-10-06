@@ -1,3 +1,4 @@
+tool
 extends Node2D
 
 onready var selected = get_node("Selected")
@@ -18,7 +19,7 @@ func setSimpleContent(spellId: int):
 	icon.frame = Data.spells[spell][Data.SP_ICON]
 	uses.align = Label.ALIGN_LEFT
 	uses.text = Utils.toRoman(Data.spells[spell][Data.SP_LVL])
-	shortcut.text = ""
+	shortcut.visible = false
 	extended.visible = false
 
 func setContent(spellRow):
@@ -31,4 +32,5 @@ func setContent(spellRow):
 		shortcut.text = String(spellRow[5])
 	else:
 		shortcut.text = ""
+	shortcut.visible = true
 	extended.visible = true

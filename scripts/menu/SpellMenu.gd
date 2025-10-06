@@ -1,7 +1,8 @@
 extends Node2D
 
-onready var spellList = get_node("TileMap/SpellList")
-onready var descriptor = get_node("TileMap/SpellDescription")
+onready var spellList = get_node("SpellList")
+onready var descriptor = get_node("SpellDescription")
+onready var scroller = get_node("MenuScroller")
 
 var currentRow = -1
 

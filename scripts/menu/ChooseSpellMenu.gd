@@ -46,27 +46,11 @@ func open(school: int, level: int):
 			promptText += "Conjuration"
 	promptText += " spell to add to your spellbook"
 	prompt.text = promptText
-	loadSpellList()
+	rows.init(currentList)
 
 func close():
 	visible = false
 	MasterInput.eraseInputStack()
-
-func loadSpellList():
-	var count = startRow
-	for row in rows.get_children():
-		if count > (currentList.size() - 1):
-			row.visible = false
-			continue
-		row.setSimpleContent(currentList[count])
-		row.visible = true
-		if count == selected:
-			row.selected.visible = true
-			selectSpell(row.spell)
-		else:
-			row.selected.visible = false
-		count += 1
-	scroller.setArrows(startRow, currentList.size())
 
 func _input(event):
 	if event.is_action_released("ui_down"):
@@ -76,7 +60,7 @@ func _input(event):
 		if selected >= currentList.size():
 			selected = 0
 			startRow = 0
-		loadSpellList()
+		rows.selectNext()
 	elif event.is_action_released("ui_up"):
 		selected = selected - 1
 		if selected < startRow:
@@ -84,7 +68,7 @@ func _input(event):
 		if selected < 0:
 			selected = currentList.size() - 1
 			startRow = max(0, currentList.size() - 6)
-		loadSpellList()
+		rows.selectPrevious()
 	elif event.is_action_released("ui_accept"):
 		var spell = rows.get_child(selected).spell
 		Ref.character.spells.learnSpell(spell)

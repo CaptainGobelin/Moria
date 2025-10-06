@@ -2,7 +2,7 @@
 
 [ext_resource path="res://tilesets/int_tileset.tres" type="TileSet" id=1]
 [ext_resource path="res://scenes/menu/SpellDescription.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/menu/SpellRow.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/menu/SpellList.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/menu/MenuScroller.tscn" type="PackedScene" id=4]
 [ext_resource path="res://themes/LabelTheme.tres" type="Theme" id=6]
 [ext_resource path="res://scripts/menu/ChooseSpellMenu.gd" type="Script" id=7]
@@ -75,29 +75,13 @@ text = "Choose spell: Enter"
 align = 1
 valign = 1
 
-[node name="SpellList" type="Node2D" parent="."]
-position = Vector2( 31.5, 45 )
-
-[node name="SpellRow" parent="SpellList" instance=ExtResource( 3 )]
-
-[node name="SpellRow2" parent="SpellList" instance=ExtResource( 3 )]
-position = Vector2( 0, 18 )
-
-[node name="SpellRow3" parent="SpellList" instance=ExtResource( 3 )]
-position = Vector2( 0, 36 )
-
-[node name="SpellRow4" parent="SpellList" instance=ExtResource( 3 )]
-position = Vector2( 0, 54 )
-
-[node name="SpellRow5" parent="SpellList" instance=ExtResource( 3 )]
-position = Vector2( 0, 72 )
-
-[node name="SpellRow6" parent="SpellList" instance=ExtResource( 3 )]
-position = Vector2( 0, 90 )
-
 [node name="MenuScroller" parent="." instance=ExtResource( 4 )]
 position = Vector2( 150.5, 52 )
 length = 88
 
 [node name="SpellDescription" parent="." instance=ExtResource( 2 )]
 position = Vector2( 175.5, 36 )
+
+[node name="SpellList" parent="." instance=ExtResource( 3 )]
+position = Vector2( 31.5, 45 )
+size = 6

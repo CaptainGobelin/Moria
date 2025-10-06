@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/menu/SpellsList.gd" type="Script" id=1]
+
+[node name="SpellList" type="Node2D"]
+position = Vector2( 18, 36 )
+script = ExtResource( 1 )
+size = 7
