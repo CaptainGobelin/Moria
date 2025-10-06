@@ -26,6 +26,8 @@ func init(newCharClass: int, isCreation: bool = true):
 	if isCreation:
 		skills.init(charClass)
 		inventory.init(charClass)
+#	for i in range(14):
+#		spells.learnSpell(Data.spells.keys()[2 * i])
 
 func setPosition(newPos):
 	pos = newPos

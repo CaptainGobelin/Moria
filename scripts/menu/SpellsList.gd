@@ -30,8 +30,11 @@ func init(spells: Array, index = 0):
 			select(index)
 		else:
 			select(maxIndex - 1)
+	else:
+		get_parent().descriptor.blank()
 
 func setContent():
+	currentStartIndex = max(0, min(currentStartIndex, maxIndex-1))
 	var count = currentStartIndex
 	for s in get_children():
 		if count < maxIndex:
@@ -53,10 +56,19 @@ func getSelected():
 
 func select(index):
 	if maxIndex == 0:
+		get_parent().descriptor.blank()
 		return
 	get_child(currentIndex).selected.visible = false
 	currentIndex = posmod(index, maxIndex)
 	get_child(currentIndex).selected.visible = true
+	var selected = getSelected()
+	if selected == null:
+		get_parent().descriptor.blank()
+		return
+	var school = Data.spells[selected][Data.SP_SCHOOL]
+	var saveCap = Ref.character.spells.getSavingThrow(school)
+	var rank = Ref.character.spells.getSpellRank(school)
+	get_parent().descriptor.selectSpell(selected, rank, saveCap)
 
 func selectNext():
 	if (currentIndex + currentStartIndex) >= (maxIndex - 1):

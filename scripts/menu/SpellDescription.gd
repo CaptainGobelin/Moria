@@ -5,6 +5,7 @@ onready var spellSave = get_node("TextContainer/Saving")
 onready var spellUses = get_node("TextContainer/Uses")
 onready var spellSchool = get_node("TextContainer/School")
 onready var description = get_node("TextContainer/Description")
+onready var empty = get_node("TextContainer/Empty")
 onready var icon = get_node("Icon")
 
 var spellId: int
@@ -17,6 +18,7 @@ func selectSpell(idx: int, rank: int = 0, saveCap: int = 0):
 	spellSchool.text = getSpellSchool(idx)
 	icon.frame = Data.spells[idx][Data.SP_ICON]
 	icon.visible = true
+	empty.visible = false
 
 func generateDescription(idx: int, rank: int = 0, saveCap: int = 0):
 	spellId = idx
@@ -40,6 +42,7 @@ func blank():
 	spellSchool.text = ""
 	icon.visible = false
 	description.bbcode_text = ""
+	empty.visible = true
 
 static func replacePlaceholders(toReplace: String, id: int) -> String:
 	var d = toReplace

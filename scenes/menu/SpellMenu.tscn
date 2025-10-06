@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scripts/menu/SpellMenu.gd" type="Script" id=1]
 [ext_resource path="res://tilesets/int_tileset.tres" type="TileSet" id=2]
 [ext_resource path="res://fonts/textFont.tres" type="DynamicFont" id=3]
 [ext_resource path="res://scenes/menu/SpellList.tscn" type="PackedScene" id=4]
+[ext_resource path="res://themes/LabelTheme.tres" type="Theme" id=5]
 [ext_resource path="res://scenes/menu/SpellDescription.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/menu/MenuScroller.tscn" type="PackedScene" id=7]
 
@@ -52,16 +53,16 @@ custom_fonts/font = ExtResource( 3 )
 text = "Key"
 align = 1
 
-[node name="Commands" type="Label" parent="TextContainer"]
+[node name="Commands" type="RichTextLabel" parent="TextContainer"]
 margin_left = 36.0
 margin_top = 584.0
 margin_right = 648.0
 margin_bottom = 620.0
-custom_colors/font_color = Color( 0.807843, 0.858824, 0.882353, 1 )
-custom_fonts/font = ExtResource( 3 )
+theme = ExtResource( 5 )
+bbcode_enabled = true
+bbcode_text = "[center]Close:Esc   Cast spell:Enter   Assign:A[/center]"
 text = "Close:Esc   Cast spell:Enter   Assign:A"
-align = 1
-valign = 1
+scroll_active = false
 
 [node name="Title" type="Label" parent="TextContainer"]
 margin_top = -36.0
@@ -70,6 +71,17 @@ custom_colors/font_color = Color( 0.807843, 0.858824, 0.882353, 1 )
 custom_fonts/font = ExtResource( 3 )
 text = "Magic Menu"
 align = 1
+
+[node name="EmptyList" type="Label" parent="TextContainer"]
+margin_left = 36.0
+margin_top = 72.0
+margin_right = 612.0
+margin_bottom = 540.0
+custom_colors/font_color = Color( 0.807843, 0.858824, 0.882353, 1 )
+custom_fonts/font = ExtResource( 3 )
+text = "You don't know any spell."
+align = 1
+valign = 1
 
 [node name="SpellDescription" parent="." instance=ExtResource( 6 )]
 position = Vector2( 189, 27 )

@@ -98,8 +98,8 @@ tracks/1/keys = {
 [node name="Game" type="Node2D"]
 scale = Vector2( 4, 4 )
 script = ExtResource( 15 )
+start = 1
 debugClass = 1
-tests = 2
 
 [node name="Utils" type="Node" parent="."]
 
