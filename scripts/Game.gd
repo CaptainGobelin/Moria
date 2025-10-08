@@ -29,7 +29,7 @@ var autoexplore = false setget setAutoExplore
 
 func _ready():
 	if debugMode:
-#		Ref.currentLevel.fog.visible = false
+		Ref.currentLevel.fog.visible = false
 		Ref.currentLevel.shadows.visible = false
 		Ref.currentLevel.debugLayer.visible = true
 	if GLOBAL.startingMode != null:

@@ -6,19 +6,39 @@ onready var largePanelDescriptor = get_node("LargeDescriptorPanel")
 onready var skillsScreen = get_node("SkillsScreen")
 onready var skills = get_node("SkillsScreen/SkillsList").get_children()
 onready var skp = get_node("SkillsScreen/TextContainer/RemainingPoints")
+onready var skillsCommandsLabel = get_node("SkillsScreen/TextContainer/Commands")
 onready var featsScreen = get_node("FeatsScreen")
 onready var featList = get_node("FeatsScreen/FeatsList")
 onready var chooseFeat = get_node("FeatsScreen/TextContainer/ChooseFeat")
+onready var featsCommandsLabel = get_node("FeatsScreen/TextContainer/Commands")
 onready var statusesScreen = get_node("StatusesScreen")
 onready var statusesList = get_node("StatusesScreen/StatusesList")
+onready var statusesCommandsLabel = get_node("StatusesScreen/TextContainer/Commands")
 onready var scroller = get_node("StatusesScreen/MenuScroller")
 
 var currentTab = 0
 var currentRow = 0
 var startRow = 0
 
+var skillCommands = [
+	["Buy skill", "Enter"],
+	["Close", "Esc"]
+]
+
+var featCommands = [
+	["Feat selection", "Enter"],
+	["Close", "Esc"]
+]
+
+var statusCommands = [
+	["Close", "Esc"]
+]
+
 func _ready():
 	set_process_input(false)
+	skillsCommandsLabel.bbcode_text = Utils.cmdString(skillCommands)
+	featsCommandsLabel.bbcode_text = Utils.cmdString(featCommands)
+	statusesCommandsLabel.bbcode_text = Utils.cmdString(statusCommands)
 
 func open():
 	setTab(currentTab)
@@ -33,10 +53,10 @@ func close():
 
 func _input(event):
 	if (event.is_action_pressed("ui_left")):
-		currentTab = max(currentTab-1, 0)
+		currentTab = posmod(currentTab-1, tabs.size())
 		setTab(currentTab)
 	elif (event.is_action_pressed("ui_right")):
-		currentTab = min(currentTab+1, tabs.size()-1)
+		currentTab = posmod(currentTab+1, tabs.size())
 		setTab(currentTab)
 	elif (event.is_action_pressed("ui_up")):
 		match currentTab:

@@ -88,7 +88,7 @@ tile_data = PoolIntArray( -65521, 3, 0, -65520, 3, 1, -65519, 3, 1, -65518, 3, 1
 [node name="SkillsScreen" type="Node2D" parent="."]
 
 [node name="SkillsList" type="Node2D" parent="SkillsScreen"]
-position = Vector2( 9, 36 )
+position = Vector2( 9, 31.5 )
 
 [node name="Combat" parent="SkillsScreen/SkillsList" instance=ExtResource( 4 )]
 position = Vector2( 18, 9 )
@@ -135,13 +135,14 @@ position = Vector2( 18, 109 )
 script = SubResource( 2 )
 
 [node name="TextContainer" type="Node2D" parent="SkillsScreen"]
-position = Vector2( 9, 162 )
+position = Vector2( 72, 153 )
 scale = Vector2( 0.25, 0.25 )
 
 [node name="Label" type="Label" parent="SkillsScreen/TextContainer"]
-margin_right = 40.0
-margin_bottom = 14.0
-custom_colors/font_color = Color( 0.807843, 0.858824, 0.882353, 1 )
+margin_right = 182.0
+margin_bottom = 36.0
+theme = ExtResource( 7 )
+custom_colors/font_color = Color( 0.843137, 0.709804, 0.215686, 1 )
 custom_fonts/font = ExtResource( 1 )
 text = "Skill points:"
 
@@ -149,10 +150,21 @@ text = "Skill points:"
 margin_left = 180.0
 margin_right = 216.0
 margin_bottom = 35.0
-custom_colors/font_color = Color( 0.807843, 0.858824, 0.882353, 1 )
+theme = ExtResource( 7 )
+custom_colors/font_color = Color( 0.843137, 0.709804, 0.215686, 1 )
 custom_fonts/font = ExtResource( 1 )
 text = "3"
 align = 1
+
+[node name="Commands" type="RichTextLabel" parent="SkillsScreen/TextContainer"]
+margin_left = -252.0
+margin_top = 36.0
+margin_right = 216.0
+margin_bottom = 76.0
+theme = ExtResource( 7 )
+bbcode_enabled = true
+bbcode_text = "[center]ds[/center]"
+text = "ds"
 
 [node name="FeatsScreen" type="Node2D" parent="."]
 visible = false
@@ -179,19 +191,30 @@ scale = Vector2( 0.25, 0.25 )
 
 [node name="ChooseFeat" type="Label" parent="FeatsScreen/TextContainer"]
 margin_left = 36.0
-margin_top = 612.0
+margin_top = 576.0
 margin_right = 504.0
-margin_bottom = 684.0
+margin_bottom = 612.0
 theme = ExtResource( 7 )
-text = "You can choose a new feat, press Enter to open feat selection."
+custom_colors/font_color = Color( 0.843137, 0.709804, 0.215686, 1 )
+text = "New feat available !"
 align = 1
 autowrap = true
+
+[node name="Commands" type="RichTextLabel" parent="FeatsScreen/TextContainer"]
+margin_left = 36.0
+margin_top = 648.0
+margin_right = 504.0
+margin_bottom = 688.0
+theme = ExtResource( 7 )
+bbcode_enabled = true
+bbcode_text = "[center]ds[/center]"
+text = "ds"
 
 [node name="StatusesScreen" type="Node2D" parent="."]
 visible = false
 
 [node name="StatusesList" type="Node2D" parent="StatusesScreen"]
-position = Vector2( 9, 32 )
+position = Vector2( 9, 36 )
 
 [node name="StatusRow" parent="StatusesScreen/StatusesList" instance=ExtResource( 8 )]
 position = Vector2( 0, 9 )
@@ -211,13 +234,22 @@ position = Vector2( 0, 81 )
 [node name="StatusRow6" parent="StatusesScreen/StatusesList" instance=ExtResource( 8 )]
 position = Vector2( 0, 99 )
 
-[node name="StatusRow7" parent="StatusesScreen/StatusesList" instance=ExtResource( 8 )]
-position = Vector2( 0, 117 )
-
 [node name="MenuScroller" parent="StatusesScreen" instance=ExtResource( 9 )]
-position = Vector2( 119, 48 )
-length = 111
-elements = 7
+position = Vector2( 119, 53 )
+length = 91
+
+[node name="TextContainer" type="Node2D" parent="StatusesScreen"]
+scale = Vector2( 0.25, 0.25 )
+
+[node name="Commands" type="RichTextLabel" parent="StatusesScreen/TextContainer"]
+margin_left = 36.0
+margin_top = 648.0
+margin_right = 504.0
+margin_bottom = 688.0
+theme = ExtResource( 7 )
+bbcode_enabled = true
+bbcode_text = "[center]ds[/center]"
+text = "ds"
 
 [node name="TextContainer" type="Node2D" parent="."]
 position = Vector2( 144, 55 )

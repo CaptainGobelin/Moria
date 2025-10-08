@@ -7,14 +7,15 @@ onready var commandLabel = get_node("TextContainer/Commands")
 onready var emptyListLabel = get_node("TextContainer/EmptyList")
 
 var currentRow = -1
+var commands = [
+	["Cast spell", "Enter"],
+	["Assign", "A"],
+	["Close", "Esc"]
+]
 
 func _ready():
 	set_process_input(false)
-	commandLabel.bbcode_text = "[center]"
-	commandLabel.bbcode_text += "Cast spell:" + Ref.ui.color("Enter", "yellow")
-	commandLabel.bbcode_text += "   Assign:" + Ref.ui.color("A", "yellow")
-	commandLabel.bbcode_text += "   Close:" + Ref.ui.color("Esc", "yellow")
-	commandLabel.bbcode_text += "[/center]"
+	commandLabel.bbcode_text = Utils.cmdString(commands)
 
 func _input(event):
 	if (event.is_action_pressed("ui_up")):

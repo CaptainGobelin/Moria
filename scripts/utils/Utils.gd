@@ -1,0 +1,123 @@
+extends Node
+
+const directons = [Vector2(-1, 0), Vector2(0, -1), Vector2(1, 0), Vector2(0, 1)]
+const neighbours = [
+	Vector2(1, 0), Vector2(1, 1), Vector2(0, 1),
+	Vector2(-1, 1), Vector2(-1, 0), Vector2(-1, -1),
+	Vector2(0, -1), Vector2(1, -1),
+	Vector2(1, 0), Vector2(1, 1), Vector2(0, 1),
+	Vector2(-1, 1), Vector2(-1, 0), Vector2(-1, -1)
+]
+
+func addArticle(name: String, nb = 1):
+	if nb > 1:
+		name = name.replace("Potion", "Potions")
+		name = name.replace("Scroll", "Scrolls")
+		name = name.replace("knife", "knives")
+		name = name.replace("Lockpick", "Lockpicks")
+		return String(nb) + " " + name
+	var firstLetter = name[0].to_lower()
+	var article = "a"
+	match firstLetter:
+		"a": article = "an"
+		"e": article = "an"
+		"i": article = "an"
+		"o": article = "an"
+		"u": article = "an"
+	return article + " " + name
+
+func makeList(array: Array):
+	var result = ""
+	var count = 0
+	var limit = array.size() - 1
+	for s in array:
+		if count == 0:
+			result = s
+		elif count < limit:
+			result += ", " + s
+		else:
+			result += " and " + s
+		count += 1
+	return result
+
+func chooseRandom(array: Array):
+	return array[randi() % array.size()]
+
+func modulo(a: int, b: int):
+	return (b + (a % b)) % b
+
+func dist(a: Vector2, b: Vector2) -> int:
+	return int(abs(a.x - b.x) + abs(a.y - b.y))
+
+func squareDist(a: Vector2, b: Vector2) -> int:
+	return int(sqrt(pow(b.x-a.x, 2) + pow(b.y-a.y, 2)))
+
+func printDict(dict: Dictionary):
+	if dict.empty():
+		print("Empty dict")
+	for k in dict.keys():
+		prints(String(k), ":", dict[k])
+
+func toRoman(number: int) -> String:
+	match number:
+		1:
+			return "I"
+		2:
+			return "II"
+		3:
+			return "III"
+		4:
+			return "IV"
+		5:
+			return "V"
+		6:
+			return "VI"
+		7:
+			return "VII"
+		8:
+			return "VIII"
+		9:
+			return "IX"
+	return String(number)
+
+func diceToVector(dice: String) -> Vector3:
+	var result = Vector3()
+	result.x = dice.get_slice("d", 0).to_int()
+	result.y = dice.get_slice("d", 1).to_int()
+	return result
+
+func damageTypeFromString(type: String) -> int:
+	match type:
+		"Slash": return Data.DMG_SLASH
+		"Blunt": return Data.DMG_BLUNT
+		"Fire": return Data.DMG_FIRE
+		"Ice": return Data.DMG_ICE
+		"Poison": return Data.DMG_POISON
+		"Radiant": return Data.DMG_RADIANT
+		"Magic": return Data.DMG_MAGIC
+		"Shock": return Data.DMG_LIGHTNING
+	return Data.DMG_SLASH
+
+func csvToDict(filename: String) -> Dictionary:
+	var result = {}
+	var file = File.new()
+	file.open("res://data/" + filename, File.READ)
+	var columns = file.get_csv_line()
+	while not file.eof_reached():
+		var line = file.get_csv_line()
+		result[line[0]] = {}
+		for i in range(1, line.size()):
+			result[line[0]][columns[i]] = line[i]
+	file.close()
+	return result
+
+func cmdString(cmd: Array) -> String:
+	var count = 0
+	var result = "[center]"
+	for c in cmd:
+		if count != 0:
+			result += "   "
+		result += c[0] + ":" + "[color=#d7b537]" + c[1] + "[/color]"
+		count += 1
+	result += "[/center]"
+	return result
