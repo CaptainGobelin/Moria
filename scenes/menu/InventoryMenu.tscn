@@ -45,39 +45,93 @@ script = SubResource( 1 )
 [node name="TextContainer2" type="Node2D" parent="Tabs/Weapons"]
 scale = Vector2( 0.25, 0.25 )
 
-[node name="Instructions" type="Label" parent="Tabs/Weapons/TextContainer2"]
+[node name="Commands" type="RichTextLabel" parent="Tabs/Weapons/TextContainer2"]
 margin_left = 36.0
 margin_top = 576.0
 margin_right = 864.0
 margin_bottom = 612.0
 theme = ExtResource( 9 )
-text = "Enter:Equip/Unequip   Tab:Details   Esc:Quit"
-align = 1
+bbcode_enabled = true
 
 [node name="Armors" parent="Tabs" instance=ExtResource( 1 )]
 show_behind_parent = true
 position = Vector2( 36, 0 )
 script = SubResource( 1 )
 
+[node name="TextContainer2" type="Node2D" parent="Tabs/Armors"]
+scale = Vector2( 0.25, 0.25 )
+
+[node name="Commands" type="RichTextLabel" parent="Tabs/Armors/TextContainer2"]
+margin_left = -108.0
+margin_top = 576.0
+margin_right = 720.0
+margin_bottom = 612.0
+theme = ExtResource( 9 )
+bbcode_enabled = true
+
 [node name="Scrolls" parent="Tabs" instance=ExtResource( 1 )]
 show_behind_parent = true
 position = Vector2( 72, 0 )
 script = SubResource( 1 )
+
+[node name="TextContainer2" type="Node2D" parent="Tabs/Scrolls"]
+scale = Vector2( 0.25, 0.25 )
+
+[node name="Commands" type="RichTextLabel" parent="Tabs/Scrolls/TextContainer2"]
+margin_left = -252.0
+margin_top = 576.0
+margin_right = 576.0
+margin_bottom = 612.0
+theme = ExtResource( 9 )
+bbcode_enabled = true
 
 [node name="Potions" parent="Tabs" instance=ExtResource( 1 )]
 show_behind_parent = true
 position = Vector2( 108, 0 )
 script = SubResource( 1 )
 
+[node name="TextContainer2" type="Node2D" parent="Tabs/Potions"]
+scale = Vector2( 0.25, 0.25 )
+
+[node name="Commands" type="RichTextLabel" parent="Tabs/Potions/TextContainer2"]
+margin_left = -396.0
+margin_top = 576.0
+margin_right = 432.0
+margin_bottom = 612.0
+theme = ExtResource( 9 )
+bbcode_enabled = true
+
 [node name="Throwings" parent="Tabs" instance=ExtResource( 1 )]
 show_behind_parent = true
 position = Vector2( 144, 0 )
 script = SubResource( 1 )
 
+[node name="TextContainer2" type="Node2D" parent="Tabs/Throwings"]
+scale = Vector2( 0.25, 0.25 )
+
+[node name="Commands" type="RichTextLabel" parent="Tabs/Throwings/TextContainer2"]
+margin_left = -540.0
+margin_top = 576.0
+margin_right = 288.0
+margin_bottom = 612.0
+theme = ExtResource( 9 )
+bbcode_enabled = true
+
 [node name="Talismans" parent="Tabs" instance=ExtResource( 1 )]
 show_behind_parent = true
 position = Vector2( 180, 0 )
 script = SubResource( 1 )
+
+[node name="TextContainer2" type="Node2D" parent="Tabs/Talismans"]
+scale = Vector2( 0.25, 0.25 )
+
+[node name="Commands" type="RichTextLabel" parent="Tabs/Talismans/TextContainer2"]
+margin_left = -684.0
+margin_top = 576.0
+margin_right = 144.0
+margin_bottom = 612.0
+theme = ExtResource( 9 )
+bbcode_enabled = true
 
 [node name="TripleDescription" type="Node2D" parent="."]
 visible = false
@@ -208,7 +262,7 @@ custom_fonts/font = ExtResource( 5 )
 text = "Key"
 align = 1
 
-[node name="Key2" type="Label" parent="TextContainer"]
+[node name="Title" type="Label" parent="TextContainer"]
 margin_left = -568.0
 margin_top = -104.0
 margin_right = 368.0

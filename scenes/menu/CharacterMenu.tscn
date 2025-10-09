@@ -88,7 +88,7 @@ tile_data = PoolIntArray( -65521, 3, 0, -65520, 3, 1, -65519, 3, 1, -65518, 3, 1
 [node name="SkillsScreen" type="Node2D" parent="."]
 
 [node name="SkillsList" type="Node2D" parent="SkillsScreen"]
-position = Vector2( 9, 31.5 )
+position = Vector2( 9, 33 )
 
 [node name="Combat" parent="SkillsScreen/SkillsList" instance=ExtResource( 4 )]
 position = Vector2( 18, 9 )

@@ -15,6 +15,12 @@ onready var tripleDescriptor2 = get_node("TripleDescription/CurrentItem/ItemDesc
 onready var tripleDescriptor3 = get_node("TripleDescription/CurrentItem/ItemDescriptor2")
 onready var detailPanel = get_node("DetailPanel")
 onready var tabs = inventory.get_children()
+onready var weaponsCommandsLabel = get_node("Tabs/Weapons/TextContainer2/Commands")
+onready var armorsCommandsLabel = get_node("Tabs/Armors/TextContainer2/Commands")
+onready var scrollsCommandsLabel = get_node("Tabs/Scrolls/TextContainer2/Commands")
+onready var potionsCommandsLabel = get_node("Tabs/Potions/TextContainer2/Commands")
+onready var throwingsCommandsLabel = get_node("Tabs/Throwings/TextContainer2/Commands")
+onready var talismansCommandsLabel = get_node("Tabs/Talismans/TextContainer2/Commands")
 
 const INVENTORY_MODE = 0
 const DETAILS_MODE = 1
@@ -22,8 +28,37 @@ const DETAILS_MODE = 1
 var currentMode = INVENTORY_MODE
 var currentTab = 0
 
+var weaponCommands = [
+	["Equip", "Enter"],
+	["Assign", "A"],
+	["Details", "Tab"],
+	["Drop", "D"],
+	["Close", "Esc"]
+]
+
+var armorCommands = [
+	["Equip", "Enter"],
+	["Details", "Tab"],
+	["Drop", "D"],
+	["Close", "Esc"]
+]
+
+var itemCommands = [
+	["Use", "Enter"],
+	["Assign", "A"],
+	["Details", "Tab"],
+	["Drop", "D"],
+	["Close", "Esc"]
+]
+
 func _ready():
 	set_process_input(false)
+	weaponsCommandsLabel.bbcode_text = Utils.cmdString(weaponCommands)
+	armorsCommandsLabel.bbcode_text = Utils.cmdString(armorCommands)
+	scrollsCommandsLabel.bbcode_text = Utils.cmdString(itemCommands)
+	potionsCommandsLabel.bbcode_text = Utils.cmdString(itemCommands)
+	throwingsCommandsLabel.bbcode_text = Utils.cmdString(itemCommands)
+	talismansCommandsLabel.bbcode_text = Utils.cmdString(armorCommands)
 
 func open():
 	currentMode = INVENTORY_MODE
