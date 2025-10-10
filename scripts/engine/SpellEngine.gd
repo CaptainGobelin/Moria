@@ -90,11 +90,11 @@ func applyEffect(caster, entity, spellId: int, fromCharacter: bool, rank: int, s
 		saveCap = savingCap
 		if spell[Data.SP_SAVE] != Data.SAVE_NO:
 			saveType = spell[Data.SP_SAVE]
+		if caster.statuses.has(Data.STATUS_ENCHANT + Data.ENCH_EMP_ENCH):
+			if Data.spells[spellId][Data.SP_SCHOOL] == Data.SC_ENCHANTMENT:
+				savingCap += 1
 	else:
 		saveType = Data.SAVE_NO
-	if caster.statuses.has(Data.STATUS_ENCHANT + Data.ENCH_EMP_ENCH):
-		if Data.spells[spellId][Data.SP_SCHOOL] == Data.SC_ENCHANTMENT:
-			savingCap += 1
 	fromChar = fromCharacter
 	match spellId:
 		Data.SP_MAGIC_MISSILE:
