@@ -14,6 +14,7 @@ onready var tripleDescriptor1 = get_node("TripleDescription/Description/ItemDesc
 onready var tripleDescriptor2 = get_node("TripleDescription/CurrentItem/ItemDescriptor1")
 onready var tripleDescriptor3 = get_node("TripleDescription/CurrentItem/ItemDescriptor2")
 onready var detailPanel = get_node("DetailPanel")
+onready var itemDescription = detailPanel.get_node("ItemDescription")
 onready var tabs = inventory.get_children()
 onready var weaponsCommandsLabel = get_node("Tabs/Weapons/TextContainer2/Commands")
 onready var armorsCommandsLabel = get_node("Tabs/Armors/TextContainer2/Commands")
@@ -21,6 +22,7 @@ onready var scrollsCommandsLabel = get_node("Tabs/Scrolls/TextContainer2/Command
 onready var potionsCommandsLabel = get_node("Tabs/Potions/TextContainer2/Commands")
 onready var throwingsCommandsLabel = get_node("Tabs/Throwings/TextContainer2/Commands")
 onready var talismansCommandsLabel = get_node("Tabs/Talismans/TextContainer2/Commands")
+onready var detailsCommandsLabel = get_node("DetailPanel/TextContainer/Commands")
 
 const INVENTORY_MODE = 0
 const DETAILS_MODE = 1
@@ -51,6 +53,10 @@ var itemCommands = [
 	["Close", "Esc"]
 ]
 
+var detailCommands = [
+	["Close", "Tab"]
+]
+
 func _ready():
 	set_process_input(false)
 	weaponsCommandsLabel.bbcode_text = Utils.cmdString(weaponCommands)
@@ -59,6 +65,7 @@ func _ready():
 	potionsCommandsLabel.bbcode_text = Utils.cmdString(itemCommands)
 	throwingsCommandsLabel.bbcode_text = Utils.cmdString(itemCommands)
 	talismansCommandsLabel.bbcode_text = Utils.cmdString(armorCommands)
+	detailsCommandsLabel.bbcode_text = Utils.cmdString(detailCommands)
 
 func open():
 	currentMode = INVENTORY_MODE
@@ -90,6 +97,7 @@ func _input(event):
 			currentMode = INVENTORY_MODE
 	elif (event.is_action_released("ui_tab")):
 		detailPanel.visible = true
+		itemDescription.fill(itemList.getSelected())
 		currentMode = DETAILS_MODE
 	elif (event.is_action_pressed("ui_left")):
 		currentTab = Utils.modulo(currentTab-1, tabs.size())
@@ -245,3 +253,12 @@ func _on_ItemList_itemSelected(itemId):
 		tripleDescriptor1.clearDescription()
 		tripleDescriptor2.clearDescription()
 		tripleDescriptor3.clearDescription()
+
+func getItemDescription(type: int, id: int) -> String:
+	var result = ""
+	var item = GLOBAL.items[id][GLOBAL.IT_BASE]
+	match type:
+		GLOBAL.WP_TYPE:
+			result += Data.weaponDescriptions[item]
+			result += ""
+	return result

@@ -142,18 +142,18 @@ func computeDamages(source, dmgDices: Array, resist: Array, byPassResists: bool 
 		result += dmg
 	return result
 
-func dmgDicesToString(dmgDices: Array, rich: bool = false):
+func dmgDicesToString(dmgDices: Array, rich: bool = false, typed: bool = false):
 	var result = ""
 	var count = 0
 	for dmgDice in dmgDices:
 		if rich:
 			result += "[color=#" + Data.DMG_COLORS[dmgDice.type].to_html(false) + "]"
-			if count > 0:
-				result += "+"
-			result += dmgDice.toString() + "[/color]"
-		else:
-			if count > 0:
-				result += "+"
-			result += dmgDice.toString()
+		if count > 0:
+			result += "+"
+		result += dmgDice.toString()
+		if typed:
+			result += " " + Data.DMG_NAMES[dmgDice.type] + " damages"
+		if rich:
+			result += "[/color]"
 		count += 1
 	return result

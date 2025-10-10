@@ -123,6 +123,7 @@ func mapWeaponToItem(weapon, baseIdx: int, enchants: Array = []):
 	item[GLOBAL.IT_2H] = weapon[Data.W_2H]
 	item[GLOBAL.IT_TYPE] = GLOBAL.WP_TYPE
 	item[GLOBAL.IT_SUBTYPE] = GLOBAL.SUB_WP
+	item[GLOBAL.IT_SKILL] = weapon[Data.W_SKILL]
 	item[GLOBAL.IT_BASE] = baseIdx
 	return item
 
