@@ -30,6 +30,7 @@ const ARMOR_SKILL = [
 func weaponDamages(id: int) -> String:
 	return "It deals " + GeneralEngine.dmgDicesToString([GLOBAL.items[id][GLOBAL.IT_DMG]], true, true) +"."
 
+#TODO shield, armor, helmet, scroll, potion, throwing, talsiman + enchants
 func fill(id: int):
 	var des = ""
 	var item = GLOBAL.items[id]
@@ -37,12 +38,15 @@ func fill(id: int):
 	icon.frame = item[GLOBAL.IT_ICON]
 	match item[GLOBAL.IT_TYPE]:
 		GLOBAL.WP_TYPE:
-			des = Data.weaponDescriptions[item[GLOBAL.IT_BASE]]
-			if item[GLOBAL.IT_SUBTYPE]:
-				des += " " + WEAPON_2_HAND
+			if item[GLOBAL.IT_SUBTYPE] == GLOBAL.SUB_SH:
+				pass
 			else:
-				des += " " + WEAPON_1_HAND
-			des += " " + WEAPON_SKILL[item[GLOBAL.IT_SKILL]]
-			des += "\n\n" + weaponDamages(id)
-			des += "\n\n" + NO_ENCHANTS
+				des = Data.weaponDescriptions[item[GLOBAL.IT_BASE]]
+				if item[GLOBAL.IT_2H]:
+					des += " " + WEAPON_2_HAND
+				else:
+					des += " " + WEAPON_1_HAND
+				des += " " + WEAPON_SKILL[item[GLOBAL.IT_SKILL]]
+				des += "\n\n" + weaponDamages(id)
+				des += "\n\n" + NO_ENCHANTS
 	descriptionLabel.bbcode_text = des
