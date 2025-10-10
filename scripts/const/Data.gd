@@ -772,7 +772,8 @@ const scrolls = {
 }
 
 const scrollDescriptions = {
-	SC_MAGIC_MISSILE: "Fires arcane projectiles to random targets, each dealing %%DMG_1. No saving throw."
+	SC_MAGIC_MISSILE: "Fires 3 arcane projectiles to random targets, each dealing %%DMG_1.",
+	SC_BLINK: "Teleports yourself to a near random place."
 }
  
 var scrollsByRarity = {}
@@ -857,7 +858,7 @@ const KIT_LO = 7
 const KIT_UNDEF = [-1, -1, -1, [], [], [], 0, 0]
 const KIT_FIGHTER = [W_HATCHET, SH_BUCKLER, A_PADDED, [PO_HEALING, PO_HEALING], [], [TH_KNIFE, TH_KNIFE, TH_KNIFE], 30, 2]
 const KIT_THIEF =	[W_DAGGER, -1, A_PADDED, [PO_HEALING, PO_HEALING], [SC_BLINK], [TH_KNIFE, TH_KNIFE, TH_KNIFE], 45, 3]
-const KIT_MAGE = 	[W_STAFF, -1, A_ROBE, [PO_HEALING, PO_HEALING], [SC_ANIMALS], [], 30, 2]
+const KIT_MAGE = 	[W_STAFF, -1, A_ROBE, [PO_HEALING, PO_HEALING], [SC_BLINK, SC_MAGIC_MISSILE], [], 30, 2]
 const KIT_CLERIC = 	[W_CLUB, SH_BUCKLER, A_ROBE, [PO_HEALING, PO_HEALING], [], [], 30, 2]
 const KIT_PALADIN = [W_GREATCLUB, -1, A_PADDED, [PO_HEALING, PO_HEALING], [], [], 30, 2]
 
@@ -1304,7 +1305,7 @@ var spellDescriptions = {
 		"%%USES_3."
 	],
 	SP_BLINK: [
-		"Teleports yourself to a near random place. ",
+		"Teleports yourself to a near random place.",
 		"",
 		"%%USES_2.",
 		"%%USES_3."

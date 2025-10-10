@@ -47,9 +47,9 @@ func blank():
 static func replacePlaceholders(toReplace: String, id: int) -> String:
 	var d = toReplace
 	if Data.spellDamages.has(id):
-		d = d.replace("%%DMG_1", dmgToStr(Data.spellDamages[id][0]))
-		d = d.replace("%%DMG_2", dmgToStr(Data.spellDamages[id][1]))
-		d = d.replace("%%DMG_3", dmgToStr(Data.spellDamages[id][2]))
+		d = d.replace("%%DMG_1", dmgToStr(Data.spellDamages[id][0]) + " damages")
+		d = d.replace("%%DMG_2", dmgToStr(Data.spellDamages[id][1]) + " damages")
+		d = d.replace("%%DMG_3", dmgToStr(Data.spellDamages[id][2]) + " damages")
 		d = d.replace("%%DMGN_1", dmgToStr(Data.spellDamages[id][0], false))
 		d = d.replace("%%DMGN_2", dmgToStr(Data.spellDamages[id][1], false))
 		d = d.replace("%%DMGN_3", dmgToStr(Data.spellDamages[id][2], false))

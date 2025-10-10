@@ -230,6 +230,7 @@ func mapArmorToItem(armor, baseIdx: int, enchants: Array = []):
 		item[GLOBAL.IT_CA] = 0
 	else:
 		item[GLOBAL.IT_SUBTYPE] = GLOBAL.SUB_AR
+	item[GLOBAL.IT_SKILL] = armor[Data.A_SKILL]
 	item[GLOBAL.IT_BASE] = baseIdx
 	return item
 

@@ -85,10 +85,19 @@ func scrollDescription(item):
 	var scroll = Data.scrolls[item[GLOBAL.IT_BASE]]
 	var spell = Data.spells[scroll[Data.SC_SP]]
 	infoLabel.text = "Casts "
-	infoLabel.text += spell[Data.SP_NAME] + " " + Utils.toRoman(scroll[Data.SC_RANK] + 1)
+	infoLabel.text += spell[Data.SP_NAME]
+	if (scroll[Data.SC_RANK] + 1) > spell[Data.SP_LVL]:
+		 infoLabel.text += " " + Utils.toRoman(scroll[Data.SC_RANK] + 1)
 	infoLabel.text += "."
 	if Data.scrollDescriptions.has(item[GLOBAL.IT_BASE]):
 		effectsLabel.text = SpellDescription.replacePlaceholders(Data.scrollDescriptions[item[GLOBAL.IT_BASE]], scroll[Data.SC_SP])
+	match spell[Data.SP_SAVE]:
+		Data.SAVE_NO:
+			effectsLabel.text += " No saving throw."
+		Data.SAVE_PHY:
+			effectsLabel.text += " Physics saving throw."
+		Data.SAVE_WIL:
+			effectsLabel.text += " Willpower saving throw."
 
 func potionDescription(item):
 	icon.frame = item[GLOBAL.IT_ICON]

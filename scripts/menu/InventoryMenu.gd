@@ -48,6 +48,13 @@ var armorCommands = [
 var itemCommands = [
 	["Use", "Enter"],
 	["Assign", "A"],
+	["Drop", "D"],
+	["Close", "Esc"]
+]
+
+var throwingCommands = [
+	["Use", "Enter"],
+	["Assign", "A"],
 	["Details", "Tab"],
 	["Drop", "D"],
 	["Close", "Esc"]
@@ -63,7 +70,7 @@ func _ready():
 	armorsCommandsLabel.bbcode_text = Utils.cmdString(armorCommands)
 	scrollsCommandsLabel.bbcode_text = Utils.cmdString(itemCommands)
 	potionsCommandsLabel.bbcode_text = Utils.cmdString(itemCommands)
-	throwingsCommandsLabel.bbcode_text = Utils.cmdString(itemCommands)
+	throwingsCommandsLabel.bbcode_text = Utils.cmdString(throwingCommands)
 	talismansCommandsLabel.bbcode_text = Utils.cmdString(armorCommands)
 	detailsCommandsLabel.bbcode_text = Utils.cmdString(detailCommands)
 
@@ -95,7 +102,8 @@ func _input(event):
 		elif (event.is_action_released("ui_tab")):
 			detailPanel.visible = false
 			currentMode = INVENTORY_MODE
-	elif (event.is_action_released("ui_tab")):
+	elif (event.is_action_released("ui_tab")) \
+	and (currentTab != GLOBAL.INV_SCROLLS and currentTab != GLOBAL.INV_POTIONS):
 		detailPanel.visible = true
 		itemDescription.fill(itemList.getSelected())
 		currentMode = DETAILS_MODE

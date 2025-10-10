@@ -38,13 +38,12 @@ autowrap = true
 clip_text = true
 
 [node name="Effects" type="Label" parent="TitleContainer"]
-margin_top = 108.0
+margin_top = 144.0
 margin_right = 396.0
-margin_bottom = 252.0
+margin_bottom = 324.0
 theme = ExtResource( 1 )
 text = "- Vorpal
 - Holy wrath"
-valign = 1
 autowrap = true
 clip_text = true
 
