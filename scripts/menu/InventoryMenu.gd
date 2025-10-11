@@ -104,8 +104,11 @@ func _input(event):
 			currentMode = INVENTORY_MODE
 	elif (event.is_action_released("ui_tab")) \
 	and (currentTab != GLOBAL.INV_SCROLLS and currentTab != GLOBAL.INV_POTIONS):
+		var selected = itemList.getSelected()
+		if selected == null:
+			return
 		detailPanel.visible = true
-		itemDescription.fill(itemList.getSelected())
+		itemDescription.fill(selected)
 		currentMode = DETAILS_MODE
 	elif (event.is_action_pressed("ui_left")):
 		currentTab = Utils.modulo(currentTab-1, tabs.size())
