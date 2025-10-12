@@ -9,7 +9,7 @@ const neighbours = [
 	Vector2(-1, 1), Vector2(-1, 0), Vector2(-1, -1)
 ]
 
-func addArticle(name: String, nb = 1):
+func addArticle(name: String, nb: int = 1, lower: bool = true):
 	if nb > 1:
 		name = name.replace("Potion", "Potions")
 		name = name.replace("Scroll", "Scrolls")

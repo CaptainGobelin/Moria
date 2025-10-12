@@ -115,7 +115,7 @@ func setSkills():
 	skills.text = msg
 
 func setGear():
-	var msg = "Starting kit:\n"
+	var msg = ""
 	var kit = Data.CLASS_KITS[selectedClass]
 	if kit[Data.KIT_WP] != -1:
 		msg += "\n- " + Data.weapons[kit[Data.KIT_WP]][Data.W_NAME]
@@ -131,7 +131,7 @@ func setGear():
 			potions[i] = 1
 	for p in potions.keys():
 		if potions[p] > 1:
-			msg += "\n- " + Utils.addArticle(Data.potions[p][Data.PO_NAME], potions[p])
+			msg += "\n- " + Utils.addArticle(Data.potions[p][Data.PO_NAME], potions[p], false)
 		else:
 			msg += "\n- " + Data.potions[p][Data.PO_NAME]
 	var scrolls = {}
@@ -157,9 +157,9 @@ func setGear():
 		else:
 			msg += "\n- " + Data.throwings[t][Data.TH_NAME]
 	if kit[Data.KIT_LO] > 0:
-		msg += "\n- " + String(kit[Data.KIT_LO]) + " lockpicks"
+		msg += "\n- " + String(kit[Data.KIT_LO]) + " Lockpicks"
 	if kit[Data.KIT_GO] > 0:
-		msg += "\n- " + String(kit[Data.KIT_GO]) + " golds"
+		msg += "\n- " + String(kit[Data.KIT_GO]) + " Golds"
 	gear.text = msg
 
 func setFeat():

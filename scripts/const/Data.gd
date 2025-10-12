@@ -575,23 +575,23 @@ const W_SKILL = 6
 const W_ICON = 7
 
 const weapons = {
-	W_CLUB: 		["club",		null, Vector2(1,  4), "B", 0, false, 0,  0],
-	W_DAGGER:		["dagger",		null, Vector2(1,  4), "S", 1, false, 0,  1],
-	W_HATCHET: 		["hatchet",		null, Vector2(1,  6), "S", 1, false, 2,  2],
-	W_MACE: 		["mace",		null, Vector2(1,  8), "B", 2, false, 2,  3],
-	W_SHORTSWORD: 	["shortsword",	null, Vector2(2,  4), "S", 3, false, 2,  4],
-	W_AXE: 			["hand axe",	null, Vector2(1, 10), "S", 4, false, 4,  5],
-	6: 				["longsword",	null, Vector2(2, 10), "S", 5, false, 4,  6],
-	7: 				["morning star",null, Vector2(3,  6), "S", 6, false, 4,  7],
+	W_CLUB: 		["Club",		null, Vector2(1,  4), "B", 0, false, 0,  0],
+	W_DAGGER:		["Dagger",		null, Vector2(1,  4), "S", 1, false, 0,  1],
+	W_HATCHET: 		["Hatchet",		null, Vector2(1,  6), "S", 1, false, 2,  2],
+	W_MACE: 		["Mace",		null, Vector2(1,  8), "B", 2, false, 2,  3],
+	W_SHORTSWORD: 	["Shortsword",	null, Vector2(2,  4), "S", 3, false, 2,  4],
+	W_AXE: 			["Hand axe",	null, Vector2(1, 10), "S", 4, false, 4,  5],
+	6: 				["Longsword",	null, Vector2(2, 10), "S", 5, false, 4,  6],
+	7: 				["Morning star",null, Vector2(3,  6), "S", 6, false, 4,  7],
 	
-	W_STAFF: 		["staff",		null, Vector2(1,  6), "B", 0, true, 0,  8],
-	W_GREATCLUB: 	["greatclub",	null, Vector2(1,  8), "B", 1, true, 0,  9],
-	W_FELLING_AXE:	["felling axe",	null, Vector2(1, 12), "S", 2, true, 2, 10],
-	W_MAUL: 		["maul",		null, Vector2(2,  6), "B", 3, true, 2, 11],
-	W_BROADSWORD: 	["broadsword",	null, Vector2(3,  4), "S", 4, true, 2, 12],
-	13:				["halberd",		null, Vector2(3, 10), "S", 5, true, 4, 13],
-	14:				["greataxe",	null, Vector2(3, 12), "S", 6, true, 4, 14],
-	15:				["zweihander",	null, Vector2(4,  8), "S", 6, true, 4, 15],
+	W_STAFF: 		["Staff",		null, Vector2(1,  6), "B", 0, true, 0,  8],
+	W_GREATCLUB: 	["Greatclub",	null, Vector2(1,  8), "B", 1, true, 0,  9],
+	W_FELLING_AXE:	["Felling axe",	null, Vector2(1, 12), "S", 2, true, 2, 10],
+	W_MAUL: 		["Maul",		null, Vector2(2,  6), "B", 3, true, 2, 11],
+	W_BROADSWORD: 	["Broadsword",	null, Vector2(3,  4), "S", 4, true, 2, 12],
+	13:				["Halberd",		null, Vector2(3, 10), "S", 5, true, 4, 13],
+	14:				["Greataxe",	null, Vector2(3, 12), "S", 6, true, 4, 14],
+	15:				["Zweihander",	null, Vector2(4,  8), "S", 6, true, 4, 15],
 }
 
 const weaponDescriptions = {

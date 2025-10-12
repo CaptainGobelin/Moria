@@ -31,7 +31,7 @@ var currentMode = INVENTORY_MODE
 var currentTab = 0
 
 var weaponCommands = [
-	["Equip", "Enter"],
+	["Wield", "Enter"],
 	["Assign", "A"],
 	["Details", "Tab"],
 	["Drop", "D"],
@@ -45,15 +45,22 @@ var armorCommands = [
 	["Close", "Esc"]
 ]
 
-var itemCommands = [
-	["Use", "Enter"],
+var scrollCommands = [
+	["Read", "Enter"],
+	["Assign", "A"],
+	["Drop", "D"],
+	["Close", "Esc"]
+]
+
+var potionCommands = [
+	["Quaff", "Enter"],
 	["Assign", "A"],
 	["Drop", "D"],
 	["Close", "Esc"]
 ]
 
 var throwingCommands = [
-	["Use", "Enter"],
+	["Throw", "Enter"],
 	["Assign", "A"],
 	["Details", "Tab"],
 	["Drop", "D"],
@@ -68,8 +75,8 @@ func _ready():
 	set_process_input(false)
 	weaponsCommandsLabel.bbcode_text = Utils.cmdString(weaponCommands)
 	armorsCommandsLabel.bbcode_text = Utils.cmdString(armorCommands)
-	scrollsCommandsLabel.bbcode_text = Utils.cmdString(itemCommands)
-	potionsCommandsLabel.bbcode_text = Utils.cmdString(itemCommands)
+	scrollsCommandsLabel.bbcode_text = Utils.cmdString(scrollCommands)
+	potionsCommandsLabel.bbcode_text = Utils.cmdString(potionCommands)
 	throwingsCommandsLabel.bbcode_text = Utils.cmdString(throwingCommands)
 	talismansCommandsLabel.bbcode_text = Utils.cmdString(armorCommands)
 	detailsCommandsLabel.bbcode_text = Utils.cmdString(detailCommands)
