@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://themes/LabelTheme.tres" type="Theme" id=1]
 [ext_resource path="res://sprites/items.png" type="Texture" id=2]
 [ext_resource path="res://scripts/menu/ItemDescriptor.gd" type="Script" id=3]
+[ext_resource path="res://tilesets/int_tileset.tres" type="TileSet" id=4]
 
 [node name="ItemDescriptor" type="Node2D"]
 script = ExtResource( 3 )
@@ -29,23 +30,21 @@ clip_text = true
 [node name="Info" type="Label" parent="TitleContainer"]
 margin_top = 76.0
 margin_right = 396.0
-margin_bottom = 112.0
+margin_bottom = 144.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.843137, 0.709804, 0.215686, 1 )
 text = "Damage: 3d10+1 Slashing"
-align = 1
+valign = 1
 autowrap = true
 clip_text = true
 
 [node name="Effects" type="Label" parent="TitleContainer"]
 margin_top = 144.0
 margin_right = 396.0
-margin_bottom = 324.0
+margin_bottom = 180.0
 theme = ExtResource( 1 )
-text = "- Vorpal
-- Holy wrath"
+text = "- Vorpal"
 autowrap = true
-clip_text = true
 
 [node name="Icon" type="Sprite" parent="."]
 position = Vector2( 1, 2 )
@@ -74,4 +73,15 @@ margin_bottom = 16.0
 color = Color( 0.141176, 0.192157, 0.215686, 1 )
 __meta__ = {
 "_edit_lock_": true
+}
+
+[node name="SingleTileMap" type="TileMap" parent="."]
+visible = false
+show_behind_parent = true
+tile_set = ExtResource( 4 )
+cell_size = Vector2( 9, 9 )
+format = 1
+tile_data = PoolIntArray( -1, 3, 0, -65536, 3, 1, -65535, 3, 1, -65534, 3, 1, -65533, 3, 1, -65532, 3, 1, -65531, 3, 1, -65530, 3, 1, -65529, 3, 1, -65528, 3, 1, -65527, 3, 1, -65526, 3, 1, -65525, 3, 2, 65535, 3, 65536, 0, 3, 65537, 1, 3, 65537, 2, 3, 65537, 3, 3, 65537, 4, 3, 65537, 5, 3, 65537, 6, 3, 65537, 7, 3, 65537, 8, 3, 65537, 9, 3, 65537, 10, 3, 65537, 11, 3, 65538, 131071, 3, 65536, 65536, 3, 65537, 65537, 3, 65537, 65538, 3, 65537, 65539, 3, 65537, 65540, 3, 65537, 65541, 3, 65537, 65542, 3, 65537, 65543, 3, 65537, 65544, 3, 65537, 65545, 3, 65537, 65546, 3, 65537, 65547, 3, 65538, 196607, 3, 65536, 131072, 3, 65537, 131073, 3, 65537, 131074, 3, 65537, 131075, 3, 65537, 131076, 3, 65537, 131077, 3, 65537, 131078, 3, 65537, 131079, 3, 65537, 131080, 3, 65537, 131081, 3, 65537, 131082, 3, 65537, 131083, 3, 65538, 262143, 3, 65536, 196608, 3, 65537, 196609, 3, 65537, 196610, 3, 65537, 196611, 3, 65537, 196612, 3, 65537, 196613, 3, 65537, 196614, 3, 65537, 196615, 3, 65537, 196616, 3, 65537, 196617, 3, 65537, 196618, 3, 65537, 196619, 3, 65538, 327679, 3, 65536, 262144, 3, 65537, 262145, 3, 65537, 262146, 3, 65537, 262147, 3, 65537, 262148, 3, 65537, 262149, 3, 65537, 262150, 3, 65537, 262151, 3, 65537, 262152, 3, 65537, 262153, 3, 65537, 262154, 3, 65537, 262155, 3, 65538, 393215, 3, 65536, 327680, 3, 65537, 327681, 3, 65537, 327682, 3, 65537, 327683, 3, 65537, 327684, 3, 65537, 327685, 3, 65537, 327686, 3, 65537, 327687, 3, 65537, 327688, 3, 65537, 327689, 3, 65537, 327690, 3, 65537, 327691, 3, 65538, 458751, 3, 131072, 393216, 3, 131073, 393217, 3, 131073, 393218, 3, 131073, 393219, 3, 131073, 393220, 3, 131073, 393221, 3, 131073, 393222, 3, 131073, 393223, 3, 131073, 393224, 3, 131073, 393225, 3, 131073, 393226, 3, 131073, 393227, 3, 131074 )
+__meta__ = {
+"_editor_description_": ""
 }

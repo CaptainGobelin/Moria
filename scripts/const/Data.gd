@@ -766,14 +766,19 @@ const scrolls = {
 	SC_BLINK: 			["Scroll of blink", SP_BLINK, 1, 0, 101],
 	SC_REPEL_EVIL: 		["Scroll of repel evil", SP_REPEL_EVIL, 1, 1, 102],
 	SC_REVEAL: 			["Scroll of reveal hidden", SP_REVEAL_HIDDEN, 1, 1, 103],
-	SC_ANIMALS: 		["Scroll of conjure animals", SP_CONJURE_ANIMAL, 0, 2, 104],
+	SC_ANIMALS: 		["Scroll of conjure animals", SP_CONJURE_ANIMAL, 1, 2, 104],
 	SC_LESSER_ACQ: 		["Scroll of lesser acquirement", SP_LESSER_AQUIREMENT, 0, 3, 105],
 	SC_MIRROR_IMAGE: 	["Scroll of mirror images", SP_MIRROR_IMAGES, 1, 3, 106],
 }
 
 const scrollDescriptions = {
 	SC_MAGIC_MISSILE: "Fires 3 arcane projectiles to random targets, each dealing %%DMG_1.",
-	SC_BLINK: "Teleports yourself to a near random place."
+	SC_BLINK: "Teleports yourself to a near random place.",
+	SC_REPEL_EVIL: "Deals %%DMG_2 to all evil creatures (undeads and demons) at range 3.",
+	SC_REVEAL: "All hidden doors appears on your map. Lasts %%TURNS_2.",
+	SC_ANIMALS: "Conjures 1d2+1 wolves to fight by your side. Lasts until rest.",
+	SC_LESSER_ACQ: "Creates a weapon, an armor, a scroll, a potion or golds from nothing.",
+	SC_MIRROR_IMAGE: "Creates 3 illusions of yourself around you to fool your enemies. Every attack or spell has 50 % chances to hit an illusion instead of you. Lasts until rest."
 }
  
 var scrollsByRarity = {}
@@ -856,9 +861,10 @@ const KIT_GO = 6
 const KIT_LO = 7
 
 const KIT_UNDEF = [-1, -1, -1, [], [], [], 0, 0]
-const KIT_FIGHTER = [W_HATCHET, SH_BUCKLER, A_PADDED, [PO_HEALING, PO_HEALING], [], [TH_KNIFE, TH_KNIFE, TH_KNIFE], 30, 2]
+#const KIT_FIGHTER = [W_HATCHET, SH_BUCKLER, A_PADDED, [PO_HEALING, PO_HEALING], [], [TH_KNIFE, TH_KNIFE, TH_KNIFE], 30, 2]
+const KIT_FIGHTER = [W_HATCHET, SH_BUCKLER, A_PADDED, [PO_HEALING, PO_HEALING], [SC_MAGIC_MISSILE], [TH_KNIFE, TH_KNIFE, TH_KNIFE], 30, 2]
 const KIT_THIEF =	[W_DAGGER, -1, A_PADDED, [PO_HEALING, PO_HEALING], [SC_BLINK], [TH_KNIFE, TH_KNIFE, TH_KNIFE], 45, 3]
-const KIT_MAGE = 	[W_STAFF, -1, A_ROBE, [PO_HEALING, PO_HEALING], [SC_BLINK, SC_MAGIC_MISSILE], [], 30, 2]
+const KIT_MAGE = 	[W_STAFF, -1, A_ROBE, [PO_HEALING, PO_HEALING], [SC_ANIMALS], [], 30, 2]
 const KIT_CLERIC = 	[W_CLUB, SH_BUCKLER, A_ROBE, [PO_HEALING, PO_HEALING], [], [], 30, 2]
 const KIT_PALADIN = [W_GREATCLUB, -1, A_PADDED, [PO_HEALING, PO_HEALING], [], [], 30, 2]
 
@@ -1383,7 +1389,7 @@ var spellDescriptions = {
 		"%%INC_DMG_3."
 	],
 	SP_CONJURE_ANIMAL: [
-		"Conjures a wolf to fight by your side. Lasts until rest.",
+		"Conjures wolves to fight by your side. Lasts until rest.",
 		"Conjures 1d2 wolves.",
 		"Conjures 1d2+1 wolves.",
 		"Conjures 1d2+2 wolves.",

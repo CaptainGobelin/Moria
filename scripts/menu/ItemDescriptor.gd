@@ -1,17 +1,12 @@
 extends Node2D
 
-#3 for triple 4 for double and 13 for simple
-export (int) var size = 4
+export (bool) var adaptableSize = false
 
 onready var nameLabel = get_node("TitleContainer/Name")
 onready var infoLabel = get_node("TitleContainer/Info")
 onready var effectsLabel = get_node("TitleContainer/Effects")
 onready var icon = get_node("Icon")
-
-func _ready():
-	if size < 4:
-		effectsLabel.margin_top -= (4 - size) * 36
-	effectsLabel.margin_bottom = effectsLabel.margin_top + (36 * size)
+onready var singleTileMap = get_node("SingleTileMap")
 
 func fillDescription(id: int):
 	clearDescription()
@@ -21,28 +16,53 @@ func fillDescription(id: int):
 	match item[GLOBAL.IT_TYPE]:
 		GLOBAL.WP_TYPE:
 			weaponDescription(item)
+			adaptTileMap()
 			return item[GLOBAL.IT_SUBTYPE]
 		GLOBAL.AR_TYPE:
 			armorDescription(item)
+			adaptTileMap()
 			return item[GLOBAL.IT_SUBTYPE]
 		GLOBAL.TA_TYPE:
 			talismanDescription(item)
+			adaptTileMap()
 			return item[GLOBAL.IT_TYPE]
 		GLOBAL.SC_TYPE:
 			scrollDescription(item)
+			adaptTileMap()
 			return item[GLOBAL.IT_TYPE]
 		GLOBAL.PO_TYPE:
 			potionDescription(item)
+			adaptTileMap()
 			return item[GLOBAL.PO_TYPE]
 		GLOBAL.TH_TYPE:
 			throwingDescription(item)
+			adaptTileMap()
 			return item[GLOBAL.TH_TYPE]
 	return null
+
+func adaptTileMap():
+	if not adaptableSize:
+		return
+	singleTileMap.visible = true
+	singleTileMap.clear()
+	effectsLabel.visible = false
+	effectsLabel.visible = true
+	var height = float(effectsLabel.rect_position.y + effectsLabel.rect_size.y)
+	height *= $TitleContainer.scale.y
+	height = int(ceil(height / 9.0))
+	print(effectsLabel.rect_position.y)
+	print(effectsLabel.rect_size.y)
+	for i in range(-1, 12):
+		for j in range(-1, height + 1):
+			singleTileMap.set_cell(i, j, 3)
+	singleTileMap.update_bitmask_region()
 
 func clearDescription():
 	nameLabel.text = ""
 	infoLabel.text = ""
 	effectsLabel.text = ""
+	effectsLabel.margin_top = 144
+	effectsLabel.margin_bottom = 180
 	icon.visible = false
 
 func weaponDescription(item):
@@ -56,7 +76,7 @@ func weaponDescription(item):
 	dmg += item[GLOBAL.IT_DMG].dice.toString()
 	dmg += " " + Data.DMG_NAMES[item[GLOBAL.IT_DMG].type]
 	infoLabel.text = dmg
-	effectsLabel.text = "- No special effect."
+	effectsLabel.text = "No magical property."
 
 func shieldDescription(item):
 	#TODO
@@ -69,14 +89,16 @@ func armorDescription(item):
 	var info = "AC: " + String(item[GLOBAL.IT_CA])
 	info += " Prot: " + String(item[GLOBAL.IT_PROT])
 	infoLabel.text = info
-	effectsLabel.text = "- No special effect."
+	effectsLabel.text = "No magical property."
 
 func talismanDescription(item):
+	effectsLabel.margin_top = 108
+	effectsLabel.margin_bottom = 144
 	icon.frame = item[GLOBAL.IT_ICON]
 	icon.visible = true
 	nameLabel.text = item[GLOBAL.IT_NAME]
 	infoLabel.text = ""
-	effectsLabel.text = "- No special effect."
+	effectsLabel.text = "No magical property."
 
 func scrollDescription(item):
 	icon.frame = item[GLOBAL.IT_ICON]
@@ -100,6 +122,8 @@ func scrollDescription(item):
 			effectsLabel.text += " Willpower saving throw."
 
 func potionDescription(item):
+	effectsLabel.margin_top = 108
+	effectsLabel.margin_bottom = 144
 	icon.frame = item[GLOBAL.IT_ICON]
 	icon.visible = true
 	nameLabel.text = item[GLOBAL.IT_NAME]
@@ -110,7 +134,9 @@ func throwingDescription(item):
 	icon.frame = item[GLOBAL.IT_ICON]
 	icon.visible = true
 	nameLabel.text = item[GLOBAL.IT_NAME]
-#	var info = "AC: " + String(item[GLOBAL.IT_CA])
-#	info += " Prot: " + String(item[GLOBAL.IT_PROT])
-#	infoLabel.text = info
-	effectsLabel.text = "- No special effect."
+	if item[GLOBAL.IT_DMG] == null:
+		effectsLabel.margin_top = 108
+		effectsLabel.margin_bottom = 144
+		effectsLabel.text = "TODO"
+	else:
+		weaponDescription(item)
