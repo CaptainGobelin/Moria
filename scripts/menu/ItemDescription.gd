@@ -15,6 +15,15 @@ const WEAPON_SKILL = [
 	"It requires ***** Fighting skills to wield."
 ]
 
+const THROWING_SKILL = [
+	"It requires no Fighting skills to use.",
+	"It requires *.... Fighting skills to use.",
+	"It requires **... Fighting skills to use.",
+	"It requires ***.. Fighting skills to use.",
+	"It requires ****. Fighting skills to use.",
+	"It requires ***** Fighting skills to use."
+]
+
 const WEAPON_1_HAND = "It is a one-handed weapon."
 const WEAPON_2_HAND = "It is a two-handed weapon."
 
@@ -36,24 +45,7 @@ func armorStats(id: int) -> String:
 		return result + "."
 	return result + " and +" + String(GLOBAL.items[id][GLOBAL.IT_PROT]) + " to your Protection."
 
-#func scrollSpell(id: int) -> String:
-#	var spell = Data.spells[GLOBAL.items[id][GLOBAL.IT_SPEC]]
-#	var scroll = Data.scrolls[GLOBAL.items[id][GLOBAL.IT_BASE]]
-#	var result = "Use to cast " + spell[Data.SP_NAME]
-#	if scroll[Data.SC_RANK] > spell[Data.SP_LVL]:
-#		 result += " " + Utils.toRoman(scroll[Data.SC_RANK] + 1)
-#	result += ".\n\n"
-#	result += SpellDescription.replacePlaceholders(Data.scrollDescriptions[GLOBAL.items[id][GLOBAL.IT_BASE]] ,GLOBAL.items[id][GLOBAL.IT_SPEC])
-#	match spell[Data.SP_SAVE]:
-#		Data.SAVE_NO:
-#			result += " No saving throw."
-#		Data.SAVE_PHY:
-#			result += " Physics saving throw."
-#		Data.SAVE_WIL:
-#			result += " Willpower saving throw."
-#	return result
-
-#TODO shield, armor, helmet, scroll, potion, throwing, talsiman + enchants
+#TODO talsiman + enchants
 func fill(id: int):
 	var des = ""
 	var item = GLOBAL.items[id]
@@ -65,7 +57,6 @@ func fill(id: int):
 				des = Data.shieldDescriptions[item[GLOBAL.IT_BASE]]
 				des += " " + WEAPON_SKILL[item[GLOBAL.IT_SKILL]]
 				des += "\n\n" + armorStats(id)
-				des += "\n\n" + NO_ENCHANTS
 			else:
 				des = Data.weaponDescriptions[item[GLOBAL.IT_BASE]]
 				if item[GLOBAL.IT_2H]:
@@ -80,6 +71,12 @@ func fill(id: int):
 			des += " " + ARMOR_SKILL[item[GLOBAL.IT_SKILL]]
 			des += "\n\n" + armorStats(id)
 			des += "\n\n" + NO_ENCHANTS
-#		GLOBAL.SC_TYPE:
-#			des = scrollSpell(id)
+		GLOBAL.TH_TYPE:
+			des = Data.throwingDescriptions[item[GLOBAL.IT_BASE]]
+			if item[GLOBAL.IT_DMG] == null:
+				des += "\n\n" + SpellDescription.replacePlaceholders(Data.throwingEffects[item[GLOBAL.IT_BASE]], Data.throwings[item[GLOBAL.IT_BASE]][Data.TH_EFFECT])
+			else:
+				des += " " + THROWING_SKILL[item[GLOBAL.IT_SKILL]]
+				des += "\n\n" + weaponDamages(id)
+				des += "\n\n" + NO_ENCHANTS
 	descriptionLabel.bbcode_text = des

@@ -264,6 +264,7 @@ func mapThrowingToItem(throwing, baseIdx):
 		item[GLOBAL.IT_DMG] = GeneralEngine.dmgFromDice(dmgDice, Data.DMG_SLASH)
 	item[GLOBAL.IT_SPEC] = throwing[Data.TH_EFFECT]
 	item[GLOBAL.IT_TYPE] = GLOBAL.TH_TYPE
+	item[GLOBAL.IT_SKILL] = throwing[Data.TH_SKILL]
 	item[GLOBAL.IT_STACK] = throwing[Data.TH_STACK]
 	item[GLOBAL.IT_BASE] = baseIdx
 	return item

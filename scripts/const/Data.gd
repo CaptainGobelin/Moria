@@ -855,8 +855,6 @@ func throwingsReader():
 			throwingsByRarity[rarity] = []
 		throwingsByRarity[rarity].append(idx)
 
-
-
 # Starting kits
 const KIT_WP = 0
 const KIT_SH = 1
