@@ -676,7 +676,7 @@ const armors = {
 	5: ["Full plate",		5, 3, 4, 23, 5, false],
 	
 	A_CAP: 			["Leather cap",		0, 1, 0, 16, 2, true],
-	A_HELMET: 		["Horned helm",		1, 1, 4, 17, 4, true],
+	A_HELMET: 		["Horned helm",		1, 1, 5, 17, 4, true],
 }
 
 const armorDescriptions = {

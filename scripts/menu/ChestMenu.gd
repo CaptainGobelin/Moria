@@ -2,10 +2,18 @@ extends Node2D
 
 onready var items = get_node("ChestItems")
 onready var animator = get_node("AnimationPlayer")
+onready var commandsLabel = get_node("TextContainer/Commands")
+
+var commands = [
+	["Loot", "Enter"],
+	["Close", "Esc"]
+]
 
 var chestId: int
 
 func _ready():
+	visible = false
+	commandsLabel.bbcode_text = Utils.cmdString(commands)
 	set_process_input(false)
 
 func open(id: int):

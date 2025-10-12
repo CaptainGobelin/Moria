@@ -239,14 +239,13 @@ script = SubResource( 4 )
 position = Vector2( 36, 36 )
 scale = Vector2( 0.25, 0.25 )
 
-[node name="Label" type="Label" parent="TextContainer"]
+[node name="Commands" type="RichTextLabel" parent="TextContainer"]
 margin_left = 396.0
 margin_top = 324.0
 margin_right = 1008.0
 margin_bottom = 360.0
 theme = ExtResource( 6 )
-text = "Enter: Loot          Esc: Close"
-align = 1
+bbcode_enabled = true
 
 [node name="Pan" type="ColorRect" parent="."]
 self_modulate = Color( 1, 1, 1, 0.501961 )
