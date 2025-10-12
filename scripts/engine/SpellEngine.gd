@@ -197,8 +197,8 @@ func applyEffect(caster, entity, spellId: int, fromCharacter: bool, rank: int, s
 			fireball(caster, entity)
 		Data.SP_TH_FIREBOMB:
 			throwings.firebomb(entity)
-		Data.SP_TH_POISON:
-			throwings.poisonFlask(entity)
+		Data.SP_TH_HOLY:
+			throwings.holyWater(entity)
 		Data.SP_TH_SLEEP:
 			throwings.sleepFlask(entity)
 

@@ -50,8 +50,6 @@ func adaptTileMap():
 	var height = float(effectsLabel.rect_position.y + effectsLabel.rect_size.y)
 	height *= $TitleContainer.scale.y
 	height = int(ceil(height / 9.0))
-	print(effectsLabel.rect_position.y)
-	print(effectsLabel.rect_size.y)
 	for i in range(-1, 12):
 		for j in range(-1, height + 1):
 			singleTileMap.set_cell(i, j, 3)
@@ -137,6 +135,6 @@ func throwingDescription(item):
 	if item[GLOBAL.IT_DMG] == null:
 		effectsLabel.margin_top = 108
 		effectsLabel.margin_bottom = 144
-		effectsLabel.text = "TODO"
+		effectsLabel.text = SpellDescription.replacePlaceholders(Data.throwingEffects[item[GLOBAL.IT_BASE]], Data.throwings[item[GLOBAL.IT_BASE]][Data.TH_EFFECT])
 	else:
 		weaponDescription(item)

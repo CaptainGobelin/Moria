@@ -141,7 +141,7 @@ const SP_GUADRIAN_SPIRITS = 66
 const SP_ANIMATE_SKELETONS = 67
 
 const SP_TH_FIREBOMB = 100
-const SP_TH_POISON = 101
+const SP_TH_HOLY = 101
 const SP_TH_SLEEP = 102
 
 # Skills
@@ -809,6 +809,7 @@ const TH_KNIFE = 0
 const TH_AXE = 1
 const TH_JAVELIN = 2
 const TH_FIRE = 3
+const TH_HOLY = 4
 
 const TH_NAME = 0
 const TH_ICON = 1
@@ -825,7 +826,7 @@ const throwings = {
 	TH_AXE: 		["Throwing axe", 	37, Vector2(1, 10), 2, 2, null,           PROJ_WHITE_M,    201, false, []],
 	TH_JAVELIN: 	["Javelin", 		38, Vector2(2,  8), 4, 6, null,           PROJ_WHITE_LONG, 202, false, []],
 	TH_FIRE: 		["Roped firebomb", 	39, null,           0, 2, SP_TH_FIREBOMB, PROJ_WHITE_R,    203, true, []],
-	4: ["Toxic flask", 		40, null,           0, 6, SP_TH_POISON,   PROJ_WHITE_R,    204, true, []],
+	TH_HOLY: 		["Vial of holy water",40, null,         0, 2, SP_TH_HOLY,     PROJ_WHITE_R,    204, true, []],
 	5: ["Sleep flask", 		41, null,           0, 6, SP_TH_SLEEP,    PROJ_WHITE_R,    205, true, []],
 }
 
@@ -833,7 +834,13 @@ const throwingDescriptions = {
 	-1: "",
 	TH_KNIFE: "A light knife, designed to be thrown effectively.",
 	TH_AXE: "A light axe, designed to be thrown effectively.",
-	TH_FIRE: "A vial of explosive substance attached to a rope.",
+	TH_FIRE: "A flask of explosive substance attached to a rope.",
+	TH_HOLY: "A vial of water, blessed by a powerful divinity.",
+}
+
+const throwingEffects = {
+	TH_FIRE: "Deals %%DMG_1 %%TH_TARGET_AREA.",
+	TH_HOLY: "Deals %%DMG_1 %%TH_TARGET_AREA. Target only evil creatures (%%_EVIL_TIP).",
 }
  
 var throwingsByRarity = {}
@@ -862,10 +869,10 @@ const KIT_LO = 7
 
 const KIT_UNDEF = [-1, -1, -1, [], [], [], 0, 0]
 #const KIT_FIGHTER = [W_HATCHET, SH_BUCKLER, A_PADDED, [PO_HEALING, PO_HEALING], [], [TH_KNIFE, TH_KNIFE, TH_KNIFE], 30, 2]
-const KIT_FIGHTER = [W_HATCHET, SH_BUCKLER, A_PADDED, [PO_HEALING, PO_HEALING], [SC_MAGIC_MISSILE], [TH_KNIFE, TH_KNIFE, TH_KNIFE], 30, 2]
+const KIT_FIGHTER = [W_HATCHET, SH_BUCKLER, A_PADDED, [PO_HEALING, PO_HEALING], [SC_MAGIC_MISSILE], [TH_KNIFE, TH_HOLY, TH_FIRE], 30, 2]
 const KIT_THIEF =	[W_DAGGER, -1, A_PADDED, [PO_HEALING, PO_HEALING], [SC_BLINK], [TH_KNIFE, TH_KNIFE, TH_KNIFE], 45, 3]
 const KIT_MAGE = 	[W_STAFF, -1, A_ROBE, [PO_HEALING, PO_HEALING], [SC_ANIMALS], [], 30, 2]
-const KIT_CLERIC = 	[W_CLUB, SH_BUCKLER, A_ROBE, [PO_HEALING, PO_HEALING], [], [], 30, 2]
+const KIT_CLERIC = 	[W_CLUB, SH_BUCKLER, A_ROBE, [PO_HEALING, PO_HEALING], [], [TH_HOLY], 30, 2]
 const KIT_PALADIN = [W_GREATCLUB, -1, A_PADDED, [PO_HEALING, PO_HEALING], [], [], 30, 2]
 
 const CLASS_KITS = {
@@ -1110,6 +1117,9 @@ const spellDamages = {
 	SP_ACID_SPLASH: 	[[2, 4, 0, DMG_SLASH], [3, 4, 0, DMG_SLASH], [4, 4, 0, DMG_SLASH]],
 	SP_POISON_CLOUD: 	[[1, 6, 0, DMG_POISON], [1, 6, 0, DMG_POISON], [1, 8, 0, DMG_POISON]],
 	SP_GUADRIAN_SPIRITS:[[1, 4, 0, DMG_RADIANT], [1, 4, 0, DMG_RADIANT], [1, 4, 0, DMG_RADIANT]],
+	
+	SP_TH_FIREBOMB: [[3, 6, 0, DMG_FIRE], [3, 6, 0, DMG_FIRE], [3, 6, 0, DMG_FIRE]],
+	SP_TH_HOLY: [[2, 4, 0, DMG_RADIANT], [2, 4, 0, DMG_RADIANT], [2, 4, 0, DMG_RADIANT]],
 }
 
 const spellTurns = {
