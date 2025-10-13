@@ -31,9 +31,10 @@ func open(id: int):
 	MasterInput.setMaster(self)
 
 func close():
-	if GLOBAL.chests[chestId][GLOBAL.CH_CONTENT].size() == 0:
-		instance_from_id(chestId).queue_free()
-		GLOBAL.chests.erase(chestId)
+	for item in GLOBAL.chests[chestId][GLOBAL.CH_CONTENT]:
+		GLOBAL.dropItemOnFloor(item, instance_from_id(chestId).pos)
+	instance_from_id(chestId).queue_free()
+	GLOBAL.chests.erase(chestId)
 	visible = false
 	Ref.currentLevel.visible = true
 	GLOBAL.currentMode = GLOBAL.MODE_NORMAL
