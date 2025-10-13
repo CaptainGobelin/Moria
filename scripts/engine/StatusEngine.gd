@@ -203,9 +203,10 @@ func applyEffect(entity):
 					addToMaxResist(entity, Data.DMG_FIRE, 1)
 
 func applyEnchantEffect(entity, status, rank: int):
-	match (status[GLOBAL.ST_TYPE] - 1000):
-		Data.ENCH_ARCANE_SHIELD:
-			pass
+#	match (status[GLOBAL.ST_TYPE] - 1000):
+#		Data.ENCH_ARCANE_SHIELD:
+#			pass
+	pass
 
 func dmgWeapon(entity, rank: int, dice: int, type: int):
 	entity.stats.addDmg(GeneralEngine.dmgDice(rank, dice, 0, type))

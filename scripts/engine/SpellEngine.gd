@@ -208,8 +208,8 @@ func magicMissile(caster, entity, rank: int):
 	var dmg = GeneralEngine.computeDamages(caster, dmgDice, entity.stats.resists)
 	if caster.statuses.has(Data.STATUS_ENCHANT + Data.ENCH_IMP_MAGIC_MIS):
 		dmg += 1
-	if entity.statuses.has(Data.STATUS_ENCHANT + Data.ENCH_ARCANE_SHIELD):
-		dmg = 0
+#	if entity.statuses.has(Data.STATUS_ENCHANT + Data.ENCH_ARCANE_SHIELD):
+#		dmg = 0
 	entity.takeHit(dmg)
 
 func electricGrasp(caster, entity, rank: int, direction: Vector2):

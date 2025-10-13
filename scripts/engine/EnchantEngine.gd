@@ -29,8 +29,8 @@ func applyEffect(entity, enchant: int, item: int):
 			id = createStatus(entity, Data.STATUS_LIGHT, 2)
 		Data.ENCH_BLESSED:
 			id = createStatus(entity, Data.STATUS_PROTECT_EVIL, 1)
-		Data.ENCH_PROTECTION:
-			id = createStatus(entity, Data.STATUS_PROTECTED, 1)
+#		Data.ENCH_PROTECTION:
+#			id = createStatus(entity, Data.STATUS_PROTECTED, 1)
 		Data.ENCH_FLAMING_1:
 			id = createStatus(entity, Data.STATUS_FIRE_WP, 1)
 		Data.ENCH_VENOM_1:
@@ -41,8 +41,8 @@ func applyEffect(entity, enchant: int, item: int):
 			id = createStatus(entity, Data.STATUS_HOLY_WP, 1)
 		Data.ENCH_GOBLIN:
 			id = createStatus(entity, Data.STATUS_GOBLIN_WP, 1)
-		Data.ENCH_PRECISION:
-			id = createStatus(entity, Data.STATUS_PRECISION, 1)
+#		Data.ENCH_PRECISION:
+#			id = createStatus(entity, Data.STATUS_PRECISION, 1)
 		Data.ENCH_MIND:
 			id = createStatus(entity, Data.STATUS_WILLPOWER, 1)
 		Data.ENCH_RESISTANCE:
