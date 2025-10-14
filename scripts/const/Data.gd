@@ -822,9 +822,9 @@ const TH_STACK = 7
 const TH_CAN_POP = 8
 const TH_UPGRADES = 9
 const throwings = {
-	TH_KNIFE: 		["Throwing knife", 	36, Vector2(1,  6), 0, 0, null,           PROJ_WHITE_S,    200, true, [TH_AXE, TH_JAVELIN]],
-	TH_AXE: 		["Throwing axe", 	37, Vector2(1, 10), 2, 2, null,           PROJ_WHITE_M,    201, false, []],
-	TH_JAVELIN: 	["Javelin", 		38, Vector2(2,  8), 4, 6, null,           PROJ_WHITE_LONG, 202, false, []],
+	TH_KNIFE: 		["Throwing knife", 	36, Vector2(1,  6), 0, 0, [],             PROJ_WHITE_S,    200, true, [TH_AXE, TH_JAVELIN]],
+	TH_AXE: 		["Throwing axe", 	37, Vector2(1, 10), 2, 2, [],             PROJ_WHITE_M,    201, false, []],
+	TH_JAVELIN: 	["Javelin", 		38, Vector2(2,  8), 4, 6, [],             PROJ_WHITE_LONG, 202, false, []],
 	TH_FIRE: 		["Roped firebomb", 	39, null,           0, 2, SP_TH_FIREBOMB, PROJ_WHITE_R,    203, true, []],
 	TH_HOLY: 		["Vial of holy water",40, null,         0, 2, SP_TH_HOLY,     PROJ_WHITE_R,    204, true, []],
 	5: ["Sleep flask", 		41, null,           0, 6, SP_TH_SLEEP,    PROJ_WHITE_R,    205, true, []],

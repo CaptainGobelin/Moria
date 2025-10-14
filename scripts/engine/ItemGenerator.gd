@@ -34,19 +34,21 @@ func getItemType(forSell: bool = false):
 	return result
 
 func generateItem(rarity: int, type: int = -1, forSell: bool = false):
+	var result
 	rarity = 4
 	if type == -1:
 		type = getItemType(forSell)
 	match type:
-		WP_IDX: return generateWeapon(rarity)
-		AR_IDX: return generateArmor(rarity)
-		TH_IDX: return generateThrowing(rarity)
-		PO_IDX: return generatePotion(rarity)
-		SC_IDX: return generateScroll(rarity)
-		TA_IDX: return generateTalisman(rarity)
-		LO_IDX: return generateLockpicks()
-		GO_IDX: return generateGolds(rarity)
-		_: return []
+		WP_IDX: result = generateWeapon(rarity)
+		AR_IDX: result = generateArmor(rarity)
+		TH_IDX: result = generateThrowing(rarity)
+		PO_IDX: result = generatePotion(rarity)
+		SC_IDX: result = generateScroll(rarity)
+		TA_IDX: result = generateTalisman(rarity)
+		LO_IDX: result = generateLockpicks()
+		GO_IDX: result = generateGolds(rarity)
+	print(GLOBAL.items[result[0]][GLOBAL.IT_NAME])
+	return result
 
 func generateWeapon(rarity: int):
 	if rarity >= Data.shields[0][Data.SH_RAR] and randf() < 0.125:

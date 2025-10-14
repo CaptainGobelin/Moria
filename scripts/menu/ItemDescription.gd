@@ -45,6 +45,28 @@ func armorStats(id: int) -> String:
 		return result + "."
 	return result + " and +" + String(GLOBAL.items[id][GLOBAL.IT_PROT]) + " to your Protection."
 
+func enchantsList(item, full: bool = false) -> String:
+	var count = 0
+	var result = ""
+	for e in item[GLOBAL.IT_SPEC]:
+		match e:
+			Data.ENCH_PLUS_1:
+				pass
+			Data.ENCH_PLUS_2:
+				pass
+			Data.ENCH_PLUS_3:
+				pass
+			_:
+				if count > 0:
+					result += '\n'
+				count += 1
+				result += "- " + Data.enchants[e][Data.EN_NAME]
+				if full:
+					result += ": " + Data.enchantDescriptions[e]
+	if result == "":
+		return NO_ENCHANTS
+	return result
+
 #TODO talsiman + enchants
 func fill(id: int):
 	var des = ""
@@ -65,12 +87,12 @@ func fill(id: int):
 					des += " " + WEAPON_1_HAND
 				des += " " + WEAPON_SKILL[item[GLOBAL.IT_SKILL]]
 				des += "\n\n" + weaponDamages(id)
-				des += "\n\n" + NO_ENCHANTS
+				des += "\n\n" + enchantsList(item, true)
 		GLOBAL.AR_TYPE:
 			des = Data.armorDescriptions[item[GLOBAL.IT_BASE]]
 			des += " " + ARMOR_SKILL[item[GLOBAL.IT_SKILL]]
 			des += "\n\n" + armorStats(id)
-			des += "\n\n" + NO_ENCHANTS
+			des += "\n\n" + enchantsList(item, true)
 		GLOBAL.TH_TYPE:
 			des = Data.throwingDescriptions[item[GLOBAL.IT_BASE]]
 			if item[GLOBAL.IT_DMG] == null:
@@ -78,5 +100,5 @@ func fill(id: int):
 			else:
 				des += " " + THROWING_SKILL[item[GLOBAL.IT_SKILL]]
 				des += "\n\n" + weaponDamages(id)
-				des += "\n\n" + NO_ENCHANTS
+				des += "\n\n" + enchantsList(item, true)
 	descriptionLabel.bbcode_text = des

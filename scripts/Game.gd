@@ -240,6 +240,7 @@ func _input(event):
 	elif event.is_action_released("rest"):
 		restHandler.askrForRest()
 	elif (event.is_action_released("debug_new_floor")):
+		print("====================")
 #		Ref.character.setPosition(dungeonGenerator.newFloor())
 		nextFloor()
 	elif (event.is_action_released("save")):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=2]
+[gd_scene load_steps=42 format=2]
 
 [ext_resource path="res://scenes/engine/DungeonGenerator.tscn" type="PackedScene" id=1]
 [ext_resource path="res://tilesets/basic.tres" type="TileSet" id=2]
@@ -38,6 +38,7 @@
 [ext_resource path="res://scripts/utils/LevelBuffer.gd" type="Script" id=36]
 [ext_resource path="res://scripts/ui/ContinueHandler.gd" type="Script" id=37]
 [ext_resource path="res://tilesets/masks_tileset.tres" type="TileSet" id=38]
+[ext_resource path="res://scenes/engine/WorldGenerator.tscn" type="PackedScene" id=39]
 
 [sub_resource type="Animation" id=1]
 resource_name = "FadeIn"
@@ -125,6 +126,8 @@ script = ExtResource( 32 )
 
 [node name="SaveSystem" type="Node" parent="Utils"]
 script = ExtResource( 35 )
+
+[node name="WorldGenerator" parent="Utils" instance=ExtResource( 39 )]
 
 [node name="CurrentLevel" type="Node2D" parent="."]
 position = Vector2( 6, 6 )

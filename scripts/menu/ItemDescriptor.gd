@@ -15,7 +15,10 @@ func fillDescription(id: int):
 	var item = GLOBAL.items[id]
 	match item[GLOBAL.IT_TYPE]:
 		GLOBAL.WP_TYPE:
-			weaponDescription(item)
+			if item[GLOBAL.IT_SUBTYPE] == GLOBAL.SUB_SH:
+				armorDescription(item)
+			else:
+				weaponDescription(item)
 			adaptTileMap()
 			return item[GLOBAL.IT_SUBTYPE]
 		GLOBAL.AR_TYPE:
@@ -63,6 +66,28 @@ func clearDescription():
 	effectsLabel.margin_bottom = 180
 	icon.visible = false
 
+func enchantsList(item, full: bool = false) -> String:
+	var count = 0
+	var result = ""
+	for e in item[GLOBAL.IT_SPEC]:
+		match e:
+			Data.ENCH_PLUS_1:
+				pass
+			Data.ENCH_PLUS_2:
+				pass
+			Data.ENCH_PLUS_3:
+				pass
+			_:
+				if count > 0:
+					result += '\n'
+				count += 1
+				result += "- " + Data.enchants[e][Data.EN_NAME]
+				if full:
+					result += ": " + Data.enchantDescriptions[e]
+	if result == "":
+		return "No magical property."
+	return result
+
 func weaponDescription(item):
 	if item[GLOBAL.IT_SUBTYPE] == GLOBAL.SUB_SH:
 		shieldDescription(item)
@@ -74,7 +99,7 @@ func weaponDescription(item):
 	dmg += item[GLOBAL.IT_DMG].dice.toString()
 	dmg += " " + Data.DMG_NAMES[item[GLOBAL.IT_DMG].type]
 	infoLabel.text = dmg
-	effectsLabel.text = "No magical property."
+	effectsLabel.text = enchantsList(item)
 
 func shieldDescription(item):
 	#TODO
@@ -87,7 +112,7 @@ func armorDescription(item):
 	var info = "AC: " + String(item[GLOBAL.IT_CA])
 	info += " Prot: " + String(item[GLOBAL.IT_PROT])
 	infoLabel.text = info
-	effectsLabel.text = "No magical property."
+	effectsLabel.text = enchantsList(item)
 
 func talismanDescription(item):
 	effectsLabel.margin_top = 108
@@ -96,7 +121,7 @@ func talismanDescription(item):
 	icon.visible = true
 	nameLabel.text = item[GLOBAL.IT_NAME]
 	infoLabel.text = ""
-	effectsLabel.text = "No magical property."
+	effectsLabel.text = enchantsList(item)
 
 func scrollDescription(item):
 	icon.frame = item[GLOBAL.IT_ICON]

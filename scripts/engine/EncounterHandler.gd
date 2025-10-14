@@ -17,13 +17,13 @@ var exclusions: Array = []
 
 func createEncounters() -> float:
 	var totalCR: float = 0.0
-	print("Start")
+#	print("Start")
 	exclusions = []
 	var encounterPool = Data.encounters[WorldHandler.currentBiome]
 	var nb = 3 + (randi() % 4)
 	for _i in range(nb):
 		var encounter = chooseEncounter(encounterPool)
-		print("Choose encounter: " + String(encounterPool.find(encounter)))
+#		print("Choose encounter: " + String(encounterPool.find(encounter)))
 		var cell = Utils.chooseRandom(get_parent().enemyCells)
 		for _c in range(10):
 			if exclusions.has(cell):
@@ -52,7 +52,7 @@ func createEncounters() -> float:
 				exclusions.append(Vector2(cell.x+i, cell.y+j))
 				#DEBUG
 				Ref.currentLevel.get_node("Debug/Enemies").set_cellv(Vector2(cell.x+i, cell.y+j), 1)
-	print("CR: " + String(totalCR) + " (Diff: " + String(WorldHandler.diffCR) + ")")
+#	print("CR: " + String(totalCR) + " (Diff: " + String(WorldHandler.diffCR) + ")")
 	return totalCR
 
 func chooseEncounter(encounterPool: Array) -> Array:
