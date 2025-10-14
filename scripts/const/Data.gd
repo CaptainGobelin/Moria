@@ -559,11 +559,16 @@ const W_HATCHET = 2
 const W_MACE = 3
 const W_SHORTSWORD = 4
 const W_AXE = 5
+const W_LONGSWORD = 6
+const W_MORNING = 7
 const W_STAFF = 100
 const W_GREATCLUB = 101
 const W_FELLING_AXE = 102
 const W_MAUL = 103
 const W_BROADSWORD = 104
+const W_HALBERD = 105
+const W_GREATAXE = 106
+const W_ZWEIHANDER = 107
 
 const W_NAME = 0
 const W_HIT = 1 #Not used
@@ -581,17 +586,17 @@ const weapons = {
 	W_MACE: 		["Mace",		null, Vector2(1,  8), "B", 2, false, 2,  3],
 	W_SHORTSWORD: 	["Shortsword",	null, Vector2(2,  4), "S", 3, false, 2,  4],
 	W_AXE: 			["Hand axe",	null, Vector2(1, 10), "S", 4, false, 4,  5],
-	6: 				["Longsword",	null, Vector2(2, 10), "S", 5, false, 4,  6],
-	7: 				["Morning star",null, Vector2(3,  6), "S", 6, false, 4,  7],
+	W_LONGSWORD: 	["Longsword",	null, Vector2(2, 10), "S", 5, false, 4,  6],
+	W_MORNING: 		["Morning star",null, Vector2(3,  6), "P", 6, false, 4,  7],
 	
 	W_STAFF: 		["Staff",		null, Vector2(1,  6), "B", 0, true, 0,  8],
 	W_GREATCLUB: 	["Greatclub",	null, Vector2(1,  8), "B", 1, true, 0,  9],
 	W_FELLING_AXE:	["Felling axe",	null, Vector2(1, 12), "S", 2, true, 2, 10],
 	W_MAUL: 		["Maul",		null, Vector2(2,  6), "B", 3, true, 2, 11],
 	W_BROADSWORD: 	["Broadsword",	null, Vector2(3,  4), "S", 4, true, 2, 12],
-	13:				["Halberd",		null, Vector2(3, 10), "S", 5, true, 4, 13],
-	14:				["Greataxe",	null, Vector2(3, 12), "S", 6, true, 4, 14],
-	15:				["Zweihander",	null, Vector2(4,  8), "S", 6, true, 4, 15],
+	W_HALBERD:		["Halberd",		null, Vector2(3, 10), "S", 5, true, 4, 13],
+	W_GREATAXE:		["Greataxe",	null, Vector2(3, 12), "S", 6, true, 4, 14],
+	W_ZWEIHANDER:	["Zweihander",	null, Vector2(4,  8), "S", 7, true, 4, 15],
 }
 
 const weaponDescriptions = {
@@ -602,12 +607,17 @@ const weaponDescriptions = {
 	W_MACE: "A metal club with a heavy head on the end.",
 	W_SHORTSWORD: "A slashing weapon with a short sharp blade.",
 	W_AXE: "A strong crescent-shaped battle axe.",
+	W_LONGSWORD: "",
+	W_MORNING: "",
 	
 	W_STAFF: "A shaft made of hardwood, sometimes infused with magic.",
 	W_GREATCLUB: "A club but large enough to be used two-handed.",
 	W_FELLING_AXE: "An axe with a strong blade designed to chop wood.",
 	W_MAUL: "A long-handled hammer with a heavy head.",
 	W_BROADSWORD: "A heavy blade designed to be used two-handed.",
+	W_HALBERD: "",
+	W_GREATAXE: "",
+	W_ZWEIHANDER: "",
 }
 
 var weaponsByRarity = {}
@@ -640,6 +650,7 @@ const shieldDescriptions = {
 	-1: "A rusty shield.",
 	SH_BUCKLER: "Small round shield made of wood and leather.",
 	SH_TARGE: "A round wooden shield covered by a thin layer of bronze.",
+	SH_SHIELD: "",
 }
 
 var shieldsByRarity = {}
@@ -664,6 +675,8 @@ const A_ROBE = 0
 const A_PADDED = 1
 const A_LEATHER = 2
 const A_BRIGANDINE = 3
+const A_SCALEMAIL = 4
+const A_PLATE = 5
 const A_CAP = 10
 const A_HELMET = 11
 
@@ -671,11 +684,11 @@ const armors = {
 	A_ROBE: 		["Robe",			2, 0, 0, 18, 0, false],
 	A_PADDED: 		["Padded armour",	3, 0, 0, 19, 1, false],
 	A_LEATHER: 		["Leather armour",	4, 1, 1, 20, 2, false],
-	A_BRIGANDINE: 	["Brigandine",		4, 1, 2, 21, 3, false],
-	4: ["Scalemail",		5, 2, 3, 22, 4, false],
-	5: ["Full plate",		5, 3, 4, 23, 5, false],
+	A_BRIGANDINE: 	["Brigandine",		4, 1, 3, 21, 3, false],
+	A_SCALEMAIL: 	["Scalemail",		5, 2, 4, 22, 4, false],
+	A_PLATE: 		["Full plate",		5, 3, 6, 23, 5, false],
 	
-	A_CAP: 			["Leather cap",		0, 1, 0, 16, 2, true],
+	A_CAP: 			["Leather cap",		0, 1, 2, 16, 2, true],
 	A_HELMET: 		["Horned helm",		1, 1, 5, 17, 4, true],
 }
 
@@ -685,8 +698,11 @@ const armorDescriptions = {
 	A_PADDED: "A jacket made of whool, stuffed to offer minor protection.",
 	A_LEATHER: "A light armor covered with thin layers of animal hide.",
 	A_BRIGANDINE: "A sturdy armor made of cloth with riveted steel plates.",
+	A_SCALEMAIL: "",
+	A_PLATE: "",
 	
 	A_CAP: "A simple helmet made of hardened leather and fur.",
+	A_HELMET: "",
 }
 
 var armorsByRarity = {}
