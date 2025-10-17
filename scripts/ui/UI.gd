@@ -34,6 +34,7 @@ onready var statusBar = get_node("StatusBar")
 onready var fadePanel = get_node("FadePanel")
 onready var fadeLabel = get_node("FadePanel/TextContainer/Label")
 onready var monsterPanelList = get_node("MonsterPanelList")
+onready var bossBar = get_node("BossBar")
 
 var currentChoice = ""
 var currentSuffix = ""

@@ -15,6 +15,11 @@ _global_script_classes=[ {
 "path": "res://scripts/engine/Aura.gd"
 }, {
 "base": "Node2D",
+"class": "BossBarFrangment",
+"language": "GDScript",
+"path": "res://scripts/ui/BossBarFragment.gd"
+}, {
+"base": "Node2D",
 "class": "Character",
 "language": "GDScript",
 "path": "res://scripts/Character.gd"
@@ -66,6 +71,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Aura": "",
+"BossBarFrangment": "",
 "Character": "",
 "CurrentLevel": "",
 "Effect": "",

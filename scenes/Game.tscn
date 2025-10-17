@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=2]
+[gd_scene load_steps=43 format=2]
 
 [ext_resource path="res://scenes/engine/DungeonGenerator.tscn" type="PackedScene" id=1]
 [ext_resource path="res://tilesets/basic.tres" type="TileSet" id=2]
@@ -39,6 +39,7 @@
 [ext_resource path="res://scripts/ui/ContinueHandler.gd" type="Script" id=37]
 [ext_resource path="res://tilesets/masks_tileset.tres" type="TileSet" id=38]
 [ext_resource path="res://scenes/engine/WorldGenerator.tscn" type="PackedScene" id=39]
+[ext_resource path="res://scenes/UI/BossBar.tscn" type="PackedScene" id=40]
 
 [sub_resource type="Animation" id=1]
 resource_name = "FadeIn"
@@ -99,6 +100,7 @@ tracks/1/keys = {
 [node name="Game" type="Node2D"]
 scale = Vector2( 4, 4 )
 script = ExtResource( 15 )
+start = 1
 debugClass = 1
 
 [node name="Utils" type="Node" parent="."]
@@ -175,7 +177,6 @@ cell_size = Vector2( 9, 9 )
 format = 1
 
 [node name="Shadows" type="TileMap" parent="CurrentLevel"]
-visible = false
 tile_set = ExtResource( 3 )
 cell_size = Vector2( 9, 9 )
 format = 1
@@ -632,6 +633,10 @@ valign = 1
 [node name="AnimationPlayer" type="AnimationPlayer" parent="UI/FadePanel"]
 anims/FadeIn = SubResource( 1 )
 anims/FadeOut = SubResource( 3 )
+
+[node name="BossBar" parent="UI" instance=ExtResource( 40 )]
+visible = false
+position = Vector2( 171, 7 )
 
 [node name="InventoryMenu" parent="." instance=ExtResource( 10 )]
 visible = false

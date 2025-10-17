@@ -321,6 +321,11 @@ const MO_GOBLIN = 5
 const MO_SPIDER = 6
 const MO_SHAMAN_GOBLIN = 7
 const MO_ZOMBIE = 8
+const MO_BO_TROLL = 500
+const MO_BO_LICH = 501
+const MO_BO_SPIDER_QUEEN = 502
+const MO_BO_DRAGON = 503
+const MO_BO_DEMON = 504
 const MO_SUM_WOLF = 900
 const MO_SUM_HAMMER = 901 #902 903 reserved also
 const MO_SUM_SKELETON = 904
@@ -355,6 +360,7 @@ const ACT_COUNT = 3
 const ACT_SUBTYPE_POTION = 0
 const ACT_SUBTYPE_SPELL = 1
 const monsters = {
+	# MONSTERS
 	MO_SKELETON: [
 		#Name HP Hit Dmg
 		"Skeleton", 6, 0, Vector3(1, 4, 0),
@@ -416,6 +422,17 @@ const monsters = {
 		1, 0, 0, 5,
 		[]
 	],
+	# BOSSES
+	MO_BO_TROLL: [
+		#Name HP Hit Dmg
+		"Cavern Troll", 40, 1, Vector3(1, 8, 0),
+		#AC Prot Sprite XP MOVE
+		4, 2, 12, 400, true,
+		#CasterLvl WIL PHY CR
+		0, 0, 1, 30,
+		[]
+	],
+	# SUMMONS
 	MO_SUM_WOLF: [
 		"Conjured wolf", 10, 0, Vector3(1, 6, 0),
 		2, 0, 24, 0, true,
@@ -452,6 +469,7 @@ const monsters = {
 		1, 0, 0, 2,
 		[[0, ACT_THROW, null, 2000]]
 	],
+	# DEBUG
 	MO_DUMMY: [
 		"Dummy target", 1, 0, Vector3(1, 1, 0),
 		2, 1, 1, 10, false,
@@ -480,6 +498,7 @@ const TAG_ANIMATED = 4
 const TAG_MAGICAL = 5
 const TAG_DEMON = 6
 const TAG_SUMMONED = 7
+const TAG_BOSS = 8
 
 const monsterTags = {
 	MO_GIANT_BAT: [TAG_ANIMAL],
@@ -490,6 +509,7 @@ const monsterTags = {
 	MO_ZOMBIE: [TAG_EVIL, TAG_UNDEAD],
 	MO_GOBLIN: [TAG_GOBLIN],
 	MO_SHAMAN_GOBLIN: [TAG_GOBLIN],
+	MO_BO_TROLL: [TAG_BOSS],
 	MO_SUM_WOLF: [TAG_ANIMAL, TAG_SUMMONED],
 	MO_SUM_HAMMER: [TAG_ANIMATED, TAG_SUMMONED],
 	MO_SUM_HAMMER+1: [TAG_ANIMATED, TAG_SUMMONED],
@@ -726,7 +746,7 @@ const PO_BRILLANCE_1 = 6
 const PO_NAME = 0
 const PO_CAN_POP = 1
 const PO_RAR = 2
-const PO_ICON = 3
+const PO_ICON = 3 #24 -> 32
 const PO_STACK = 4
 
 const potions = {
