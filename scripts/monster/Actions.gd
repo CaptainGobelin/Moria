@@ -4,6 +4,7 @@ var throwings: Dictionary = {}
 var spells: Dictionary = {}
 var buffs: Dictionary = {}
 var debuffs: Dictionary = {}
+var abilities: Dictionary = {}
 var heals: Dictionary = {}
 var selfBuffs: Dictionary = {}
 var selfHeals: Dictionary = {}
@@ -22,17 +23,38 @@ func init(type: int):
 					buffs[action[Data.ACT_ID]] = action[Data.ACT_COUNT]
 			Data.ACT_DEBUFF:
 				debuffs[action[Data.ACT_ID]] = action[Data.ACT_COUNT]
+			Data.ACT_ABILITY:
+				abilities[action[Data.ACT_ID]] = action[Data.ACT_COUNT]
 			Data.ACT_HEAL:
 				if action[Data.ACT_SUBTYPE] == Data.ACT_SUBTYPE_POTION:
 					selfHeals[action[Data.ACT_ID]] = action[Data.ACT_COUNT]
 				else:
 					heals[action[Data.ACT_ID]] = action[Data.ACT_COUNT]
 
-func getAction(dict: Dictionary, type: String):
+func initAbilitiesCD():
+	for a in abilities.keys():
+		get_parent().abilitiesCD[a] = randi() % Data.spells[a][Data.SP_USES]
+
+func getAction(dict: Dictionary, type: String, dist: int = 99):
 	if dict.empty():
 		return null
-	else:
-		return [Utils.chooseRandom(dict.keys()), type]
+	return [Utils.chooseRandom(dict.keys()), type]
+
+func getAbility(dist: int, cooldowns: Array):
+	if abilities.empty():
+		return null
+	var size = abilities.keys().size()
+	var shift = randi() % size
+	for i in range(size):
+		var id = abilities.keys()[(i + shift) % size]
+		if cooldowns.has(id):
+			continue
+		var ability = Data.spells[id]
+		if ability[Data.SP_AREA] == null:
+			return [id, "ability"]
+		if ability[Data.SP_AREA] >= (dist-1):
+			return [id, "ability"]
+	return null
 
 func getDistanceAttack():
 	var action = null

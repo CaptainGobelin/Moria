@@ -79,7 +79,7 @@ func castSpellCharacter(spellId: int, scrollId = null):
 			SpellEngine.applyEffect(Ref.character, Ref.character, spellId, true, spellRank, savingCap, coroutineReturn)
 			spellCasted = true
 			SpellEngine.breakSanctuary(Ref.character, SpellEngine.SANCT_ATTACK)
-		Data.SP_TARGET_SELF:
+		Data.SP_TARGET_SELF, Data.SP_TARGET_AREA:
 			Ref.ui.writeCastSpell(spell[Data.SP_NAME])
 			SpellEngine.applyEffect(Ref.character, Ref.character, spellId, true, spellRank, savingCap)
 			spellCasted = true
@@ -119,7 +119,7 @@ func castSpellMonster(spellId: int, caster, target, path: Array):
 		castProjectile(path, spell[Data.SP_PROJ])
 	var savingCap = caster.stats.spellcasterLevel + 3
 	var spellRank = max(1, min(caster.stats.spellcasterLevel, 3))
-	SpellEngine.applyEffect(caster, target, spellId, true, spellRank, savingCap)
+	SpellEngine.applyEffect(caster, target, spellId, false, spellRank, savingCap)
 	if target is Character:
 		SpellEngine.breakSanctuary(caster, SpellEngine.SANCT_ATTACK)
 	else:
@@ -148,3 +148,17 @@ func spellRebound(spellId: int, caster, initial, spellRank: int, savingCap: int,
 		if n > 1:
 			yield(spellRebound(spellId, caster, m, spellRank, savingCap, n - 1), "completed")
 		return
+
+func useMonsterAbility(spellId: int, caster, target, path):
+	var targetName = target.stats.entityName
+	if target is Character:
+		targetName = "you"
+	var msg = caster.stats.entityName + " "
+	msg += Data.spellDescriptions[spellId] + " " + targetName + "."
+	Ref.ui.write(msg, "writeMonsterAbility")
+	if Data.spells[spellId][Data.SP_PROJ] != null:
+		castProjectile(path, Data.spells[spellId][Data.SP_PROJ])
+	var savingCap = caster.stats.spellcasterLevel + 3
+	var spellRank = max(1, min(caster.stats.spellcasterLevel, 3))
+	SpellEngine.applyEffect(caster, target, spellId, false, spellRank, savingCap)
+	SpellEngine.breakSanctuary(caster, SpellEngine.SANCT_ATTACK)

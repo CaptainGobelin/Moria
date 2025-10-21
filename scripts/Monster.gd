@@ -14,6 +14,7 @@ var pos = Vector2(0, 0)
 var skipNextTurn = false
 var allies: Array = []
 var buffCD = 0
+var abilitiesCD: Dictionary = {}
 
 func spawn(monsterType: int, cell: Vector2, fromSave: bool = false):
 	type = monsterType
@@ -27,6 +28,11 @@ func spawn(monsterType: int, cell: Vector2, fromSave: bool = false):
 
 func takeTurn():
 	buffCD -= 1
+	for a in abilitiesCD.keys():
+		if abilitiesCD[a] == 0:
+			abilitiesCD.erase(a)
+		else:
+			abilitiesCD[a] -= 1
 	if skipNextTurn:
 		skipNextTurn = false
 		return
@@ -114,6 +120,12 @@ func attack(entity, los: Array):
 		if action != null:
 			Ref.game.spellHandler.castSpellMonster(action[0], self, entity, los)
 			actions.consumeAction(action[0], action[1])
+			return
+	if !los.empty() and randf() < 0.25:
+		var action = actions.getAbility(los.size(), abilitiesCD.keys())
+		if action != null:
+			Ref.game.spellHandler.useMonsterAbility(action[0], self, entity, los)
+			abilitiesCD[action[0]] = Data.spells[action[0]][Data.SP_USES]
 			return
 	if Utils.dist(pos, entity.pos) == 1:
 		hit(entity)
@@ -213,6 +225,7 @@ func die():
 func awake():
 	if status == "sleep":
 		status = "awake"
+		actions.initAbilitiesCD()
 
 func wander():
 	if randf() < 0.5:

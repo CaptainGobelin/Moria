@@ -107,13 +107,15 @@ func askForContinue(inputer):
 	MasterInput.setMaster(inputer)
 	emit_signal("coroutine_signal", result)
 
-func write(text):
+func write(text, signet: String = ""):
 	if text == null:
 		return
 	text = '\n' + '<' + String(GeneralEngine.turn) + '> ' + text
 	diary.append_bbcode(text)
 	diaryContent += text
 	Ref.game.autoexplore = false
+	if not signet.empty():
+		lastPrinted = signet
 
 func simpleWrite(text):
 	if text == null:

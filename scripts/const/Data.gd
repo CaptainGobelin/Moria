@@ -144,6 +144,10 @@ const SP_TH_FIREBOMB = 100
 const SP_TH_HOLY = 101
 const SP_TH_SLEEP = 102
 
+const SP_ZOMBIE_SCREAM = 200
+const SP_SNAKE_CONSTRICT = 201
+const SP_SPIDER_BITE = 202
+
 # Skills
 const SK_COMBAT = 0
 const SK_ARMOR = 1
@@ -353,12 +357,15 @@ const ACT_SPELL = 1
 const ACT_BUFF = 2
 const ACT_DEBUFF = 3
 const ACT_HEAL = 4
+const ACT_ABILITY = 5
 const ACT_ID = 0
 const ACT_TYPE = 1
 const ACT_SUBTYPE = 2
-const ACT_COUNT = 3
 const ACT_SUBTYPE_POTION = 0
 const ACT_SUBTYPE_SPELL = 1
+const ACT_SUBTYPE_ABILITY = 2
+const ACT_COUNT = 3
+const ACT_COUNT_UNILIMITED = 999
 const monsters = {
 	# MONSTERS
 	MO_SKELETON: [
@@ -420,7 +427,9 @@ const monsters = {
 		"Zombie", 4, -1, Vector3(1, 1, 0),
 		3, 0, 22, 4, true,
 		1, 0, 0, 5,
-		[]
+		[
+			[SP_ZOMBIE_SCREAM, ACT_ABILITY, ACT_SUBTYPE_ABILITY, ACT_COUNT_UNILIMITED]
+		]
 	],
 	# BOSSES
 	MO_BO_TROLL: [
@@ -1069,6 +1078,7 @@ const SP_TARGET_TARGET = 1
 const SP_TARGET_DIRECT = 2
 const SP_TARGET_ITEM_CHOICE = 3
 const SP_TARGET_RANDOM = 4
+const SP_TARGET_AREA = 5
 const SP_AREA = 8
 const SP_SAVE = 9
 const SAVE_WIL = 0
@@ -1086,7 +1096,7 @@ const spells = {
 	SP_LIGHT_BOLT: 		["Lightning bolt", 2, SC_EVOCATION, [true, true, true], PROJ_BLUE_ZAP, 6, [8, 8, 8], SP_TARGET_TARGET, 0, SAVE_PHY],
 	SP_REPEL_EVIL: 		["Repel evil", 2, SC_EVOCATION, [false, true, false], null, 7, [10, 10, 10], SP_TARGET_SELF, 4, SAVE_WIL],
 	SP_CURE_WOUNDS: 	["Cure wounds", 2, SC_EVOCATION, [false, true, true], null, 8, [3, 3, 3], SP_TARGET_SELF, 0, SAVE_NO],
-	SP_FROST_NOVA: 		["Frost nova", 2, SC_EVOCATION, [true, false, false], null, 9, [5, 5, 5], SP_TARGET_SELF, 3, SAVE_PHY],
+	SP_FROST_NOVA: 		["Frost nova", 2, SC_EVOCATION, [true, false, false], null, 9, [5, 5, 5], SP_TARGET_AREA, 3, SAVE_PHY],
 #	SP_FIREBALL: 		["Fireball", 3, SC_EVOCATION, [true, false, false], PROJ_RED_R, 10, [10, 10, 10], SP_TARGET_TARGET, 4, SAVE_PHY],
 	# Enchantment
 	SP_SLEEP:	 		["Sleep", 1, SC_ENCHANTMENT, [true, false, true], null, 15, [8, 8, 8], SP_TARGET_TARGET, 0, SAVE_WIL],
@@ -1130,6 +1140,9 @@ const spells = {
 	SP_POISON_CLOUD:	["Poison cloud", 2, SC_CONJURATION, [true, false, true], null, 66, [8, 8, 8], SP_TARGET_TARGET, 2, SAVE_PHY],
 	SP_GUADRIAN_SPIRITS:["Spirit guardians", 2, SC_CONJURATION, [false, true, false], null, 67, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_PHY],
 	SP_ANIMATE_SKELETONS:["Animate dead", 2, SC_CONJURATION, [true, true, false], null, 68, [5, 5, 5], SP_TARGET_SELF, 0, SAVE_NO],
+	
+	# Monster abilities
+	SP_ZOMBIE_SCREAM:	[ null, null, null, [], null, null, 10, SP_TARGET_SELF, 3, SAVE_WIL],
 }
 
 const spellDamages = {
@@ -1474,6 +1487,8 @@ var spellDescriptions = {
 		"Animates 2 skeletons.",
 		"Animates an additionnal archer skeleton."
 	],
+	
+	SP_ZOMBIE_SCREAM: "screams at",
 }
 
 const spellsPerSchool: Dictionary = {}
@@ -1483,6 +1498,8 @@ func spellsReader():
 		var school = spells[idx][SP_SCHOOL]
 		var rank = spells[idx][SP_LVL]
 		var list = spells[idx][SP_LISTS]
+		if list.empty():
+			continue
 		for l in range(3):
 			if not list[l]:
 				continue
@@ -1665,8 +1682,8 @@ const statusesDescriptions = {
 
 const statusPrefabs = {
 	STATUS_SLEEP: ["Sleep", 7, null, null, STATUS_SLEEP, null, null, false, true],
-	STATUS_TERROR: ["Terror", 2, null, null, STATUS_TERROR, null, null, false, false, true],
-	STATUS_BLIND: ["Blind", 3, null, null, STATUS_BLIND, null, null, false, false, true],
+	STATUS_TERROR: ["Terror", 1, null, null, STATUS_TERROR, null, null, false, false, true],
+	STATUS_BLIND: ["Blind", 2, null, null, STATUS_BLIND, null, null, false, false, true],
 	STATUS_PARALYZED: ["Paralyzed", 14, null, null, STATUS_PARALYZED, null, null, false, false, true],
 	STATUS_VULNERABLE: ["Vulenrable", 8, null, null, STATUS_VULNERABLE, null, null, false, false, true],
 	STATUS_POISON: ["Poisoned", 0, null, null, STATUS_POISON, null, null, false, false, true],
@@ -1837,16 +1854,17 @@ const ENC_IS_LOW = 1
 const ENC_IS_RARE = 2
 const encounters = {
 	BIOME_DUNGEON: [
-		[[[MO_GIANT_BAT, 1, 1]], true, false],
-		[[[MO_GIANT_BAT, 2, 2]], true, true],
-		[[[MO_GIANT_SNAKE, 1, 1]], true, false],
-		[[[MO_LESSER_SKELETON, 1, 1]], true, false],
-		[[[MO_GOBLIN, 1, 1]], true, true],
-		[[[MO_LESSER_SKELETON, 2, 2]], false, false],
-		[[[MO_GIANT_SNAKE, 3, 3]], false, true],
-		[[[MO_GIANT_LEECH, 2, 4]], false, false],
-		[[[MO_GOBLIN, 1, 1]], false, false],
-		[[[MO_SPIDER, 1, 1]], false, false],
+		[[[MO_ZOMBIE, 1, 1]], true, false],
+#		[[[MO_GIANT_BAT, 1, 1]], true, false],
+#		[[[MO_GIANT_BAT, 2, 2]], true, true],
+#		[[[MO_GIANT_SNAKE, 1, 1]], true, false],
+#		[[[MO_LESSER_SKELETON, 1, 1]], true, false],
+#		[[[MO_GOBLIN, 1, 1]], true, true],
+#		[[[MO_LESSER_SKELETON, 2, 2]], false, false],
+#		[[[MO_GIANT_SNAKE, 3, 3]], false, true],
+#		[[[MO_GIANT_LEECH, 2, 4]], false, false],
+#		[[[MO_GOBLIN, 1, 1]], false, false],
+#		[[[MO_SPIDER, 1, 1]], false, false],
 	],
 }
 

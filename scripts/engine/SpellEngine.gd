@@ -3,6 +3,7 @@ extends Node
 onready var effectScene = preload("res://scenes/Effect.tscn")
 
 onready var throwings = get_node("Throwings")
+onready var abilities = get_node("MonsterAbilities")
 
 const TIME_FLOOR = 9000
 const TIME_REST = 9001
@@ -85,6 +86,9 @@ func rollsavingThrow(caster, entity, malus: int = 0) -> bool:
 	return saved
 
 func applyEffect(caster, entity, spellId: int, fromCharacter: bool, rank: int, savingCap: int, direction: Vector2 = Vector2(0, 0)):
+	if spellId >= 200:
+		abilities.applyEffect(caster, entity, spellId, fromCharacter, rank, savingCap, direction)
+		return
 	if spellId < 100:
 		var spell = Data.spells[spellId]
 		saveCap = savingCap
@@ -93,7 +97,7 @@ func applyEffect(caster, entity, spellId: int, fromCharacter: bool, rank: int, s
 		if caster.statuses.has(Data.STATUS_ENCHANT + Data.ENCH_EMP_ENCH):
 			if Data.spells[spellId][Data.SP_SCHOOL] == Data.SC_ENCHANTMENT:
 				savingCap += 1
-	else:
+	elif spellId < 200:
 		saveType = Data.SAVE_NO
 	fromChar = fromCharacter
 	match spellId:
