@@ -6,6 +6,10 @@ func applyEffect(caster, entity, spellId: int, fromCharacter: bool, rank: int, s
 	match spellId:
 		Data.SP_ZOMBIE_SCREAM:
 			zombieScream(caster)
+		Data.SP_SPIDER_BITE:
+			spiderBite(caster, entity)
+		Data.SP_SNAKE_CONSTRICT:
+			snakeConstrict(caster, entity)
 
 func zombieScream(caster):
 	var spellRange = Data.spells[Data.SP_ZOMBIE_SCREAM][Data.SP_AREA]
@@ -18,3 +22,11 @@ func zombieScream(caster):
 		get_parent().playEffect(target.pos, Effect.SKULL, 5, 0.45)
 		if not get_parent().rollsavingThrow(caster, target):
 			get_parent().applySpellStatus(target, Data.STATUS_TERROR, 0, 4)
+
+func spiderBite(caster, target):
+	if not get_parent().rollsavingThrow(caster, target):
+		get_parent().applySpellStatus(target, Data.STATUS_POISON, 1, 11)
+
+func snakeConstrict(caster, target):
+	if not get_parent().rollsavingThrow(caster, target):
+		get_parent().applySpellStatus(target, Data.STATUS_PARALYZED, 0, 2)

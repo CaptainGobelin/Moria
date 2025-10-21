@@ -18,7 +18,7 @@ var fromChar = false
 
 func createSpellStatus(type: int, rank: int, time: int):
 	var status = Data.statusPrefabs[type].duplicate(true)
-	if rank > 1:
+	if rank > 0:
 		status[GLOBAL.ST_NAME] += " " + Utils.toRoman(rank+1)
 	status[GLOBAL.ST_TIMING] = GLOBAL.TIMING_TIMER
 	status[GLOBAL.ST_TURNS] = time
