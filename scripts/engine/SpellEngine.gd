@@ -231,7 +231,7 @@ func electricGrasp(caster, entity, rank: int, direction: Vector2):
 		target.takeHit(dmg)
 
 func heal(caster, entity, rank: int):
-	playEffect(entity.pos, Effect.BUFF, 5, 0.6)
+	playEffect(entity.pos, Effect.HEAL, 5, 0.6)
 	var healData = Data.spellDamages[Data.SP_HEAL][rank]
 	var dice = GeneralEngine.diceFromArray(healData)
 	entity.heal(dice.roll(caster))

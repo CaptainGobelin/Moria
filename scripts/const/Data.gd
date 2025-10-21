@@ -147,6 +147,7 @@ const SP_TH_SLEEP = 102
 const SP_ZOMBIE_SCREAM = 200
 const SP_SNAKE_CONSTRICT = 201
 const SP_SPIDER_BITE = 202
+const SP_LEECH_BITE = 203
 
 # Skills
 const SK_COMBAT = 0
@@ -399,7 +400,9 @@ const monsters = {
 		"Giant leech", 4, -1, Vector3(1, 1, 0),
 		3, 0, 25, 4, true,
 		1, 0, 0, 2,
-		[]
+		[
+			[SP_LEECH_BITE, ACT_ABILITY, ACT_SUBTYPE_ABILITY, ACT_COUNT_UNILIMITED]
+		]
 	],
 	MO_LESSER_SKELETON: [
 		"Lesser skeleton", 4, -1, Vector3(1, 1, 0),
@@ -1149,6 +1152,7 @@ const spells = {
 	SP_ZOMBIE_SCREAM:	[ null, null, null, [], null, null, 15, SP_TARGET_SELF, 3, SAVE_WIL],
 	SP_SPIDER_BITE:		[ null, null, null, [], null, null, 6, SP_TARGET_TARGET, 1, SAVE_PHY],
 	SP_SNAKE_CONSTRICT:	[ null, null, null, [], null, null, 15, SP_TARGET_TARGET, 1, SAVE_PHY],
+	SP_LEECH_BITE:		[ null, null, null, [], null, null, 5, SP_TARGET_TARGET, 1, SAVE_PHY],
 }
 
 const spellDamages = {
@@ -1496,7 +1500,8 @@ var spellDescriptions = {
 	
 	SP_ZOMBIE_SCREAM: "screams at",
 	SP_SPIDER_BITE: "bites",
-	SP_SNAKE_CONSTRICT: "constricts"
+	SP_SNAKE_CONSTRICT: "constricts",
+	SP_LEECH_BITE: "vampirizes",
 }
 
 const spellsPerSchool: Dictionary = {}
@@ -1862,7 +1867,7 @@ const ENC_IS_LOW = 1
 const ENC_IS_RARE = 2
 const encounters = {
 	BIOME_DUNGEON: [
-		[[[MO_GIANT_SNAKE, 1, 1]], true, false],
+		[[[MO_GIANT_LEECH, 1, 1]], true, false],
 #		[[[MO_GIANT_BAT, 1, 1]], true, false],
 #		[[[MO_GIANT_BAT, 2, 2]], true, true],
 #		[[[MO_GIANT_SNAKE, 1, 1]], true, false],

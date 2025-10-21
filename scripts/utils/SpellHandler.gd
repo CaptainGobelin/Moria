@@ -155,7 +155,7 @@ func useMonsterAbility(spellId: int, caster, target, path):
 		targetName = "you"
 	var msg = caster.stats.entityName + " "
 	msg += Data.spellDescriptions[spellId] + " " + targetName + "."
-	Ref.ui.write(msg, "writeMonsterAbility")
+	Ref.ui.write(Ref.ui.color(msg, "yellow"), "writeMonsterAbility")
 	if Data.spells[spellId][Data.SP_PROJ] != null:
 		castProjectile(path, Data.spells[spellId][Data.SP_PROJ])
 	var savingCap = caster.stats.spellcasterLevel + 3

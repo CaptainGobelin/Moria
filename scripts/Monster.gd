@@ -192,7 +192,7 @@ func refreshMapPosition():
 
 func takeHit(dmg: int, bypassProt: int = 0):
 	if status == "dead":
-		return
+		return 0
 	if stats.hasStatus(Data.STATUS_VULNERABLE):
 		bypassProt = 9999
 	var realDmg = max(1, dmg - max(0, stats.prot - bypassProt))
@@ -203,10 +203,11 @@ func takeHit(dmg: int, bypassProt: int = 0):
 		die()
 	elif StatusEngine.removeStatusType(self, Data.STATUS_SLEEP):
 		Ref.ui.writeMonsterRemoveSleep(stats.entityName)
+	return realDmg
 
 func heal(amount: int):
 	var oldHp = stats.currentHp
-	stats.currentHp += amount
+	stats.currentHp = min(oldHp + amount, stats.hpMax)
 	Ref.ui.writeMonsterHeal(stats.entityName, stats.currentHp - oldHp)
 
 func die():

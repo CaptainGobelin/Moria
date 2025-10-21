@@ -6,7 +6,7 @@ signal completed
 
 export(int, "Fire", "Light", "Desintegrate", "PoisonGas", 
 "SleepGas", "Shock", "Smite", "Buff", "Arcane", "Ice",
-"Sparkles", "Dark", "Skull", "Transmut", "Circle") var type = 0 setget setType
+"Sparkles", "Dark", "Skull", "Transmut", "Circle", "Heal") var type = 0 setget setType
 
 const FIRE = 0
 const LIGHT = 1
@@ -23,6 +23,7 @@ const DARK = 11
 const SKULL = 12
 const TRANSMUT = 13
 const CIRCLE = 14
+const HEAL = 15
 
 func setType(value):
 	type = value
