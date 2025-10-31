@@ -67,7 +67,6 @@ func enchantsList(item, full: bool = false) -> String:
 		return NO_ENCHANTS
 	return result
 
-#TODO talsiman + enchants
 func fill(id: int):
 	var des = ""
 	var item = GLOBAL.items[id]
@@ -101,4 +100,6 @@ func fill(id: int):
 				des += " " + THROWING_SKILL[item[GLOBAL.IT_SKILL]]
 				des += "\n\n" + weaponDamages(id)
 				des += "\n\n" + enchantsList(item, true)
+		GLOBAL.TA_TYPE:
+			des = enchantsList(item, true)
 	descriptionLabel.bbcode_text = des
