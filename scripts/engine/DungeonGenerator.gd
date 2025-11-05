@@ -73,6 +73,12 @@ func simpleFloor():
 	array[4][6] = GLOBAL.WALL_ID
 	array[3][4] = GLOBAL.WALL_ID
 	array[3][6] = GLOBAL.WALL_ID
+	array[25][9] = GLOBAL.WALL_ID
+	array[25][10] = GLOBAL.WALL_ID
+	array[25][11] = GLOBAL.WALL_ID
+	array[27][9] = GLOBAL.WALL_ID
+	array[27][10] = GLOBAL.WALL_ID
+	array[27][11] = GLOBAL.WALL_ID
 	startCell = Vector2(int(GLOBAL.FLOOR_SIZE_X/2), int(GLOBAL.FLOOR_SIZE_Y/2))
 	drawFloor(array)
 	flagEnemyCells()

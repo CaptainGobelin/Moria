@@ -25,7 +25,7 @@ func newFloor():
 	#Place special room door
 	var specialDoor = decorator.placeSpecialRoom(exits)
 	get_parent().drawFloor(array)
-	var criticalPath = Ref.game.pathfinder.a_star(exits[0], exits[2], 9999, true)
+	var criticalPath = Ref.game.pathfinder.a_star(exits[0], [exits[2]], 9999, true)
 	if criticalPath == null:
 		return newFloor()
 	decorator.flagCriticalPath(criticalPath)

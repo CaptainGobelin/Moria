@@ -4,6 +4,7 @@ class_name CurrentLevel
 
 onready var auraScene = preload("res://scenes/Aura.tscn")
 onready var monsterScene = preload("res://scenes/Monster.tscn")
+onready var bossScene = preload("res://scenes/Boss.tscn")
 onready var lootScene = preload("res://scenes/Loot.tscn")
 onready var chestScene = preload("res://scenes/Chest.tscn")
 onready var secretScene = preload("res://scenes/Secret.tscn")
@@ -148,11 +149,14 @@ func canTarget(source: Vector2, target: Vector2) -> Array:
 	return points
 
 # [isFree, code, entity, isVisible, blockEffect]
-func isCellFree(cell):
+func isCellFree(cell, ignoreChar: bool = true):
 	if cell.x < 0 or cell.x >= GLOBAL.FLOOR_SIZE_X:
 		return [false, "OOB", null, false, true]
 	if cell.y < 0 or cell.y >= GLOBAL.FLOOR_SIZE_Y:
 		return [false, "OOB", null, false, true]
+	if not ignoreChar:
+		if cell == Ref.character.pos:
+			return [false, "monster", Ref.character, true, false]
 	#todo use monsterbypos dict
 	for m in monsters.get_children():
 		if cell == m.pos:
@@ -216,7 +220,11 @@ func spawnMonster(idx: int = 0, pos = null, isAllied: bool = false):
 	var cell = pos
 	if cell == null:
 		cell = getRandomFreeCell()
-	var monster = monsterScene.instance()
+	var monster
+	if idx == Data.MO_BO_TROLL:
+		monster = bossScene.instance()
+	else:
+		monster = monsterScene.instance()
 	if isAllied:
 		allies.add_child(monster)
 		monster.status = "help"

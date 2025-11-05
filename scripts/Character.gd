@@ -39,6 +39,9 @@ func setPosition(newPos):
 		if trap.hidden:
 			TrapEngine.trigger(trap, self)
 
+func isContact(entity, testPos: Vector2 = pos) -> bool:
+	return Utils.dist(testPos, entity.pos) == 1
+
 func move(movement):
 	pos += movement
 	animator.play("walk")

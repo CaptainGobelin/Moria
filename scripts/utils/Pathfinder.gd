@@ -1,5 +1,12 @@
 extends Node
 
+const bossNeighbors = {
+	Vector2(-1, 0): [Vector2(-1, 0), Vector2(-1, 1)],
+	Vector2(1, 0): [Vector2(2, 0), Vector2(2, 1)],
+	Vector2(0, -1): [Vector2(0, -1), Vector2(1, -1)],
+	Vector2(0, 1): [Vector2(0, 2), Vector2(1, 2)],
+}
+
 var exploreMap: Array = []
 
 func dijkstraCompute():
@@ -85,22 +92,6 @@ func check_cell_vision(position):
 func dist(a, b):
 	return sqrt(pow(b.x-a.x, 2) + pow(b.y-a.y, 2))
 
-func get_neighbors(cell, end, length, ignoreDoors: bool):
-	var result = []
-	var pos = cell[0]
-	var cost = cell[1] + 1
-	for i in [Vector2(-1, 0), Vector2(0, -1), Vector2(0, 1), Vector2(1, 0)]:
-		if (pos + i) == end:
-			result.append([pos + Vector2(i.x, i.y), cost, cell])
-		var cellState = Ref.currentLevel.isCellFree(pos+i)
-		if (pos + i) == Ref.character.pos:
-			continue
-		if !cellState[0] and (cellState[1] != "door" or !ignoreDoors) and cellState[1] != "pass":
-			continue
-		if (cost + dist(pos + Vector2(i.x, i.y), end) <= length):
-			result.append([pos + Vector2(i.x, i.y), cost, cell])
-	return result
-
 func path_to(cell):
 	var result = [cell[0]]
 	while not cell[2] == null:
@@ -125,18 +116,111 @@ func add_sorted(cell, list):
 		k += 1
 	list.insert(k, cell)
 
-func a_star(start, end, length, ignoreDoors: bool = false):
-	if (end == null):
-		return null
-	if (dist(start, end) > length) or (dist(start, end) == 0):
-		return null
+func get_neighbors(cell, ends, length, ignoreDoors: bool, isBoss: bool):
+	var result = []
+	var pos = cell[0]
+	var cost = cell[1] + 1
+	if !isBoss:
+		for i in [Vector2(-1, 0), Vector2(0, -1), Vector2(0, 1), Vector2(1, 0)]:
+			for end in ends:
+				if (pos + i) == end:
+					result.append([pos + Vector2(i.x, i.y), cost, cell])
+			var cellState = Ref.currentLevel.isCellFree(pos+i)
+			if (pos + i) == Ref.character.pos:
+				continue
+			if !cellState[0] and (cellState[1] != "door" or !ignoreDoors) and cellState[1] != "pass":
+				continue
+			if (cost + dist(pos + Vector2(i.x, i.y), ends[0]) <= length):
+				result.append([pos + Vector2(i.x, i.y), cost, cell])
+	else:
+		for n in bossNeighbors.keys():
+			var toAdd = true
+			var obj = []
+			for i in bossNeighbors[n]:
+				for end in ends:
+					if (pos + i) == end:
+						obj.append([pos + Vector2(i.x, i.y), cost, cell])
+				var cellState = Ref.currentLevel.isCellFree(pos+i)
+				if (pos + i) == Ref.character.pos:
+					toAdd = false
+				if !cellState[0] and (cellState[1] != "door" or !ignoreDoors) and cellState[1] != "pass":
+					toAdd = false
+			if toAdd and (cost + dist(pos + Vector2(n.x, n.y), ends[0]) <= length):
+				result.append([pos + Vector2(n.x, n.y), cost, cell])
+	return result
+
+#TODO idee de génie: array of ends for bosses
+func a_star(start, ends, length, ignoreDoors: bool = false, isBoss: bool = false):
+	for end in ends:
+		if (end == null):
+			return null
+		if (dist(start, end) > length) or (dist(start, end) == 0):
+			return null
 	var closedList = []
 	var openList = [[start, 0, null]]
 	while (openList.size() > 0):
 		var u = openList.pop_front()
-		if (u[0].x == end.x and u[0].y == end.y):
+		for end in ends:
+			if (u[0].x == end.x and u[0].y == end.y):
+				return path_to(u)
+		for v in get_neighbors(u, ends, length, ignoreDoors, isBoss):
+			if (shorter_in(v, openList) or shorter_in(v, closedList)):
+				continue
+			add_sorted(v, openList)
+		closedList.append(u)
+	return null
+
+func get_neighbors_entites(cell, start, end, length):
+	var result = []
+	var pos = cell[0]
+	var cost = cell[1] + 1
+	if !start.isBoss:
+		for i in [Vector2(-1, 0), Vector2(0, -1), Vector2(0, 1), Vector2(1, 0)]:
+			if (pos + i) == end.pos:
+#				result.append([pos + Vector2(i.x, i.y), cost, cell])
+				return [[pos + Vector2(i.x, i.y), cost, cell]]
+			var cellState = Ref.currentLevel.isCellFree(pos+i, false)
+			if !cellState[0]:
+				if cellState[1] == "monster":
+					if cellState[2] != start and cellState[2] != end:
+						continue
+				if cellState[1] != "door" and cellState[1] != "pass":
+					continue
+			if (cost + dist(pos + Vector2(i.x, i.y), end.pos) <= length):
+				result.append([pos + Vector2(i.x, i.y), cost, cell])
+	else:
+		for n in bossNeighbors.keys():
+			var toAdd = true
+			for i in bossNeighbors[n]:
+				if (pos + i) == end.pos:
+#					result.append([pos + Vector2(n.x, n.y), cost, cell])
+					return [[pos + Vector2(n.x, n.y), cost, cell]]
+				var cellState = Ref.currentLevel.isCellFree(pos+i, false)
+				if (pos + i) == Ref.character.pos:
+					toAdd = false
+				if !cellState[0]:
+					if cellState[1] == "monster":
+						if cellState[2] != start and cellState[2] != end:
+							toAdd = false
+					if cellState[1] != "door" and cellState[1] != "pass":
+						toAdd = false
+			if toAdd and (cost + dist(pos + Vector2(n.x, n.y), end.pos) <= length):
+				result.append([pos + Vector2(n.x, n.y), cost, cell])
+	return result
+
+func a_star_entities(start, end, length: int):
+	Ref.currentLevel.get_node("Debug").refresh()
+	if (dist(start.pos, end.pos) > length) or (dist(start.pos, end.pos) == 0):
+		return null
+	var closedList = []
+	var openList = [[start.pos, 0, null]]
+	while (openList.size() > 0):
+		var u = openList.pop_front()
+		Ref.currentLevel.get_node("Debug").addLine(path_to(u))
+		if start.isContact(end, u[0]):
+#		if (u[0].x == end.pos.x and u[0].y == end.pos.y):
 			return path_to(u)
-		for v in get_neighbors(u, end, length, ignoreDoors):
+		for v in get_neighbors_entites(u, start, end, length):
 			if (shorter_in(v, openList) or shorter_in(v, closedList)):
 				continue
 			add_sorted(v, openList)

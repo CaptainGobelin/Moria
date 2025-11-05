@@ -8,6 +8,12 @@ onready var bodySprite = get_node("BodySprite")
 onready var mask = get_node("Mask")
 onready var status = "sleep"
 
+const bossNeighbors = [
+	Vector2(-1, 0), Vector2(-1, 1), Vector2(0, -1), Vector2(1, -1),
+	Vector2(2, 0), Vector2(2, 1), Vector2(0, 2), Vector2(1, 2)
+]
+
+var isBoss: bool = false
 var tags: Array = []
 var statuses: Dictionary = {}
 var pos = Vector2(0, 0)
@@ -18,6 +24,7 @@ var abilitiesCD: Dictionary = {}
 
 func spawn(monsterType: int, cell: Vector2, fromSave: bool = false):
 	type = monsterType
+	isBoss = Data.hasTag(self, Data.TAG_BOSS)
 	bodySprite.frame = Data.monsters[monsterType][Data.MO_SPRITE]
 	setPosition(cell)
 	if not fromSave:
@@ -127,7 +134,7 @@ func attack(entity, los: Array):
 			Ref.game.spellHandler.useMonsterAbility(action[0], self, entity, los)
 			abilitiesCD[action[0]] = Data.spells[action[0]][Data.SP_USES]
 			return
-	if Utils.dist(pos, entity.pos) == 1:
+	if isContact(entity):
 		hit(entity)
 		return
 	if !los.empty():
@@ -137,6 +144,11 @@ func attack(entity, los: Array):
 			actions.consumeAction(action[0], action[1])
 			return
 	moveTo(entity)
+
+func isContact(entity, testPos: Vector2 = pos) -> bool:
+	if isBoss:
+		return bossNeighbors.has(entity.pos - testPos)
+	return Utils.dist(testPos, entity.pos) == 1
 
 func hit(entity):
 	if entity == null:
@@ -164,13 +176,15 @@ func hit(entity):
 func moveTo(entity) -> bool:
 	if status == "immobile":
 		return false
-	var path = Ref.game.pathfinder.a_star(pos, entity.pos, 20)
+	var path = Ref.game.pathfinder.a_star_entities(self, entity, 20)
 	if path == null or !Data.monsters[type][Data.MO_MOVE]:
 		return false
 	setPosition(path[1])
 	return true
 
 func moveStep(d: Vector2) -> bool:
+	if isBoss:
+		return false
 	if !Data.monsters[type][Data.MO_MOVE]:
 		return false
 	if Ref.character.pos == pos + d:

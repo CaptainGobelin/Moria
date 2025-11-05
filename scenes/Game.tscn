@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=2]
+[gd_scene load_steps=44 format=2]
 
 [ext_resource path="res://scenes/engine/DungeonGenerator.tscn" type="PackedScene" id=1]
 [ext_resource path="res://tilesets/basic.tres" type="TileSet" id=2]
@@ -40,6 +40,24 @@
 [ext_resource path="res://tilesets/masks_tileset.tres" type="TileSet" id=38]
 [ext_resource path="res://scenes/engine/WorldGenerator.tscn" type="PackedScene" id=39]
 [ext_resource path="res://scenes/UI/BossBar.tscn" type="PackedScene" id=40]
+
+[sub_resource type="GDScript" id=4]
+script/source = "extends Node2D
+
+var lines = []
+
+func addLine(line):
+	lines.append(line)
+	update()
+
+func refresh():
+	lines = []
+
+func _draw():
+	for l in lines:
+		for i in range(1, len(l)):
+			draw_line(9 * l[i-1] + Vector2(4.5, 4.5), 9 * l[i] + Vector2(4.5, 4.5), Colors.red)
+"
 
 [sub_resource type="Animation" id=1]
 resource_name = "FadeIn"
@@ -100,12 +118,13 @@ tracks/1/keys = {
 [node name="Game" type="Node2D"]
 scale = Vector2( 4, 4 )
 script = ExtResource( 15 )
+start = 3
 debugClass = 1
 
 [node name="Utils" type="Node" parent="."]
 
 [node name="DungeonGenerator_v2" parent="Utils" instance=ExtResource( 1 )]
-biome = 0
+biome = 4
 
 [node name="ItemGenerator" type="Node" parent="Utils"]
 script = ExtResource( 6 )
@@ -192,6 +211,7 @@ script = ExtResource( 36 )
 
 [node name="Debug" type="Node2D" parent="CurrentLevel"]
 visible = false
+script = SubResource( 4 )
 
 [node name="Secrets" type="TileMap" parent="CurrentLevel/Debug"]
 visible = false
