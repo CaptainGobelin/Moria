@@ -14,21 +14,29 @@ var startRow = 0
 func _ready():
 	set_process_input(false)
 
-func open(school: int, level: int):
+func open(school: int, list: int = -1):
 	selected = 0
 	startRow = 0
 	visible = true
 	MasterInput.setMaster(self)
-	var list = Data.classes[Ref.character.charClass][Data.CL_LIST]
+	if list == -1:
+		list = Data.classes[Ref.character.charClass][Data.CL_LIST]
 	currentList = []
-	for i in range(1, level+1):
-		if !Data.spellsPerSchool[list].has(school):
+	var schools = [school]
+	if school == -1:
+		schools = [Data.SC_EVOCATION, Data.SC_ENCHANTMENT, Data.SC_ABJURATION,
+			Data.SC_DIVINATION, Data.SC_CONJURATION]
+	for s in schools:
+		if Ref.character.spells.getSchoolSkillLevel(s) == 0:
 			continue
-		if !Data.spellsPerSchool[list][school].has(i):
-			continue
-		for s in Data.spellsPerSchool[list][school][i]:
-			if !Ref.character.spells.spells.has(s):
-				currentList.append(s)
+		for i in range(1, Ref.character.spells.getSpellRank(s)+2):
+			if !Data.spellsPerSchool[list].has(s):
+				continue
+			if !Data.spellsPerSchool[list][s].has(i):
+				continue
+			for spell in Data.spellsPerSchool[list][s][i]:
+				if !Ref.character.spells.spells.has(spell):
+					currentList.append(spell)
 	if currentList.empty():
 		close()
 		emit_signal("selected", null)

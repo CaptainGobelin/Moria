@@ -22,16 +22,10 @@ func improve(idx: int, isFree: bool = false):
 	Ref.character.stats.computeStats()
 	if school == null:
 		return null
-	var spLevel = 0
-	if skills[idx] == 1:
-		spLevel = 1
-	if skills[idx] == 3:
-		spLevel = 2
-	if skills[idx] == 5:
-		spLevel = 3
 	if skills[idx] == 2 or skills[idx] == 4:
 		Ref.character.spells.improveUses(school)
-	return ["chooseSpell", school, spLevel]
+		return ["nothing", 0, 0]
+	return ["chooseSpell", school, -1]
 
 func skillToSchool(skill: int):
 	match skill:
@@ -125,6 +119,10 @@ func addFeat(feat: int):
 		Data.FEAT_SKILLED_THIEVERY:
 			masteries[Data.SK_THI] += 1
 			return improve(Data.SK_THI, true)
+		Data.FEAT_ARCANE_INITIATE:
+			return ["chooseSpell", -1, Data.SP_LIST_ARCANE]
+		Data.FEAT_DIVINE_SERVANT:
+			return ["chooseSpell", -1, Data.SP_LIST_DIVINE]
 	return null
 
 static func removeForbiddenFeats(featList: Array) -> Array:

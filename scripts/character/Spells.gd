@@ -7,7 +7,10 @@ var schoolSaves = [0, 0, 0, 0, 0]
 func getSavingThrow(school: int):
 	return schoolSaves[school]
 
-func getSpellRank(school: int):
+func getSchoolSkillLevel(school: int):
+	return Ref.character.skills.skills[schoolToSkill(school)]
+
+func getSpellRank(school: int) -> int:
 	var skill = get_parent().skills.skills[schoolToSkill(school)]
 	if skill < 2:
 		return 0
@@ -30,7 +33,7 @@ func improveUses(school: int):
 		if spell[Data.SP_SCHOOL] == school:
 			spellsUses[s] += (spell[Data.SP_USES][rank] - spell[Data.SP_USES][rank-1])
 
-func schoolToSkill(school: int):
+func schoolToSkill(school: int) -> int:
 	match school:
 		Data.SC_EVOCATION:
 			return Data.SK_EVOC
@@ -42,7 +45,7 @@ func schoolToSkill(school: int):
 			return Data.SK_DIV
 		Data.SC_CONJURATION:
 			return Data.SK_CONJ
-	return null
+	return -1
 
 func getSpellsRows():
 	var result = []
