@@ -159,7 +159,26 @@ static func removeForbiddenFeats(featList: Array) -> Array:
 	if featList.has(Data.FEAT_SKILLED_THIEVERY):
 		if Ref.character.skills.masteries[Data.SK_THI] == 2:
 			featList.erase(Data.FEAT_SKILLED_THIEVERY)
+	if featList.has(Data.FEAT_ARCANE_INITIATE):
+		if not hasMagicSkill():
+			featList.erase(Data.FEAT_ARCANE_INITIATE)
+	if featList.has(Data.FEAT_DIVINE_SERVANT):
+		if not hasMagicSkill():
+			featList.erase(Data.FEAT_DIVINE_SERVANT)
 	return featList
+
+static func hasMagicSkill() -> bool:
+	if Ref.character.skills.skills[Data.SK_EVOC] > 0:
+		return true
+	if Ref.character.skills.skills[Data.SK_ENCH] > 0:
+		return true
+	if Ref.character.skills.skills[Data.SK_ABJ] > 0:
+		return true
+	if Ref.character.skills.skills[Data.SK_DIV] > 0:
+		return true
+	if Ref.character.skills.skills[Data.SK_CONJ] > 0:
+		return true
+	return false
 
 static func canEquipWeapon(idx: int) -> bool:
 	return Ref.character.skills.skills[Data.SK_COMBAT] >= Data.weapons[idx][Data.W_SKILL] 
