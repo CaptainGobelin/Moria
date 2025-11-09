@@ -211,6 +211,10 @@ func writeNoSpell(spell: String):
 	write("You cannot cast " + spell + " anymore until you rest.")
 	lastPrinted = "writeNoSpell"
 
+func writeCharacterSavingThrowSuccess():
+	write("You succeed your saving throw.")
+	lastPrinted = "writeCharacterSavingThrowSuccess"
+
 func writeSavingThrowSuccess(entityName: String):
 	write(entityName + " succeed its saving throw.")
 	lastPrinted = "writeSavingThrowSuccess"

@@ -70,7 +70,10 @@ func standardSavingThrow(entity, savingCap: int, type: int) -> bool:
 	var roll = GeneralEngine.dice(1, 6, entity.stats.saveBonus[type]).roll(entity)
 	var saved = roll >= savingCap
 	if saved:
-		Ref.ui.writeSavingThrowSuccess(entity.stats.entityName)
+		if entity.is_in_group("Character"):
+			Ref.ui.writeCharacterSavingThrowSuccess()
+		else:
+			Ref.ui.writeSavingThrowSuccess(entity.stats.entityName)
 	return saved
 
 func rollsavingThrow(caster, entity, malus: int = 0) -> bool:
@@ -82,7 +85,10 @@ func rollsavingThrow(caster, entity, malus: int = 0) -> bool:
 			roll += 1
 	var saved = roll >= saveCap
 	if saved:
-		Ref.ui.writeSavingThrowSuccess(entity.stats.entityName)
+		if entity.is_in_group("Character"):
+			Ref.ui.writeCharacterSavingThrowSuccess()
+		else:
+			Ref.ui.writeSavingThrowSuccess(entity.stats.entityName)
 	return saved
 
 func applyEffect(caster, entity, spellId: int, fromCharacter: bool, rank: int, savingCap: int, direction: Vector2 = Vector2(0, 0)):
@@ -248,6 +254,8 @@ func smite(caster, entity, rank: int, direction: Vector2):
 		if target != null:
 			var dmgDice = getDmgDice(caster, Data.SP_SMITE, rank)
 			var dmg = GeneralEngine.computeDamages(caster, dmgDice, target.stats.resists)
+			if rollsavingThrow(caster, entity):
+				dmg /= 2
 			target.takeHit(dmg)
 		targetCell += direction
 

@@ -191,6 +191,8 @@ func testDoor(pos: Vector2):
 	Ref.game.pathfinder.dijkstraCompute()
 
 # Monsters
+const bossCells: Array = [Vector2(0, 0), Vector2(0, 1), Vector2(1, 0), Vector2(1, 1)]
+
 var targets: Dictionary = {}
 
 var monstersByPosition: Dictionary = {}

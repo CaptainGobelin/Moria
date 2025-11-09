@@ -53,6 +53,7 @@ func _ready():
 		3:
 			Ref.currentLevel.fog.visible = false
 			Ref.currentLevel.shadows.visible = false
+			Ref.character.init(debugClass)
 			Ref.character.setPosition(dungeonGenerator.newFloor())
 			Ref.currentLevel.spawnMonster(Data.MO_BO_TROLL)
 			set_process_input(true)

@@ -150,11 +150,15 @@ func spellRebound(spellId: int, caster, initial, spellRank: int, savingCap: int,
 		return
 
 func useMonsterAbility(spellId: int, caster, target, path):
-	var targetName = target.stats.entityName
-	if target is Character:
-		targetName = "you"
-	var msg = caster.stats.entityName + " "
-	msg += Data.spellDescriptions[spellId] + " " + targetName + "."
+	var msg = ""
+	if target != null:
+		var targetName = target.stats.entityName
+		if target is Character:
+			targetName = "you"
+		msg = caster.stats.entityName + " "
+		msg += Data.spellDescriptions[spellId] + " " + targetName + "."
+	else:
+		msg = Data.spellDescriptions[spellId] + "."
 	Ref.ui.write(Ref.ui.color(msg, "yellow"), "writeMonsterAbility")
 	if Data.spells[spellId][Data.SP_PROJ] != null:
 		castProjectile(path, Data.spells[spellId][Data.SP_PROJ])

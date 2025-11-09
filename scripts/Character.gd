@@ -40,6 +40,8 @@ func setPosition(newPos):
 			TrapEngine.trigger(trap, self)
 
 func isContact(entity, testPos: Vector2 = pos) -> bool:
+	if entity.is_in_group("Boss"):
+		return entity.isContact(self)
 	return Utils.dist(testPos, entity.pos) == 1
 
 func move(movement):

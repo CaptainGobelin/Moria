@@ -55,6 +55,11 @@ func takeTurn():
 			wander()
 			return
 		"awake":
+			if has_node("BossAI"):
+				get_node("BossAI").trollHasMoved = false
+				#TODO attack also invocations
+				if get_node("BossAI").execute(Ref.character):
+					return
 			if randf() < 0.25:
 				if healAction():
 					return
@@ -146,6 +151,8 @@ func attack(entity, los: Array):
 	moveTo(entity)
 
 func isContact(entity, testPos: Vector2 = pos) -> bool:
+	if entity.is_in_group("Boss"):
+		return entity.isContact(self)
 	if isBoss:
 		return bossNeighbors.has(entity.pos - testPos)
 	return Utils.dist(testPos, entity.pos) == 1
@@ -178,8 +185,12 @@ func moveTo(entity) -> bool:
 		return false
 	var path = Ref.game.pathfinder.a_star_entities(self, entity, 20)
 	if path == null or !Data.monsters[type][Data.MO_MOVE]:
+		if isBoss and entity.is_in_group("Character"):
+			get_node("BossAI").cannotReach()
 		return false
 	setPosition(path[1])
+	if has_node("BossAI"):
+		get_node("BossAI").trollHasMoved = true
 	return true
 
 func moveStep(d: Vector2) -> bool:

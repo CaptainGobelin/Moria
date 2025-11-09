@@ -218,7 +218,6 @@ func a_star_entities(start, end, length: int):
 		var u = openList.pop_front()
 		Ref.currentLevel.get_node("Debug").addLine(path_to(u))
 		if start.isContact(end, u[0]):
-#		if (u[0].x == end.pos.x and u[0].y == end.pos.y):
 			return path_to(u)
 		for v in get_neighbors_entites(u, start, end, length):
 			if (shorter_in(v, openList) or shorter_in(v, closedList)):

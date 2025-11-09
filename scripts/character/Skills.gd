@@ -125,6 +125,9 @@ func addFeat(feat: int):
 			return ["chooseSpell", -1, Data.SP_LIST_DIVINE]
 	return null
 
+func hasFeat(feat: int) -> bool:
+	return feats.has(feat)
+
 static func removeForbiddenFeats(featList: Array) -> Array:
 	if featList.has(Data.FEAT_SKILLED_COMBAT):
 		if Ref.character.skills.masteries[Data.SK_COMBAT] == 2:

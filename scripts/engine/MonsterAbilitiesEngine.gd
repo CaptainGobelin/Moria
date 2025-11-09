@@ -13,6 +13,12 @@ func applyEffect(caster, entity, spellId: int, fromCharacter: bool, rank: int, s
 			snakeConstrict(caster, entity)
 		Data.SP_LEECH_BITE:
 			leechBite(caster, entity)
+		Data.SP_TROLL_NET:
+			trollNet(caster, entity)
+		Data.SP_TROLL_STUN:
+			trollStun(caster, entity)
+		Data.SP_TROLL_RAGE:
+			trollRage(caster)
 
 func zombieScream(caster):
 	var spellRange = Data.spells[Data.SP_ZOMBIE_SCREAM][Data.SP_AREA]
@@ -43,3 +49,15 @@ func leechBite(caster, target):
 		if heal > 0:
 			caster.heal(heal)
 			get_parent().playEffect(caster.pos, Effect.HEAL, 5, 0.6)
+
+func trollNet(caster, target):
+	get_parent().applySpellStatus(target, Data.STATUS_IMMOBILE, 0, 11)
+
+func trollStun(caster, target):
+	if not get_parent().rollsavingThrow(caster, target):
+		get_parent().applySpellStatus(target, Data.STATUS_PARALYZED, 0, 3)
+		var dmg = GeneralEngine.computeDamages(caster, [GeneralEngine.dmgDiceFromArray([1, 8, 0, Data.DMG_BLUNT])], target.stats.resists)
+		target.takeHit(dmg)
+
+func trollRage(caster):
+	get_parent().applySpellStatus(caster, Data.STATUS_TROLL_RAGE, 0, 15)

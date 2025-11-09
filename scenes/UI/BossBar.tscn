@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://fonts/alagard.tres" type="DynamicFont" id=1]
 [ext_resource path="res://themes/uiTheme.tres" type="Theme" id=2]
 [ext_resource path="res://scripts/ui/BossBar.gd" type="Script" id=3]
+[ext_resource path="res://scenes/Status.tscn" type="PackedScene" id=4]
 
 [node name="BossBar" type="Node2D"]
 script = ExtResource( 3 )
@@ -23,9 +24,9 @@ valign = 1
 
 [node name="HSlider" type="HSlider" parent="."]
 margin_left = -90.0
-margin_top = 18.0
+margin_top = 14.0
 margin_right = 90.0
-margin_bottom = 27.0
+margin_bottom = 23.0
 theme = ExtResource( 2 )
 max_value = 10.0
 value = 9.0
@@ -35,3 +36,14 @@ tick_count = 8
 
 [node name="FragmentsContainer" type="Node2D" parent="."]
 position = Vector2( -90, 21 )
+
+[node name="Statuses" type="Node2D" parent="."]
+position = Vector2( -4.5, 23 )
+
+[node name="Status" parent="Statuses" instance=ExtResource( 4 )]
+
+[node name="Status2" parent="Statuses" instance=ExtResource( 4 )]
+position = Vector2( 10, 0 )
+
+[node name="Status3" parent="Statuses" instance=ExtResource( 4 )]
+position = Vector2( 20, 0 )

@@ -5,6 +5,7 @@ onready var fragmentScene = preload("res://scenes/UI/BossBarFragment.tscn")
 onready var nameLabel = get_node("TextContainer/Label")
 onready var lifeBar = get_node("HSlider")
 onready var fragmentsContainer = get_node("FragmentsContainer")
+onready var statuses = get_node("Statuses")
 
 func _ready():
 	init(Data.MO_BO_TROLL)
@@ -21,3 +22,7 @@ func damage(amount: int):
 	var oldValue = lifeBar.value
 	lifeBar.value -= amount
 	BossBarFrangment.create(oldValue, lifeBar.value, fragmentsContainer)
+
+func addStatus(status: Node2D):
+	statuses.add_child(status)
+	statuses.position.x -= 5

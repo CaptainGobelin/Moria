@@ -35,12 +35,13 @@ const PROJ_PURPLE_R = [Colors.purple, 9]
 const PROJ_RED_L = [Colors.red, 12]
 const PROJ_RED_R = [Colors.red, 9]
 const PROJ_WHITE_S = [Colors.white, 0]
-const PROJ_WHITE_M = [Colors.white, 6]
 const PROJ_WHITE_LONG = [Colors.white, 3]
+const PROJ_WHITE_M = [Colors.white, 6]
+const PROJ_WHITE_NET = [Colors.white, 21]
 const PROJ_WHITE_R = [Colors.white, 9]
 const PROJ_GREEN_M = [Colors.green, 6]
 const PROJ_GREEN_R = [Colors.green, 9]
-const PROJ_BLUE_ZAP = [Colors.blue, 18]
+const PROJ_CYAN_ZAP = [Colors.cyan, 18]
 
 # Feats
 const FEAT_FIGHTER = 0
@@ -148,6 +149,11 @@ const SP_ZOMBIE_SCREAM = 200
 const SP_SNAKE_CONSTRICT = 201
 const SP_SPIDER_BITE = 202
 const SP_LEECH_BITE = 203
+
+const SP_TROLL_NET = 300
+const SP_TROLL_RAGE = 301
+const SP_TROLL_STUN = 302
+const SP_TROLL_SUMMON = 303
 
 # Skills
 const SK_COMBAT = 0
@@ -446,7 +452,10 @@ const monsters = {
 		4, 2, 12, 400, true,
 		#CasterLvl WIL PHY CR
 		0, 0, 1, 30,
-		[]
+		[
+#			[SP_TROLL_NET, ACT_ABILITY, ACT_SUBTYPE_ABILITY, ACT_COUNT_UNILIMITED],
+			[SP_TROLL_STUN, ACT_ABILITY, ACT_SUBTYPE_ABILITY, ACT_COUNT_UNILIMITED],
+		]
 	],
 	# SUMMONS
 	MO_SUM_WOLF: [
@@ -1100,7 +1109,7 @@ const spells = {
 	SP_SMITE: 			["Sunscorch", 1, SC_EVOCATION, [false, true, false], null, 3, [10, 10, 10], SP_TARGET_DIRECT, 1, SAVE_PHY],
 	SP_FIREBOLT: 		["Fire bolt", 1, SC_EVOCATION, [true, false, false], PROJ_RED_L, 4, [15, 15, 15], SP_TARGET_TARGET, 0, SAVE_PHY],
 	SP_BURN_HANDS: 		["Burning hands", 2, SC_EVOCATION, [true, false, true], null, 5, [10, 10, 10], SP_TARGET_DIRECT, 3, SAVE_PHY],
-	SP_LIGHT_BOLT: 		["Lightning bolt", 2, SC_EVOCATION, [true, true, true], PROJ_BLUE_ZAP, 6, [8, 8, 8], SP_TARGET_TARGET, 0, SAVE_PHY],
+	SP_LIGHT_BOLT: 		["Lightning bolt", 2, SC_EVOCATION, [true, true, true], PROJ_CYAN_ZAP, 6, [8, 8, 8], SP_TARGET_TARGET, 0, SAVE_PHY],
 	SP_REPEL_EVIL: 		["Repel evil", 2, SC_EVOCATION, [false, true, false], null, 7, [10, 10, 10], SP_TARGET_SELF, 4, SAVE_WIL],
 	SP_CURE_WOUNDS: 	["Cure wounds", 2, SC_EVOCATION, [false, true, true], null, 8, [3, 3, 3], SP_TARGET_SELF, 0, SAVE_NO],
 	SP_FROST_NOVA: 		["Frost nova", 2, SC_EVOCATION, [true, false, false], null, 9, [5, 5, 5], SP_TARGET_AREA, 3, SAVE_PHY],
@@ -1153,6 +1162,12 @@ const spells = {
 	SP_SPIDER_BITE:		[ null, null, null, [], null, null, 6, SP_TARGET_TARGET, 1, SAVE_PHY],
 	SP_SNAKE_CONSTRICT:	[ null, null, null, [], null, null, 15, SP_TARGET_TARGET, 1, SAVE_PHY],
 	SP_LEECH_BITE:		[ null, null, null, [], null, null, 5, SP_TARGET_TARGET, 1, SAVE_PHY],
+	
+	# Boss abilities
+	SP_TROLL_NET:		[ null, null, null, [], PROJ_WHITE_NET, null, 15, SP_TARGET_TARGET, 8, SAVE_PHY],
+	SP_TROLL_STUN:		[ null, null, null, [], null, null, 15, SP_TARGET_TARGET, 1, SAVE_PHY],
+	SP_TROLL_RAGE:		[ null, null, null, [], null, null, 15, SP_TARGET_SELF, 1, SAVE_NO],
+	SP_TROLL_SUMMON:	[ null, null, null, [], null, null, 20, SP_TARGET_SELF, 1, SAVE_NO],
 }
 
 const spellDamages = {
@@ -1502,6 +1517,10 @@ var spellDescriptions = {
 	SP_SPIDER_BITE: "bites",
 	SP_SNAKE_CONSTRICT: "constricts",
 	SP_LEECH_BITE: "vampirizes",
+	
+	SP_TROLL_NET: "throws a net at",
+	SP_TROLL_STUN: "stikes a mighty blow unpon",
+	SP_TROLL_RAGE: "enrages",
 }
 
 const spellsPerSchool: Dictionary = {}
@@ -1559,6 +1578,7 @@ const STATUS_SPIRIT_GUARD = 120
 const STATUS_PROTECT_FIRE = 121
 const STATUS_PROTECT_POISON = 122
 const STATUS_REPEL_MISSILES = 123
+const STATUS_REGENERATE = 124
 
 const STATUS_WILLPOWER = 200
 const STATUS_PHYSICS = 201
@@ -1570,6 +1590,8 @@ const STATUS_POIS_WP = 207
 const STATUS_HOLY_WP = 208
 const STATUS_SHOCK_WP = 209
 const STATUS_GOBLIN_WP = 210
+
+const STATUS_TROLL_RAGE = 1000
 
 const STATUS_RESIST = 10000
 
@@ -1690,6 +1712,9 @@ const statusesDescriptions = {
 	STATUS_REPEL_MISSILES: [
 		"You are protected against any normal projectiles.",
 		"You are protected against any normal or magical projectiles.",
+	],
+	STATUS_REGENERATE: [
+		"Healing energies flows through your body. You regain 1PV/rank each turn."
 	]
 }
 
@@ -1724,10 +1749,13 @@ const statusPrefabs = {
 	STATUS_TRUE_STRIKE: ["True strike", 16, null, null, STATUS_TRUE_STRIKE, null, null, false, true, true],
 	STATUS_FIRE_AURA: ["Fire aura", 52, null, null, STATUS_FIRE_AURA, null, null, false, true, true],
 	STATUS_FREED_MOVE: ["Freedom of movement", 28, null, null, STATUS_FREED_MOVE, null, null, false, true, true],
-	STATUS_SPIRIT_GUARD: ["", 28, null, null, STATUS_SPIRIT_GUARD, null, null, true, true, true],
+	STATUS_SPIRIT_GUARD: ["Spirit guardians", 28, null, null, STATUS_SPIRIT_GUARD, null, null, true, true, true],
 	STATUS_PROTECT_FIRE: ["Protect from fire", 29, null, null, STATUS_RESIST + DMG_FIRE, null, null, false, true, true],
 	STATUS_PROTECT_POISON: ["Protect from poison", 35, null, null, STATUS_RESIST + DMG_POISON, null, null, false, true, true],
 	STATUS_REPEL_MISSILES: ["Deflect projectiles", 34, null, null, STATUS_REPEL_MISSILES, null, null, false, true, true],
+	STATUS_REGENERATE: ["Regenerate", 34, null, null, STATUS_REGENERATE, null, null, false, true, true],
+	
+	STATUS_TROLL_RAGE: ["Troll rage", 34, null, null, STATUS_TROLL_RAGE, null, null, false, true, true],
 }
 
 const FE_NAME = 0
@@ -1867,17 +1895,16 @@ const ENC_IS_LOW = 1
 const ENC_IS_RARE = 2
 const encounters = {
 	BIOME_DUNGEON: [
-		[[[MO_GIANT_LEECH, 1, 1]], true, false],
-#		[[[MO_GIANT_BAT, 1, 1]], true, false],
-#		[[[MO_GIANT_BAT, 2, 2]], true, true],
-#		[[[MO_GIANT_SNAKE, 1, 1]], true, false],
-#		[[[MO_LESSER_SKELETON, 1, 1]], true, false],
-#		[[[MO_GOBLIN, 1, 1]], true, true],
-#		[[[MO_LESSER_SKELETON, 2, 2]], false, false],
-#		[[[MO_GIANT_SNAKE, 3, 3]], false, true],
-#		[[[MO_GIANT_LEECH, 2, 4]], false, false],
-#		[[[MO_GOBLIN, 1, 1]], false, false],
-#		[[[MO_SPIDER, 1, 1]], false, false],
+		[[[MO_GIANT_BAT, 1, 1]], true, false],
+		[[[MO_GIANT_BAT, 2, 2]], true, true],
+		[[[MO_GIANT_SNAKE, 1, 1]], true, false],
+		[[[MO_LESSER_SKELETON, 1, 1]], true, false],
+		[[[MO_GOBLIN, 1, 1]], true, true],
+		[[[MO_LESSER_SKELETON, 2, 2]], false, false],
+		[[[MO_GIANT_SNAKE, 3, 3]], false, true],
+		[[[MO_GIANT_LEECH, 2, 4]], false, false],
+		[[[MO_GOBLIN, 1, 1]], false, false],
+		[[[MO_SPIDER, 1, 1]], false, false],
 	],
 }
 

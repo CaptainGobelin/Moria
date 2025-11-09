@@ -159,6 +159,10 @@ func isCellFree(cell, ignoreChar: bool = true):
 			return [false, "monster", Ref.character, true, false]
 	#todo use monsterbypos dict
 	for m in monsters.get_children():
+		if m.isBoss:
+			for c in GLOBAL.bossCells:
+				if cell == (m.pos + c):
+					return [false, "monster", m, true, false]
 		if cell == m.pos:
 			return [false, "monster", m, true, false]
 	for n in npcs.get_children():
