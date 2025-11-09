@@ -6,9 +6,10 @@ onready var encounterHandler = get_node("EncounterHandler")
 onready var normalBiome = get_node("NormalBiome")
 onready var cavernBiome = get_node("CavernBiome")
 onready var merchantRoom = get_node("MerchantRoom")
+onready var trollRoom = get_node("TrollRoom")
 onready var dungeon: TileMap
 
-export (int, "Normal, Cavern, Arena, Merchant, Debug") var biome = 0
+export (int, "Normal, Cavern, Arena, Merchant, Debug, Troll") var biome = 0
 
 var textures = [
 	"res://sprites/walls.png",
@@ -46,7 +47,7 @@ func newFloor(specialBiome = biome):
 			return normalBiome.newFloor()
 		1:
 			changeTilesetTexture(1)
-			changeTilesetTexture(1)
+#			changeTilesetTexture(1)
 			return cavernBiome.newFloor()
 		2:
 			return simpleFloor()
@@ -56,6 +57,9 @@ func newFloor(specialBiome = biome):
 			var result = simpleFloor()
 			loadAllItems()
 			return result
+		5:
+			changeTilesetTexture(1)
+			return trollRoom.newFloor()
 
 func simpleFloor():
 	for i in range(GLOBAL.FLOOR_SIZE_X):

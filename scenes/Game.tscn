@@ -118,13 +118,12 @@ tracks/1/keys = {
 [node name="Game" type="Node2D"]
 scale = Vector2( 4, 4 )
 script = ExtResource( 15 )
-start = 3
 debugClass = 1
 
 [node name="Utils" type="Node" parent="."]
 
 [node name="DungeonGenerator_v2" parent="Utils" instance=ExtResource( 1 )]
-biome = 4
+biome = 5
 
 [node name="ItemGenerator" type="Node" parent="Utils"]
 script = ExtResource( 6 )
@@ -654,7 +653,6 @@ anims/FadeIn = SubResource( 1 )
 anims/FadeOut = SubResource( 3 )
 
 [node name="BossBar" parent="UI" instance=ExtResource( 40 )]
-visible = false
 position = Vector2( 171, 7 )
 
 [node name="InventoryMenu" parent="." instance=ExtResource( 10 )]

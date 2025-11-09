@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scenes/engine/RoomsReader.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/engine/DungeonDecorator.gd" type="Script" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://scripts/engine/MerchantRoom.gd" type="Script" id=8]
 [ext_resource path="res://scripts/engine/GeneratorAnalyzer.gd" type="Script" id=9]
 [ext_resource path="res://scripts/engine/EncounterHandler.gd" type="Script" id=10]
+[ext_resource path="res://scenes/engine/TrollRoom.tscn" type="PackedScene" id=11]
 
 [node name="DungeonGenerator" type="Node"]
 script = ExtResource( 3 )
@@ -31,6 +32,9 @@ script = ExtResource( 6 )
 [node name="MerchantRoom" parent="." instance=ExtResource( 7 )]
 visible = false
 script = ExtResource( 8 )
+
+[node name="TrollRoom" parent="." instance=ExtResource( 11 )]
+visible = false
 
 [node name="GeneratorAnalyzer" type="Node" parent="."]
 script = ExtResource( 9 )

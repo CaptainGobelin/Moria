@@ -30,6 +30,8 @@ onready var debugLayer = get_node("Debug")
 
 var searched: Array
 var specialEntries: Array = [null, null]
+var specialCells: Array = []
+var isBossRomm: bool = false
 
 func _ready():
 	Ref.currentLevel = self
