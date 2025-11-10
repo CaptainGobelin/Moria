@@ -99,7 +99,6 @@ func moveAsync(movement):
 			if (coroutineReturn):
 				StatusEngine.removeFloorStatuses(self)
 				Ref.game.nextFloor()
-				GeneralEngine.newTurn()
 		"chest": 
 			var lock = GLOBAL.chests[cellState[2]][GLOBAL.CH_LOCKED]
 			if lock == 0:

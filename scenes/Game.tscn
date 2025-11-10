@@ -653,6 +653,7 @@ anims/FadeIn = SubResource( 1 )
 anims/FadeOut = SubResource( 3 )
 
 [node name="BossBar" parent="UI" instance=ExtResource( 40 )]
+visible = false
 position = Vector2( 171, 7 )
 
 [node name="InventoryMenu" parent="." instance=ExtResource( 10 )]

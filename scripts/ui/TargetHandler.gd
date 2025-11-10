@@ -19,18 +19,18 @@ func _input(event):
 	elif (event.is_action_released("ui_right")):
 		currentChoice = posmod(currentChoice+1, choices.size())
 		lastTarget = choices[currentChoice]
-		Ref.currentLevel.target(instance_from_id(lastTarget).pos)
+		Ref.currentLevel.target(instance_from_id(lastTarget).pos, instance_from_id(lastTarget).isBoss)
 		return
 	elif (event.is_action_released("ui_left")):
 		currentChoice = posmod(currentChoice-1, choices.size())
 		lastTarget = choices[currentChoice]
-		Ref.currentLevel.target(instance_from_id(lastTarget).pos)
+		Ref.currentLevel.target(instance_from_id(lastTarget).pos, instance_from_id(lastTarget).isBoss)
 		return
 
 func startCoroutine(targets: Array):
 	choices = targets
 	selectLastTarget()
-	Ref.currentLevel.target(instance_from_id(lastTarget).pos)
+	Ref.currentLevel.target(instance_from_id(lastTarget).pos, instance_from_id(lastTarget).isBoss)
 	MasterInput.setMaster(self)
 
 func endCoroutine(result: int):

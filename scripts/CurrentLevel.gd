@@ -337,9 +337,12 @@ func openDoor(pos):
 		Ref.game.pathfinder.dijkstraCompute()
 	dungeon.set_cellv(pos, GLOBAL.DOOR_ID, false, false, false, Vector2(0, 0))
 
-func target(pos):
+func target(pos: Vector2, isBoss: bool = false):
 	targetArrow.visible = true
-	targetArrow.position = pos * 9
+	if isBoss:
+		targetArrow.position = pos * 9 + Vector2(4.5, 9)
+	else:
+		targetArrow.position = pos * 9
 
 func untarget():
 	targetArrow.visible = false

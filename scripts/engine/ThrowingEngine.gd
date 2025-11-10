@@ -1,8 +1,7 @@
 extends Node
 
 func firebomb(entity):
-	var targetedCells = get_parent().getArea(entity.pos, 2)
-	targetedCells.append(Vector2(0, 0))
+	var targetedCells = get_parent().getArea(entity, 2, true)
 	var dmgDice = GeneralEngine.dmgDiceFromArray(Data.spellDamages[Data.SP_TH_FIREBOMB][0])
 	for cell in targetedCells:
 		var pos = entity.pos + cell
@@ -14,8 +13,7 @@ func firebomb(entity):
 			target.takeHit(dmgDice.roll())
 
 func holyWater(entity):
-	var targetedCells = get_parent().getArea(entity.pos, 2)
-	targetedCells.append(Vector2(0, 0))
+	var targetedCells = get_parent().getArea(entity, 2, true)
 	var dmgDice = GeneralEngine.dmgDiceFromArray(Data.spellDamages[Data.SP_TH_HOLY][0])
 	for cell in targetedCells:
 		var pos = entity.pos + cell
@@ -28,8 +26,7 @@ func holyWater(entity):
 				target.takeHit(dmgDice.roll())
 
 func sleepFlask(entity):
-	var targetedCells = get_parent().getArea(entity.pos, 4)
-	targetedCells.append(Vector2(0, 0))
+	var targetedCells = get_parent().getArea(entity, 3, true)
 	for cell in targetedCells:
 		var pos = entity.pos + cell
 		var effect = get_parent().effectScene.instance()

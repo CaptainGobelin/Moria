@@ -158,7 +158,8 @@ func useMonsterAbility(spellId: int, caster, target, path):
 		msg = caster.stats.entityName + " "
 		msg += Data.spellDescriptions[spellId] + " " + targetName + "."
 	else:
-		msg = Data.spellDescriptions[spellId] + "."
+		msg = caster.stats.entityName + " "
+		msg += Data.spellDescriptions[spellId] + "."
 	Ref.ui.write(Ref.ui.color(msg, "yellow"), "writeMonsterAbility")
 	if Data.spells[spellId][Data.SP_PROJ] != null:
 		castProjectile(path, Data.spells[spellId][Data.SP_PROJ])

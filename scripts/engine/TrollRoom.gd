@@ -26,6 +26,9 @@ func newFloor():
 			array[i].append(GLOBAL.WALL_ID)
 	for c in map.get_used_cells():
 		array[c.x+roomOffset.x][c.y+roomOffset.y] = map.get_cellv(c)
+		Ref.currentLevel.shadows.set_cellv(c + roomOffset, 1)
+		Ref.currentLevel.shadows.update_bitmask_area(c + roomOffset)
+		Ref.currentLevel.underShadows.set_cellv(c + roomOffset, 1)
 	for c in masks.get_used_cells_by_id(ADD+1):
 		Ref.currentLevel.spawnMonster(Data.MO_GOBLIN, c + roomOffset)
 	for c in masks.get_used_cells_by_id(BOSS+1):

@@ -22,7 +22,7 @@ func applyEffect(caster, entity, spellId: int, fromCharacter: bool, rank: int, s
 
 func zombieScream(caster):
 	var spellRange = Data.spells[Data.SP_ZOMBIE_SCREAM][Data.SP_AREA]
-	var targetedCells = get_parent().getArea(caster.pos, spellRange)
+	var targetedCells = get_parent().getArea(caster, spellRange)
 	for cell in targetedCells:
 		var pos = caster.pos + cell
 		var target = get_parent().getValidTarget(pos)

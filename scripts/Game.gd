@@ -108,7 +108,8 @@ func startGame():
 			Ref.currentLevel.spawnMonster(Data.MO_DUMMY_WEAK, Vector2(24, 4))
 			dungeonGenerator.loadAllItems()
 		_:
-			WorldHandler.setLocation(1, Data.BIOME_DUNGEON)
+#			WorldHandler.setLocation(1, Data.BIOME_DUNGEON)
+			WorldHandler.setLocation(1, Data.BIOME_TROLL_BOSS)
 			WorldHandler.currentCR = 2
 			newFloor()
 	Ref.currentLevel.refresh_view()
@@ -177,6 +178,7 @@ func merchantFloor():
 func newFloor():
 	Ref.currentLevel.levelBuffer.flush()
 	cleanFloor()
+	Ref.currentLevel.initShadows()
 	var spawnPos: Vector2
 	match WorldHandler.currentBiome:
 		Data.BIOME_DUNGEON:
@@ -185,7 +187,6 @@ func newFloor():
 			spawnPos = dungeonGenerator.cavernFloor()
 		_:
 			spawnPos = dungeonGenerator.newFloor()
-	Ref.currentLevel.initShadows()
 	Ref.currentLevel.initSecrets()
 	Ref.currentLevel.placeCharacter(spawnPos)
 	for a in Ref.currentLevel.allies.get_children():

@@ -35,7 +35,6 @@ func init(monsterType: int):
 
 func computeStats():
 	computeState()
-	init(type)
 	StatusEngine.applyEffect(get_parent())
 	applyMageArmor()
 	applyBlind()

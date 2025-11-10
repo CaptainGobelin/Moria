@@ -290,7 +290,7 @@ func lightningBolt(caster, entity, rank: int):
 func repelEvil(caster, rank: int):
 	var dmgDice = getDmgDice(caster, Data.SP_REPEL_EVIL, rank)
 	var turns = getTurns(Data.SP_REPEL_EVIL, rank)
-	var targetedCells = getArea(caster.pos, Data.spells[Data.SP_REPEL_EVIL][Data.SP_AREA])
+	var targetedCells = getArea(caster, Data.spells[Data.SP_REPEL_EVIL][Data.SP_AREA])
 	for cell in targetedCells:
 		var pos = caster.pos + cell
 		var target = getValidTarget(pos)
@@ -316,7 +316,7 @@ func frostNova(caster, rank: int):
 	var spellRange = Data.spells[Data.SP_FROST_NOVA][Data.SP_AREA]
 	if rank >= 2:
 		spellRange += 1
-	var targetedCells = getArea(caster.pos, spellRange)
+	var targetedCells = getArea(caster, spellRange)
 	for cell in targetedCells:
 		var pos = caster.pos + cell
 		playEffect(pos, Effect.ICE)
@@ -411,7 +411,7 @@ func curse(caster, entity, rank: int):
 	if rank >= 2:
 		saveMalus = 2 
 	var turns = getTurns(Data.SP_CURSE, rank)
-	var targetedCells = getArea(entity.pos, Data.spells[Data.SP_CURSE][Data.SP_AREA])
+	var targetedCells = getArea(entity, Data.spells[Data.SP_CURSE][Data.SP_AREA])
 	targetedCells.append(Vector2(0, 0))
 	for cell in targetedCells:
 		var pos = entity.pos + cell
@@ -606,7 +606,7 @@ func stoneToMud(caster, direction: Vector2):
 
 func poisonCloud(caster, entity, rank: int):
 	var turns = getTurns(Data.SP_POISON_CLOUD, rank)
-	var targetedCells = getArea(entity.pos, 4)
+	var targetedCells = getArea(entity, 3)
 	targetedCells.append(Vector2(0, 0))
 	var auraCells = []
 	for cell in targetedCells:
@@ -633,7 +633,7 @@ func spiritGuardians(caster, rank: int):
 	Aura.create(targetedCells, Aura.SPIRIT_GUARDIANS, turns, true, caster, auraSt)
 
 func fireball(caster, entity):
-	var targetedCells = getArea(entity.pos, 4)
+	var targetedCells = getArea(entity, 3)
 	targetedCells.append(Vector2(0, 0))
 	for cell in targetedCells:
 		var pos = entity.pos + cell
@@ -650,7 +650,45 @@ func applyPoison(target, rank: int, savingCap: int):
 		return
 	applySpellStatus(target, Data.STATUS_POISON, rank, 20)
 
-func getArea(pos: Vector2, size: int):
+func getArea(entity, size: int, includeOrigin: bool = false) -> Array:
+	if entity.is_in_group("Boss"):
+		return getAreaBoss(entity.pos, size, includeOrigin)
+	return getAreaSingle(entity.pos, size, includeOrigin)
+
+func getAreaBoss(pos: Vector2, size: int, includeOrigin: bool) -> Array:
+	var result = []
+	var toCheck = [Vector2(-1, 0), Vector2(-1, 1), Vector2(2, 0), Vector2(2, 1),
+					Vector2(0, -1), Vector2(1, -1), Vector2(0, 2), Vector2(1, 2)]
+	var cells = {
+		Vector2(-1, 0): [[3, Vector2(-2, 0)], [3, Vector2(-1, -1)]],
+		Vector2(-1, 1): [[3, Vector2(-2, 1)], [3, Vector2(-1, 2)]],
+		Vector2(0, -1): [[3, Vector2(0, -2)], [3, Vector2(-1, -1)]],
+		Vector2(1, -1): [[3, Vector2(1, -2)], [3, Vector2(2, -1)]],
+		Vector2(2,  0): [[3, Vector2(3,  0)], [3, Vector2(2, -1)]],
+		Vector2(2,  1): [[3, Vector2(3,  1)], [3, Vector2(2,  2)]],
+		Vector2(0,  2): [[3, Vector2(0,  3)], [3, Vector2(2,  2)]],
+		Vector2(1,  2): [[3, Vector2(1,  3)], [3, Vector2(-1, 2)]],
+	}
+	if size > 1:
+		for c in toCheck:
+			if Ref.currentLevel.isCellFree(c + pos)[4]:
+				continue
+			if !result.has(c):
+				result.append(c)
+			if !cells.has(c):
+				continue
+			for cell in cells[c]:
+				if cell[0] > size:
+					continue
+				toCheck.append(cell[1])
+	if includeOrigin:
+		result.append(Vector2(0, 0))
+		result.append(Vector2(1, 0))
+		result.append(Vector2(0, 1))
+		result.append(Vector2(1, 1))
+	return result
+
+func getAreaSingle(pos: Vector2, size: int, includeOrigin: bool) -> Array:
 	var result = []
 	var toCheck = [Vector2(-1, 0), Vector2(1, 0), Vector2(0, -1), Vector2(0, 1)]
 	var cells = {
@@ -678,6 +716,8 @@ func getArea(pos: Vector2, size: int):
 			if cell[0] > size:
 				continue
 			toCheck.append(cell[1])
+	if includeOrigin:
+		result.append(Vector2(0, 0))
 	return result
 
 func getCone(pos: Vector2, direction: Vector2, size: int) -> Array:
