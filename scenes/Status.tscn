@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://sprites/status.png" type="Texture" id=1]
+[ext_resource path="res://sprites/status_v3.png" type="Texture" id=1]
 [ext_resource path="res://sprites/statusTimer.png" type="Texture" id=2]
 [ext_resource path="res://scripts/Status.gd" type="Script" id=3]
 
@@ -10,8 +10,8 @@ script = ExtResource( 3 )
 [node name="Icon" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 centered = false
-hframes = 6
-vframes = 9
+hframes = 5
+vframes = 22
 
 [node name="Timer" type="Sprite" parent="."]
 position = Vector2( 0, 10 )

@@ -2,7 +2,7 @@
 
 [ext_resource path="res://themes/LabelTheme.tres" type="Theme" id=1]
 [ext_resource path="res://scripts/menu/StatusRow.gd" type="Script" id=2]
-[ext_resource path="res://sprites/status.png" type="Texture" id=3]
+[ext_resource path="res://sprites/status_v3.png" type="Texture" id=3]
 
 [node name="StatusRow" type="Node2D"]
 script = ExtResource( 2 )
@@ -40,5 +40,5 @@ position = Vector2( 2, 1 )
 scale = Vector2( 1.55556, 1.55556 )
 texture = ExtResource( 3 )
 centered = false
-hframes = 6
-vframes = 9
+hframes = 5
+vframes = 22
