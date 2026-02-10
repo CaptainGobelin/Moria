@@ -469,8 +469,12 @@ func writeRested():
 	lastPrinted = "writeRested"
 
 func writeCannotEquipWeapon():
-	write("You don't have enough fighting skill to equip this weapon.")
+	write("You don't have enough fighting skill to equip this.")
 	lastPrinted = "writeCannotEquipWeapon"
+
+func writeNoArmorSkill():
+	write("You don't have enough armor skill to equip this.")
+	lastPrinted = "writeNoArmorSkill"
 
 func writeWishResult(items: Array):
 	var msg = ""

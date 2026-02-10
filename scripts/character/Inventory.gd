@@ -221,6 +221,9 @@ func unequipArmor(idx: int, renewStats: bool = true):
 
 func equipArmor(idx: int):
 	var item = GLOBAL.items[idx]
+	if !Skills.canEquipArmor(item[GLOBAL.IT_BASE]):
+		Ref.ui.writeNoArmorSkill()
+		return
 	# Helmet
 	if item[GLOBAL.IT_2H]:
 		if currentArmor.y != -1:
@@ -261,16 +264,6 @@ func switchTalisman(idx: int):
 		for e in item[GLOBAL.IT_SPEC]:
 			EnchantEngine.applyEffect(get_parent(), e, idx)
 	get_parent().stats.computeStats()
-
-func getTotalArmorMalus() -> int:
-	var result = 0
-	if getArmor() != -1:
-		var armor = Data.armors[GLOBAL.items[getArmor()][GLOBAL.IT_BASE]]
-		result = max(result, armor[Data.A_SKILL])
-	if getHelmet() != -1:
-		var armor = Data.armors[GLOBAL.items[getHelmet()][GLOBAL.IT_BASE]]
-		result = max(result, armor[Data.A_SKILL])
-	return int(max(0, result - Skills.getAmorMalusReduction()))
 
 func getItemAmount(type: int, stack: int) -> int:
 	var list = []
