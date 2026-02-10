@@ -24,7 +24,7 @@ func improve(idx: int, isFree: bool = false):
 		return null
 	if skills[idx] == 2 or skills[idx] == 4:
 		Ref.character.spells.improveUses(school)
-		return ["nothing", 0, 0]
+		return null
 	return ["chooseSpell", school, -1]
 
 func skillToSchool(skill: int):
