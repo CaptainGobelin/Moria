@@ -239,10 +239,10 @@ func die():
 	status = "dead"
 	Ref.ui.writeMonsterDie(stats.entityName)
 	StatusEngine.clearStatuses(self)
+	if Ref.character.statuses.has(Data.STATUS_ENCHANT + Data.ENCH_LIFE_DRAIN):
+		Ref.character.heal(1)
 	if not Data.hasTag(type, Data.TAG_SUMMONED):
 		Ref.character.stats.xp += stats.xp
-	if Ref.character.statuses.has(Data.STATUS_ENCHANT + Data.ENCH_LIFE_DRAIN):
-		Ref.character.heal(2)
 	if GLOBAL.monstersByPosition.has(pos):
 		GLOBAL.monstersByPosition.erase(pos)
 	GLOBAL.targets.erase(get_instance_id())
