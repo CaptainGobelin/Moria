@@ -1701,6 +1701,9 @@ const statusesDescriptions = {
 		"You are magically protected against [SLOW], [IMMOBILIZED] and [PARALYZED].",
 		"You are magically protected against [SLOW], [IMMOBILIZED], [PARALYZED] and [TERROR].",
 	],
+	STATUS_SPIRIT_GUARD: [
+		"You are protected by the spirits fo your ancestors, creatures at range 1 suffers 1d4 radiant damages per turn. "
+	],
 	STATUS_PROTECT_FIRE: [
 		"You are protected against fire damages, grants * in Fire resistance.",
 		"You are heavily protected against fire damages, grants ** in Fire resistance.",
@@ -1749,7 +1752,7 @@ const statusPrefabs = {
 	STATUS_TRUE_STRIKE: 	["True strike", 	71, null, null, STATUS_TRUE_STRIKE, null, null, false, true, true],
 	STATUS_FIRE_AURA: 		["Fire aura", 		72, null, null, STATUS_FIRE_AURA, null, null, false, true, true],
 	STATUS_FREED_MOVE:		["Freedom of movement", 35, null, null, STATUS_FREED_MOVE, null, null, false, true, true],
-	STATUS_SPIRIT_GUARD: 	["Spirit guardians", 95, null, null, STATUS_SPIRIT_GUARD, null, null, true, true, true],
+	STATUS_SPIRIT_GUARD: 	["Spirit guardians", 95, null, null, STATUS_SPIRIT_GUARD, null, null, false, true, true],
 	STATUS_PROTECT_FIRE: 	["Protect from fire", 37, null, null, STATUS_RESIST + DMG_FIRE, null, null, false, true, true],
 	STATUS_PROTECT_POISON: 	["Protect from poison", 36, null, null, STATUS_RESIST + DMG_POISON, null, null, false, true, true],
 	STATUS_REPEL_MISSILES: 	["Deflect projectiles", 34, null, null, STATUS_REPEL_MISSILES, null, null, false, true, true],
