@@ -44,7 +44,10 @@ func newFloor():
 func generateArticle(cell: Vector2):
 	var rarity = (randi() % 2) + WorldHandler.currentBiome
 	var items = Ref.game.itemGenerator.generateItem(rarity, -1, true)
-	var price = (rarity + 1) * 5 * (2.75 - 2 * randf())
+	var price = priceCalculation(rarity)
 	price = int(ceil(price / items.size()))
 	for item in items:
 		GLOBAL.dropItemOnFloor(item, cell, true, price, false)
+
+func priceCalculation(rarity: int) -> int:
+	return int(ceil((rarity + 1) * 5 * (6.5 - 3 * Utils.gaussRand())))

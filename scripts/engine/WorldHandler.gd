@@ -26,3 +26,6 @@ func getNextLocation() -> bool:
 
 func getLevelNormalCR() -> int:
 	return 5 * Data.biomes[currentBiome][Data.BI_CR] + currentFloor
+
+func getGlobalDc() -> int:
+	return int(floor((currentCR - 1)/2))

@@ -74,7 +74,7 @@ func moveAsync(movement):
 				Ref.ui.askForYesNo(Ref.game)
 				var coroutineReturn = yield(Ref.ui, "coroutine_signal")
 				if (coroutineReturn):
-					if attemptLockpick(3):
+					if attemptLockpick(GLOBAL.DC_LOCK_DOOR + WorldHandler.getGlobalDc()):
 						GLOBAL.lockedDoors.erase(pos + movement)
 						Ref.currentLevel.openDoor(pos + movement)
 						GeneralEngine.newTurn()
@@ -298,16 +298,16 @@ func search():
 			if Ref.currentLevel.fog.get_cellv(cell) != 0:
 				continue
 			if pow(i, 2) + pow(j, 2) <= 16:
-				rollPerception(cell)
+				rollPerception(cell, -1)
 	GeneralEngine.newTurn()
 
-func rollPerception(cell: Vector2):
-	var perceptionRoll = stats.perception.roll(self)
-	if perceptionRoll > 4:
+func rollPerception(cell: Vector2, malus: int = 0):
+	var perceptionRoll = stats.perception.roll(self) + malus
+	if perceptionRoll >= GLOBAL.DC_PER_TRAP + WorldHandler.getGlobalDc():
 		# Detect traps
 		if GLOBAL.trapsByPos.has(cell):
 			TrapEngine.reveal(cell)
-	if perceptionRoll > 5:
+	if perceptionRoll >= GLOBAL.DC_PER_DOOR + WorldHandler.getGlobalDc():
 		# Detect doors
 		Ref.currentLevel.discoverDoor(cell)
 

@@ -46,6 +46,9 @@ func chooseRandom(array: Array):
 func modulo(a: int, b: int):
 	return (b + (a % b)) % b
 
+func gaussRand() -> float:
+	return (randf() + randf()) / 2 
+
 func dist(a: Vector2, b: Vector2) -> int:
 	return int(abs(a.x - b.x) + abs(a.y - b.y))
 

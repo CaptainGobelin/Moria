@@ -155,6 +155,7 @@ func cleanFloor():
 	for i in GLOBAL.itemsOnFloor.keys():
 		GLOBAL.items.erase(i)
 	GLOBAL.itemsOnFloor.clear()
+	Ref.currentLevel.isBossRoom = false
 
 func testFloor():
 	Ref.currentLevel.levelBuffer.flush()
@@ -189,17 +190,16 @@ func newFloor():
 			spawnPos = dungeonGenerator.newFloor()
 	Ref.currentLevel.initSecrets()
 	Ref.currentLevel.placeCharacter(spawnPos)
-	for a in Ref.currentLevel.allies.get_children():
-		var cell = Ref.character.getRandomCloseCell()
-		if cell == null:
-			a.die()
-		a.setPosition(cell)
-#	for i in range(9):
-#		Ref.currentLevel.spawnMonster(i)
-	for _i in range(max(0, randi() % 6 - 2)):
-		Ref.currentLevel.createChest()
-	for _i in range(3 + (randi() % 4)):
-		Ref.currentLevel.dropItem()
+	if not Ref.currentLevel.isBossRoom:
+		for a in Ref.currentLevel.allies.get_children():
+			var cell = Ref.character.getRandomCloseCell()
+			if cell == null:
+				a.die()
+			a.setPosition(cell)
+		for _i in range(max(0, randi() % 4 - 2)):
+			Ref.currentLevel.createChest()
+		for _i in range(1 + (randi() % 4)):
+			Ref.currentLevel.dropItem()
 
 func _input(event):
 	if event.is_pressed() and autoexplore:

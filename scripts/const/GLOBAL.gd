@@ -43,6 +43,12 @@ const CHAR_FEATS = 1
 const CHAR_STATUSES = 2
 const CHAR_RESTS = 2
 
+# DCs
+const DC_PER_TRAP = 4
+const DC_PER_DOOR = 5
+const DC_LOCK_CHEST = 5
+const DC_LOCK_DOOR = 4
+
 # Inventory
 const INV_WEAPONS = 0
 const INV_ARMORS = 1

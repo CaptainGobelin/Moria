@@ -31,7 +31,7 @@ onready var debugLayer = get_node("Debug")
 var searched: Array
 var specialEntries: Array = [null, null]
 var specialCells: Array = []
-var isBossRomm: bool = false
+var isBossRoom: bool = false
 
 func _ready():
 	Ref.currentLevel = self
@@ -266,7 +266,7 @@ func addChest(cell: Vector2, rarityBonus: int):
 	chest.init(cell)
 	GLOBAL.chests[chest.get_instance_id()] = [cell, [], false, 0]
 	if randf() < 0.35:
-		GLOBAL.chests[chest.get_instance_id()][GLOBAL.CH_LOCKED] = 3
+		GLOBAL.chests[chest.get_instance_id()][GLOBAL.CH_LOCKED] = GLOBAL.DC_LOCK_CHEST + WorldHandler.getGlobalDc()
 	var quantity = randi() % 3 + 1
 	for _i in range(quantity):
 		var rarity = WorldHandler.currentBiome + rarityBonus

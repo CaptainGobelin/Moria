@@ -34,6 +34,7 @@ func newFloor():
 	for c in masks.get_used_cells_by_id(BOSS+1):
 		Ref.currentLevel.spawnMonster(Data.MO_BO_TROLL, c + roomOffset)
 	Ref.currentLevel.specialCells = masks.get_used_cells_by_id(SPECIAL+1)
+	Ref.currentLevel.isBossRoom = true
 	get_parent().drawFloor(array)
 	var exit = masks.get_used_cells_by_id(EXIT+1)[0] + roomOffset
 	dungeon.set_cellv(exit, GLOBAL.PASS_ID, false, false, false, Vector2(0, 1))
