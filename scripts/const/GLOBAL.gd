@@ -66,6 +66,8 @@ const SUB_WP = 1000
 const SUB_SH = 1001
 const SUB_HE = 1002
 const SUB_AR = 1003
+const SUB_TH = 1004
+const SUB_BOMB = 1005
 
 const IT_TYPE = 0
 const IT_NAME = 1

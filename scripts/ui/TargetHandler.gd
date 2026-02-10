@@ -5,6 +5,7 @@ signal end_coroutine
 var choices: Array = []
 var currentChoice: int = 0
 var lastTarget: int = -1
+var maskSize: int = 0
 
 func _ready():
 	set_process_input(false)
@@ -19,18 +20,19 @@ func _input(event):
 	elif (event.is_action_released("ui_right")):
 		currentChoice = posmod(currentChoice+1, choices.size())
 		lastTarget = choices[currentChoice]
-		Ref.currentLevel.target(instance_from_id(lastTarget).pos, instance_from_id(lastTarget).isBoss)
+		Ref.currentLevel.target(instance_from_id(lastTarget), maskSize)
 		return
 	elif (event.is_action_released("ui_left")):
 		currentChoice = posmod(currentChoice-1, choices.size())
 		lastTarget = choices[currentChoice]
-		Ref.currentLevel.target(instance_from_id(lastTarget).pos, instance_from_id(lastTarget).isBoss)
+		Ref.currentLevel.target(instance_from_id(lastTarget), maskSize)
 		return
 
-func startCoroutine(targets: Array):
+func startCoroutine(targets: Array, areaSize: int = 0):
 	choices = targets
+	maskSize = areaSize
 	selectLastTarget()
-	Ref.currentLevel.target(instance_from_id(lastTarget).pos, instance_from_id(lastTarget).isBoss)
+	Ref.currentLevel.target(instance_from_id(lastTarget), maskSize)
 	MasterInput.setMaster(self)
 
 func endCoroutine(result: int):

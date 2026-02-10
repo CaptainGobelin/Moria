@@ -337,12 +337,17 @@ func openDoor(pos):
 		Ref.game.pathfinder.dijkstraCompute()
 	dungeon.set_cellv(pos, GLOBAL.DOOR_ID, false, false, false, Vector2(0, 0))
 
-func target(pos: Vector2, isBoss: bool = false):
+func target(entity, areaSize: int = 0):
 	targetArrow.visible = true
-	if isBoss:
-		targetArrow.position = pos * 9 + Vector2(4.5, 9)
+	targetArrow.get_node("Area").clear()
+	targetArrow.position = entity.pos * 9 
+	if entity.is_in_group("Boss"):
+		targetArrow.offset = Vector2(4.5, 12)
 	else:
-		targetArrow.position = pos * 9
+		targetArrow.offset = Vector2(0, 3)
+	if areaSize > 0:
+		for cell in SpellEngine.getArea(entity, areaSize, false):
+			targetArrow.get_node("Area").set_cellv(cell, 2)
 
 func untarget():
 	targetArrow.visible = false

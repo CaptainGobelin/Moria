@@ -660,27 +660,38 @@ func getAreaBoss(pos: Vector2, size: int, includeOrigin: bool) -> Array:
 	var toCheck = [Vector2(-1, 0), Vector2(-1, 1), Vector2(2, 0), Vector2(2, 1),
 					Vector2(0, -1), Vector2(1, -1), Vector2(0, 2), Vector2(1, 2)]
 	var cells = {
-		Vector2(-1, 0): [[3, Vector2(-2, 0)], [3, Vector2(-1, -1)]],
-		Vector2(-1, 1): [[3, Vector2(-2, 1)], [3, Vector2(-1, 2)]],
-		Vector2(0, -1): [[3, Vector2(0, -2)], [3, Vector2(-1, -1)]],
-		Vector2(1, -1): [[3, Vector2(1, -2)], [3, Vector2(2, -1)]],
-		Vector2(2,  0): [[3, Vector2(3,  0)], [3, Vector2(2, -1)]],
-		Vector2(2,  1): [[3, Vector2(3,  1)], [3, Vector2(2,  2)]],
-		Vector2(0,  2): [[3, Vector2(0,  3)], [3, Vector2(2,  2)]],
-		Vector2(1,  2): [[3, Vector2(1,  3)], [3, Vector2(-1, 2)]],
+		Vector2(-1, 0): [[2, Vector2(-2, 0)], [2, Vector2(-1, -1)]],
+		Vector2(-1, 1): [[2, Vector2(-2, 1)], [2, Vector2(-1, 2)]],
+		Vector2(0, -1): [[2, Vector2(0, -2)], [2, Vector2(-1, -1)]],
+		Vector2(1, -1): [[2, Vector2(1, -2)], [2, Vector2(2, -1)]],
+		Vector2(2,  0): [[2, Vector2(3,  0)], [2, Vector2(2, -1)]],
+		Vector2(2,  1): [[2, Vector2(3,  1)], [2, Vector2(2,  2)]],
+		Vector2(0,  2): [[2, Vector2(0,  3)], [2, Vector2(2,  2)]],
+		Vector2(1,  2): [[2, Vector2(1,  3)], [2, Vector2(-1, 2)]],
+		Vector2(-1, -1): [[3, Vector2(-2, -1)], [3, Vector2(-1, -2)]],
+		Vector2(2, -1): [[3, Vector2(2, -2)], [3, Vector2(3, -1)]],
+		Vector2(2,  2): [[3, Vector2(2,  3)], [3, Vector2(3,  2)]],
+		Vector2(-1, 2): [[3, Vector2(-2, 2)], [3, Vector2(-1, 3)]],
+		Vector2(-2, 0): [[3, Vector2(-3, 0)]],
+		Vector2(-2, 1): [[3, Vector2(-3, 1)]],
+		Vector2(0, -2): [[3, Vector2(0, -3)]],
+		Vector2(1, -2): [[3, Vector2(1, -3)]],
+		Vector2(3,  0): [[3, Vector2(4,  0)]],
+		Vector2(3,  1): [[3, Vector2(4,  1)]],
+		Vector2(0,  3): [[3, Vector2(0,  4)]],
+		Vector2(1,  3): [[3, Vector2(1,  4)]],
 	}
-	if size > 1:
-		for c in toCheck:
-			if Ref.currentLevel.isCellFree(c + pos)[4]:
+	for c in toCheck:
+		if Ref.currentLevel.isCellFree(c + pos)[4]:
+			continue
+		if !result.has(c):
+			result.append(c)
+		if !cells.has(c):
+			continue
+		for cell in cells[c]:
+			if cell[0] > size:
 				continue
-			if !result.has(c):
-				result.append(c)
-			if !cells.has(c):
-				continue
-			for cell in cells[c]:
-				if cell[0] > size:
-					continue
-				toCheck.append(cell[1])
+			toCheck.append(cell[1])
 	if includeOrigin:
 		result.append(Vector2(0, 0))
 		result.append(Vector2(1, 0))

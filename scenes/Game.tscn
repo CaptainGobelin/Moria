@@ -187,6 +187,15 @@ offset = Vector2( 0, 3 )
 hframes = 4
 vframes = 4
 
+[node name="Area" type="TileMap" parent="CurrentLevel/TargetArrow"]
+visible = false
+tile_set = ExtResource( 38 )
+cell_size = Vector2( 9, 9 )
+format = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
 [node name="Fog" type="TileMap" parent="CurrentLevel"]
 modulate = Color( 1, 1, 1, 0.666667 )
 tile_set = ExtResource( 4 )

@@ -46,7 +46,7 @@ func castSpellCharacter(spellId: int, scrollId = null):
 				Ref.ui.noTarget()
 				return
 			Ref.game.set_process_input(false)
-			Ref.ui.askForTarget(GLOBAL.targets.keys(), self)
+			Ref.ui.askForTarget(GLOBAL.targets.keys(), self, spell[Data.SP_AREA])
 			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
 			if coroutineReturn == -1:
 				return

@@ -15,7 +15,7 @@ func throwCharacter(itemId: int):
 		Ref.ui.noTarget()
 		return
 	Ref.game.set_process_input(false)
-	Ref.ui.askForTarget(GLOBAL.targets.keys(), self)
+	Ref.ui.askForTarget(GLOBAL.targets.keys(), self, 2)
 	var coroutineReturn = yield(Ref.ui, "coroutine_signal")
 	if coroutineReturn == -1:
 		return
@@ -33,7 +33,7 @@ func throwCharacter(itemId: int):
 			entity.takeHit(GeneralEngine.dmgDice(wpDmg.x, wpDmg.y, 0, Data.DMG_SLASH).roll(Ref.character))
 		else:
 			Ref.ui.writeCharacterMiss(entity.stats.entityName, result, entity.stats.ca)
-	if item[Data.TH_EFFECT] != null:
+	else:
 		SpellEngine.applyEffect(Ref.character, instance_from_id(targetId), item[Data.TH_EFFECT], true, 1, 99)
 	Ref.character.inventory.throwings.erase(itemId)
 	Ref.character.shortcuts.refreshShortcuts(GLOBAL.items[itemId][GLOBAL.IT_STACK])

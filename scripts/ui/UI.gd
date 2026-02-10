@@ -88,10 +88,10 @@ func askForDirection(inputer):
 	MasterInput.setMaster(inputer)
 	emit_signal("coroutine_signal", result)
 
-func askForTarget(targets: Array, inputer):
+func askForTarget(targets: Array, inputer, areaSize: int = 0):
 	previousMode = GLOBAL.currentMode
 	GLOBAL.currentMode = GLOBAL.MODE_TARGET
-	targetHandler.startCoroutine(targets)
+	targetHandler.startCoroutine(targets, areaSize)
 	var result = yield(targetHandler, "end_coroutine")
 	if result == -1:
 		writeOk()
