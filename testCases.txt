@@ -1,0 +1,138 @@
+MOVEMENT
+X Move every four directions -> update position
+X Move against a wall -> no update position
+X Move against a door -> no update position, door is now open
+- Move against a creature -> no update position, attack is triggered
+- Move on trap -> trigger trap
+- Move on entry door -> nothing happen
+- Move on exit door -> ask confirmation
+	- Yes -> go next level
+	- No -> nothing happen
+- Test perception roll success/fail for door/traps
+- Test manual search success/fail for door/traps
+SHORTCUT
+- Assign potion/scroll/trhowing/weapon/shield
+	- Assign new
+	- Try assign wrong key
+	- Try re-assign a used key
+- Quaff potion
+	- Try quaff a potion -> item count substracted, quaff effect triggered
+- Read scroll
+	- Try read scroll
+		- Trigger correct spell mode -> test target, self target and directionnal
+		- If target spell and not target -> nothing happen
+		- If cancelled -> item count still untouched, leave spell mode
+		- If casted -> item count substracted, spell effect triggered
+- Throw something
+	- Try throw
+		- Trigger target mode
+		- If not target nothing happen -> item count not touched
+		- If cancelled -> item count not touched, leave target mode
+		- If target confirmed -> item count substracted, item effect triggered
+- Change weapon/shield
+	- Try shortcut of alread equiped item -> nothing happen
+	- Try unassigned shortcut -> nothing should happen
+	- Try equip weapon -> should replace (check stats and item equiped)
+	- Try equip 2H weapon -> should replace weapon, shield stats should be substracted (check stats and item equiped)
+	- Try equip shield -> should replace (check stats and item equiped)
+- Try shortcut when item is exhausted -> nothing should happened (test all 5 item types)
+INVENTORY
+- Items should appear in right category
+- When enough items you can scroll
+- Try scrolling the after last item -> bring you back to first
+- Try scrolling up the first item -> bring you to the last item
+- Drop item
+- Drop X stackable item
+	- Try drop 2
+	- Try drop on more
+	- Try drop more than total
+- Gather item
+- Gather stackable item
+	- Try gather 2
+	- Try gather on more
+	- Try gather more than total
+- Gather lockpick -> update lockpick count
+- Gather gold -> update gold count
+- Wear weapon
+	- Try one weapon -> update stats, item is noted equiped in inventory
+	- Try shield -> update stats, item is noted equiped in inventory
+	- Try another shield -> should replace (check stats and item equiped)
+	- Try another weapon -> should replace (check stats and item equiped)
+	- Try a 2H weapon -> should replace weapon, shield stats should be substracted (check stats and item equiped)
+	- Try remove weapon -> item is no longer noted equiped and stats are substracted
+	- Try remove shield -> item is no longer noted equiped and stats are substracted
+- Wear armor (try for chest and helmets)
+	- Try wear new -> update stats, item is noted equiped in inventory
+	- Try wear another one -> update stats, item is noted equiped in inventory
+	- Try remove -> item is no longer noted equiped and stats are substracted 
+CHESTS
+- Try open unlocked chest -> should open chest menu
+- Try open locked chest when no lockpick -> nothing happen
+- Try open locked chest
+	- Ask confirmation
+		- Yes fail -> substract lockpick, chest still locked
+		- Yes success -> substract lockpick, chest now unlocked
+		- No -> lockpick count untouched, chest still locked
+- Gather item -> item is now in inventory, disappear from chest
+- Gather stackable
+	- Try gather 2
+	- Try gather on more
+	- Try gather more than total -> stack disappear from chest
+- Gather lockpick -> update lockpick count, disappear from chest
+- Gather gold -> update gold count, disappear from chest
+- Gather all chest items -> chest disappear
+ACTIONS
+- Attack
+- Cast spell
+- Read scroll
+- Quaff potion
+- Throw item
+SPELL MODE
+
+TARGET MODE
+
+SKILLS
+- For every skill
+	- Try spend a skill point -> available skill points substracted
+	- Try exceed mastery -> nothing happen
+	- Try increase skill when no avalaible point -> nothing happen
+- Combat
+	- Try unskilled weapon
+	- Try skilled weapon
+	- Check hit stats bonus
+- Armor
+	- Try unskilled armor -> should apply malus
+	- Try skilled armor -> normal stats apply
+- Magic skill
+	- Try even point -> spells level should increase
+	- Try odd point -> should open spell selection for correct level/school
+- Feat pannel should display feats (class feat + selected feats)
+LEVEL UP
+- When XP reach level cap -> level up and new level cap is set
+- When level up
+	- Max HP increase
+	- New XP cap
+	- Award skill points
+	- If needed open feat selection screen
+	- Feat pannel
+		- You can scroll
+		- You can select a feat
+STATS
+STATUSES
+DUNGEON GENERATION
+- For every biome, for every level, after 1000 dungeons
+	- Correct should be generated after less than 50 tries
+	- Room analysis should be nicely distributed (check all rooms apparition %)
+	- Every tile is accessible
+	- Only one entry
+	- Only one exit
+	- Check floor space allocation % distribution (not too much floor with low %)
+	- Check items generation (nb, value, types, enchants, gold nb, lockpick nb)
+	- Check door (no lock to reach exit, check lock %, hidden %)
+	- Check chest (nb per floor, % locked)
+	- Check optionnal content ratio (aka behind hidden or locked chest/door) for item and creatures
+	- Check traps (nb per floor, type)
+	- Check monsters (types, nb)
+	- Check XP
+	- Check special room (apparition %, type repartition)
+	- Check special features generated (chasms, mechanisms)
