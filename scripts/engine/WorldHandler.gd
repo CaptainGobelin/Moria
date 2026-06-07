@@ -11,6 +11,7 @@ func init(biome: int = Data.BIOME_DUNGEON, level: int = 1):
 func setLocation(newFloor: int, newBiome = currentBiome):
 	currentFloor = newFloor
 	currentBiome = newBiome
+	currentCR = Data.biomes[newBiome][Data.BI_CR]
 	Ref.ui.updateLocation(currentBiome, currentFloor)
 
 func getNextLocation() -> bool:
@@ -21,11 +22,11 @@ func getNextLocation() -> bool:
 			return false
 		else:
 			setLocation(1, Data.biomes[currentBiome][Data.BI_CONNECT][0])
-			currentCR += 1
 	return true
 
-func getLevelNormalCR() -> int:
-	return 5 * Data.biomes[currentBiome][Data.BI_CR] + currentFloor
+func getLevelNormalCR() -> float:
+	var floorMod = 0.1 * currentFloor
+	return 4 * (Data.biomes[currentBiome][Data.BI_CR] + floorMod)
 
 func getGlobalDc() -> int:
 	return int(floor((currentCR - 1)/2))

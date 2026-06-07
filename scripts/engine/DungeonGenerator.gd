@@ -25,6 +25,7 @@ var arrayFullness = 0
 var trapList: Dictionary = {}
 var retries: int = 0
 var startCell: Vector2
+var encountersCR: float = 0.0
 
 func _ready():
 	set_process_input(false)

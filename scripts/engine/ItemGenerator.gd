@@ -47,7 +47,7 @@ func generateItem(rarity: int, type: int = -1, forSell: bool = false):
 		TA_IDX: result = generateTalisman(rarity)
 		LO_IDX: result = generateLockpicks()
 		GO_IDX: result = generateGolds(rarity)
-	print(GLOBAL.items[result[0]][GLOBAL.IT_NAME])
+#	print(GLOBAL.items[result[0]][GLOBAL.IT_NAME])
 	return result
 
 func generateWeapon(rarity: int):

@@ -88,6 +88,7 @@ func newFloor():
 	# Draw entries
 	dungeon.set_cellv(exits[1], GLOBAL.PASS_ID, false, false, false, Vector2(2, 0))
 	dungeon.set_cellv(specialDoor, GLOBAL.PASS_ID, false, false, false, Vector2(1, 0))
+	get_parent().encountersCR = get_parent().encounterHandler.createEncounters()
 	return exits[0]
 
 func generate():

@@ -61,6 +61,9 @@ func printDict(dict: Dictionary):
 	for k in dict.keys():
 		prints(String(k), ":", dict[k])
 
+func to2dec(n) -> float:
+	return stepify(float(n), 0.01)
+
 func toRoman(number: int) -> String:
 	match number:
 		1:

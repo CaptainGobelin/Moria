@@ -95,10 +95,8 @@ func setAutoExplore(value: bool):
 		pathfinder.dijkstraCompute()
 
 func startGame():
+	WorldHandler.diffCR = 0.0
 	match start:
-		1:
-			newFloor()
-			WorldHandler.currentCR = 2
 		2:
 			testFloor()
 		5:
@@ -110,7 +108,6 @@ func startGame():
 		_:
 			WorldHandler.setLocation(1, Data.BIOME_DUNGEON)
 #			WorldHandler.setLocation(1, Data.BIOME_TROLL_BOSS)
-			WorldHandler.currentCR = 2
 			newFloor()
 	Ref.currentLevel.refresh_view()
 	MasterInput.setMaster(self)
@@ -118,11 +115,12 @@ func startGame():
 	if start == 2:
 		Tests.runAll()
 
-func nextFloor():
+func nextFloor() -> bool:
 	if !WorldHandler.getNextLocation():
 		#TODO add a final screen
-		pass
+		return false
 	newFloor()
+	return true
 
 func cleanFloor():
 	#DEBUG

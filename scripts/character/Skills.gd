@@ -183,7 +183,9 @@ static func hasMagicSkill() -> bool:
 		return true
 	return false
 
-static func canEquipWeapon(idx: int) -> bool:
+static func canEquipWeapon(idx: int, isShield: bool) -> bool:
+	if isShield:
+		return Ref.character.skills.skills[Data.SK_COMBAT] >= Data.armors[idx][Data.A_SKILL] 
 	return Ref.character.skills.skills[Data.SK_COMBAT] >= Data.weapons[idx][Data.W_SKILL]
 
 static func canEquipArmor(idx: int) -> bool:

@@ -1886,10 +1886,11 @@ const BIOME_TROLL_BOSS = 10
 const BI_CR = 0
 const BI_FLOORS = 1
 const BI_CONNECT = 2
+const BI_IS_BOSS = 3
 const biomes = {
-	BIOME_DUNGEON: 		[1, 5, [BIOME_CAVERN]],
-	BIOME_CAVERN: 		[2, 5, [BIOME_TROLL_BOSS]],
-	BIOME_TROLL_BOSS:	[2, 1, []]
+	BIOME_DUNGEON: 		[1, 5, [BIOME_CAVERN], false],
+	BIOME_CAVERN: 		[2, 5, [BIOME_TROLL_BOSS], false],
+	BIOME_TROLL_BOSS:	[2, 1, [], true]
 }
 
 const ENC_MONSTERS = 0
@@ -1911,6 +1912,16 @@ const encounters = {
 		[[[MO_GOBLIN, 1, 1]], false, false],
 		[[[MO_SPIDER, 1, 1]], false, false],
 	],
+	BIOME_CAVERN: [
+		[[[MO_SHAMAN_GOBLIN, 1, 1], [MO_GOBLIN, 2, 4]], false, true],
+		[[[MO_GOBLIN, 2, 3]], true, false],
+		[[[MO_LESSER_SKELETON, 1, 4]], true, false],
+		[[[MO_SPIDER, 1, 3]], false, true],
+		[[[MO_GIANT_LEECH, 3, 5]], true, false],
+		[[[MO_ZOMBIE, 1, 1]], true, false],
+		[[[MO_ZOMBIE, 1, 1], [MO_LESSER_SKELETON, 1, 2]], false, false],
+		[[[MO_SPIDER, 1, 1]], true, false],
+	]
 }
 
 const ENC_RARE_DISMISS = 0.65

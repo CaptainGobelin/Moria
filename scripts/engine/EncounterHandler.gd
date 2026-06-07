@@ -52,7 +52,7 @@ func createEncounters() -> float:
 				exclusions.append(Vector2(cell.x+i, cell.y+j))
 				#DEBUG
 				Ref.currentLevel.get_node("Debug/Enemies").set_cellv(Vector2(cell.x+i, cell.y+j), 1)
-#	print("CR: " + String(totalCR) + " (Diff: " + String(WorldHandler.diffCR) + ")")
+	print("CR: " + String(totalCR) + " (Diff: " + String(WorldHandler.diffCR) + ")")
 	return totalCR
 
 func chooseEncounter(encounterPool: Array) -> Array:
@@ -66,11 +66,11 @@ func chooseEncounter(encounterPool: Array) -> Array:
 			if not encounter[Data.ENC_IS_LOW]:
 				encounter = Utils.chooseRandom(encounterPool)
 				continue
-		if WorldHandler.diffCR < 0:
+		elif WorldHandler.diffCR < 0:
 			if encounter[Data.ENC_IS_LOW] and randf() < Data.ENC_BAD_CR_DISMISS:
 				encounter = Utils.chooseRandom(encounterPool)
 				continue
-		if WorldHandler.diffCR > 0:
+		elif WorldHandler.diffCR > 0:
 			if not encounter[Data.ENC_IS_LOW] and randf() < Data.ENC_BAD_CR_DISMISS:
 				encounter = Utils.chooseRandom(encounterPool)
 				continue
