@@ -191,6 +191,7 @@ func saveMonsters() -> Dictionary:
 			"skipNextTurn": m.skipNextTurn,
 			"allies": allies,
 			"buffCD": m.buffCD,
+			"currentHp": m.stats.currentHp,
 			"actions": {
 				"throwings": m.actions.throwings,
 				"spells": m.actions.spells,
@@ -226,6 +227,7 @@ func loadMonsters(dict: Dictionary):
 		monster.actions.selfBuffs = m["actions"]["selfBuffs"]
 		monster.actions.selfHeals = m["actions"]["selfHeals"]
 		monster.stats.computeStats()
+		monster.stats.currentHp = m["currentHp"]
 		alliesOldIds[monster.get_instance_id()] = m["allies"]
 		reverseIds[m["id"]] = monster
 	for monster in Ref.currentLevel.monsters.get_children():

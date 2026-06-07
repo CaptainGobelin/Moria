@@ -20,11 +20,14 @@ onready var lastPoisonTick: int = 5
 
 func init(monsterType: int):
 	type = monsterType
+	initStats()
+	currentHp = hpMax
+
+func initStats():
 	entityName = Data.monsters[type][Data.MO_NAME]
 	ca = Data.monsters[type][Data.MO_CA]
 	prot = Data.monsters[type][Data.MO_PROT]
 	hpMax = Data.monsters[type][Data.MO_HP]
-	currentHp = hpMax
 	hitBonus = Data.monsters[type][Data.MO_HIT]
 	hitDices = GeneralEngine.dice(1, 6, hitBonus)
 	var dmg = Data.monsters[type][Data.MO_DMG]
@@ -34,6 +37,7 @@ func init(monsterType: int):
 	xp = Data.monsters[type][Data.MO_XP]
 
 func computeStats():
+	initStats()
 	computeState()
 	StatusEngine.applyEffect(get_parent())
 	applyMageArmor()
