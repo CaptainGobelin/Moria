@@ -35,7 +35,6 @@ func getItemType(forSell: bool = false):
 
 func generateItem(rarity: int, type: int = -1, forSell: bool = false):
 	var result
-	rarity = 4
 	if type == -1:
 		type = getItemType(forSell)
 	match type:
