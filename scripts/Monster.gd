@@ -246,14 +246,16 @@ func die():
 	if GLOBAL.monstersByPosition.has(pos):
 		GLOBAL.monstersByPosition.erase(pos)
 	GLOBAL.targets.erase(get_instance_id())
-	for m in Ref.currentLevel.monsters.get_children():
-		m.allies.erase(self)
+	for a in allies:
+		a.allies.erase(self)
 	queue_free()
 
 func awake():
 	if status == "sleep":
 		status = "awake"
 		actions.initAbilitiesCD()
+	for a in allies:
+		a.awake()
 
 func wander():
 	if randf() < 0.5:
