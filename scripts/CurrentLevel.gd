@@ -204,17 +204,15 @@ func getRandomFreeCell():
 			return cell
 
 func isBlockingCell(cell: Vector2) -> bool:
-	var isInBlock: bool = false
-	var firstBlockEncountered: bool = false
+	var closingEncountered: bool = false
+	var isLastCellFree: bool = isCellFree(cell + Utils.neighbours.back())[0]
 	for n in Utils.neighbours:
-		if not isCellFree(cell + n)[0]:
-			isInBlock = true
-		else:
-			if isInBlock and firstBlockEncountered:
-				return false
-			if isInBlock:
-				firstBlockEncountered = true
-				isInBlock = false
+		var isCurrentCellFree: bool = isCellFree(cell + n)[0]
+		if not isCurrentCellFree and isLastCellFree:
+			if closingEncountered:
+				return true
+			closingEncountered = true
+		isLastCellFree = isCurrentCellFree
 	return false
 
 func placeCharacter(pos: Vector2 = Vector2(-1,-1)):
