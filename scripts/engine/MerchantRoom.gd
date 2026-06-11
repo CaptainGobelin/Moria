@@ -43,7 +43,9 @@ func newFloor():
 
 func generateArticle(cell: Vector2):
 	var rarity = (randi() % 2) + WorldHandler.currentBiome
-	var items = Ref.game.itemGenerator.generateItem(rarity, -1, true)
+	var items: Array = Ref.game.itemGenerator.generateItem(rarity, -1, true)
+	while items.empty():
+		items = Ref.game.itemGenerator.generateItem(rarity, -1, true)
 	var price = priceCalculation(rarity)
 	price = int(ceil(price / items.size()))
 	for item in items:
