@@ -178,7 +178,7 @@ func unequipWeapon(idx: int, renewStats: bool = true):
 
 func equipWeapon(idx: int):
 	var item = GLOBAL.items[idx]
-	if !Skills.canEquipWeapon(item[GLOBAL.IT_BASE], item[GLOBAL.IT_CA] == null):
+	if !Skills.canEquipWeapon(item[GLOBAL.IT_BASE], item[GLOBAL.IT_CA] != null):
 		Ref.ui.writeCannotEquipWeapon()
 		return
 	# Weapon
