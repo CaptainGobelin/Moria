@@ -217,9 +217,6 @@ static func getLootRarityBonus() -> int:
 		return 1
 	return 0
 
-static func getAmorMalusReduction() -> int:
-	return 5 - Ref.character.skills.skills[Data.SK_ARMOR]
-
 static func getLockpickBonus() -> int:
 	return Ref.character.skills.skills[Data.SK_THI]
 
