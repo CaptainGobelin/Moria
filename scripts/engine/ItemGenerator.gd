@@ -34,6 +34,7 @@ func getItemType(forSell: bool = false):
 	return result
 
 func generateItem(rarity: int, type: int = -1, forSell: bool = false):
+	rarity = max(rarity, 0)
 	var result
 	if type == -1:
 		type = getItemType(forSell)
