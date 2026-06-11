@@ -250,12 +250,13 @@ func die():
 		a.allies.erase(self)
 	queue_free()
 
-func awake():
+func awake(blockInnerCall: bool = false):
 	if status == "sleep":
 		status = "awake"
 		actions.initAbilitiesCD()
-	for a in allies:
-		a.awake()
+	if not blockInnerCall:
+		for a in allies:
+			a.awake(true)
 
 func wander():
 	if randf() < 0.5:
