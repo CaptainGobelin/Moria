@@ -51,4 +51,4 @@ func generateArticle(cell: Vector2):
 		GLOBAL.dropItemOnFloor(item, cell, true, price, false)
 
 func priceCalculation(rarity: int) -> int:
-	return int(ceil((rarity + 1) * 5 * (6.5 - 3 * Utils.gaussRand())))
+	return int(ceil((rarity + 2) * 3 * (8.5 - 6.0 * Utils.gaussRand())))
