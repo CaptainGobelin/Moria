@@ -35,7 +35,6 @@ func newFloor():
 	merchant.welcome()
 	for c in masks.get_used_cells_by_id(SHOPS+1):
 		generateArticle(c + roomOffset)
-	#Todo generate shops
 	get_parent().drawFloor(array)
 	var entry = masks.get_used_cells_by_id(ENTRY+1)[0] + roomOffset
 	dungeon.set_cellv(entry, GLOBAL.PASS_ID, false, false, false, Vector2(1, 0))

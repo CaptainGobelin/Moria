@@ -278,3 +278,5 @@ func _input(event):
 				setAutoPilot(interests.values()[coroutineReturn-1])
 		else:
 			Ref.ui.writeNoAutopilotTargets()
+	elif (event.is_action_released("autoattack")):
+		Ref.character.attackClosestTarget()

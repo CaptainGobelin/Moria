@@ -15,6 +15,7 @@ var charClass: int = 0
 var statuses: Dictionary = {}
 var enchants: Dictionary = {}
 var pos = Vector2(0, 0)
+var isBoss = false
 
 func _ready():
 	Ref.character = self
@@ -126,6 +127,22 @@ func moveAsync(movement):
 			else:
 				Ref.currentLevel.levelBuffer.saveLevel()
 				Ref.currentLevel.levelBuffer.loadLevel("main")
+
+func attackClosestTarget() -> bool:
+	if GLOBAL.targets.empty():
+		return false
+	var target = null
+	var bestScore = 99
+	for t in GLOBAL.targets.keys():
+		if GLOBAL.targets[t].size() < bestScore:
+			target = instance_from_id(t)
+			bestScore = GLOBAL.targets[t].size()
+	var path = Ref.game.pathfinder.a_star_entities(self, target, 20)
+	if path.size() == 1:
+		moveAsync(target.pos - pos)
+	else:
+		moveAsync(path[1] - pos)
+	return true
 
 func hit(entity):
 	if entity == null:

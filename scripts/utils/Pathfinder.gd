@@ -152,7 +152,6 @@ func get_neighbors(cell, ends, length, ignoreDoors: bool, isBoss: bool):
 				result.append([pos + Vector2(n.x, n.y), cost, cell])
 	return result
 
-#TODO idee de génie: array of ends for bosses
 func a_star(start, ends, length, ignoreDoors: bool = false, isBoss: bool = false):
 	for end in ends:
 		if (end == null):
