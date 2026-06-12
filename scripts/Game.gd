@@ -74,7 +74,7 @@ func _ready():
 func _process(delta):
 	if autoexplore:
 		if !GLOBAL.targets.empty():
-			Ref.ui.write("You cannot explore there are enemies on sight.")
+			Ref.ui.writeNoAutoexploreMonsters()
 			autoexplore = false
 			return
 		var dir = pathfinder.findNextStep(pathfinder.exploreMap, Ref.character.pos)
@@ -82,7 +82,7 @@ func _process(delta):
 			pathfinder.dijkstraCompute()
 			dir = pathfinder.findNextStep(pathfinder.exploreMap, Ref.character.pos)
 			if dir == null:
-				Ref.ui.write("Nothing to explore.")
+				Ref.ui.writeNoAutoexplore()
 				return
 		Ref.character.moveAsync(dir)
 	else:
@@ -93,6 +93,12 @@ func setAutoExplore(value: bool):
 	set_process(autoexplore)
 	if autoexplore:
 		pathfinder.dijkstraCompute()
+
+func setAutoPilot(targetCell: Vector2):
+	autoexplore = true
+	set_process(autoexplore)
+	if autoexplore:
+		pathfinder.dijkstraCompute(targetCell)
 
 func startGame():
 	WorldHandler.diffCR = 0.0
@@ -154,6 +160,7 @@ func cleanFloor():
 		GLOBAL.items.erase(i)
 	GLOBAL.itemsOnFloor.clear()
 	Ref.currentLevel.isBossRoom = false
+	setAutoExplore(false)
 
 func testFloor():
 	Ref.currentLevel.levelBuffer.flush()
@@ -258,3 +265,16 @@ func _input(event):
 #			pass
 	elif (event.is_action_released("yes")):
 		Ref.ui.bossBar.damage(- 1 - (randi() % 5))
+	elif (event.is_action_released("autopilot")):
+		if !GLOBAL.targets.empty():
+			Ref.ui.writeNoAutopilotMonsters()
+			return
+		var interests: Dictionary = Ref.currentLevel.getExploredFeatures()
+		if not interests.empty():
+			Ref.ui.writeAskAutopilotTarget(interests.keys())
+			Ref.ui.askForChoice(interests.keys(), self)
+			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
+			if coroutineReturn > 0:
+				setAutoPilot(interests.values()[coroutineReturn-1])
+		else:
+			Ref.ui.writeNoAutopilotTargets()

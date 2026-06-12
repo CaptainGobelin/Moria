@@ -9,22 +9,25 @@ const bossNeighbors = {
 
 var exploreMap: Array = []
 
-func dijkstraCompute():
+func dijkstraCompute(targetCell: Vector2 = Vector2(-1000, -1000)):
 	exploreMap.clear()
 	for i in range(GLOBAL.FLOOR_SIZE_X+1):
 		exploreMap.append([])
 		for _j in range(GLOBAL.FLOOR_SIZE_Y+1):
 			exploreMap[i].append(9999)
-	for cell in Ref.currentLevel.shadows.get_used_cells_by_id(0):
-		if cell.x < 0 or cell.y < 0:
-			continue
-		var value = Ref.currentLevel.dungeon.get_cellv(cell)
-		if value != GLOBAL.FLOOR_ID and value != GLOBAL.DOOR_ID:
-			continue
-		exploreMap[cell.x][cell.y] = 0
-	for itemCell in GLOBAL.itemsOnFloor.keys():
-		if !GLOBAL.itemsOnFloor[itemCell][GLOBAL.FLOOR_EXP]:
-			exploreMap[itemCell.x][itemCell.y] = 0
+	if targetCell == Vector2(-1000, -1000):
+		for cell in Ref.currentLevel.shadows.get_used_cells_by_id(0):
+			if cell.x < 0 or cell.y < 0:
+				continue
+			var value = Ref.currentLevel.dungeon.get_cellv(cell)
+			if value != GLOBAL.FLOOR_ID and value != GLOBAL.DOOR_ID:
+				continue
+			exploreMap[cell.x][cell.y] = 0
+		for itemCell in GLOBAL.itemsOnFloor.keys():
+			if !GLOBAL.itemsOnFloor[itemCell][GLOBAL.FLOOR_EXP]:
+				exploreMap[itemCell.x][itemCell.y] = 0
+	else:
+		exploreMap[targetCell.x][targetCell.y] = 0
 	var cells = Ref.currentLevel.dungeon.get_used_cells_by_id(GLOBAL.FLOOR_ID)
 	cells.append_array(Ref.currentLevel.dungeon.get_used_cells_by_id(GLOBAL.DOOR_ID))
 	for chest in GLOBAL.chests.values():

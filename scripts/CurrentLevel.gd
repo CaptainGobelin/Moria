@@ -150,6 +150,32 @@ func canTarget(source: Vector2, target: Vector2) -> Array:
 			return []
 	return points
 
+class FeatureSorter:
+	static func sort_ascending(a, b):
+		var aa = Ref.currentLevel.dungeon.get_cell_autotile_coord(a.x, a.y)
+		var bb = Ref.currentLevel.dungeon.get_cell_autotile_coord(b.x, b.y)
+		if aa < bb:
+			return true
+		return false
+
+# Return a dict like "feature": position
+func getExploredFeatures():
+	var result: Dictionary = {}
+	var features = dungeon.get_used_cells_by_id(GLOBAL.PASS_ID)
+	features.sort_custom(FeatureSorter, "sort_ascending")
+	for f in features:
+		if shadows.get_cellv(f) == 0:
+			continue
+		match dungeon.get_cell_autotile_coord(f.x, f.y):
+			Vector2(0, 0):
+				result["Exit"] = f
+			Vector2(1, 0):
+				if levelBuffer.currentLevel == "main":
+					result["Merchant"] = f
+				else:
+					result["Exit"] = f
+	return result
+
 # [isFree, code, entity, isVisible, blockEffect]
 func isCellFree(cell, ignoreChar: bool = true):
 	if cell.x < 0 or cell.x >= GLOBAL.FLOOR_SIZE_X:

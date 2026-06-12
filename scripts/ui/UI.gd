@@ -113,7 +113,8 @@ func write(text, signet: String = ""):
 	text = '\n' + '<' + String(GeneralEngine.turn) + '> ' + text
 	diary.append_bbcode(text)
 	diaryContent += text
-	Ref.game.autoexplore = false
+	if Ref.game.autoexplore:
+		Ref.game.autoexplore = false
 	if not signet.empty():
 		lastPrinted = signet
 
@@ -490,6 +491,28 @@ func writeWishResult(items: Array):
 	msg += Utils.makeList(list) + " appeared at your feet."
 	write(msg)
 	lastPrinted = "writeWishResult"
+
+func writeAskAutopilotTarget(choices: Array):
+	var msg = "Go where?"
+	msg += listToChoices(choices)
+	write(msg)
+	lastPrinted = "writeAskAutopilotTarget"
+
+func writeNoAutopilotTargets():
+	write("No destinations for autopilot found yet.")
+	lastPrinted = "writeNoAutopilotTargets"
+
+func writeNoAutopilotMonsters():
+	write("You cannot use autopilot there are enemies on sight.")
+	lastPrinted = "writeNoAutopilotMonsters"
+
+func writeNoAutoexploreMonsters():
+	write("You cannot use auto-explore there are enemies on sight.")
+	lastPrinted = "writeNoAutoexploreMonsters"
+
+func writeNoAutoexplore():
+	write("Nothing left to explore.")
+	lastPrinted = "writeNoAutoexplore"
 
 func listToChoices(list: Array) -> String:
 	var msg = ""
