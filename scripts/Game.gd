@@ -73,9 +73,8 @@ func _ready():
 
 func _process(delta):
 	if autoexplore:
-		if !GLOBAL.targets.empty():
-			Ref.ui.writeNoAutoexploreMonsters()
-			autoexplore = false
+		if not GLOBAL.targets.empty():
+			setAutoExplore(false)
 			return
 		var dir = pathfinder.findNextStep(pathfinder.exploreMap, Ref.character.pos)
 		if dir == null:
@@ -210,7 +209,11 @@ func _input(event):
 	if event.is_pressed() and autoexplore:
 		setAutoExplore(false)
 	elif (event.is_action_pressed("autoexplore")):
-		setAutoExplore(not autoexplore)
+		if GLOBAL.targets.empty():
+			setAutoExplore(not autoexplore)
+		else:
+			Ref.ui.writeNoAutoexploreMonsters()
+			return
 	for i in range(1, 10):
 		if (event.is_action_released("shortcut" + String(i))):
 			var item = Ref.character.shortcuts.getItem(i)
