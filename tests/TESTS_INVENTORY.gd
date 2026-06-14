@@ -237,7 +237,7 @@ func assert_five_lockpicks(testId: int):
 	assert(Ref.character.inventory.lockpicks == 5)
 
 func assert_five_golds(testId: int):
-	assert(Ref.character.inventory.golds == 35)
+	assert(Ref.character.inventory.golds == 5)
 
 func assert_item_in_item_list(testId:int, id: int):
 	var result = false

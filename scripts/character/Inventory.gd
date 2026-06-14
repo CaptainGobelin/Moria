@@ -55,7 +55,7 @@ func init(charClass: int):
 		throwings = []
 	talismans = []
 	updateLockpicks(classKit[Data.KIT_LO])
-	updateGolds(classKit[Data.KIT_GO] + 30)
+	updateGolds(classKit[Data.KIT_GO])
 
 func getWeapon():
 	return int(currentWeapon.x)
