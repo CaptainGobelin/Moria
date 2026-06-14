@@ -59,9 +59,6 @@ func findNextStep(map: Array, pos: Vector2):
 		if map[pos.x+d.x][pos.y+d.y] < dist:
 			dist = map[pos.x+d.x][pos.y+d.y]
 			result = d
-	if result != null:
-		if Ref.currentLevel.dungeon.get_cellv(pos + result) == GLOBAL.PASS_ID:
-			return null
 	return result
 
 func checkRange(start: Vector2, end: Vector2):

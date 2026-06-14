@@ -122,6 +122,9 @@ func moveAsync(movement):
 		"entry":
 			Ref.ui.writeNoGoingBack()
 		"passage":
+			if Ref.game.autoexplore:
+				Ref.game.setAutoExplore(false)
+				return
 			if Ref.currentLevel.levelBuffer.currentLevel == "main":
 				Ref.game.merchantFloor()
 			else:
