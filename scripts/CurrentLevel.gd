@@ -76,6 +76,8 @@ func refresh_view():
 			if Data.hasTag(m, Data.TAG_EVIL):
 				if Ref.character.statuses.has(Data.STATUS_DETECT_EVIL):
 					m.mask.visible = true
+				else:
+					m.mask.visible = false
 	for a in allies.get_children():
 		if fog.get_cellv(a.pos) == 0:
 			a.bodySprite.visible = true
