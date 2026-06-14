@@ -20,7 +20,8 @@ func dijkstraCompute(targetCell: Vector2 = Vector2(-1000, -1000)):
 			if cell.x < 0 or cell.y < 0:
 				continue
 			var value = Ref.currentLevel.dungeon.get_cellv(cell)
-			if value != GLOBAL.FLOOR_ID and value != GLOBAL.DOOR_ID:
+			if value != GLOBAL.FLOOR_ID and value != GLOBAL.DOOR_ID\
+				and value != GLOBAL.PASS_ID:
 				continue
 			exploreMap[cell.x][cell.y] = 0
 		for itemCell in GLOBAL.itemsOnFloor.keys():
