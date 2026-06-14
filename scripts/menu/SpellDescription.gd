@@ -75,6 +75,7 @@ static func replacePlaceholders(toReplace: String, id: int) -> String:
 	d = d.replace("%%SELF", rangeSelf())
 	d = d.replace("%%SAVE_HALF", saveHalf())
 	d = d.replace("%%SAVE_NO", saveNegates())
+	d = d.replace("%%EVIL_TIP", evilTip())
 	return d
 
 static func replace(string: String, from: String, to: String):
@@ -156,3 +157,6 @@ static func getSpellSchool(spell: int):
 			return "Divination spell level " + String(level)
 		Data.SC_CONJURATION:
 			return "Conjuration spell level " + String(level)
+
+static func evilTip():
+	return "undeads and demons"

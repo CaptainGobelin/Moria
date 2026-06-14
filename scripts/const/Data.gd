@@ -835,7 +835,7 @@ const scrolls = {
 const scrollDescriptions = {
 	SC_MAGIC_MISSILE: "Fires 3 arcane projectiles to random targets, each dealing %%DMG_1.",
 	SC_BLINK: "Teleports yourself to a near random place.",
-	SC_REPEL_EVIL: "Deals %%DMG_2 to all evil creatures (undeads and demons) at range 3.",
+	SC_REPEL_EVIL: "Deals %%DMG_2 to all evil creatures (%%EVIL_TIP) at range 3.",
 	SC_REVEAL: "All hidden doors appears on your map. Lasts %%TURNS_2.",
 	SC_ANIMALS: "Conjures 1d2+1 wolves to fight by your side. Lasts until rest.",
 	SC_LESSER_ACQ: "Creates a weapon, an armor, a scroll, a potion or golds from nothing.",
@@ -1268,7 +1268,7 @@ var spellDescriptions = {
 		"Bounce a second time."
 	],
 	SP_REPEL_EVIL: [
-		"Deals radiant damages to all evil creatures (undeads and demons) at range 3.",
+		"Deals radiant damages to all evil creatures (%%EVIL_TIP) at range 3.",
 		"",
 		"%%D_DMG_2.",
 		"Also inflicts [TERROR] for %%TURNS_3."
@@ -1358,7 +1358,7 @@ var spellDescriptions = {
 		"%%INC_DMG_3."
 	],
 	SP_DETECT_EVIL: [
-		"Detects all evil creatures (undeads and demons) on the current floor. No saving throw.",
+		"Detects all evil creatures (%%EVIL_TIP) on the current floor. No saving throw.",
 		"Lasts %%TURNS_1.",
 		"Inflicts [VULNERABLE] (ignore Prot) to revealed creatures.",
 		"%%USES_3."
@@ -1424,7 +1424,7 @@ var spellDescriptions = {
 		"Lasts until rest."
 	],
 	SP_PROTECTION_FROM_EVIL: [
-		"Protects you from spells casted by evil creatures (undeads and demons). Lasts %%TURNS_1.",
+		"Protects you from spells casted by evil creatures (%%EVIL_TIP). Lasts %%TURNS_1.",
 		"Grants +1 to all save rolls.",
 		"Lasts %%TURNS_2.",
 		"Increases bonus to +2."
@@ -1664,8 +1664,8 @@ const statusesDescriptions = {
 		"A shimmering field surrounds you and protect you. It grants +1 AC and +2 Prot."
 	],
 	STATUS_PROTECT_EVIL: [
-		"You are protected aginst spells casted evil creatures (undeads and demons). You gains +1 to save rolls against such spells.",
-		"You are protected aginst spells casted evil creatures (undeads and demons). You gains +2 to save rolls against such spells.",
+		"You are protected aginst spells casted evil creatures (%%EVIL_TIP). You gains +1 to save rolls against such spells.",
+		"You are protected aginst spells casted evil creatures (%%EVIL_TIP). You gains +2 to save rolls against such spells.",
 	],
 	STATUS_SANCTUARY: [
 		"You are protected by a divine barrier preventing any attack against you. The shield disappears if you attack, drink a potion or cast a spell.",
