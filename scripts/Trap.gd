@@ -33,6 +33,7 @@ func reveal(playEffect: bool = true):
 	hidden = false
 	sprite.visible = true
 	mask.visible = false
-	var effect = effectScene.instance()
-	Ref.currentLevel.effects.add_child(effect)
-	effect.play(pos, Effect.CIRCLE, 5, 0.5)
+	if playEffect:
+		var effect = effectScene.instance()
+		Ref.currentLevel.effects.add_child(effect)
+		effect.play(pos, Effect.CIRCLE, 5, 0.5)

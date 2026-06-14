@@ -124,8 +124,7 @@ func moveAsync(movement):
 		"passage":
 			if Ref.game.autoexplore:
 				Ref.game.setAutoExplore(false)
-				return
-			if Ref.currentLevel.levelBuffer.currentLevel == "main":
+			elif Ref.currentLevel.levelBuffer.currentLevel == "main":
 				Ref.game.merchantFloor()
 			else:
 				Ref.currentLevel.levelBuffer.saveLevel()
