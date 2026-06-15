@@ -30,3 +30,5 @@ script = ExtResource( 4 )
 
 [node name="Actions" type="Node" parent="."]
 script = ExtResource( 5 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]

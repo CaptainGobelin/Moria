@@ -10,13 +10,17 @@ onready var selected = get_node("Selected")
 func _ready():
 	visible = false
 
-func setData(id: int):
+# Return false if no data was set
+func setData(id: int) -> bool:
 	var monster = instance_from_id(id) as Monster
+	if monster.isBoss:
+		return false
 	setName(monster.stats.entityName)
 	setHp(monster.stats.currentHp, monster.stats.hpMax)
 	setStats(monster.stats.ca, monster.stats.prot, monster.stats.saveBonus[0], monster.stats.saveBonus[1])
 	statusBar.refreshStatuses(monster)
 	visible = true
+	return true
 
 func setName(value: String):
 	nameLabel.text = value

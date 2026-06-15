@@ -55,12 +55,14 @@ func open():
 	descriptor.spellSchool.visible = true
 	emptyListLabel.visible = spellList.spellList.empty()
 	Ref.currentLevel.visible = false
+	Ref.ui.bossBar.hide()
 	GLOBAL.currentMode = GLOBAL.MODE_SPELL
 	MasterInput.setMaster(self)
 
 func close():
 	visible = false
 	Ref.currentLevel.visible = true
+	Ref.ui.bossBar.unhide()
 	GLOBAL.currentMode = GLOBAL.MODE_NORMAL
 	MasterInput.setMaster(Ref.game)
 

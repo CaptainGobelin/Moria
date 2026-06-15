@@ -9,12 +9,14 @@ class TargetSorter:
 		return false
 
 func fillList():
+	for row in get_children():
+		row.visible = false
 	var data = GLOBAL.targets.keys().duplicate()
 #	data.sort_custom(TargetSorter, "sort_by_hp")
 	var count = 0
-	for row in get_children():
-		if count < data.size():
-			row.setData(data[count])
-		else:
-			row.visible = false
-		count += 1
+	for id in data:
+		if count >= get_child_count():
+			return
+		var row = get_child(count)
+		if row.setData(id):
+			count += 1

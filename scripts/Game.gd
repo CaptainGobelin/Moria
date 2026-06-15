@@ -111,8 +111,8 @@ func startGame():
 			Ref.currentLevel.spawnMonster(Data.MO_DUMMY_WEAK, Vector2(24, 4))
 			dungeonGenerator.loadAllItems()
 		_:
-			WorldHandler.setLocation(1, Data.BIOME_DUNGEON)
-#			WorldHandler.setLocation(1, Data.BIOME_TROLL_BOSS)
+#			WorldHandler.setLocation(1, Data.BIOME_DUNGEON)
+			WorldHandler.setLocation(1, Data.BIOME_TROLL_BOSS)
 			newFloor()
 	Ref.currentLevel.refresh_view()
 	MasterInput.setMaster(self)

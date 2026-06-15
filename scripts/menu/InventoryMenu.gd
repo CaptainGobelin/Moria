@@ -90,12 +90,14 @@ func open():
 	setTab(currentTab)
 	visible = true
 	Ref.currentLevel.visible = false
+	Ref.ui.bossBar.hide()
 	GLOBAL.currentMode = GLOBAL.MODE_INVENTORY
 	MasterInput.setMaster(self)
 
 func close():
 	visible = false
 	Ref.currentLevel.visible = true
+	Ref.ui.bossBar.unhide()
 	GLOBAL.currentMode = GLOBAL.MODE_NORMAL
 	MasterInput.setMaster(Ref.game)
 

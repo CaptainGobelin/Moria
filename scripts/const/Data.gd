@@ -386,6 +386,7 @@ const monsters = {
 			[0, ACT_THROW, null, 2],
 			[SP_BLESS, ACT_BUFF, ACT_SUBTYPE_SPELL, 1],
 			[SP_FIREBOLT, ACT_SPELL, ACT_SUBTYPE_SPELL, 5],
+			[SP_HEAL, ACT_HEAL, ACT_SUBTYPE_SPELL, 5],
 		]
 	],
 	MO_GIANT_BAT: [

@@ -45,6 +45,7 @@ func trollSummon() -> bool:
 	return false
 
 func trollRage():
+	trollRageCharges -= 1
 	Ref.game.spellHandler.useMonsterAbility(Data.SP_TROLL_RAGE, boss, null, [])
 
 func trollNet(target, los) -> bool:

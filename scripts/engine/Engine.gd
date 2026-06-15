@@ -97,6 +97,7 @@ func newTurn():
 	Ref.currentLevel.refresh_view()
 	Aura.updateAll()
 	Ref.ui.monsterPanelList.fillList()
+	Ref.ui.bossBar.refreshStatuses()
 	if !canCharacterAct():
 		canAct = false
 		passTurn()

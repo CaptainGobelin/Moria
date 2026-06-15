@@ -44,11 +44,13 @@ func open():
 	setTab(currentTab)
 	visible = true
 	Ref.currentLevel.visible = false
+	Ref.ui.bossBar.hide()
 	MasterInput.setMaster(self)
 
 func close():
 	visible = false
 	Ref.currentLevel.visible = true
+	Ref.ui.bossBar.unhide()
 	MasterInput.setMaster(Ref.game)
 
 func _input(event):

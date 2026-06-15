@@ -1,6 +1,7 @@
 extends Node2D
 class_name Monster
 
+onready var animator = get_node("AnimationPlayer")
 onready var type = -1
 onready var stats = get_node("Stats")
 onready var actions = get_node("Actions")
@@ -32,6 +33,8 @@ func spawn(monsterType: int, cell: Vector2, fromSave: bool = false):
 		actions.init(type)
 	if Data.monsterTags.has(monsterType):
 		tags = Data.monsterTags[monsterType]
+	if isBoss:
+		Ref.ui.bossBar.init(self)
 
 func takeTurn():
 	buffCD -= 1
@@ -224,6 +227,8 @@ func takeHit(dmg: int, bypassProt: int = 0):
 	realDmg = StatusEngine.decreaseStatusRanks(self, realDmg, Data.STATUS_SHIELD)
 	stats.currentHp -= realDmg
 	Ref.ui.writeMonsterTakeHit(stats.entityName, realDmg)
+	if isBoss:
+		Ref.ui.bossBar.damage(realDmg)
 	if stats.currentHp <= 0:
 		die()
 	elif StatusEngine.removeStatusType(self, Data.STATUS_SLEEP):
@@ -233,6 +238,8 @@ func takeHit(dmg: int, bypassProt: int = 0):
 func heal(amount: int):
 	var oldHp = stats.currentHp
 	stats.currentHp = min(oldHp + amount, stats.hpMax)
+	if isBoss:
+		Ref.ui.bossBar.damage(oldHp - stats.currentHp)
 	Ref.ui.writeMonsterHeal(stats.entityName, stats.currentHp - oldHp)
 
 func die():
