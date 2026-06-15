@@ -33,6 +33,9 @@ func spawn(monsterType: int, cell: Vector2, fromSave: bool = false):
 		actions.init(type)
 	if Data.monsterTags.has(monsterType):
 		tags = Data.monsterTags[monsterType]
+	if Data.monsterStatuses.has(monsterType):
+		for s in Data.monsterStatuses[monsterType]:
+			StatusEngine.addStatus(self, Data.statusPrefabs[s].duplicate(true))
 	if isBoss:
 		Ref.ui.bossBar.init(self)
 
@@ -238,6 +241,8 @@ func takeHit(dmg: int, bypassProt: int = 0):
 func heal(amount: int):
 	var oldHp = stats.currentHp
 	stats.currentHp = min(oldHp + amount, stats.hpMax)
+	if oldHp == stats.currentHp:
+		return
 	if isBoss:
 		Ref.ui.bossBar.damage(oldHp - stats.currentHp)
 	Ref.ui.writeMonsterHeal(stats.entityName, stats.currentHp - oldHp)

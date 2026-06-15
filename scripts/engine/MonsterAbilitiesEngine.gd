@@ -61,3 +61,4 @@ func trollStun(caster, target):
 
 func trollRage(caster):
 	get_parent().applySpellStatus(caster, Data.STATUS_TROLL_RAGE, 0, 15)
+

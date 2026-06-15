@@ -573,7 +573,7 @@ func acidSplash(caster, entity, rank: int):
 	var dmg = GeneralEngine.computeDamages(caster, dmgDice, entity.stats.resists, true)
 	if rollsavingThrow(caster, entity):
 		dmg = int(floor(dmg/2))
-	entity.takeHit(dmg, 9999)
+	entity.takeHit(dmg, 99999)
 
 func conjureAnimal(caster, rank: int):
 	for _i in range(GeneralEngine.dice(1, 2, rank).roll(caster)):

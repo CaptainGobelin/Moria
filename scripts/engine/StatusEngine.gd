@@ -128,6 +128,7 @@ func getStatusRank(entity, type: int) -> int:
 	return GLOBAL.statuses[entity.statuses[type][0]][GLOBAL.ST_RANK]
 
 func decreaseStatusesTime(entity):
+	entity.stats.applyRegen()
 	entity.stats.applyPoison()
 	var toRefresh = false
 	for type in entity.statuses.keys():
@@ -284,10 +285,11 @@ func decreaseStatusRanks(entity, amount: int, type: int) -> int:
 		entity.statuses.erase(type)
 	return result
 
-func createSimpleStatus(type: int, rank: int, turns: int):
+func createSimpleStatus(type: int, rank: int, turns: int = -1):
 	var status = Data.statusPrefabs[type].duplicate(true)
 	if rank > 0:
 		status[GLOBAL.ST_NAME] += " " + Utils.toRoman(rank + 1)
-	status[GLOBAL.ST_TIMING] = GLOBAL.TIMING_TIMER
-	status[GLOBAL.ST_TURNS] = turns
+	if turns > 0:
+		status[GLOBAL.ST_TIMING] = GLOBAL.TIMING_TIMER
+		status[GLOBAL.ST_TURNS] = turns
 	return status

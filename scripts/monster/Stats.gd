@@ -53,6 +53,12 @@ func applyBlind():
 	if hasStatus(Data.STATUS_BLIND):
 		atkRange = 3
 
+func applyRegen():
+	if hasStatus(Data.STATUS_NO_HEAL):
+		return
+	if hasStatus(Data.STATUS_TROLL_REGEN):
+		get_parent().heal(1)
+
 func applyPoison():
 	if hasStatus(Data.STATUS_POISON):
 		if lastPoisonTick <= 0:

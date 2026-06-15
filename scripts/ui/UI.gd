@@ -571,9 +571,14 @@ func updateStat(stat: int, value):
 
 func updateLocation(biome: int, currentFloor: int):
 	locationLabel.text = "Currently in "
+	var skipCount = false
 	match biome:
 		Data.BIOME_DUNGEON:
 			locationLabel.text += "Dungeon "
 		Data.BIOME_CAVERN:
 			locationLabel.text += "Cavern "
-	locationLabel.text += Utils.toRoman(currentFloor)
+		Data.BIOME_TROLL_BOSS:
+			locationLabel.text += "Troll Lair"
+			skipCount = true
+	if not skipCount:
+		locationLabel.text += Utils.toRoman(currentFloor)

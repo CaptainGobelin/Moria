@@ -1555,6 +1555,7 @@ const STATUS_POISON = 5
 const STATUS_IMMOBILE = 6
 const STATUS_CURSE = 7
 const STATUS_FUMBLE = 8
+const STATUS_NO_HEAL = 9
 
 const STATUS_LIGHT = 100
 const STATUS_DETECT_EVIL = 101
@@ -1594,6 +1595,7 @@ const STATUS_SHOCK_WP = 209
 const STATUS_GOBLIN_WP = 210
 
 const STATUS_TROLL_RAGE = 1000
+const STATUS_TROLL_REGEN = 1001
 
 const STATUS_RESIST = 10000
 
@@ -1605,6 +1607,10 @@ const STATUS_ENCHANT = 20000
 #const STATUS_FEAT_BARD = 20000 + FEAT_BARD
 #const STATUS_FEAT_DRUID = 20000 + FEAT_DRUID
 #const STATUS_FEAT_RANGER = 20000 + FEAT_RANGER
+
+const monsterStatuses = {
+	MO_BO_TROLL: [STATUS_TROLL_REGEN]
+}
 
 const statusesDescriptions = {
 	STATUS_SLEEP: [
@@ -1633,6 +1639,9 @@ const statusesDescriptions = {
 	],
 	STATUS_FUMBLE: [
 		"The threads of your destiny are torned. All odds are against you, you will roll a 1 with dice every time."
+	],
+	STATUS_NO_HEAL: [
+		"You feel maladive, you cannot recover HP by any means."
 	],
 	
 	STATUS_LIGHT: [
@@ -1732,7 +1741,8 @@ const statusPrefabs = {
 	STATUS_POISON: 			["Poisoned", 		4, null, null, STATUS_POISON, null, null, false, false, true],
 	STATUS_IMMOBILE: 		["Immobilized", 	20, null, null, STATUS_IMMOBILE, null, null, false, false, true],
 	STATUS_CURSE: 			["Cursed", 			2, null, null, STATUS_CURSE, null, null, false, false, true],
-	STATUS_FUMBLE: 			["Break destiny", 	19, null, null, STATUS_FUMBLE, null, null, false, false, true],
+	STATUS_FUMBLE: 			["Broken destiny", 	19, null, null, STATUS_FUMBLE, null, null, false, false, true],
+	STATUS_NO_HEAL:			["Weakened", 		5, null, null, STATUS_NO_HEAL, null, null, false, false, true],
 	
 	STATUS_LIGHT: 			["Light", 			91, null, null, STATUS_LIGHT, null, null, false, true, true],
 	STATUS_DETECT_EVIL: 	["Detect evil", 	54, null, null, STATUS_DETECT_EVIL, null, null, false, true, true],
@@ -1761,6 +1771,7 @@ const statusPrefabs = {
 	STATUS_REGENERATE: 		["Regenerate", 		94, null, null, STATUS_REGENERATE, null, null, false, true, true],
 	
 	STATUS_TROLL_RAGE: 		["Troll rage", 		73, null, null, STATUS_TROLL_RAGE, null, null, false, true, true],
+	STATUS_TROLL_REGEN:		["Troll regeneration", 75, null, 2, STATUS_TROLL_REGEN, null, null, false, true, false],
 }
 
 const FE_NAME = 0
