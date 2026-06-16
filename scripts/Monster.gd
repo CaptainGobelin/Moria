@@ -230,6 +230,9 @@ func takeHit(source, dmgDices: Array, saved: bool = false, bypassProt: int = 0, 
 		bypassProt = 9999
 	var realDmg = max(1, dmg - max(0, stats.prot - bypassProt))
 	realDmg = StatusEngine.decreaseStatusRanks(self, realDmg, Data.STATUS_SHIELD)
+	if type == Data.MO_BO_TROLL:
+		if GeneralEngine.hasDamageType(dmgDices, [Data.DMG_FIRE]) or bypassProt > 9000:
+			get_node("BossAI").disableTrollRegen()
 	stats.currentHp -= realDmg
 	Ref.ui.writeMonsterTakeHit(stats.entityName, realDmg)
 	if isBoss:

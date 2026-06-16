@@ -1596,6 +1596,7 @@ const STATUS_GOBLIN_WP = 210
 
 const STATUS_TROLL_RAGE = 1000
 const STATUS_TROLL_REGEN = 1001
+const STATUS_TROLL_STOP_REGEN = 1002
 
 const STATUS_RESIST = 10000
 
@@ -1772,6 +1773,7 @@ const statusPrefabs = {
 	
 	STATUS_TROLL_RAGE: 		["Troll rage", 		73, null, null, STATUS_TROLL_RAGE, null, null, false, true, true],
 	STATUS_TROLL_REGEN:		["Troll regeneration", 75, null, 2, STATUS_TROLL_REGEN, null, null, false, true, false],
+	STATUS_TROLL_STOP_REGEN:["Blocked regeneration", 5, 15, 0, STATUS_NO_HEAL, null, null, false, false, false],
 }
 
 const FE_NAME = 0

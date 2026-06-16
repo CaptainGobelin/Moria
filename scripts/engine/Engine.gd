@@ -143,6 +143,12 @@ func computeDamages(source, dmgDices: Array, resist: Array, byPassResists: bool 
 		result += dmg
 	return result
 
+func hasDamageType(dmgDices: Array, dmgTypes: Array) -> bool:
+	for dice in dmgDices:
+		if dmgTypes.has(dice.type):
+			return true
+	return false
+
 func dmgDicesToString(dmgDices: Array, rich: bool = false, typed: bool = false):
 	var result = ""
 	var count = 0

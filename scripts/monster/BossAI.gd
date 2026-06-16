@@ -11,6 +11,7 @@ var trollRageCharges: int = 2
 func execute(target) -> bool:
 	match boss.type:
 		Data.MO_BO_TROLL:
+			checkRegenState()
 			return trollExecute(target)
 	return false
 
@@ -39,7 +40,6 @@ func trollExecute(target) -> bool:
 
 func trollSummon() -> bool:
 	if not boss.abilitiesCD.has(Data.SP_TROLL_SUMMON):
-		print("troll summon")
 		boss.abilitiesCD[Data.SP_TROLL_SUMMON] = Data.spells[Data.SP_TROLL_SUMMON][Data.SP_USES]
 		return true
 	return false
@@ -49,9 +49,21 @@ func trollRage():
 	Ref.game.spellHandler.useMonsterAbility(Data.SP_TROLL_RAGE, boss, null, [])
 
 func trollNet(target, los) -> bool:
-	print("troll net")
 	if los.size() < 9 and not boss.abilitiesCD.has(Data.SP_TROLL_NET):
 		Ref.game.spellHandler.useMonsterAbility(Data.SP_TROLL_NET, boss, target, los)
 		boss.abilitiesCD[Data.SP_TROLL_NET] = Data.spells[Data.SP_TROLL_NET][Data.SP_USES]
 		return true
 	return false
+
+func checkRegenState():
+	if get_parent().statuses.has(Data.STATUS_TROLL_REGEN):
+		return
+	if get_parent().statuses.has(Data.STATUS_NO_HEAL):
+		if GLOBAL.statuses[get_parent().statuses[Data.STATUS_NO_HEAL][0]][GLOBAL.ST_TURNS] > 1:
+			return
+	StatusEngine.addStatus(get_parent(), Data.statusPrefabs[Data.STATUS_TROLL_REGEN].duplicate(true))
+
+func disableTrollRegen():
+	if get_parent().statuses.has(Data.STATUS_TROLL_REGEN):
+		StatusEngine.removeStatusType(get_parent(), Data.STATUS_TROLL_REGEN)
+	StatusEngine.addStatus(get_parent(), Data.statusPrefabs[Data.STATUS_TROLL_STOP_REGEN].duplicate(true))
