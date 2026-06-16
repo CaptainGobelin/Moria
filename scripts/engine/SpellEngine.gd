@@ -215,12 +215,11 @@ func applyEffect(caster, entity, spellId: int, fromCharacter: bool, rank: int, s
 func magicMissile(caster, entity, rank: int):
 	playEffect(entity.pos, Effect.ARCANE, 5, 0.6)
 	var dmgDice = getDmgDice(caster, Data.SP_MAGIC_MISSILE, rank)
-	var dmg = GeneralEngine.computeDamages(caster, dmgDice, entity.stats.resists)
 	if caster.statuses.has(Data.STATUS_ENCHANT + Data.ENCH_IMP_MAGIC_MIS):
-		dmg += 1
+		dmgDice[0].b += 1
 #	if entity.statuses.has(Data.STATUS_ENCHANT + Data.ENCH_ARCANE_SHIELD):
 #		dmg = 0
-	entity.takeHit(dmg)
+	entity.takeHit(caster, dmgDice)
 
 func electricGrasp(caster, entity, rank: int, direction: Vector2):
 	var targetCell = entity.pos + direction
@@ -229,12 +228,9 @@ func electricGrasp(caster, entity, rank: int, direction: Vector2):
 	if target != null:
 		var saved = rollsavingThrow(caster, target)
 		var dmgDice = getDmgDice(caster, Data.SP_ELECTRIC_GRASP, rank)
-		var dmg = GeneralEngine.computeDamages(caster, dmgDice, target.stats.resists)
-		if saved:
-			dmg = int(floor(dmg/2))
-		elif rank > 0:
+		if not saved and rank > 0:
 			applySpellStatus(entity, Data.STATUS_PARALYZED, 0, 2)
-		target.takeHit(dmg)
+		target.takeHit(caster, dmgDice, saved)
 
 func heal(caster, entity, rank: int):
 	playEffect(entity.pos, Effect.HEAL, 5, 0.6)
@@ -253,19 +249,15 @@ func smite(caster, entity, rank: int, direction: Vector2):
 		var target = getValidTarget(targetCell)
 		if target != null:
 			var dmgDice = getDmgDice(caster, Data.SP_SMITE, rank)
-			var dmg = GeneralEngine.computeDamages(caster, dmgDice, target.stats.resists)
-			if rollsavingThrow(caster, entity):
-				dmg /= 2
-			target.takeHit(dmg)
+			var saved = rollsavingThrow(caster, entity)
+			target.takeHit(caster, dmgDice, saved)
 		targetCell += direction
 
 func firebolt(caster, entity, rank: int):
 	playEffect(entity.pos, Effect.FIRE)
 	var dmgDice = getDmgDice(caster, Data.SP_FIREBOLT, rank)
-	var dmg = GeneralEngine.computeDamages(caster, dmgDice, entity.stats.resists)
-	if rollsavingThrow(caster, entity):
-		dmg /= 2
-	entity.takeHit(dmg)
+	var saved = rollsavingThrow(caster, entity)
+	entity.takeHit(caster, dmgDice, saved)
 
 func burningHands(caster, rank: int, direction: Vector2):
 	var dmgDice = getDmgDice(caster, Data.SP_BURN_HANDS, rank)
@@ -274,18 +266,14 @@ func burningHands(caster, rank: int, direction: Vector2):
 		playEffect(pos, Effect.FIRE, 5, 0.6)
 		var target = getValidTarget(pos)
 		if target != null:
-			var dmg = GeneralEngine.computeDamages(caster, dmgDice, target.stats.resists)
-			if rollsavingThrow(caster, target):
-				dmg /= 2
-			target.takeHit(dmg)
+			var saved = rollsavingThrow(caster, target)
+			target.takeHit(caster, dmgDice, saved)
 
 func lightningBolt(caster, entity, rank: int):
 	playEffect(entity.pos, Effect.SHOCK)
 	var dmgDice = getDmgDice(caster, Data.SP_LIGHT_BOLT, rank)
-	var dmg = GeneralEngine.computeDamages(caster, dmgDice, entity.stats.resists)
-	if rollsavingThrow(caster, entity):
-		dmg /= 2
-	entity.takeHit(dmg)
+	var saved = rollsavingThrow(caster, entity)
+	entity.takeHit(caster, dmgDice, saved)
 
 func repelEvil(caster, rank: int):
 	var dmgDice = getDmgDice(caster, Data.SP_REPEL_EVIL, rank)
@@ -296,11 +284,9 @@ func repelEvil(caster, rank: int):
 		var target = getValidTarget(pos)
 		if Data.hasTag(target, Data.TAG_EVIL):
 			playEffect(pos, Effect.SMITE)
-			var dmg = GeneralEngine.computeDamages(caster, dmgDice, target.stats.resists)
-			if rollsavingThrow(caster, target):
-				dmg /= 2
-			target.takeHit(dmg)
-			if rank >= 2:
+			var saved = rollsavingThrow(caster, target)
+			target.takeHit(caster, dmgDice, saved)
+			if not saved and rank >= 2:
 				applySpellStatus(target, Data.STATUS_TERROR, 0, turns)
 		else:
 			playEffect(pos, Effect.SPARK)
@@ -323,11 +309,10 @@ func frostNova(caster, rank: int):
 		var target = getValidTarget(pos)
 		if target == null:
 			continue
-		var dmg = GeneralEngine.computeDamages(caster, dmgDice, target.stats.resists)
-		if rollsavingThrow(caster, target):
-			dmg /= 2
-		target.takeHit(dmg)
-		applySpellStatus(target, Data.STATUS_IMMOBILE, 0, turns)
+		var saved = rollsavingThrow(caster, target)
+		target.takeHit(caster, dmgDice, saved)
+		if not saved:
+			applySpellStatus(target, Data.STATUS_IMMOBILE, 0, turns)
 
 func sleep(caster, entity, rank: int):
 	playEffect(entity.pos, Effect.GAS, 5, 0.6)
@@ -391,8 +376,7 @@ func negateEnergies(caster, rank: int):
 				return
 			if StatusEngine.removeRandomBuff(m):
 				playEffect(m.pos, Effect.ARCANE)
-				var dmg = GeneralEngine.computeDamages(caster, dmgDice, m.stats.resists)
-				m.takeHit(dmg)
+				m.takeHit(caster, dmgDice, false)
 
 func mirrorImages(caster, rank: int):
 	playEffect(caster.pos, Effect.BUFF)
@@ -444,8 +428,7 @@ func mindSpike(caster, entity, rank: int):
 	playEffect(entity.pos, Effect.ARCANE, 5, 0.6)
 	if not rollsavingThrow(caster, entity):
 		var dmgDice = getDmgDice(caster, Data.SP_MIND_SPIKE, rank)
-		var dmg = GeneralEngine.computeDamages(caster, dmgDice, entity.stats.resists)
-		entity.takeHit(dmg)
+		entity.takeHit(caster, dmgDice, false)
 
 func detectEvil(caster, entity, rank: int):
 	playEffect(entity.pos, Effect.BUFF, 5, 0.6)
@@ -570,10 +553,8 @@ func poisonProtection(caster, rank: int):
 
 func acidSplash(caster, entity, rank: int):
 	var dmgDice = getDmgDice(caster, Data.SP_ACID_SPLASH, rank)
-	var dmg = GeneralEngine.computeDamages(caster, dmgDice, entity.stats.resists, true)
-	if rollsavingThrow(caster, entity):
-		dmg = int(floor(dmg/2))
-	entity.takeHit(dmg, 99999)
+	var saved = rollsavingThrow(caster, entity)
+	entity.takeHit(caster, dmgDice, saved, 99999, true)
 
 func conjureAnimal(caster, rank: int):
 	for _i in range(GeneralEngine.dice(1, 2, rank).roll(caster)):
@@ -638,9 +619,9 @@ func fireball(caster, entity):
 	for cell in targetedCells:
 		var pos = entity.pos + cell
 		playEffect(pos, Effect.FIRE, 5, 0.1)
-		var target = getValidTarget(cell)
-		if target != null:
-			target.takeHit(GeneralEngine.dice(3, 6, 0).roll(caster))
+#		var target = getValidTarget(cell)
+#		if target != null:
+#			target.takeHit(GeneralEngine.dice(3, 6, 0).roll(caster))
 
 # ===== ENCHANTMENTS SPELLS/EFFECTS ===== #
 

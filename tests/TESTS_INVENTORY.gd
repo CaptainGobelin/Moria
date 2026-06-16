@@ -185,6 +185,10 @@ const tests = {
 		]
 	],
 }
+
+func init():
+	return
+
 func assert_choice_mode(testId: int):
 	assert(GLOBAL.currentMode == GLOBAL.MODE_CHOICE)
 

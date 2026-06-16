@@ -64,13 +64,21 @@ func applyPoison():
 		if lastPoisonTick <= 0:
 			var rank = getStatusRank(Data.STATUS_POISON)
 			var dice = GeneralEngine.dmgDice(0, 0, rank + 1, Data.DMG_POISON)
-			var dmg = GeneralEngine.computeDamages(null, dice, resists)
-			get_parent().takeHit(dmg)
+			get_parent().takeHit(null, dice)
 			lastPoisonTick = 5
 		else:
 			lastPoisonTick -= 1
 	else:
 		lastPoisonTick = 5
+
+func getResist(type: int) -> int:
+	return int(min(resists[type], maxResists[type]))
+
+func getResists() -> Array:
+	var result: Array = [0, 0, 0, 0, 0, 0, 0, 0]
+	for i in range(8):
+		result[i] = getResist(i)
+	return result
 
 func computeState():
 	state = ""

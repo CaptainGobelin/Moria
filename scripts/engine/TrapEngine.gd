@@ -4,7 +4,9 @@ func trigger(trap: Trap, entity):
 	Ref.ui.writeTriggerTrap(trap.trapName)
 	match trap.type:
 		Data.TR_DART:
-			entity.takeHit(GeneralEngine.dice(1, 4, 0).roll())
+			#entity.takeHit(GeneralEngine.dice(1, 4, 0).roll())
+			# TODO
+			pass
 	GLOBAL.trapsByPos.erase(trap.pos)
 	trap.disable()
 

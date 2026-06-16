@@ -172,16 +172,15 @@ func hit(entity):
 		if entity is Character:
 			targetName = "you"
 		if result >= entity.stats.ca:
-			var rolledDmg = GeneralEngine.computeDamages(self, stats.dmgDices, entity.stats.resists)
 			Ref.ui.writeMonsterStrike(stats.entityName, targetName, result, entity.stats.ca)
 			if statuses.has(Data.STATUS_MIRROR_IMAGES) and randf() < 0.5:
 				StatusEngine.decreaseStatusRanks(self, 1, Data.STATUS_MIRROR_IMAGES)
 				Ref.ui.writeCharacterHitImage()
 				return
 			if statuses.has(Data.STATUS_ENCHANT + Data.ENCH_PIERCING):
-				entity.takeHit(rolledDmg, 2)
+				entity.takeHit(self, stats.dmgDices, 2)
 			else:
-				entity.takeHit(rolledDmg)
+				entity.takeHit(self, stats.dmgDices)
 			StatusEngine.applyWeaponEffects(self, entity)
 		else:
 			Ref.ui.writeMonsterMiss(stats.entityName, targetName, result, entity.stats.ca)
@@ -221,9 +220,12 @@ func setPosition(newPos: Vector2):
 func refreshMapPosition():
 	position = 9 * pos
 
-func takeHit(dmg: int, bypassProt: int = 0):
+func takeHit(source, dmgDices: Array, saved: bool = false, bypassProt: int = 0, bypassResists: bool = false):
 	if status == "dead":
 		return 0
+	var dmg = GeneralEngine.computeDamages(source, dmgDices, stats.getResists(), bypassResists)
+	if saved:
+		dmg = int(floor(dmg/2))
 	if stats.hasStatus(Data.STATUS_VULNERABLE):
 		bypassProt = 9999
 	var realDmg = max(1, dmg - max(0, stats.prot - bypassProt))

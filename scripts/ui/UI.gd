@@ -82,6 +82,7 @@ func askForYesNo(inputer):
 
 func askForDirection(inputer):
 	previousMode = GLOBAL.currentMode
+	GLOBAL.currentMode = GLOBAL.MODE_DIRECT
 	directionHandler.startCoroutine()
 	var result = yield(directionHandler, "end_coroutine")
 	GLOBAL.currentMode = previousMode

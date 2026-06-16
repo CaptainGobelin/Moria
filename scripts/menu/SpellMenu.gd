@@ -49,6 +49,7 @@ func _input(event):
 		spellList.init(Ref.character.spells.getSpellsRows(), spellList.currentIndex)
 
 func open():
+	spellList.currentStartIndex = 0
 	spellList.init(Ref.character.spells.getSpellsRows())
 	visible = true
 	descriptor.spellUses.visible = false

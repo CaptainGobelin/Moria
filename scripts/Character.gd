@@ -171,20 +171,23 @@ func hit(entity):
 					bypassProt = max(bypassProt, 9999)
 				if statuses.has(Data.STATUS_HOLY_WP):
 					dmgDices.append(GeneralEngine.DmgDice.new(1, 4, 0, Data.DMG_RADIANT))
-			var dmg = GeneralEngine.computeDamages(self, stats.dmgDices, entity.stats.resists)
+			var dices = stats.dmgDices.duplicate(true)
 			if isSlaying:
-				dmg += 1
+				dices[0].b += 1
 			if statuses.has(Data.STATUS_ENCHANT + Data.ENCH_PIERCING):
 				bypassProt = max(bypassProt, 2)
-			entity.takeHit(dmg, bypassProt)
+			entity.takeHit(self, dices, bypassProt)
 			StatusEngine.applyWeaponEffects(self, entity)
 		else:
 			Ref.ui.writeCharacterMiss(entity.stats.entityName, result, entity.stats.ca)
 
-func takeHit(dmg: int, bypassProt: int = 0):
+func takeHit(source, dmgDices: Array, saved: bool = false, bypassProt: int = 0, bypassResists: bool = false):
 	var isCritical = stats.hpPercent() < 0.25
 	if stats.hasStatus(Data.STATUS_VULNERABLE):
 		bypassProt = 9999
+	var dmg = GeneralEngine.computeDamages(source, dmgDices, stats.getResists(), bypassResists)
+	if saved:
+		dmg = int(floor(dmg/2))
 	var realDmg = max(1, dmg - max(0, stats.prot - bypassProt))
 	realDmg = StatusEngine.decreaseStatusRanks(self, realDmg, Data.STATUS_SHIELD)
 	stats.hp -= realDmg

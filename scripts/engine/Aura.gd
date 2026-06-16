@@ -64,20 +64,16 @@ func trigger(entity):
 	match type:
 		FIRE_AURA:
 			var dmgDice = [GeneralEngine.dmgDice(0, 0, 1, Data.DMG_FIRE)]
-			var dmg = GeneralEngine.computeDamages(null, dmgDice, entity.stats.resists)
-			entity.takeHit(dmg)
+			entity.takeHit(null, dmgDice)
 		SPIRIT_GUARDIANS:
 			var dmgDice = [GeneralEngine.dmgDice(1, 4, 0, Data.DMG_RADIANT)]
-			var dmg = GeneralEngine.computeDamages(null, dmgDice, entity.stats.resists)
-			entity.takeHit(dmg)
+			entity.takeHit(null, dmgDice)
 		POISON_CLOUD_I:
 			var dmgDice = [GeneralEngine.dmgDiceFromArray(Data.spellDamages[Data.SP_POISON_CLOUD][1])]
-			var dmg = GeneralEngine.computeDamages(null, dmgDice, entity.stats.resists)
-			entity.takeHit(dmg)
+			entity.takeHit(null, dmgDice)
 		POISON_CLOUD_II:
 			var dmgDice = [GeneralEngine.dmgDiceFromArray(Data.spellDamages[Data.SP_POISON_CLOUD][2])]
-			var dmg = GeneralEngine.computeDamages(null, dmgDice, entity.stats.resists)
-			entity.takeHit(dmg)
+			entity.takeHit(null, dmgDice)
 
 func getPos() -> Vector2:
 	if relativeTo == null:

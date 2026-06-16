@@ -6,7 +6,7 @@ onready var tests_inventory = get_node("TESTS_INVENTORY")
 signal tested
 signal done
 
-var TEST_SPEED = 0.05
+var TEST_SPEED = 0.005
 
 const TEST_NAME = 0
 const TEST_POS = 1
@@ -28,6 +28,7 @@ func runAll():
 	get_tree().quit()
 
 func runCollection(tester: Node):
+	tester.init()
 	var time_start = Time.get_unix_time_from_system()
 	for testId in tester.tests.keys():
 		runTest(tester, testId)
@@ -64,6 +65,8 @@ func runTest(tester: Node, testId: int):
 			tester.call(input, testId)
 		elif input.begins_with("fake"):
 			call(input, testId)
+		elif input.begins_with("wait"):
+			yield(get_tree().create_timer(0.5), "timeout")
 		else:
 			var a = InputEventAction.new()
 			a.action = input

@@ -161,6 +161,9 @@ const tests = {
 	],
 }
 
+func init():
+	return
+
 func assert_last_printed(testId: int, msg: String):
 	assert(Ref.ui.lastPrinted == msg)
 

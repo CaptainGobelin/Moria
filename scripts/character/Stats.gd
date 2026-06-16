@@ -110,8 +110,7 @@ func applyPoison():
 		if lastPoisonTick <= 0:
 			var rank = getStatusRank(Data.STATUS_POISON)
 			var dice = GeneralEngine.dmgDice(0, 0, rank + 1, Data.DMG_POISON)
-			var dmg = GeneralEngine.computeDamages(null, [dice], resists)
-			get_parent().takeHit(dmg)
+			get_parent().takeHit(null, [dice])
 			lastPoisonTick = 5
 	else:
 		lastPoisonTick = 5
@@ -176,8 +175,17 @@ func computeResists():
 	updateResists()
 
 func updateResists():
-	Ref.ui.updateStat(Data.CHAR_R_FIRE, [resists[Data.DMG_FIRE], maxResists[Data.DMG_FIRE]])
-	Ref.ui.updateStat(Data.CHAR_R_POISON, [resists[Data.DMG_POISON], maxResists[Data.DMG_POISON]])
+	Ref.ui.updateStat(Data.CHAR_R_FIRE, [getResist(Data.DMG_FIRE), maxResists[Data.DMG_FIRE]])
+	Ref.ui.updateStat(Data.CHAR_R_POISON, [getResist(Data.DMG_POISON), maxResists[Data.DMG_POISON]])
+
+func getResist(type: int) -> int:
+	return int(min(resists[type], maxResists[type]))
+
+func getResists() -> Array:
+	var result: Array = [0, 0, 0, 0, 0, 0, 0, 0]
+	for i in range(8):
+		result[i] = getResist(i)
+	return result
 
 func computeSaves():
 	saveBonus = [0, 0]

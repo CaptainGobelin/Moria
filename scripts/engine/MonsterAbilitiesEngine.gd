@@ -35,8 +35,7 @@ func zombieScream(caster):
 func spiderBite(caster, target):
 	if not get_parent().rollsavingThrow(caster, target):
 		get_parent().applySpellStatus(target, Data.STATUS_POISON, 1, 11)
-		var dmg = GeneralEngine.computeDamages(caster, [GeneralEngine.dmgDiceFromArray([1, 4, 0, Data.DMG_SLASH])], target.stats.resists)
-		target.takeHit(dmg)
+		target.takeHit(caster, [GeneralEngine.dmgDiceFromArray([1, 4, 0, Data.DMG_SLASH])])
 
 func snakeConstrict(caster, target):
 	if not get_parent().rollsavingThrow(caster, target):
@@ -44,8 +43,7 @@ func snakeConstrict(caster, target):
 
 func leechBite(caster, target):
 	if not get_parent().rollsavingThrow(caster, target):
-		var dmg = GeneralEngine.computeDamages(caster, [GeneralEngine.dmgDiceFromArray([1, 4, 0, Data.DMG_SLASH])], target.stats.resists)
-		var heal = target.takeHit(dmg)
+		var heal = target.takeHit(caster, [GeneralEngine.dmgDiceFromArray([1, 4, 0, Data.DMG_SLASH])])
 		if heal > 0:
 			caster.heal(heal)
 			get_parent().playEffect(caster.pos, Effect.HEAL, 5, 0.6)
@@ -56,8 +54,7 @@ func trollNet(caster, target):
 func trollStun(caster, target):
 	if not get_parent().rollsavingThrow(caster, target):
 		get_parent().applySpellStatus(target, Data.STATUS_PARALYZED, 0, 3)
-		var dmg = GeneralEngine.computeDamages(caster, [GeneralEngine.dmgDiceFromArray([1, 8, 0, Data.DMG_BLUNT])], target.stats.resists)
-		target.takeHit(dmg)
+		target.takeHit(caster, [GeneralEngine.dmgDiceFromArray([1, 8, 0, Data.DMG_BLUNT])])
 
 func trollRage(caster):
 	get_parent().applySpellStatus(caster, Data.STATUS_TROLL_RAGE, 0, 15)
