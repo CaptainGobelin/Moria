@@ -1,0 +1,31 @@
+[1mdiff --git a/scenes/Game.tscn b/scenes/Game.tscn[m
+[1mindex 1cfe318..dafcd6e 100644[m
+[1m--- a/scenes/Game.tscn[m
+[1m+++ b/scenes/Game.tscn[m
+[36m@@ -120,7 +120,6 @@[m [mscale = Vector2( 4, 4 )[m
+ script = ExtResource( 15 )[m
+ start = 2[m
+ debugClass = 1[m
+[31m-tests = 3[m
+ [m
+ [node name="Utils" type="Node" parent="."][m
+ [m
+[1mdiff --git a/tests/TESTS_SPELLS.gd b/tests/TESTS_SPELLS.gd[m
+[1mindex 0b8af63..2508939 100644[m
+[1m--- a/tests/TESTS_SPELLS.gd[m
+[1m+++ b/tests/TESTS_SPELLS.gd[m
+[36m@@ -37,14 +37,9 @@[m [mfunc init():[m
+ 				Data.SP_TARGET_ITEM_CHOICE:[m
+ 					instructions.append("assert_choice_mode")[m
+ 					instructions.append("shortcut1")[m
+[31m-			instructions.append("assert_test_statuses")[m
+[31m-			instructions.append("wait")[m
+ 			tests[s].append(instructions)[m
+ 			count += 1[m
+ [m
+[31m-func assert_test_statuses(testId: int):[m
+[31m-	Utils.printDict(GLOBAL.statuses)[m
+[31m-[m
+ func assert_choice_mode(testId: int):[m
+ 	assert(GLOBAL.currentMode == GLOBAL.MODE_CHOICE)[m
+ [m

@@ -120,7 +120,6 @@ scale = Vector2( 4, 4 )
 script = ExtResource( 15 )
 start = 2
 debugClass = 1
-tests = 3
 
 [node name="Utils" type="Node" parent="."]
 
