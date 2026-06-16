@@ -8,6 +8,7 @@ func init(status: int):
 	icon.frame = GLOBAL.statuses[status][GLOBAL.ST_ICON]
 	var turns = 99
 	if GLOBAL.statuses[status][GLOBAL.ST_TIMING] == GLOBAL.TIMING_TIMER:
+		timer.visible = true
 		turns = GLOBAL.statuses[status][GLOBAL.ST_TURNS]
 		setTurn(turns)
 	else:

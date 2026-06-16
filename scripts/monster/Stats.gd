@@ -71,8 +71,8 @@ func applyPoison():
 	else:
 		lastPoisonTick = 5
 
-func getResist(type: int) -> int:
-	return int(min(resists[type], maxResists[type]))
+func getResist(resRype: int) -> int:
+	return int(min(resists[resRype], maxResists[resRype]))
 
 func getResists() -> Array:
 	var result: Array = [0, 0, 0, 0, 0, 0, 0, 0]

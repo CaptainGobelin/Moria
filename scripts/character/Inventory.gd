@@ -18,6 +18,9 @@ var lockpicks = 0 setget updateLockpicks
 var golds = 100 setget updateGolds
 
 func init(charClass: int):
+	currentWeapon = Vector2(-1, -1)
+	currentArmor = Vector2(-1, -1)
+	currentTalismans = Vector2(-1, -1)
 	var classKit = Data.CLASS_KITS[charClass]
 	if classKit[Data.KIT_WP] != -1:
 		var items = Ref.game.itemGenerator.getWeapon(classKit[Data.KIT_WP])

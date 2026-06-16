@@ -37,9 +37,13 @@ func init():
 				Data.SP_TARGET_ITEM_CHOICE:
 					instructions.append("assert_choice_mode")
 					instructions.append("shortcut1")
+			instructions.append("assert_test_statuses")
 			instructions.append("wait")
 			tests[s].append(instructions)
 			count += 1
+
+func assert_test_statuses(testId: int):
+	Utils.printDict(GLOBAL.statuses)
 
 func assert_choice_mode(testId: int):
 	assert(GLOBAL.currentMode == GLOBAL.MODE_CHOICE)
