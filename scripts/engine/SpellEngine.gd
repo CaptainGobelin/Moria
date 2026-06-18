@@ -314,8 +314,8 @@ func sleep(caster, entity, rank: int):
 	else:
 		for m in Ref.currentLevel.monsters.get_children():
 			if Utils.dist(entity.pos, m.pos) <= (rank+1):
-				if not rollsavingThrow(caster, entity):
-					applySpellStatus(entity, Data.STATUS_SLEEP, 0, turns)
+				if not rollsavingThrow(caster, m):
+					applySpellStatus(m, Data.STATUS_SLEEP, 0, turns)
 
 func unlock(caster, entity, direction: Vector2):
 	var cell = entity.pos + direction
