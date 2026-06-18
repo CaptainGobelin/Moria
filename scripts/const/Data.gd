@@ -772,16 +772,17 @@ const PO_NAME = 0
 const PO_CAN_POP = 1
 const PO_RAR = 2
 const PO_ICON = 3 #24 -> 32
-const PO_STACK = 4
+const PO_TURNS = 4
+const PO_STACK = 5
 
 const potions = {
-	PO_HEALING: 	["Potion of healing", 		true, 0, 24, 0],
-	PO_ANTIDOTE: 	["Antidote", 				true, 0, 25, 1],
-	PO_STONESKIN_1: ["Potion of stoneskin I", 	true, 1, 26, 2],
-	PO_INVISIBILITY:["Potion of invisibility",	true, 1, 27, 3],
-	PO_WOUNDS: 		["Potion of cure wounds", 	true, 2, 28, 4],
-	PO_MIGHT: 		["Potion of might", 		true, 2, 29, 5],
-	PO_BRILLANCE_1: ["Potion of brillance I", 	true, 2, 30, 6],
+	PO_HEALING: 	["Potion of healing", 		true, 0, 24, null, 0],
+	PO_ANTIDOTE: 	["Antidote", 				true, 0, 25, null, 1],
+	PO_STONESKIN_1: ["Potion of stoneskin I", 	true, 1, 26, 15, 2],
+	PO_INVISIBILITY:["Potion of invisibility",	true, 1, 27, 25, 3],
+	PO_WOUNDS: 		["Potion of cure wounds", 	true, 2, 28, null, 4],
+	PO_MIGHT: 		["Potion of rage", 			true, 2, 29, 10, 5],
+	PO_BRILLANCE_1: ["Potion of brillance I", 	true, 2, 30, 3, 6],
 }
 
 const potionDescriptions = {
@@ -790,7 +791,7 @@ const potionDescriptions = {
 	PO_STONESKIN_1 : "Grants [Stoneskin III] (+3 to protection) for 15 turns.",
 	PO_INVISIBILITY : "Grants [Lesser invisible] for 25 turns or until you attack, throw or cast a spell.",
 	PO_WOUNDS : "Replenishes all you HP and cure a random injury.",
-	PO_MIGHT : "Grants [Might] (double your weapon damages) for 10 turns.",
+	PO_MIGHT : "Grants [Enraged] (double weapon damages but cannot cast spells and -2 to WIL saves) for 10 turns.",
 	PO_BRILLANCE_1 : "Grants [Brillance I] (level 1 spells costs no uses) for 3 turns.",
 }
  
@@ -1582,6 +1583,9 @@ const STATUS_PROTECT_POISON = 122
 const STATUS_REPEL_MISSILES = 123
 const STATUS_REGENERATE = 124
 
+const STATUS_BRILLANCE = 180
+const STATUS_ENRAGED = 181
+
 const STATUS_WILLPOWER = 200
 const STATUS_PHYSICS = 201
 const STATUS_PRECISION = 202
@@ -1683,7 +1687,8 @@ const statusesDescriptions = {
 		"You are protected by a divine barrier preventing any attack against you. The shield disappears if you attack or cast an offensive spell.",
 	],
 	STATUS_INVISIBLE: [
-		"You are undetectable by normal vision. Beware that creatures can still detect you by other means."
+		"Your form fades from view, you are invisible to others. This effect ends immediately if you attack or cast a spell.",
+		"Your form fades from view, you are invisible to others."
 	],
 	STATUS_MIRROR_IMAGES: [
 		"You surrounded by illusions (1 per status rank) of youself, fooling your enemies. Each attack or spell targeting you has 50% to destroy an illusion instead of you."
@@ -1729,7 +1734,19 @@ const statusesDescriptions = {
 	],
 	STATUS_REGENERATE: [
 		"Healing energies flows through your body. You regain 1PV/rank each turn."
-	]
+	],
+	
+	STATUS_PROTECTED: [
+		"Your skin is hardened, increasing your protection by 1 per rank of this status."
+	],
+	STATUS_BRILLANCE: [
+		"Magic courses through your body. All level 1 spells are free to cast.",
+		"Magic courses through your body. All level 1 and 2 spells are free to cast.",
+		"Magic courses through your body. All spells are free to cast."
+	],
+	STATUS_ENRAGED: [
+		"Doubles your weapon damage, but you cannot cast spells and you suffer a -2 penalty to WIL saves."
+	],
 }
 
 const statusPrefabs = {
@@ -1754,7 +1771,7 @@ const statusPrefabs = {
 	STATUS_ARMOR_OF_FAITH: 	["Armor of faith", 	93, null, null, STATUS_ARMOR_OF_FAITH, null, null, false, true, true],
 	STATUS_PROTECT_EVIL: 	["Protection from evil",32, null, null, STATUS_PROTECT_EVIL, null, null, false, true, true],
 	STATUS_SANCTUARY: 		["Sanctuary", 		33, null, null, STATUS_SANCTUARY, null, null, false, true, true],
-	STATUS_INVISIBLE: 		["Invisible", 		55, null, null, STATUS_INVISIBLE, null, null, false, true, true],
+	STATUS_INVISIBLE: 		["Invisibility", 	55, null, null, STATUS_INVISIBLE, null, null, false, true, true],
 	STATUS_PROTECTED: 		["Protected", 		74, null, null, STATUS_PROTECTED, null, null, false, true, true],
 	STATUS_MIRROR_IMAGES: 	["Mirror images", 	30, null, null, STATUS_MIRROR_IMAGES, null, null, false, true, true],
 	STATUS_HOLY_BLADE: 		["Holy weapon", 	92, null, null, STATUS_HOLY_BLADE, null, null, false, true, true],
@@ -1770,7 +1787,10 @@ const statusPrefabs = {
 	STATUS_REPEL_MISSILES: 	["Deflect projectiles", 34, null, null, STATUS_REPEL_MISSILES, null, null, false, true, true],
 	STATUS_REGENERATE: 		["Regenerate", 		94, null, null, STATUS_REGENERATE, null, null, false, true, true],
 	
-	STATUS_TROLL_RAGE: 		["Troll rage", 		73, null, null, STATUS_TROLL_RAGE, null, null, false, true, true],
+	STATUS_BRILLANCE: 		["Brillance", 		56, null, null, STATUS_BRILLANCE, null, null, false, true, true],
+	STATUS_ENRAGED: 		["Enraged", 		73, null, null, STATUS_ENRAGED, null, null, false, true, true],
+	
+	STATUS_TROLL_RAGE: 		["Troll rage", 		73, null, null, STATUS_ENRAGED, null, null, false, true, true],
 	STATUS_TROLL_REGEN:		["Troll regeneration", 75, null, 2, STATUS_TROLL_REGEN, null, null, false, true, false],
 	STATUS_TROLL_STOP_REGEN:["Blocked regeneration", 5, 15, 0, STATUS_NO_HEAL, null, null, false, false, false],
 }

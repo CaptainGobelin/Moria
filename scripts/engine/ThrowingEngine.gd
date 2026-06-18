@@ -8,7 +8,7 @@ func firebomb(entity):
 		var pos = entity.pos + cell
 		var effect = get_parent().effectScene.instance()
 		Ref.currentLevel.effects.add_child(effect)
-		effect.play(pos, Effect.FIRE, 5)
+		effect.play(pos, Effect.FIRE)
 	for target in targets:
 		target.takeHit(null, dmgDice)
 
@@ -20,7 +20,7 @@ func holyWater(entity):
 		var pos = entity.pos + cell
 		var effect = get_parent().effectScene.instance()
 		Ref.currentLevel.effects.add_child(effect)
-		effect.play(pos, Effect.SPARK, 5)
+		effect.play(pos, Effect.SPARK)
 	for target in targets:
 		if Data.hasTag(target, Data.TAG_EVIL):
 			target.takeHit(null, dmgDice)
@@ -31,7 +31,7 @@ func sleepFlask(entity):
 		var pos = entity.pos + cell
 		var effect = get_parent().effectScene.instance()
 		Ref.currentLevel.effects.add_child(effect)
-		effect.play(pos, 4, 5)
+		effect.play(pos, 4)
 		# TODO
 #		if GLOBAL.monstersByPosition.has(pos):
 #			var target = instance_from_id(GLOBAL.monstersByPosition[pos])

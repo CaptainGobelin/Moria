@@ -25,7 +25,7 @@ func zombieScream(caster):
 	var targetedCells = get_parent().getArea(caster, spellRange)
 	var targets = GLOBAL.getAllTargets(caster.pos, targetedCells)
 	for target in targets:
-		get_parent().playEffect(target.pos, Effect.SKULL, 5, 0.45)
+		get_parent().playEffect(target.pos, Effect.SKULL)
 		if not get_parent().rollsavingThrow(caster, target):
 			get_parent().applySpellStatus(target, Data.STATUS_TERROR, 0, 4)
 
@@ -43,7 +43,7 @@ func leechBite(caster, target):
 		var heal = target.takeHit(caster, [GeneralEngine.dmgDiceFromArray([1, 4, 0, Data.DMG_SLASH])])
 		if heal > 0:
 			caster.heal(heal)
-			get_parent().playEffect(caster.pos, Effect.HEAL, 5, 0.6)
+			get_parent().playEffect(caster.pos, Effect.HEAL)
 
 func trollNet(caster, target):
 	get_parent().applySpellStatus(target, Data.STATUS_IMMOBILE, 0, 11)

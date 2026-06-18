@@ -36,4 +36,4 @@ func reveal(playEffect: bool = true):
 	if playEffect:
 		var effect = effectScene.instance()
 		Ref.currentLevel.effects.add_child(effect)
-		effect.play(pos, Effect.CIRCLE, 5, 0.5)
+		effect.play(pos, Effect.CIRCLE)

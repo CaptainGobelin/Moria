@@ -26,7 +26,10 @@ func open(feats: Array = [], masterFeatId = null, canCancelChoice: bool = true):
 			if Data.feats[f][Data.FE_CHOOSE] and !Ref.character.skills.feats.has(f):
 				featList.append(f)
 	else:
-		featList = feats
+		featList = []
+		for f in feats:
+			if !Ref.character.skills.feats.has(f):
+				featList.append(f)
 	featList = Skills.removeForbiddenFeats(featList)
 	if featList.empty():
 		close()

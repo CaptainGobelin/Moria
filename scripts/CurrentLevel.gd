@@ -136,7 +136,7 @@ func discoverDoor(cell: Vector2):
 	Ref.currentLevel.dungeon.set_cellv(cell, GLOBAL.DOOR_ID, false, false, false, Vector2(0,1))
 	var effect = effectScene.instance()
 	effects.add_child(effect)
-	effect.play(cell, Effect.CIRCLE, 5, 0.5)
+	effect.play(cell, Effect.CIRCLE)
 	Ref.ui.writeHiddenDoorDetected()
 
 func clearFog():

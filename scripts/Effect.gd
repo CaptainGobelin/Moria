@@ -25,6 +25,27 @@ const TRANSMUT = 13
 const CIRCLE = 14
 const HEAL = 15
 
+const EF_LENGTH = 0
+const EF_SPEED = 1
+const effects = {
+	FIRE : [5, 0.6],
+	LIGHT : [5, 0.6],
+	DESTROY : [5, 0.8],
+	POISON : [5, 0.6],
+	GAS : [5, 0.6],
+	SHOCK : [5, 1.1],
+	SMITE : [5, 0.8],
+	BUFF : [5, 0.6],
+	ARCANE : [5, 0.6],
+	ICE : [5, 0.6],
+	SPARK : [5, 0.6],
+	DARK : [5, 0.6],
+	SKULL : [5, 0.45],
+	TRANSMUT : [5, 1.1],
+	CIRCLE : [5, 0.6],
+	HEAL : [5, 0.6],
+}
+
 func setType(value):
 	type = value
 	# re-assign coords to update the sprite in the editor
@@ -37,10 +58,12 @@ func setCoord(value):
 	# Update the correct frame_coords values
 	frame_coords = Vector2(coords.x, type)
 
-func play(pos: Vector2, effectType: int, length: int = 5, speed: float = 1.0):
+func play(pos: Vector2, effectType: int, isBoss: bool = false):
 	position = pos * 9
+	if isBoss:
+		scale = Vector2(2, 2)
 	type = effectType
-	get_node("AnimationPlayer").play("play" + String(length), -1, speed)
+	get_node("AnimationPlayer").play("play" + String(effects[type][EF_LENGTH]), -1, effects[type][EF_SPEED])
 
 func _on_AnimationPlayer_animation_finished(_anim_name):
 	emit_signal("completed")

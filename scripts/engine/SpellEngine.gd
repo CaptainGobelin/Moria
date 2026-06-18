@@ -28,8 +28,9 @@ func createSpellStatus(type: int, rank: int, time: int):
 func conjureCreature(caster, type: int):
 	var cell = caster.getRandomCloseCell()
 	if cell == null:
-		return
+		return null
 	Ref.currentLevel.spawnMonster(type, cell, caster is Character)
+	return cell
 
 func applySpellStatus(entity, type: int, rank: int, time: int):
 	var status = createSpellStatus(type, rank, time)
@@ -41,10 +42,10 @@ func applySpellStatus(entity, type: int, rank: int, time: int):
 	entity.stats.computeStats()
 	return result
 
-func playEffect(pos: Vector2, type: int, length: int = 5, speed: float = 0.6):
+func playEffect(pos: Vector2, type: int, isBoss: bool = false):
 	var effect = effectScene.instance()
 	Ref.currentLevel.effects.add_child(effect)
-	effect.play(pos, type, length, speed)
+	effect.play(pos, type, isBoss)
 
 func getDmgDice(caster, spellId: int, rank: int) -> Array:
 	var base = GeneralEngine.dmgDiceFromArray(Data.spellDamages[spellId][rank])
@@ -204,7 +205,7 @@ func applyEffect(caster, entity, spellId: int, fromCharacter: bool, rank: int, s
 			throwings.sleepFlask(entity)
 
 func magicMissile(caster, entity, rank: int):
-	playEffect(entity.pos, Effect.ARCANE, 5, 0.6)
+	playEffect(entity.pos, Effect.ARCANE, entity.isBoss)
 	var dmgDice = getDmgDice(caster, Data.SP_MAGIC_MISSILE, rank)
 	if caster.statuses.has(Data.STATUS_ENCHANT + Data.ENCH_IMP_MAGIC_MIS):
 		dmgDice[0].b += 1
@@ -214,7 +215,7 @@ func magicMissile(caster, entity, rank: int):
 
 func electricGrasp(caster, entity, rank: int, direction: Vector2):
 	var targetCell = entity.pos + direction
-	playEffect(targetCell, Effect.SHOCK, 5, 1.1)
+	playEffect(targetCell, Effect.SHOCK)
 	for target in GLOBAL.getAllTargets(entity.pos, [direction]):
 		var saved = rollsavingThrow(caster, target)
 		var dmgDice = getDmgDice(caster, Data.SP_ELECTRIC_GRASP, rank)
@@ -223,7 +224,7 @@ func electricGrasp(caster, entity, rank: int, direction: Vector2):
 		target.takeHit(caster, dmgDice, saved)
 
 func heal(caster, entity, rank: int):
-	playEffect(entity.pos, Effect.HEAL, 5, 0.6)
+	playEffect(entity.pos, Effect.HEAL, entity.isBoss)
 	var healData = Data.spellDamages[Data.SP_HEAL][rank]
 	var dice = GeneralEngine.diceFromArray(healData)
 	entity.heal(dice.roll(caster))
@@ -236,7 +237,7 @@ func smite(caster, entity, rank: int, direction: Vector2):
 			return
 		if Ref.currentLevel.fog.get_cellv(targetCell) == 1:
 			return
-		playEffect(targetCell, Effect.SMITE, 5, 0.8)
+		playEffect(targetCell, Effect.SMITE)
 		cells.append(targetCell - entity.pos)
 		targetCell += direction
 	for target in GLOBAL.getAllTargets(entity.pos, cells):
@@ -245,7 +246,7 @@ func smite(caster, entity, rank: int, direction: Vector2):
 		target.takeHit(caster, dmgDice, saved)
 
 func firebolt(caster, entity, rank: int):
-	playEffect(entity.pos, Effect.FIRE)
+	playEffect(entity.pos, Effect.FIRE, entity.isBoss)
 	var dmgDice = getDmgDice(caster, Data.SP_FIREBOLT, rank)
 	var saved = rollsavingThrow(caster, entity)
 	entity.takeHit(caster, dmgDice, saved)
@@ -255,13 +256,13 @@ func burningHands(caster, rank: int, direction: Vector2):
 	var cells = getCone(caster.pos, direction, 3)
 	for cell in cells:
 		var pos = caster.pos + cell
-		playEffect(pos, Effect.FIRE, 5, 0.6)
+		playEffect(pos, Effect.FIRE)
 	for target in GLOBAL.getAllTargets(caster.pos, cells):
 		var saved = rollsavingThrow(caster, target)
 		target.takeHit(caster, dmgDice, saved)
 
 func lightningBolt(caster, entity, rank: int):
-	playEffect(entity.pos, Effect.SHOCK)
+	playEffect(entity.pos, Effect.SHOCK, entity.isBoss)
 	var dmgDice = getDmgDice(caster, Data.SP_LIGHT_BOLT, rank)
 	var saved = rollsavingThrow(caster, entity)
 	entity.takeHit(caster, dmgDice, saved)
@@ -270,10 +271,10 @@ func repelEvil(caster, rank: int):
 	var dmgDice = getDmgDice(caster, Data.SP_REPEL_EVIL, rank)
 	var turns = getTurns(Data.SP_REPEL_EVIL, rank)
 	var targetedCells = getArea(caster, Data.spells[Data.SP_REPEL_EVIL][Data.SP_AREA])
-	var smitedCells = []
+	var smitedCells = {}
 	for target in GLOBAL.getAllTargets(caster.pos, targetedCells):
 		if Data.hasTag(target, Data.TAG_EVIL):
-			smitedCells.append(target.pos)
+			smitedCells[target.pos] = target.isBoss
 			var saved = rollsavingThrow(caster, target)
 			target.takeHit(caster, dmgDice, saved)
 			if not saved and rank >= 2:
@@ -281,12 +282,12 @@ func repelEvil(caster, rank: int):
 	for cell in targetedCells:
 		var pos = caster.pos + cell
 		if smitedCells.has(pos):
-			playEffect(pos, Effect.SMITE)
+			playEffect(pos, Effect.SMITE, smitedCells[pos])
 		else:
 			playEffect(pos, Effect.SPARK)
 
 func cureWounds(entity, rank: int):
-	playEffect(entity.pos, Effect.BUFF)
+	playEffect(entity.pos, Effect.BUFF, entity.isBoss)
 	if rank >= 2 and entity is Character:
 		Ref.character.fatigue.refresh(100)
 
@@ -306,7 +307,7 @@ func frostNova(caster, rank: int):
 		playEffect(caster.pos + cell, Effect.ICE)
 
 func sleep(caster, entity, rank: int):
-	playEffect(entity.pos, Effect.GAS, 5, 0.6)
+	playEffect(entity.pos, Effect.GAS, entity.isBoss)
 	var turns = getTurns(Data.SP_SLEEP, rank)
 	if rank == 0 or entity is Character:
 		if not rollsavingThrow(caster, entity):
@@ -329,20 +330,20 @@ func unlock(caster, entity, direction: Vector2):
 		Ref.ui.writeChestUnlocked()
 
 func bless(caster, entity, rank: int):
-	playEffect(entity.pos, Effect.BUFF, 5, 0.6)
+	playEffect(entity.pos, Effect.BUFF, entity.isBoss)
 	var turns = getTurns(Data.SP_BLESS, rank)
 	if rank >= 2:
 		turns = TIME_REST
 	applySpellStatus(entity, Data.STATUS_BLESSED, 0, turns)
 
 func command(caster, entity, rank: int):
-	playEffect(entity.pos, Effect.SMITE, 5, 0.6)
+	playEffect(entity.pos, Effect.SMITE, entity.isBoss)
 	var turns = getTurns(Data.SP_COMMAND, rank)
 	if not rollsavingThrow(caster, entity):
 		applySpellStatus(entity, Data.STATUS_TERROR, 0, turns)
 
 func light(caster, entity, rank: int):
-	playEffect(entity.pos, Effect.BUFF, 5, 0.6)
+	playEffect(entity.pos, Effect.BUFF, entity.isBoss)
 	var turns = getTurns(Data.SP_COMMAND, rank)
 	if rank >= 2:
 		turns = TIME_REST
@@ -362,22 +363,22 @@ func negateEnergies(caster, rank: int):
 			if rollsavingThrow(caster, m):
 				return
 			if Data.hasTag(m, Data.TAG_SUMMONED):
-				playEffect(m.pos, Effect.DESTROY)
+				playEffect(m.pos, Effect.DESTROY, m.isBoss)
 				m.die()
 				return
 			if StatusEngine.removeRandomBuff(m):
-				playEffect(m.pos, Effect.ARCANE)
+				playEffect(m.pos, Effect.ARCANE, m.isBoss)
 				m.takeHit(caster, dmgDice, false)
 
 func mirrorImages(caster, rank: int):
-	playEffect(caster.pos, Effect.BUFF)
+	playEffect(caster.pos, Effect.BUFF, caster.isBoss)
 	var images = 3
 	if rank >= 2:
 		images = 5
 	applySpellStatus(caster, Data.STATUS_MIRROR_IMAGES, images, TIME_REST)
 
 func holyBlade(caster, rank: int):
-	playEffect(caster.pos, Effect.BUFF)
+	playEffect(caster.pos, Effect.BUFF, caster.isBoss)
 	var turns = getTurns(Data.SP_HOLY_BLADE, rank)
 	applySpellStatus(caster, Data.STATUS_HOLY_BLADE, rank - 1, turns)
 
@@ -391,8 +392,12 @@ func curse(caster, entity, rank: int):
 	var cursedCells = []
 	for target in GLOBAL.getAllTargets(entity.pos, targetedCells):
 		cursedCells.append(target.pos)
+		if target.isBoss:
+			cursedCells.append(target.pos + Vector2(1, 0))
+			cursedCells.append(target.pos + Vector2(0, 1))
+			cursedCells.append(target.pos + Vector2(1, 1))
 		if not rollsavingThrow(caster, target, saveMalus):
-			playEffect(target.pos, Effect.SKULL, 5, 0.45)
+			playEffect(target.pos, Effect.SKULL, target.isBoss)
 			applySpellStatus(target, Data.STATUS_CURSE, 0, turns)
 	for cell in targetedCells:
 		var pos = entity.pos + cell
@@ -400,12 +405,12 @@ func curse(caster, entity, rank: int):
 			playEffect(pos, Effect.DARK)
 
 func fireBlade(caster, rank: int):
-	playEffect(caster.pos, Effect.BUFF)
+	playEffect(caster.pos, Effect.BUFF, caster.isBoss)
 	var turns = getTurns(Data.SP_FIRE_BLADE, rank)
 	applySpellStatus(caster, Data.STATUS_FIRE_BLADE, rank - 1, turns)
 
 func blind(caster, entity, rank: int):
-	playEffect(entity.pos, Effect.GAS, 5, 0.6)
+	playEffect(entity.pos, Effect.GAS, entity.isBoss)
 	var turns = getTurns(Data.SP_BLIND, rank)
 	if rank == 0 or entity is Character:
 		if not rollsavingThrow(caster, entity):
@@ -417,13 +422,13 @@ func blind(caster, entity, rank: int):
 					applySpellStatus(m, Data.STATUS_SLEEP, 0, turns)
 
 func mindSpike(caster, entity, rank: int):
-	playEffect(entity.pos, Effect.ARCANE, 5, 0.6)
+	playEffect(entity.pos, Effect.ARCANE, entity.isBoss)
 	if not rollsavingThrow(caster, entity):
 		var dmgDice = getDmgDice(caster, Data.SP_MIND_SPIKE, rank)
 		entity.takeHit(caster, dmgDice, false)
 
 func detectEvil(caster, entity, rank: int):
-	playEffect(entity.pos, Effect.BUFF, 5, 0.6)
+	playEffect(entity.pos, Effect.BUFF, entity.isBoss)
 	var turns = getTurns(Data.SP_DETECT_EVIL, rank)
 	if rank == 0:
 		applySpellStatus(entity, Data.STATUS_DETECT_EVIL, 0, turns)
@@ -432,53 +437,53 @@ func detectEvil(caster, entity, rank: int):
 	Ref.currentLevel.refresh_view()
 
 func revealTraps(caster, entity):
-	playEffect(entity.pos, Effect.BUFF, 5, 0.6)
+	playEffect(entity.pos, Effect.BUFF, entity.isBoss)
 	var turns = getTurns(Data.SP_REVEAL_TRAPS, 0)
 	applySpellStatus(entity, Data.STATUS_REVEAL_TRAPS, 0, turns)
 	Ref.currentLevel.refresh_view()
 
 func locateObjects(caster, entity):
-	playEffect(entity.pos, Effect.BUFF, 5, 0.6)
+	playEffect(entity.pos, Effect.BUFF, entity.isBoss)
 	applySpellStatus(entity, Data.STATUS_LOCATE_OBJECTS, 0, TIME_FLOOR)
 	Ref.currentLevel.refresh_view()
 
 func revealWeakness(caster, rank: int):
-	playEffect(caster.pos, Effect.BUFF)
+	playEffect(caster.pos, Effect.BUFF, caster.isBoss)
 	var turns = getTurns(Data.SP_REVEAL_WEAK, rank)
 	applySpellStatus(caster, Data.STATUS_REVEAL_WEAKNESS, 0, turns)
 
 func blink(caster):
 	var cell = Ref.currentLevel.getRandomFreeCell()
 	caster.setPosition(cell)
-	playEffect(caster.pos, Effect.DESTROY, 5, 0.8)
+	playEffect(caster.pos, Effect.DESTROY, caster.isBoss)
 
 func revealHidden(caster):
-	playEffect(caster.pos, Effect.BUFF)
+	playEffect(caster.pos, Effect.BUFF, caster.isBoss)
 	applySpellStatus(caster, Data.STATUS_REVEAL_HIDDEN, 0, TIME_FLOOR)
 	Ref.currentLevel.refresh_view()
 
 func trueStrike(caster, rank: int):
-	playEffect(caster.pos, Effect.BUFF)
+	playEffect(caster.pos, Effect.BUFF, caster.isBoss)
 	var turns = getTurns(Data.SP_TRUE_STRIKE, rank)
 	applySpellStatus(caster, Data.STATUS_TRUE_STRIKE, 0, turns)
 
 func fumble(caster, entity, rank: int):
-	playEffect(entity.pos, Effect.SKULL, 5, 0.45)
+	playEffect(entity.pos, Effect.SKULL, entity.isBoss)
 	var turns = getTurns(Data.SP_FUMBLE, rank)
 	if not rollsavingThrow(caster, entity):
 		applySpellStatus(entity, Data.STATUS_FUMBLE, 0, turns)
 
 func shield(caster, entity, rank: int):
-	playEffect(entity.pos, Effect.BUFF, 5, 0.6)
+	playEffect(entity.pos, Effect.BUFF, entity.isBoss)
 	var turns = getTurns(Data.SP_SHIELD, rank)
 	applySpellStatus(entity, Data.STATUS_SHIELD, 5 * (rank + 2) - 1, turns)
 
 func mageArmor(caster, entity, rank: int):
-	playEffect(entity.pos, Effect.BUFF, 5, 0.6)
+	playEffect(entity.pos, Effect.BUFF, entity.isBoss)
 	applySpellStatus(entity, Data.STATUS_MAGE_ARMOR, rank, TIME_REST)
 
 func armorFaith(caster, entity, rank: int):
-	playEffect(entity.pos, Effect.BUFF, 5, 0.6)
+	playEffect(entity.pos, Effect.BUFF, entity.isBoss)
 	var turns = getTurns(Data.SP_ARMOR_OF_FAITH, rank)
 	if rank >= 2:
 		turns = TIME_REST
@@ -488,7 +493,7 @@ func armorFaith(caster, entity, rank: int):
 		applySpellStatus(entity, Data.STATUS_ARMOR_OF_FAITH, 1, turns)
 
 func protectEvil(caster, entity, rank: int):
-	playEffect(entity.pos, Effect.BUFF, 5, 0.6)
+	playEffect(entity.pos, Effect.BUFF, entity.isBoss)
 	var turns = getTurns(Data.SP_PROTECTION_FROM_EVIL, rank)
 	if rank <= 1:
 		applySpellStatus(entity, Data.STATUS_PROTECT_EVIL, 0, turns)
@@ -496,7 +501,7 @@ func protectEvil(caster, entity, rank: int):
 		applySpellStatus(entity, Data.STATUS_PROTECT_EVIL, 1, turns)
 
 func sanctuary(caster, entity, rank: int):
-	playEffect(entity.pos, Effect.BUFF, 5, 0.6)
+	playEffect(entity.pos, Effect.BUFF, entity.isBoss)
 	var turns = getTurns(Data.SP_SANCTUARY, rank)
 	applySpellStatus(entity, Data.STATUS_SANCTUARY, rank, turns)
 
@@ -513,18 +518,18 @@ func breakSanctuary(entity, action: int):
 		Ref.ui.writeSancturayBreak()
 
 func repelMissiles(caster, rank: int):
-	playEffect(caster.pos, Effect.BUFF, 5, 0.6)
+	playEffect(caster.pos, Effect.BUFF, caster.isBoss)
 	applySpellStatus(caster, Data.STATUS_REPEL_MISSILES, rank-1, TIME_REST)
 
 func flameskin(caster, rank: int):
-	playEffect(caster.pos, Effect.BUFF, 5, 0.6)
+	playEffect(caster.pos, Effect.BUFF, caster.isBoss)
 	var turns = getTurns(Data.SP_FLAMESKIN, rank)
 	var auraSt = applySpellStatus(caster, Data.STATUS_FIRE_AURA, 0, turns)
 	var targetedCells = getAuraCells(3)
 	Aura.create(targetedCells, Aura.FIRE_AURA, turns+20, true, caster, auraSt)
 
 func freedomMovement(caster, rank: int):
-	playEffect(caster.pos, Effect.BUFF, 5, 0.6)
+	playEffect(caster.pos, Effect.BUFF, caster.isBoss)
 	var turns = getTurns(Data.SP_FREED_MOVE, rank)
 	applySpellStatus(caster, Data.STATUS_FREED_MOVE, rank-1, turns)
 	StatusEngine.removeStatusType(caster, Data.STATUS_IMMOBILE)
@@ -533,12 +538,12 @@ func freedomMovement(caster, rank: int):
 		StatusEngine.removeStatusType(caster, Data.STATUS_TERROR)
 
 func fireProtection(caster, rank: int):
-	playEffect(caster.pos, Effect.BUFF, 5, 0.6)
+	playEffect(caster.pos, Effect.BUFF, caster.isBoss)
 	var turns = getTurns(Data.SP_PROTECT_FIRE, rank)
 	applySpellStatus(caster, Data.STATUS_PROTECT_FIRE, rank, turns)
 
 func poisonProtection(caster, rank: int):
-	playEffect(caster.pos, Effect.BUFF, 5, 0.6)
+	playEffect(caster.pos, Effect.BUFF, caster.isBoss)
 	var turns = getTurns(Data.SP_PROTECT_POISON, rank)
 	applySpellStatus(caster, Data.STATUS_PROTECT_POISON, rank, turns)
 	StatusEngine.removeStatusType(caster, Data.STATUS_POISON)
@@ -550,10 +555,14 @@ func acidSplash(caster, entity, rank: int):
 
 func conjureAnimal(caster, rank: int):
 	for _i in range(GeneralEngine.dice(1, 2, rank).roll(caster)):
-		conjureCreature(caster, Data.MO_SUM_WOLF)
+		var cell = conjureCreature(caster, Data.MO_SUM_WOLF)
+		if cell != null:
+			playEffect(cell, Effect.ARCANE)
 
 func spiritualHammer(caster, rank: int):
-	conjureCreature(caster, Data.MO_SUM_HAMMER+rank)
+	var cell = conjureCreature(caster, Data.MO_SUM_HAMMER+rank)
+	if cell != null:
+		playEffect(cell, Effect.ARCANE)
 
 func lesserAcquirement(caster, entity, rank: int, itemType: int):
 	var items = Ref.game.itemGenerator.generateItem(rank * 2, itemType)
@@ -573,7 +582,7 @@ func stoneToMud(caster, direction: Vector2):
 			Ref.currentLevel.dungeon.set_cellv(targetCell, GLOBAL.FLOOR_ID)
 		if Ref.currentLevel.isCellFree(targetCell)[4]:
 			break
-		playEffect(targetCell, Effect.TRANSMUT, 5, 1.1)
+		playEffect(targetCell, Effect.TRANSMUT)
 	if caster is Character:
 		Ref.currentLevel.refresh_view()
 
@@ -585,7 +594,7 @@ func poisonCloud(caster, entity, rank: int):
 	for cell in targetedCells:
 		cell += entity.pos
 		if not Ref.currentLevel.canTarget(entity.pos, cell).empty():
-			playEffect(cell, 3, 5)
+			playEffect(cell, Effect.POISON)
 			auraCells.append(cell)
 	if rank < 2:
 		Aura.create(auraCells, Aura.POISON_CLOUD_I, turns, caster is Character)
@@ -594,12 +603,16 @@ func poisonCloud(caster, entity, rank: int):
 
 func animatedDead(caster, rank: int):
 	for _i in range(2):
-		conjureCreature(caster, Data.MO_SUM_SKELETON)
+		var cell = conjureCreature(caster, Data.MO_SUM_SKELETON)
+		if cell != null:
+			playEffect(cell, Effect.ARCANE)
 	if rank == 2:
-		conjureCreature(caster, Data.MO_SUM_ARCHER_SKELETON)
+		var cell = conjureCreature(caster, Data.MO_SUM_ARCHER_SKELETON)
+		if cell != null:
+			playEffect(cell, Effect.ARCANE)
 
 func spiritGuardians(caster, rank: int):
-	playEffect(caster.pos, Effect.BUFF, 5, 0.6)
+	playEffect(caster.pos, Effect.BUFF, caster.isBoss)
 	var turns = getTurns(Data.SP_GUADRIAN_SPIRITS, rank)
 	var auraSt = applySpellStatus(caster, Data.STATUS_SPIRIT_GUARD, 0, turns)
 	var targetedCells = getAuraCells(2)
@@ -610,7 +623,7 @@ func fireball(caster, entity):
 	targetedCells.append(Vector2(0, 0))
 	for cell in targetedCells:
 		var pos = entity.pos + cell
-		playEffect(pos, Effect.FIRE, 5, 0.1)
+		playEffect(pos, Effect.FIRE)
 #		var target = getValidTarget(cell)
 #		if target != null:
 #			target.takeHit(GeneralEngine.dice(3, 6, 0).roll(caster))

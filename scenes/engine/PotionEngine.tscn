@@ -6,14 +6,49 @@ script/source = "extends Node
 func applyEffect(entity, potion):
 	match potion:
 		Data.PO_HEALING:
-			healingPotion(entity)
+			healing(entity)
+		Data.PO_ANTIDOTE:
+			antidote(entity)
 
-func healingPotion(entity):
+func healing(entity):
 	var result:float = entity.stats.hpMax * 0.5
 	if entity is Character:
 		if Skills.hasImprovedPotions():
 			result = entity.stats.hpMax * 0.75
 	entity.heal(ceil(result))
+
+func antidote(entity):
+	StatusEngine.removeStatusType(entity, Data.STATUS_POISON)
+
+func brillance(entity, rank: int):
+	var status = Data.statusPrefabs[Data.STATUS_BRILLANCE]
+	status[GLOBAL.ST_RANK] = rank
+	status[GLOBAL.ST_TIMING] = GLOBAL.TIMING_TIMER
+	match rank:
+		_: status[GLOBAL.ST_TURNS] = Data.potions[Data.PO_BRILLANCE_1][Data.PO_TURNS]
+	StatusEngine.addStatus(entity, status)
+
+func stoneskin(entity, rank: int):
+	var status = Data.statusPrefabs[Data.STATUS_PROTECTED]
+	status[GLOBAL.ST_RANK] = 2 + 2 * rank
+	status[GLOBAL.ST_TIMING] = GLOBAL.TIMING_TIMER
+	match rank:
+		_: status[GLOBAL.ST_TURNS] = Data.potions[Data.PO_STONESKIN_1][Data.PO_TURNS]
+	StatusEngine.addStatus(entity, status)
+
+func invisibility(entity):
+	var status = Data.statusPrefabs[Data.STATUS_INVISIBLE]
+	status[GLOBAL.ST_RANK] = 0
+	status[GLOBAL.ST_TIMING] = GLOBAL.TIMING_TIMER
+	status[GLOBAL.ST_TURNS] = Data.potions[Data.PO_INVISIBILITY][Data.PO_TURNS]
+	StatusEngine.addStatus(entity, status)
+
+func might(entity):
+	pass
+
+func cureWounds(entity):
+	entity.heal(entity.stats.hpMax)
+	# TODO implement heal injuries
 "
 
 [node name="PotionEngine" type="Node"]
