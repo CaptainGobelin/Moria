@@ -40,6 +40,9 @@ func dungeonFloor():
 func cavernFloor():
 	return newFloor(1)
 
+func trollFloor():
+	return newFloor(5)
+
 func newFloor(specialBiome = biome):
 	Ref.game.cleanFloor()
 	match specialBiome:
@@ -48,7 +51,6 @@ func newFloor(specialBiome = biome):
 			return normalBiome.newFloor()
 		1:
 			changeTilesetTexture(1)
-#			changeTilesetTexture(1)
 			return cavernBiome.newFloor()
 		2:
 			return simpleFloor()

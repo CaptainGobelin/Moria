@@ -190,6 +190,8 @@ func newFloor():
 			spawnPos = dungeonGenerator.dungeonFloor()
 		Data.BIOME_CAVERN:
 			spawnPos = dungeonGenerator.cavernFloor()
+		Data.BIOME_TROLL_BOSS:
+			spawnPos = dungeonGenerator.trollFloor()
 		_:
 			spawnPos = dungeonGenerator.newFloor()
 	Ref.currentLevel.initSecrets()
