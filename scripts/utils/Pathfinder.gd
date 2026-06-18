@@ -187,7 +187,7 @@ func get_neighbors_entites(cell, start, end, length):
 				if cellState[1] == "monster":
 					if cellState[2] != start and cellState[2] != end:
 						continue
-				if cellState[1] != "door" and cellState[1] != "pass":
+				if cellState[1] != "pass":
 					continue
 			if (cost + dist(pos + Vector2(i.x, i.y), end.pos) <= length):
 				result.append([pos + Vector2(i.x, i.y), cost, cell])
@@ -205,7 +205,7 @@ func get_neighbors_entites(cell, start, end, length):
 					if cellState[1] == "monster":
 						if cellState[2] != start and cellState[2] != end:
 							toAdd = false
-					if cellState[1] != "door" and cellState[1] != "pass":
+					if cellState[1] != "pass":
 						toAdd = false
 			if toAdd and (cost + dist(pos + Vector2(n.x, n.y), end.pos) <= length):
 				result.append([pos + Vector2(n.x, n.y), cost, cell])
