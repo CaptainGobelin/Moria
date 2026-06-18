@@ -208,3 +208,19 @@ var monstersByPosition: Dictionary = {}
 
 func getMonsterByPos(cell: Vector2) -> Monster:
 	return instance_from_id(GLOBAL.monstersByPosition[cell]) as Monster
+
+func getAllTargets(origin: Vector2, cells: Array) -> Array:
+	var result: Array = []
+	for m in Ref.currentLevel.monsters.get_children():
+		if m.isBoss:
+			for vd in [Vector2(1, 0), Vector2(0, 1), Vector2(1, 1), Vector2(0, 0)]:
+				if not result.has(m) and cells.has(m.pos + vd - origin):
+					result.append(m)
+		elif cells.has(m.pos - origin):
+			result.append(m)
+	for a in Ref.currentLevel.allies.get_children():
+		if cells.has(a.pos - origin):
+			result.append(a)
+	if cells.has(Ref.character.pos - origin):
+		result.append(Ref.character)
+	return result

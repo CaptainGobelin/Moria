@@ -83,10 +83,8 @@ func getPos() -> Vector2:
 static func triggerAll():
 	for a in Ref.currentLevel.auras.get_children():
 		var cell = a.getPos()
-		if GLOBAL.monstersByPosition.has(cell):
-			a.trigger(GLOBAL.getMonsterByPos(cell))
-		if Ref.character.pos == cell:
-			a.trigger(Ref.character)
+		for target in GLOBAL.getAllTargets(Vector2(0, 0), [cell]):
+			a.trigger(target)
 
 static func updateAll():
 	for a in Ref.currentLevel.auras.get_children():

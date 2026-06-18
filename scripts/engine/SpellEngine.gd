@@ -46,15 +46,6 @@ func playEffect(pos: Vector2, type: int, length: int = 5, speed: float = 0.6):
 	Ref.currentLevel.effects.add_child(effect)
 	effect.play(pos, type, length, speed)
 
-func getValidTarget(cell: Vector2):
-	if fromChar:
-		if GLOBAL.monstersByPosition.has(cell):
-			return instance_from_id(GLOBAL.monstersByPosition[cell])
-	else:
-		if Ref.character.pos == cell:
-			return Ref.character
-	return null
-
 func getDmgDice(caster, spellId: int, rank: int) -> Array:
 	var base = GeneralEngine.dmgDiceFromArray(Data.spellDamages[spellId][rank])
 #	if caster.statuses.has(Data.STATUS_ENCHANT + Data.ENCH_DESTRUCTION):
@@ -224,8 +215,7 @@ func magicMissile(caster, entity, rank: int):
 func electricGrasp(caster, entity, rank: int, direction: Vector2):
 	var targetCell = entity.pos + direction
 	playEffect(targetCell, Effect.SHOCK, 5, 1.1)
-	var target = getValidTarget(targetCell)
-	if target != null:
+	for target in GLOBAL.getAllTargets(entity.pos, [direction]):
 		var saved = rollsavingThrow(caster, target)
 		var dmgDice = getDmgDice(caster, Data.SP_ELECTRIC_GRASP, rank)
 		if not saved and rank > 0:
@@ -240,18 +230,19 @@ func heal(caster, entity, rank: int):
 
 func smite(caster, entity, rank: int, direction: Vector2):
 	var targetCell = entity.pos + direction
+	var cells = [targetCell]
 	for _i in range(GLOBAL.VIEW_RANGE):
 		if Ref.currentLevel.isCellFree(targetCell)[4]:
 			return
 		if Ref.currentLevel.fog.get_cellv(targetCell) == 1:
 			return
 		playEffect(targetCell, Effect.SMITE, 5, 0.8)
-		var target = getValidTarget(targetCell)
-		if target != null:
-			var dmgDice = getDmgDice(caster, Data.SP_SMITE, rank)
-			var saved = rollsavingThrow(caster, entity)
-			target.takeHit(caster, dmgDice, saved)
+		cells.append(targetCell - entity.pos)
 		targetCell += direction
+	for target in GLOBAL.getAllTargets(entity.pos, cells):
+		var dmgDice = getDmgDice(caster, Data.SP_SMITE, rank)
+		var saved = rollsavingThrow(caster, entity)
+		target.takeHit(caster, dmgDice, saved)
 
 func firebolt(caster, entity, rank: int):
 	playEffect(entity.pos, Effect.FIRE)
@@ -261,13 +252,13 @@ func firebolt(caster, entity, rank: int):
 
 func burningHands(caster, rank: int, direction: Vector2):
 	var dmgDice = getDmgDice(caster, Data.SP_BURN_HANDS, rank)
-	for cell in getCone(caster.pos, direction, 3):
+	var cells = getCone(caster.pos, direction, 3)
+	for cell in cells:
 		var pos = caster.pos + cell
 		playEffect(pos, Effect.FIRE, 5, 0.6)
-		var target = getValidTarget(pos)
-		if target != null:
-			var saved = rollsavingThrow(caster, target)
-			target.takeHit(caster, dmgDice, saved)
+	for target in GLOBAL.getAllTargets(caster.pos, cells):
+		var saved = rollsavingThrow(caster, target)
+		target.takeHit(caster, dmgDice, saved)
 
 func lightningBolt(caster, entity, rank: int):
 	playEffect(entity.pos, Effect.SHOCK)
@@ -279,15 +270,18 @@ func repelEvil(caster, rank: int):
 	var dmgDice = getDmgDice(caster, Data.SP_REPEL_EVIL, rank)
 	var turns = getTurns(Data.SP_REPEL_EVIL, rank)
 	var targetedCells = getArea(caster, Data.spells[Data.SP_REPEL_EVIL][Data.SP_AREA])
-	for cell in targetedCells:
-		var pos = caster.pos + cell
-		var target = getValidTarget(pos)
+	var smitedCells = []
+	for target in GLOBAL.getAllTargets(caster.pos, targetedCells):
 		if Data.hasTag(target, Data.TAG_EVIL):
-			playEffect(pos, Effect.SMITE)
+			smitedCells.append(target.pos)
 			var saved = rollsavingThrow(caster, target)
 			target.takeHit(caster, dmgDice, saved)
 			if not saved and rank >= 2:
 				applySpellStatus(target, Data.STATUS_TERROR, 0, turns)
+	for cell in targetedCells:
+		var pos = caster.pos + cell
+		if smitedCells.has(pos):
+			playEffect(pos, Effect.SMITE)
 		else:
 			playEffect(pos, Effect.SPARK)
 
@@ -303,16 +297,13 @@ func frostNova(caster, rank: int):
 	if rank >= 2:
 		spellRange += 1
 	var targetedCells = getArea(caster, spellRange)
-	for cell in targetedCells:
-		var pos = caster.pos + cell
-		playEffect(pos, Effect.ICE)
-		var target = getValidTarget(pos)
-		if target == null:
-			continue
+	for target in GLOBAL.getAllTargets(caster.pos, targetedCells):
 		var saved = rollsavingThrow(caster, target)
 		target.takeHit(caster, dmgDice, saved)
 		if not saved:
 			applySpellStatus(target, Data.STATUS_IMMOBILE, 0, turns)
+	for cell in targetedCells:
+		playEffect(caster.pos + cell, Effect.ICE)
 
 func sleep(caster, entity, rank: int):
 	playEffect(entity.pos, Effect.GAS, 5, 0.6)
@@ -397,14 +388,15 @@ func curse(caster, entity, rank: int):
 	var turns = getTurns(Data.SP_CURSE, rank)
 	var targetedCells = getArea(entity, Data.spells[Data.SP_CURSE][Data.SP_AREA])
 	targetedCells.append(Vector2(0, 0))
+	var cursedCells = []
+	for target in GLOBAL.getAllTargets(entity.pos, targetedCells):
+		cursedCells.append(target.pos)
+		if not rollsavingThrow(caster, target, saveMalus):
+			playEffect(target.pos, Effect.SKULL, 5, 0.45)
+			applySpellStatus(target, Data.STATUS_CURSE, 0, turns)
 	for cell in targetedCells:
 		var pos = entity.pos + cell
-		var target = getValidTarget(pos)
-		if target != null:
-			if not rollsavingThrow(caster, target, saveMalus):
-				playEffect(pos, Effect.SKULL, 5, 0.45)
-				applySpellStatus(target, Data.STATUS_CURSE, 0, turns)
-		else:
+		if not cursedCells.has(pos):
 			playEffect(pos, Effect.DARK)
 
 func fireBlade(caster, rank: int):
