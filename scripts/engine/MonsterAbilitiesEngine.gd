@@ -23,11 +23,8 @@ func applyEffect(caster, entity, spellId: int, fromCharacter: bool, rank: int, s
 func zombieScream(caster):
 	var spellRange = Data.spells[Data.SP_ZOMBIE_SCREAM][Data.SP_AREA]
 	var targetedCells = get_parent().getArea(caster, spellRange)
-	for cell in targetedCells:
-		var pos = caster.pos + cell
-		var target = get_parent().getValidTarget(pos)
-		if target == null:
-			continue
+	var targets = GLOBAL.getAllTargets(caster.pos, targetedCells)
+	for target in targets:
 		get_parent().playEffect(target.pos, Effect.SKULL, 5, 0.45)
 		if not get_parent().rollsavingThrow(caster, target):
 			get_parent().applySpellStatus(target, Data.STATUS_TERROR, 0, 4)
