@@ -562,9 +562,8 @@ func monstersReader():
 			monsters[idx][MO_CR] = monstersCsv[idx]["CR"]
 			monsters[idx][MO_HP] = statsCsv[monsters[idx][MO_CR]]["HP-" + monstersCsv[idx]["Hp"]]
 			monsters[idx][MO_HIT] = statsCsv[monsters[idx][MO_CR]]["Hit-" + monstersCsv[idx]["Hit"]]
-			monsters[idx][MO_DMG].x = Utils.diceToVector(monstersCsv[idx]["Damages"])
-			#Damage type
-			#monsters[idx][MO_HP] = statsCsv[monsters[idx][MO_CR]]["HP-" + monstersCsv[idx]["Hp"]]
+			monsters[idx][MO_DMG] = Utils.diceToVector(monstersCsv[idx]["Damages"])
+			# TODO Damage type
 			monsters[idx][MO_CA] = statsCsv[monsters[idx][MO_CR]]["AC-" + monstersCsv[idx]["AC"]]
 			monsters[idx][MO_PROT] = statsCsv[monsters[idx][MO_CR]]["Prot-" + monstersCsv[idx]["Prot"]]
 			monsters[idx][MO_CASTER_LVL] = statsCsv[monsters[idx][MO_CR]]["Save-" + monstersCsv[idx]["Save"]]

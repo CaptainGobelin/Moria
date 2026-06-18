@@ -108,14 +108,21 @@ func csvToDict(filename: String) -> Dictionary:
 	var result = {}
 	var file = File.new()
 	file.open("res://data/" + filename, File.READ)
-	var columns = file.get_csv_line()
+	var columns: Array  = file.get_csv_line()
+	fixLineTypes(columns)
 	while not file.eof_reached():
-		var line = file.get_csv_line()
+		var line: Array = file.get_csv_line()
+		fixLineTypes(line)
 		result[line[0]] = {}
 		for i in range(1, line.size()):
 			result[line[0]][columns[i]] = line[i]
 	file.close()
 	return result
+
+func fixLineTypes(line: Array):
+	for i in range(line.size()):
+		if line[i].is_valid_integer():
+			line[i] = int(line[i])
 
 func cmdString(cmd: Array) -> String:
 	var count = 0

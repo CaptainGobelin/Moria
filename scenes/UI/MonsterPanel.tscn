@@ -34,7 +34,7 @@ valign = 1
 clip_text = true
 
 [node name="Stats" type="Label" parent="TextContainer"]
-margin_right = 288.0
+margin_right = 424.0
 margin_bottom = 36.0
 theme = ExtResource( 1 )
 text = "AC:8 Pr:2 PH:2 WI:3"
