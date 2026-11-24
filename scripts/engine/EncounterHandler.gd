@@ -32,7 +32,7 @@ func createEncounters() -> float:
 		for m in encounter[Data.ENC_MONSTERS]:
 			var k = m[Data.ENC_MO_MIN]
 			if m[Data.ENC_MO_MAX] != m[Data.ENC_MO_MIN]:
-				k += (randi() % (m[Data.ENC_MO_MAX] - m[Data.ENC_MO_MIN]))
+				k += (randi() % (m[Data.ENC_MO_MAX] - m[Data.ENC_MO_MIN] + 1))
 			for _j in range(k):
 				var nearCell = getNearFreeCell(cell)
 				if nearCell != null:
