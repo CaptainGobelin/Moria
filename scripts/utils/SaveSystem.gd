@@ -111,7 +111,7 @@ func saveCharacter() -> Dictionary:
 			"currentArmor": Ref.character.inventory.currentArmor,
 			"currentTalismans": Ref.character.inventory.currentTalismans,
 			"weapons": Ref.character.inventory.weapons,
-			"armors": Ref.character.inventory.rests,
+			"armors": Ref.character.inventory.armors,
 			"potions": Ref.character.inventory.potions,
 			"scrolls": Ref.character.inventory.scrolls,
 			"throwings": Ref.character.inventory.throwings,
@@ -140,7 +140,7 @@ func saveCharacter() -> Dictionary:
 			"shortcutsType": Ref.character.shortcuts.shortcutsType,
 		},
 		"fatigue": {
-			"actual": Ref.character.fatigue.acutal,
+			"actual": Ref.character.fatigue.actual,
 			"total": Ref.character.fatigue.total,
 		}
 	}
@@ -154,7 +154,7 @@ func loadCharacter(dict: Dictionary):
 	Ref.character.inventory.currentArmor = dict["inventory"]["currentArmor"]
 	Ref.character.inventory.currentTalismans = dict["inventory"]["currentTalismans"]
 	Ref.character.inventory.weapons = dict["inventory"]["weapons"]
-	Ref.character.inventory.rests = dict["inventory"]["armors"]
+	Ref.character.inventory.armors = dict["inventory"]["armors"]
 	Ref.character.inventory.potions = dict["inventory"]["potions"]
 	Ref.character.inventory.scrolls = dict["inventory"]["scrolls"]
 	Ref.character.inventory.throwings = dict["inventory"]["throwings"]
@@ -173,6 +173,8 @@ func loadCharacter(dict: Dictionary):
 	Ref.character.skills.skp = dict["skills"]["skp"]
 	Ref.character.shortcuts.shortcuts = dict["shortcuts"]["shortcuts"]
 	Ref.character.shortcuts.shortcutsType = dict["shortcuts"]["shortcutsType"]
+	Ref.character.fatigue.actual = dict["fatigue"]["actual"]
+	Ref.character.fatigue.total = dict["fatigue"]["total"]
 	Ref.character.stats.computeStats()
 	Ref.character.setPosition(dict["pos"])
 
@@ -245,6 +247,7 @@ func saveAllies() -> Dictionary:
 			"pos": m.pos,
 			"skipNextTurn": m.skipNextTurn,
 			"buffCD": m.buffCD,
+			"currentHp": m.stats.currentHp,
 			"actions": {
 				"throwings": m.actions.throwings,
 				"spells": m.actions.spells,
@@ -278,6 +281,7 @@ func loadAllies(dict: Dictionary):
 		monster.actions.selfBuffs = m["actions"]["selfBuffs"]
 		monster.actions.selfHeals = m["actions"]["selfHeals"]
 		monster.stats.computeStats()
+		monster.stats.currentHp = m["currentHp"]
 
 func saveNpcs() -> Dictionary:
 	var result = []
