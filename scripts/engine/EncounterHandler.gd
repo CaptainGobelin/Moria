@@ -5,8 +5,6 @@ const neighbours = [
 	Vector2(1, 0), Vector2(1, 1), Vector2(0, 1),
 	Vector2(-1, 1), Vector2(-1, 0), Vector2(-1, -1),
 	Vector2(0, -1), Vector2(1, -1),
-	Vector2(1, 0), Vector2(1, 1), Vector2(0, 1),
-	Vector2(-1, 1), Vector2(-1, 0), Vector2(-1, -1),
 	Vector2(-2, -2), Vector2(-2, -1), Vector2(-2, 0), Vector2(-2, 1),Vector2(-2, 2),
 	Vector2(-1, -2), Vector2(0, -2), Vector2(1, -2),
 	Vector2(-1, 2), Vector2(0, 2), Vector2(1, 2),
@@ -30,8 +28,8 @@ func createEncounters() -> float:
 				cell = Utils.chooseRandom(get_parent().enemyCells)
 		var CRmult = 1.0
 		var encounterCR: float = 0.0
+		var monsters = []
 		for m in encounter[Data.ENC_MONSTERS]:
-			var monsters = []
 			var k = m[Data.ENC_MO_MIN]
 			if m[Data.ENC_MO_MAX] != m[Data.ENC_MO_MIN]:
 				k += (randi() % (m[Data.ENC_MO_MAX] - m[Data.ENC_MO_MIN]))
@@ -39,14 +37,14 @@ func createEncounters() -> float:
 				var nearCell = getNearFreeCell(cell)
 				if nearCell != null:
 					monsters.append(Ref.currentLevel.spawnMonster(m[Data.ENC_MO_TYPE], nearCell))
-					encounterCR += CRmult * Data.monsters[Data.ENC_MO_TYPE][Data.MO_CR]
+					encounterCR += CRmult * Data.monsters[m[Data.ENC_MO_TYPE]][Data.MO_CR]
 					CRmult *= 0.75
-			for monster in monsters:
-				var allies = monsters.duplicate()
-				allies.erase(monster)
-				monster.allies = allies
-			WorldHandler.diffCR += (encounterCR - (WorldHandler.getLevelNormalCR()/float(nb)))
-			totalCR += encounterCR
+		for monster in monsters:
+			var allies = monsters.duplicate()
+			allies.erase(monster)
+			monster.allies = allies
+		WorldHandler.diffCR += (encounterCR - (WorldHandler.getLevelNormalCR()/float(nb)))
+		totalCR += encounterCR
 		for i in range(-3, 4):
 			for j in range(-3, 4):
 				exclusions.append(Vector2(cell.x+i, cell.y+j))
@@ -59,7 +57,7 @@ func chooseEncounter(encounterPool: Array) -> Array:
 	var encounter = Utils.chooseRandom(encounterPool)
 	var stopChoice = false
 	var rerolls = 10
-	while not stopChoice or rerolls > 0:
+	while not stopChoice and rerolls > 0:
 		rerolls -= 1
 		# On first floor we want only easy encounters
 		if WorldHandler.currentFloor == 1:
