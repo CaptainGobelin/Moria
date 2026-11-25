@@ -103,6 +103,8 @@ func applyBlind():
 func applyRegen():
 	if hasStatus(Data.STATUS_NO_HEAL):
 		return
+	if hasStatus(Data.STATUS_REGENERATE):
+		get_parent().heal(getStatusRank(Data.STATUS_REGENERATE))
 
 func applyPoison():
 	if hasStatus(Data.STATUS_POISON):
@@ -198,6 +200,10 @@ func updateLevel(newValue):
 	Ref.ui.updateStat(Data.CHAR_XPMAX, Data.lvlCaps[level])
 
 func updateXp(newValue):
+	if level >= Data.lvlCaps.size():
+		xp = 0
+		Ref.ui.updateStat(Data.CHAR_XP, 0)
+		return
 	if (newValue - xp) > 0:
 		Ref.ui.writeXpGain(newValue - xp)
 	if newValue >= Data.lvlCaps[level]:
