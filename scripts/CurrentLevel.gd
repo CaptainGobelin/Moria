@@ -73,6 +73,7 @@ func refresh_view():
 			m.bodySprite.visible = true
 			m.mask.visible = false
 		else:
+			m.bodySprite.visible = true
 			if Data.hasTag(m, Data.TAG_EVIL):
 				if Ref.character.statuses.has(Data.STATUS_DETECT_EVIL):
 					m.mask.visible = true
@@ -228,7 +229,7 @@ func getRandomFreeCell():
 		var x = randi() % GLOBAL.FLOOR_SIZE_X
 		var y = randi() % GLOBAL.FLOOR_SIZE_Y
 		var cell = Vector2(x, y)
-		if isCellFree(cell)[0]:
+		if isCellFree(cell, false)[0]:
 			return cell
 
 func isBlockingCell(cell: Vector2) -> bool:
