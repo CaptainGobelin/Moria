@@ -45,7 +45,6 @@ func castSpellCharacter(spellId: int, scrollId = null):
 			if GLOBAL.targets.size() == 0:
 				Ref.ui.noTarget()
 				return
-			Ref.game.set_process_input(false)
 			Ref.ui.askForTarget(GLOBAL.targets.keys(), self, spell[Data.SP_AREA])
 			var coroutineReturn = yield(Ref.ui, "coroutine_signal")
 			if coroutineReturn == -1:
@@ -56,7 +55,7 @@ func castSpellCharacter(spellId: int, scrollId = null):
 				yield(castProjectile(GLOBAL.targets[targetId], spell[Data.SP_PROJ]), "completed")
 			SpellEngine.applyEffect(Ref.character, instance_from_id(targetId), spellId, true, spellRank, savingCap)
 			if spellId == Data.SP_LIGHT_BOLT:
-				var rebound = spellRebound(spellId, Ref.character, instance_from_id(targetId), spellRank, savingCap, spellRank-1)
+				var rebound = spellRebound(spellId, Ref.character, instance_from_id(targetId), spellRank, savingCap, spellRank)
 				if rebound is GDScriptFunctionState:
 					yield(rebound, "completed")
 			spellCasted = true
@@ -118,7 +117,7 @@ func castSpellMonster(spellId: int, caster, target, path: Array):
 	if spell[Data.SP_PROJ] != null:
 		castProjectile(path, spell[Data.SP_PROJ])
 	var savingCap = caster.stats.spellcasterLevel + 3
-	var spellRank = max(1, min(caster.stats.spellcasterLevel, 3))
+	var spellRank = max(0, min(caster.stats.spellcasterLevel, 2))
 	SpellEngine.applyEffect(caster, target, spellId, false, spellRank, savingCap)
 	if target is Character:
 		SpellEngine.breakSanctuary(caster, SpellEngine.SANCT_ATTACK)
@@ -126,7 +125,7 @@ func castSpellMonster(spellId: int, caster, target, path: Array):
 		SpellEngine.breakSanctuary(caster, SpellEngine.SANCT_BUFF)
 
 func spellRebound(spellId: int, caster, initial, spellRank: int, savingCap: int, n: int):
-	var targets = [Ref.currentLevel.allies.get_children()]
+	var targets = Ref.currentLevel.allies.get_children()
 	targets.append(Ref.character)
 	if caster is Character:
 		targets = Ref.currentLevel.monsters.get_children()
@@ -146,7 +145,9 @@ func spellRebound(spellId: int, caster, initial, spellRank: int, savingCap: int,
 		yield(castProjectile(los, Data.spells[spellId][Data.SP_PROJ]), "completed")
 		SpellEngine.applyEffect(caster, m, spellId, true, spellRank, savingCap)
 		if n > 1:
-			yield(spellRebound(spellId, caster, m, spellRank, savingCap, n - 1), "completed")
+			var rebound = spellRebound(spellId, caster, m, spellRank, savingCap, n - 1)
+			if rebound is GDScriptFunctionState:
+				yield(rebound, "completed")
 		return
 
 func useMonsterAbility(spellId: int, caster, target, path):
@@ -164,6 +165,6 @@ func useMonsterAbility(spellId: int, caster, target, path):
 	if Data.spells[spellId][Data.SP_PROJ] != null:
 		castProjectile(path, Data.spells[spellId][Data.SP_PROJ])
 	var savingCap = caster.stats.spellcasterLevel + 3
-	var spellRank = max(1, min(caster.stats.spellcasterLevel, 3))
+	var spellRank = max(0, min(caster.stats.spellcasterLevel, 2))
 	SpellEngine.applyEffect(caster, target, spellId, false, spellRank, savingCap)
 	SpellEngine.breakSanctuary(caster, SpellEngine.SANCT_ATTACK)
