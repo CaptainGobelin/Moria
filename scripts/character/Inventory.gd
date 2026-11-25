@@ -280,6 +280,25 @@ func unequipTalisman(idx: int, renewStats: bool = true):
 	if renewStats:
 		get_parent().stats.computeStats()
 
+func equipTalisman(idx: int):
+	if currentTalismans.x == idx or currentTalismans.y == idx:
+		return
+	if currentTalismans.x == -1:
+		currentTalismans.x = idx
+		for e in item[GLOBAL.IT_SPEC]:
+			EnchantEngine.applyEffect(get_parent(), e, idx)
+	elif currentTalismans.y == -1:
+		currentTalismans.y = idx
+		for e in item[GLOBAL.IT_SPEC]:
+			EnchantEngine.applyEffect(get_parent(), e, idx)
+	else:
+		EnchantEngine.removeEnchant(get_parent(), currentTalismans.x)
+		currentTalismans.x = currentTalismans.y
+		currentTalismans.y = idx
+		for e in item[GLOBAL.IT_SPEC]:
+			EnchantEngine.applyEffect(get_parent(), e, idx)
+	get_parent().stats.computeStats()
+
 func getItemAmount(type: int, stack: int) -> int:
 	var list = []
 	var result: int = 0
