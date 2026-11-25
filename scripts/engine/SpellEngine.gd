@@ -632,7 +632,7 @@ func fireball(caster, entity):
 
 func applyPoison(target, rank: int, savingCap: int):
 	saveCap = savingCap
-	if standardSavingThrow(target, savingCap, Data.SAV_PHY):
+	if standardSavingThrow(target, savingCap, Data.SAVE_PHY):
 		return
 	applySpellStatus(target, Data.STATUS_POISON, rank, 20)
 
