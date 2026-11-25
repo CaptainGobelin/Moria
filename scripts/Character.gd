@@ -171,12 +171,11 @@ func hit(entity):
 					bypassProt = max(bypassProt, 9999)
 				if statuses.has(Data.STATUS_HOLY_WP):
 					dmgDices.append(GeneralEngine.DmgDice.new(1, 4, 0, Data.DMG_RADIANT))
-			var dices = stats.dmgDices.duplicate(true)
 			if isSlaying:
-				dices[0].b += 1
+				dmgDices[0].b += 1
 			if statuses.has(Data.STATUS_ENCHANT + Data.ENCH_PIERCING):
 				bypassProt = max(bypassProt, 2)
-			entity.takeHit(self, dices, bypassProt)
+			entity.takeHit(self, dmgDices, false, bypassProt)
 			StatusEngine.applyWeaponEffects(self, entity)
 		else:
 			Ref.ui.writeCharacterMiss(entity.stats.entityName, result, entity.stats.ca)
@@ -265,6 +264,8 @@ func unequipItem(idx):
 			inventory.unequipWeapon(idx)
 		GLOBAL.AR_TYPE:
 			inventory.unequipArmor(idx)
+		GLOBAL.TA_TYPE:
+			inventory.unequipTalisman(idx)
 
 func switchItem(idx):
 	var item = GLOBAL.items[idx]
@@ -283,6 +284,8 @@ func equipItem(idx):
 			inventory.equipWeapon(idx)
 		GLOBAL.AR_TYPE:
 			inventory.equipArmor(idx)
+		GLOBAL.TA_TYPE.
+			inventory.equipTalisman(idx)
 
 func quaffPotion(idx):
 	var potion = GLOBAL.items[idx]
@@ -336,7 +339,7 @@ func rollPerception(cell: Vector2, malus: int = 0):
 func rest():
 	inventory.rests -= 1
 	for a in Ref.currentLevel.allies.get_children():
-		a.queue_free()
+		a.die()
 	StatusEngine.clearStatuses(self)
 	stats.updateHp(stats.hpMax)
 	fatigue.refresh()
