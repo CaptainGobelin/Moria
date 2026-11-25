@@ -89,12 +89,12 @@ func applyEffect(caster, entity, spellId: int, fromCharacter: bool, rank: int, s
 		return
 	if spellId < 100:
 		var spell = Data.spells[spellId]
-		saveCap = savingCap
 		if spell[Data.SP_SAVE] != Data.SAVE_NO:
 			saveType = spell[Data.SP_SAVE]
 		if caster.statuses.has(Data.STATUS_ENCHANT + Data.ENCH_EMP_ENCH):
 			if Data.spells[spellId][Data.SP_SCHOOL] == Data.SC_ENCHANTMENT:
 				savingCap += 1
+		saveCap = savingCap
 	elif spellId < 200:
 		saveType = Data.SAVE_NO
 	fromChar = fromCharacter
@@ -220,7 +220,7 @@ func electricGrasp(caster, entity, rank: int, direction: Vector2):
 		var saved = rollsavingThrow(caster, target)
 		var dmgDice = getDmgDice(caster, Data.SP_ELECTRIC_GRASP, rank)
 		if not saved and rank > 0:
-			applySpellStatus(entity, Data.STATUS_PARALYZED, 0, 2)
+			applySpellStatus(target, Data.STATUS_PARALYZED, 0, 2)
 		target.takeHit(caster, dmgDice, saved)
 
 func heal(caster, entity, rank: int):
@@ -231,12 +231,12 @@ func heal(caster, entity, rank: int):
 
 func smite(caster, entity, rank: int, direction: Vector2):
 	var targetCell = entity.pos + direction
-	var cells = [targetCell]
+	var cells = [targetCell - entity.pos]
 	for _i in range(GLOBAL.VIEW_RANGE):
 		if Ref.currentLevel.isCellFree(targetCell)[4]:
-			return
+			break
 		if Ref.currentLevel.fog.get_cellv(targetCell) == 1:
-			return
+			break
 		playEffect(targetCell, Effect.SMITE)
 		cells.append(targetCell - entity.pos)
 		targetCell += direction
@@ -344,7 +344,7 @@ func command(caster, entity, rank: int):
 
 func light(caster, entity, rank: int):
 	playEffect(entity.pos, Effect.BUFF, entity.isBoss)
-	var turns = getTurns(Data.SP_COMMAND, rank)
+	var turns = getTurns(Data.SP_LIGHT, rank)
 	if rank >= 2:
 		turns = TIME_REST
 	if rank == 0:
@@ -361,11 +361,11 @@ func negateEnergies(caster, rank: int):
 	for m in Ref.currentLevel.monsters.get_children():
 		if Utils.dist(caster.pos, m.pos) <= spellRange:
 			if rollsavingThrow(caster, m):
-				return
+				continue
 			if Data.hasTag(m, Data.TAG_SUMMONED):
 				playEffect(m.pos, Effect.DESTROY, m.isBoss)
 				m.die()
-				return
+				continue
 			if StatusEngine.removeRandomBuff(m):
 				playEffect(m.pos, Effect.ARCANE, m.isBoss)
 				m.takeHit(caster, dmgDice, false)
@@ -418,8 +418,8 @@ func blind(caster, entity, rank: int):
 	else:
 		for m in Ref.currentLevel.monsters.get_children():
 			if Utils.dist(entity.pos, m.pos) <= (rank+1):
-				if not rollsavingThrow(caster, entity):
-					applySpellStatus(m, Data.STATUS_SLEEP, 0, turns)
+				if not rollsavingThrow(caster, m):
+					applySpellStatus(m, Data.STATUS_BLIND, 0, turns)
 
 func mindSpike(caster, entity, rank: int):
 	playEffect(entity.pos, Effect.ARCANE, entity.isBoss)
