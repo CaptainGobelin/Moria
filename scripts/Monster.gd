@@ -178,7 +178,7 @@ func hit(entity):
 				Ref.ui.writeCharacterHitImage()
 				return
 			if statuses.has(Data.STATUS_ENCHANT + Data.ENCH_PIERCING):
-				entity.takeHit(self, stats.dmgDices, 2)
+				entity.takeHit(self, stats.dmgDices, false, 2)
 			else:
 				entity.takeHit(self, stats.dmgDices)
 			StatusEngine.applyWeaponEffects(self, entity)
@@ -258,7 +258,7 @@ func die():
 	StatusEngine.clearStatuses(self)
 	if Ref.character.statuses.has(Data.STATUS_ENCHANT + Data.ENCH_LIFE_DRAIN):
 		Ref.character.heal(1)
-	if not Data.hasTag(type, Data.TAG_SUMMONED):
+	if not Data.hasTag(self, Data.TAG_SUMMONED):
 		Ref.character.stats.xp += stats.xp
 	if GLOBAL.monstersByPosition.has(pos):
 		GLOBAL.monstersByPosition.erase(pos)
