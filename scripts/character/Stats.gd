@@ -12,7 +12,7 @@ onready var ca: int = 3 setget updateCA
 onready var prot: int = 0 setget updateProt
 onready var dmgDices: Array = [GeneralEngine.dmgDice(1, 1, 0, Data.DMG_BLUNT)] setget updateDmg
 onready var hitDices = GeneralEngine.dice(1, 6, 0) setget updateHit
-onready var perception = GeneralEngine.dice(1, 6, 0)
+onready var perception = GeneralEngine.dice(1, 6, 0) setget updatePerception
 onready var resists: Array = [0, 0, 0, 0, 0, 0, 0, 0]
 onready var maxResists: Array = [1, 1, 1, 1, 1, 1, 1, 1]
 onready var saveBonus: Array = [0, 0]
@@ -45,6 +45,7 @@ func computeStats():
 	computeDmg()
 	computeHit()
 	computeSaves()
+	computePerception()
 	computeResists()
 	StatusEngine.applyEffect(get_parent())
 	applyMageArmor()
@@ -165,6 +166,10 @@ func updateHit(newValue):
 
 func computePerception():
 	perception = GeneralEngine.dice(1, 6, Skills.getPerceptionBonus())
+
+func updatePerception():
+	#TODO display perception
+	pass
 
 func computeResists():
 	for i in range(8):
