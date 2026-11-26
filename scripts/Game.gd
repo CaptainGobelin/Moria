@@ -36,6 +36,7 @@ func _ready():
 		start = GLOBAL.startingMode
 	if start == 4:
 		get_tree().change_scene("res://scenes/UI/TitleScreen.tscn")
+		return
 	randomize()
 	var randomSeed = randi()
 	print("Seed: " + String(randomSeed))
@@ -201,7 +202,8 @@ func newFloor():
 			var cell = Ref.character.getRandomCloseCell()
 			if cell == null:
 				a.die()
-			a.setPosition(cell)
+			else:
+				a.setPosition(cell)
 		for _i in range(max(0, randi() % 4 - 2)):
 			Ref.currentLevel.createChest()
 		for _i in range(1 + (randi() % 4)):
