@@ -355,7 +355,7 @@ func getRandomCloseCell():
 	if currentVision.empty():
 		return null
 	var result = Utils.chooseRandom(currentVision)
-	while randf() > (1.0 / float(Utils.dist(pos, result))):
+	while randf() > (1.0 / float(Utils.dist(pos, result))) or pos == result:
 		result = Utils.chooseRandom(currentVision)
 	return result
 
