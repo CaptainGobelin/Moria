@@ -261,8 +261,8 @@ func mapThrowingToItem(throwing, baseIdx):
 	item.resize(GLOBAL.IT_STACK + 1)
 	item[GLOBAL.IT_ICON] = throwing[Data.TH_ICON]
 	item[GLOBAL.IT_NAME] = throwing[Data.TH_NAME]
-	if throwing[Data.W_DMG] != null:
-		var dmgDice = GeneralEngine.basicDice(throwing[Data.W_DMG])
+	if throwing[Data.TH_DMG] != null:
+		var dmgDice = GeneralEngine.basicDice(throwing[Data.TH_DMG])
 		item[GLOBAL.IT_DMG] = GeneralEngine.dmgFromDice(dmgDice, Data.DMG_SLASH)
 	item[GLOBAL.IT_SPEC] = throwing[Data.TH_EFFECT]
 	item[GLOBAL.IT_TYPE] = GLOBAL.TH_TYPE
