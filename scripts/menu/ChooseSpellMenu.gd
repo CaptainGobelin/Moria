@@ -18,6 +18,7 @@ func open(school: int, list: int = -1):
 	selected = 0
 	startRow = 0
 	visible = true
+	rows.currentStartIndex = 0
 	MasterInput.setMaster(self)
 	if list == -1:
 		list = Data.classes[Ref.character.charClass][Data.CL_LIST]
@@ -40,6 +41,7 @@ func open(school: int, list: int = -1):
 	if currentList.empty():
 		close()
 		emit_signal("selected", null)
+		return
 	var promptText = "Choose a new "
 	match school:
 		Data.SC_EVOCATION:
@@ -78,7 +80,7 @@ func _input(event):
 			startRow = max(0, currentList.size() - 6)
 		rows.selectPrevious()
 	elif event.is_action_released("ui_accept"):
-		var spell = rows.get_child(selected).spell
+		var spell = rows.getSelected()
 		Ref.character.spells.learnSpell(spell)
 		close()
 		emit_signal("selected", spell)
