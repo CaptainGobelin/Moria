@@ -10,7 +10,7 @@ func firebomb(entity):
 		Ref.currentLevel.effects.add_child(effect)
 		effect.play(pos, Effect.FIRE)
 	for target in targets:
-		target.takeHit(null, dmgDice)
+		target.takeHit(null, [dmgDice])
 
 func holyWater(entity):
 	var targetedCells = get_parent().getArea(entity, 2, true)
@@ -23,7 +23,7 @@ func holyWater(entity):
 		effect.play(pos, Effect.SPARK)
 	for target in targets:
 		if Data.hasTag(target, Data.TAG_EVIL):
-			target.takeHit(null, dmgDice)
+			target.takeHit(null, [dmgDice])
 
 func sleepFlask(entity):
 	var targetedCells = get_parent().getArea(entity, 3, true)

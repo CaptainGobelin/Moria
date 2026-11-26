@@ -281,6 +281,7 @@ func unequipTalisman(idx: int, renewStats: bool = true):
 		get_parent().stats.computeStats()
 
 func equipTalisman(idx: int):
+	var item = GLOBAL.items[idx]
 	if currentTalismans.x == idx or currentTalismans.y == idx:
 		return
 	if currentTalismans.x == -1:

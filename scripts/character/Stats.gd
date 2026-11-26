@@ -167,7 +167,7 @@ func updateHit(newValue):
 func computePerception():
 	perception = GeneralEngine.dice(1, 6, Skills.getPerceptionBonus())
 
-func updatePerception():
+func updatePerception(newValue):
 	#TODO display perception
 	pass
 

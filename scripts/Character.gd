@@ -284,7 +284,7 @@ func equipItem(idx):
 			inventory.equipWeapon(idx)
 		GLOBAL.AR_TYPE:
 			inventory.equipArmor(idx)
-		GLOBAL.TA_TYPE.
+		GLOBAL.TA_TYPE:
 			inventory.equipTalisman(idx)
 
 func quaffPotion(idx):

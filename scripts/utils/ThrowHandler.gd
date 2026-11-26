@@ -30,7 +30,7 @@ func throwCharacter(itemId: int):
 		if result >= entity.stats.ca:
 			Ref.ui.writeCharacterStrike(entity.stats.entityName, result, entity.stats.ca)
 			var wpDmg = item[Data.TH_DMG]
-			entity.takeHit(GeneralEngine.dmgDice(wpDmg.x, wpDmg.y, 0, Data.DMG_SLASH).roll(Ref.character))
+			entity.takeHit(Ref.character, [GeneralEngine.dmgDice(wpDmg.x, wpDmg.y, 0, Data.DMG_SLASH)])
 		else:
 			Ref.ui.writeCharacterMiss(entity.stats.entityName, result, entity.stats.ca)
 	else:
