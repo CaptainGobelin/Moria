@@ -137,9 +137,9 @@ func computeDamages(source, dmgDices: Array, resist: Array, byPassResists: bool 
 			byPassResists = true
 	var result = 0
 	for dice in dmgDices:
-		var dmg = dice.roll()
+		var dmg = dice.roll(source)
 		if !byPassResists and resist[dice.type] > 0:
-			dmg /= pow(2, resist[dice.type])
+			dmg >>= resist[dice.type]
 		result += dmg
 	return result
 
